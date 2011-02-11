@@ -7,10 +7,12 @@ package
 	 */
 	public class MyWorld extends World
 	{
-		
+		public static var player:Player;
 		public function MyWorld() 
 		{
-			add(new MyEntity);
+			MyWorld.player = new Player;
+			add(player);
+			add(new Level);
 			add(new AnotherShip);
 		}
 		

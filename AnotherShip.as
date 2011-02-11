@@ -8,15 +8,14 @@ package
 	 */
 	public class AnotherShip extends Entity
 	{
-		[Embed(source = 'assets/player.png')]
-		private const SHIP:Class;
+		[Embed(source = 'assets/player.png')] private const SHIP:Class;
 		
 		public function AnotherShip() 
 		{
 			graphic = new Image(SHIP);
 			x = 100;
 			y = 100;
-			setHitbox(42, 21);
+			setHitbox(20, 20);
 			type = "npcShip";
 		}
 		
