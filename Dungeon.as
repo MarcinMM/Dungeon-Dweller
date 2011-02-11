@@ -5,14 +5,15 @@ package
 	 * ...
 	 * @author MM
 	 */
-	public class MyWorld extends World
+	public class Dungeon extends World
 	{
 		public static var player:Player;
-		public function MyWorld() 
+		public function Dungeon() 
 		{
-			MyWorld.player = new Player;
+			Dungeon.player = new Player;
 			add(player);
 			add(new Level);
+			add(new LevelMask);
 			add(new AnotherShip);
 		}
 		

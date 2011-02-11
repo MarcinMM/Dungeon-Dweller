@@ -14,7 +14,7 @@ package
 		public function Main() 
 		{
 			super(800, 600, 60, false);
-			FP.world = new MyWorld;
+			FP.world = new Dungeon;
 		}
 		
 		override public function init():void 

@@ -14,6 +14,7 @@ package
 		[Embed(source = 'assets/player.png')] private const PLAYER:Class;
 		private const GRIDSIZE:int = 20;
 		public var STEP:int = 0;
+		public var LIGHT_RADIUS:int = 1;
 		
 		public function Player() 
 		{
@@ -59,8 +60,8 @@ package
 				y += GRIDSIZE;
 				STEP++;
 			}
-			FP.log("Step: " + STEP);
-			FP.watch("STEP");
+			//FP.log("Step: " + STEP);
+			//FP.watch("STEP");
 		}
 		
 	}

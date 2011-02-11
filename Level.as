@@ -6,8 +6,10 @@ package
 	/**
 	 * ...
 	 * @author MM
-	 * Tile 0: brown stone
-	 * Tile 1: green stone
+	 * Tile 0: alpha (future)
+	 * Tile 1: the void (future)
+	 * Tile 2: brown stone
+	 * Tile 3: green stone
 	 */
 	public class Level extends Entity
 	{
@@ -18,27 +20,33 @@ package
 		
 		public function Level() 
 		{
+			// init level tilemap and collision grid mask
 			_tiles = new Tilemap(TILEMAP, 800,600,20,20);
+			drawLevel();			
 			graphic = _tiles;
-			layer = 1;
+			layer = 2;
 			
-			_tiles.setRect(0,0,800/20,600/20,1); // background
-			_tiles.setRect(10,10,1,10,0); // stone wall
-			
-			_grid = new Grid(800,600,20,20,0,0); // stone wall collision grid
+			_grid = new Grid(800,600,20,20,0,0);
+			drawGrid();
 			mask = _grid;
-			
-			_grid.setRect(10,10,1,20,true);
-			
+
 			type = "level";
+		}
+
+		private function drawLevel():void {
+			_tiles.setRect(0,0,800/20,600/20,3); // background
+			_tiles.setRect(10,10,1,10,2); // stone wall
+		}
+		
+		private function drawGrid():void {
+			_grid.setRect(10,10,1,20,true);			
 		}
 
 		override public function update():void {
 			// synchronize updates with player turn
-			// draw a tile under the player
-			if (_step != MyWorld.player.STEP) {
-				_tiles.setTile(MyWorld.player.x/20, MyWorld.player.y/20, 0);
-				_step = MyWorld.player.STEP;
+			// handle things like open doors, triggered traps, dried up fountains, etc.
+			if (_step != Dungeon.player.STEP) {
+				
 			}
 		}
 		
