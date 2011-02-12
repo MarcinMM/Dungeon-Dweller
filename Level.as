@@ -20,7 +20,7 @@ package
 		private var _grid:Grid;
 
 		private var _rooms:int = 0;
-		private var _roomsMax:int = 5;
+		private var _roomsMax:int = 10;
 		private var _roomsA:Array = [];
 		
 		public var _step:int = 0;
@@ -69,8 +69,7 @@ package
 				var y:int = Math.round(Math.random() * Dungeon.TILESY);
 				var width:int = Math.round(Math.random() * 15 + 3);
 				var height:int = Math.round(Math.random() * 15 + 3);
-				drawRoom(x,y,width,height);
-				trace(x + "|" + y + "|" + i);
+				drawRoom(x, y, width, height);
 			}
 		}
 		
@@ -99,7 +98,8 @@ package
 			for (var i:int = 0; i < _roomsA.length; i++) {
 				if (roomCollision(i, x, y, width, height)) {
 					success = false;
-				}
+					FP.log("intersect");
+				} 
 			}
 			
 			
@@ -121,8 +121,18 @@ package
 			}
 		}
 		
-		private function roomCollision(i, x, y, width, height) {
-			
+		private function roomCollision(i:int, x:int, y:int, width:int, height:int):Boolean {
+			var overlap:Boolean = false;
+			var currentRoom:Array = _roomsA[i];
+			if (
+					(currentRoom[0] < (x+width + 1)) &&
+					((currentRoom[0] + currentRoom[2] + 1) > x) &&
+					(currentRoom[1] < (y + height + 1)) &&
+					((currentRoom[1] + currentRoom[3] + 1) > y)
+				) {
+				overlap = true;
+			}
+			return overlap;
 		}
 		
 		private function drawHallway():void {
