@@ -21,7 +21,7 @@ package
 		public function LevelMask() 
 		{
 			_levelmask = new Tilemap(TILEMAP, 800,600,20,20);
-			_levelmask.setRect(0,0,800/20,600/20,1); // black overlay
+			//_levelmask.setRect(0,0,800/20,600/20,1); // black overlay
 			graphic = _levelmask;
 			layer = 1;
 
@@ -49,6 +49,7 @@ package
 				}
 				_step = Dungeon.player.STEP;
 				FP.log("Tile at player: " + _levelmask.getTile(Dungeon.player.x/20,Dungeon.player.y/20) + "|step:" + _step);
+				trace(_step);
 			}
 		}
 		
