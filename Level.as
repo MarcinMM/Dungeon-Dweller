@@ -4,6 +4,7 @@ package
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.FP;
+	import dungeon.components.Room;
 
 	/**
 	 * ...
@@ -16,12 +17,16 @@ package
 	public class Level extends Entity
 	{
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
-		private var _dungeonmap:Tilemap;
-		private var _grid:Grid;
+		public var _dungeonmap:Tilemap;
+		public var _grid:Grid;
 
 		private var _rooms:int = 0;
 		private var _roomsMax:int = 10;
-		private var _roomsA:Array = [];
+		private var _roomsBigChange:int = 2; // 20% chance, 2 out of 10
+		private var _roomsBigMax:int = 2;
+		private var _roomLimitMax:int = 15;
+		private var _roomLimitNormal:int = 8;
+		public var _roomsA:Array = [];
 		
 		public var _step:int = 0;
 		
@@ -57,85 +62,46 @@ package
 			 * level division will be used.
 			 * There are some assumptions/wishes:
 			 * - not necessarily looped levels
-			 * - not necessarily square rooms
-			 * - dead ends are allowed but not too many
-			 * - 
+			 * - dead ends are allowed but not too many for playability
+			 * - only one or two BIG rooms, this is a dungeon afterall
+			 * - FUTURE: dungeons can be irregular shapes, but only 2 or 3 pixels out (or in) from rectangular
+			 * - FUTURE: there will be some premades
+			 * - FUTURE: there will be hidden passages to secret rooms (right now algorithm will try to connect all, so this will be a post-generation thing)
 			 */
-			// 1. Need a room
+			// 1. Need a room!
+			// Let's say a 20% chance generating a big room, with a max of 2
 
+			var _bigRoomCount:int = 0;			
+			var width:int = 0;
+			var height:int = 0;
+			var _bigRoomRand:int = 0;
+			var x:int = 0;
+			var y:int = 0;
 			
 			for (var i:int = 0; i < _roomsMax; i++) {
-				var x:int = Math.round(Math.random() * Dungeon.TILESX);
-				var y:int = Math.round(Math.random() * Dungeon.TILESY);
-				var width:int = Math.round(Math.random() * 15 + 3);
-				var height:int = Math.round(Math.random() * 15 + 3);
-				drawRoom(x, y, width, height);
+				_bigRoomRand = Math.round(Math.random() * 10);
+				if ((_bigRoomRand < 2) && (_bigRoomCount < 2)) {
+					width = Math.round(Math.random() * _roomLimitMax + 3);
+					height = Math.round(Math.random() * _roomLimitMax + 3);
+					_bigRoomCount++;
+				} else {
+					width = Math.round(Math.random() * _roomLimitNormal + 3);
+					height = Math.round(Math.random() * _roomLimitNormal + 3);				
+				}
+				x = Math.round(Math.random() * Dungeon.TILESX);
+				y = Math.round(Math.random() * Dungeon.TILESY);
+				var newRoom:Room = new Room(x, y, width, height);
+				_roomsA = newRoom.draw(_dungeonmap, _roomsA);
+				if (_roomsA.length > _rooms) {
+					_rooms++;
+					// means room was added successfully
+				} else {
+					FP.log('no room added');
+				}
 			}
 		}
 		
-		private function drawRoom(x:int,y:int,width:int,height:int):void {
-			// sooooo for this we need a starting point and an ending point
-			// and they must not intersect any other such arrangement on the map
-			// we should also have room size maximums and minimums
-			// let's say minimum is 3, maximum is 20
-			
-			var success:Boolean = true;
-
-			// check bounds			
-			if (x + width > Dungeon.TILESX) {
-				width = Dungeon.TILESX - (x + 2);
-			}
-			if (y + height > Dungeon.TILESY) {
-				height = Dungeon.TILESY - (y + 2);
-			}
-			
-			//  now it is possible we have a 0 width/height room			
-			if ( (width <= 0) || (height <= 0) ) {
-				success = false;
-			}
-			
-			// TODO: check other rooms; iterate through their coords and ensure we have no collisions
-			for (var i:int = 0; i < _roomsA.length; i++) {
-				if (roomCollision(i, x, y, width, height)) {
-					success = false;
-					FP.log("intersect");
-				} 
-			}
-			
-			
-			// top wall
-			if (success) {
-				_dungeonmap.setRect(x,y,width+2,1,2);
-				// bottom wall
-				_dungeonmap.setRect(x,y+height+1,width+2,1,2);
-				// left wall
-				_dungeonmap.setRect(x,y,1,height+2,2);
-				// right wall
-				_dungeonmap.setRect(x+width+1,y,1,height+2,2);
-				
-				var roomA:Array = [x,y,width,height];
-				_roomsA.push(roomA);
-				FP.log(x + "|" + y + "|" + width + "|" + height + "|" + _roomsA.length);
-			} else {
-				FP.log("fail");
-			}
-		}
-		
-		private function roomCollision(i:int, x:int, y:int, width:int, height:int):Boolean {
-			var overlap:Boolean = false;
-			var currentRoom:Array = _roomsA[i];
-			if (
-					(currentRoom[0] < (x+width + 1)) &&
-					((currentRoom[0] + currentRoom[2] + 1) > x) &&
-					(currentRoom[1] < (y + height + 1)) &&
-					((currentRoom[1] + currentRoom[3] + 1) > y)
-				) {
-				overlap = true;
-			}
-			return overlap;
-		}
-		
-		private function drawHallway():void {
+		private function drawHallway(room1:int, room2:int):void {
 			
 		}
 		
