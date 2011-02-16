@@ -4,6 +4,8 @@ package
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.FP;
+	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
 	import dungeon.components.Room;
 
 	/**
@@ -20,11 +22,12 @@ package
 		public var _dungeonmap:Tilemap;
 		public var _grid:Grid;
 
-		private const _roomsMax:int = 15;
-		private const _roomsBigChange:int = 2; // 20% chance, 2 out of 10
+		private const _roomsMax:int = 20;
+		private const _roomsBigChance:int = 2; // 20% chance, 2 out of 10
 		private const _roomsBigMax:int = 2;
 		private const _roomLimitMax:int = 11;
 		private const _roomLimitNormal:int = 6;
+		Input.define("DownLevel", Key.L);		
 
 		public var _roomsA:Array = [];
 		private var _rooms:int = 0;
@@ -117,6 +120,12 @@ package
 			if (_step != Dungeon.player.STEP) {
 				FP.watch(_roomsA.length);
 			}
+			if (Input.pressed("DownLevel")) {
+				// TODO: this needs a level saving and clearing routine
+				_roomsA = [];
+				drawLevel();
+			}
+			
 		}
 		
 	}

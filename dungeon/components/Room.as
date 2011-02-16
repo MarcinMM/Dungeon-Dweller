@@ -36,7 +36,8 @@ package dungeon.components
         
         // statics
         public const _maxDoorsPerWall:int = 3;
-        public const _doorChance:int = 3; // 30% door chance?
+        public const _maxDoorsPerRoom:int = 5;
+        public const _doorChance:int = 3; // 30% door chance? consider making this a variable and alternating door avg.
         public const FLOOR:int = 3;
         public const NWALL:int = 5;
         public const SWALL:int = 4;
@@ -99,6 +100,7 @@ package dungeon.components
                 // drawClutter();
                 
                 // finally add room to array since it was successful
+                FP.log('room add');
                 _roomsA.push(this);
             } else {
                 FP.log("fail");
@@ -112,10 +114,10 @@ package dungeon.components
             for (var i:int = 0; i < _roomsA.length; i++) {
                 var currentRoom:Room = _roomsA[i];
                 if (
-                    (currentRoom.x <= xRight) &&
-                    (currentRoom.xRight >= x) &&
-                    (currentRoom.y <= yBottom) &&
-                    (currentRoom.yBottom >= y)
+                    (currentRoom.x-1 <= xRight) &&
+                    (currentRoom.xRight+1 >= x) &&
+                    (currentRoom.y-1 <= yBottom) &&
+                    (currentRoom.yBottom+1 >= y)
                 ) {
                     overlap = true;
                 }
@@ -128,6 +130,8 @@ package dungeon.components
             var doorSeed:int = 0;
             var point:Point = new Point(0,0);
             var door:Door = new Door(point, 'top');
+            var doorCount:int = 0;
+            var doorSuccess:Boolean = true;
 
             for each(var _wall:Wall in walls) {                
                 for (var i:int = 0; i < _maxDoorsPerWall; i++) {
@@ -136,21 +140,54 @@ package dungeon.components
                         // door chance successful, create a new door somewhere on this wall
                         // first find a point on the wall
                         point = _wall.findRandomPoint();
-
-                        // create a door object using the point
-                        door = new Door(point,_wall.position);
-                        FP.log('door at:' + point.x + "-" + point.y + "-" + _wall.position);
                         
-                        // add door to room.wall property
-                        doors[_wall.position].push(door);
-                        
-                        // draw the door only if it's a wall tile
-                        if (_dungeonmap.getTile(point.x, point.y) != FLOOR) {
-                            _dungeonmap.setRect(point.x, point.y, 1, 1, DOOR);
+                        // draw the door only if it's a wall tile and door max hasn't been reached
+                        if ((_dungeonmap.getTile(point.x, point.y) != FLOOR) && (doorCount <= _maxDoorsPerRoom)) {
+                            // check if random point isn't next to an existing door
+                            if (_wall.position == 'top' || _wall.position == 'bottom') {
+                                if ((_dungeonmap.getTile(point.x + 1, point.y) == DOOR) ||
+                                   (_dungeonmap.getTile(point.x - 1, point.y) == DOOR))
+                                {
+                                    doorSuccess = false;
+                                }
+                            }
+                            if (_wall.position == 'left' || _wall.position == 'right') {
+                                if ((_dungeonmap.getTile(point.x, point.y + 1) == DOOR) ||
+                                   (_dungeonmap.getTile(point.x, point.y - 1) == DOOR))
+                                {
+                                    doorSuccess = false;
+                                }
+                            }
+                            if (doorSuccess) {
+                                door = new Door(point,_wall.position);
+                                
+                                // add door to room.wall property
+                                doors[_wall.position].push(door);
+                                _dungeonmap.setRect(point.x, point.y, 1, 1, DOOR);
+                                doorCount++;
+                            }
                         }
-                        
                     }
-                
+                }
+            }
+            if (doorCount == 0) {
+                // add a door if there are none; all rooms should have doors
+                // even if some are secret
+                // pick a wall at random and add a door
+                for each(_wall in walls) {
+                    if (doorCount == 0) {
+                        doorSeed = Math.round(Math.random() * 10);
+                        if (doorSeed > 5) {
+    
+                            point = _wall.findRandomPoint();
+                            door = new Door(point,_wall.position);
+                            
+                            // add door to room.wall property
+                            doors[_wall.position].push(door);
+                            _dungeonmap.setRect(point.x, point.y, 1, 1, DOOR);
+                            doorCount++;
+                        }
+                    }
                 }
             }
         } 

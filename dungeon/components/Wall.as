@@ -27,12 +27,24 @@ package dungeon.components
 				// and point is on X coord line
 				span = end.y - start.y;
 				_pointCoord = Math.round(Math.random() * span);
+				if (_pointCoord == 0) {
+					_pointCoord = 1;
+				} else if (_pointCoord == span) {
+					_pointCoord = span - 1;
+				}
+				FP.log('vert wall with span:' + span + '-coord:' + _pointCoord);
 				point = new Point(start.x, start.y + _pointCoord);
 			} else {
 				// this wall is horizontal, our span is end x minus beginning x
 				// and point is on the Y coord line
 				span = end.x - start.x;
 				_pointCoord = Math.round(Math.random() * span);
+				if (_pointCoord == 0) {
+					_pointCoord = 1;
+				} else if (_pointCoord == span) {
+					_pointCoord = span - 1;
+				}
+				FP.log('hor wall with span:' + span + '-coord:' + _pointCoord);
 				point = new Point(start.x + _pointCoord, start.y);
 			}
 			return point;
