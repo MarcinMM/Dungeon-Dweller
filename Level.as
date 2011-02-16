@@ -20,19 +20,21 @@ package
 		public var _dungeonmap:Tilemap;
 		public var _grid:Grid;
 
-		private var _rooms:int = 0;
-		private var _roomsMax:int = 10;
-		private var _roomsBigChange:int = 2; // 20% chance, 2 out of 10
-		private var _roomsBigMax:int = 2;
-		private var _roomLimitMax:int = 15;
-		private var _roomLimitNormal:int = 8;
+		private const _roomsMax:int = 15;
+		private const _roomsBigChange:int = 2; // 20% chance, 2 out of 10
+		private const _roomsBigMax:int = 2;
+		private const _roomLimitMax:int = 11;
+		private const _roomLimitNormal:int = 6;
+
 		public var _roomsA:Array = [];
+		private var _rooms:int = 0;
 		
 		public var _step:int = 0;
 		
 		public function Level() 
 		{
 			FP.console.enable();
+			trace("begin");
 			// init level tilemap and collision grid mask
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			drawLevel();			

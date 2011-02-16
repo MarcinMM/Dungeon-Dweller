@@ -4,17 +4,45 @@ package dungeon.components
 	import net.flashpunk.graphics.Tilemap;
 	//import net.flashpunk.masks.Grid;
 	import net.flashpunk.FP;
+    import dungeon.components.Point;
+    import dungeon.components.Door;
+    import dungeon.components.Wall;
 
     public class Room
     {
         public function Room(initX:int, initY:int, initHeight:int, initWidth:int) {
             x = initX;
             y = initY;
-            height = initHeight + 2; // height is actually the given room height + top and bottom borders
-            width = initWidth + 2; // width is actually the given room width + top and bottom borders
+            height = initHeight + 1; // height is actually the given room height + top and bottom borders
+            width = initWidth + 1; // width is actually the given room width + top and bottom borders
             xRight = x + width; // therefore the far right edge is starting point + new width
             yBottom = y + height;
+            // now define walls and their endpoints
+            walls = [];
+            var newWall:Wall = new Wall(new Point(x,y), new Point(xRight,y), 'top');
+            walls.push(newWall);
+            newWall = new Wall(new Point(x,yBottom), new Point(xRight,yBottom), 'bottom');
+            walls.push(newWall);
+            newWall = new Wall(new Point(x,y), new Point(x,yBottom), 'left');
+            walls.push(newWall);
+            newWall = new Wall(new Point(xRight,y), new Point(xRight,yBottom),'right');
+            walls.push(newWall);
+            // doors init
+            doors['top'] = new Array();
+            doors['bottom'] = new Array();
+            doors['left'] = new Array();
+            doors['right'] = new Array();
         }
+        
+        // statics
+        public const _maxDoorsPerWall:int = 3;
+        public const _doorChance:int = 3; // 30% door chance?
+        public const FLOOR:int = 3;
+        public const NWALL:int = 5;
+        public const SWALL:int = 4;
+        public const WWALL:int = 7;
+        public const EWALL:int = 6;
+        public const DOOR:int = 1;
         
         // coordinates and bounds of room
         public var x:int;
@@ -23,10 +51,13 @@ package dungeon.components
         public var width:int;
         public var xRight:int;
         public var yBottom:int;
+        public var walls:Array;
         
         // TODO: doors and holes
+        // Doors array has 4 members which are themselves array: left right top bottom
+        public var doors:Array = [];
         
-        // TODO: room decor
+        // TODO: room decor/clutter
         
         // TODO: room traps and widgets
     
@@ -39,13 +70,13 @@ package dungeon.components
             var success:Boolean = true;
     
             // check bounds			
-            if (xRight > Dungeon.TILESX) {
-                width = Dungeon.TILESX - (x + 2);
-                xRight = Dungeon.TILESX;
+            if (xRight >= Dungeon.TILESX-1) {
+                width = Dungeon.TILESX - (x + 3);
+                xRight = Dungeon.TILESX - 2;
             }
-            if (yBottom > Dungeon.TILESY) {
-                height = Dungeon.TILESY - (y + 2);
-                yBottom = Dungeon.TILESY;
+            if (yBottom >= Dungeon.TILESY-1) {
+                height = Dungeon.TILESY - (y + 3);
+                yBottom = Dungeon.TILESY - 2;
             }
             
             //  now it is possible we have a 0 width/height room			
@@ -55,14 +86,20 @@ package dungeon.components
             
             // check for collisions, then start drawing
             if (!this.roomCollision(_roomsA) && success) {
-                // top, bottom, left, then right
-                _dungeonmap.setRect(x, y, width, 1, 2);
-                _dungeonmap.setRect(x, yBottom, width, 1, 2);
-                _dungeonmap.setRect(x, y, 1, height, 2);
-                _dungeonmap.setRect(xRight, y, 1, height, 2);
-                // add room to array since it was successful
+                // top, bottom, left, then right, the room itself
+                _dungeonmap.setRect(x, y, width+1, 1, NWALL);
+                _dungeonmap.setRect(x, yBottom, width+1, 1, SWALL);
+                _dungeonmap.setRect(x, y, 1, height+1, WWALL);
+                _dungeonmap.setRect(xRight, y, 1, height+1, EWALL);
+                // now doors
+                drawDoors(_dungeonmap);
+                // now interactives
+                // drawWidgets();
+                // now clutter
+                // drawClutter();
+                
+                // finally add room to array since it was successful
                 _roomsA.push(this);
-                FP.log(x + " | " + y + " | " + width + " | " + height + " | " + _roomsA.length);
             } else {
                 FP.log("fail");
             }
@@ -75,15 +112,53 @@ package dungeon.components
             for (var i:int = 0; i < _roomsA.length; i++) {
                 var currentRoom:Room = _roomsA[i];
                 if (
-                    (currentRoom.x < xRight) &&
-                    (currentRoom.xRight > x) &&
-                    (currentRoom.y < yBottom) &&
-                    (currentRoom.yBottom > y)
+                    (currentRoom.x <= xRight) &&
+                    (currentRoom.xRight >= x) &&
+                    (currentRoom.y <= yBottom) &&
+                    (currentRoom.yBottom >= y)
                 ) {
                     overlap = true;
                 }
             }
             return overlap;        
+        }
+        
+        
+        private function drawDoors(_dungeonmap:Tilemap):void {
+            var doorSeed:int = 0;
+            var point:Point = new Point(0,0);
+            var door:Door = new Door(point, 'top');
+
+            for each(var _wall:Wall in walls) {                
+                for (var i:int = 0; i < _maxDoorsPerWall; i++) {
+                    doorSeed = Math.round(Math.random() * 10);
+                    if (doorSeed < _doorChance) {
+                        // door chance successful, create a new door somewhere on this wall
+                        // first find a point on the wall
+                        point = _wall.findRandomPoint();
+
+                        // create a door object using the point
+                        door = new Door(point,_wall.position);
+                        FP.log('door at:' + point.x + "-" + point.y + "-" + _wall.position);
+                        
+                        // add door to room.wall property
+                        doors[_wall.position].push(door);
+                        
+                        // draw the door only if it's a wall tile
+                        if (_dungeonmap.getTile(point.x, point.y) != FLOOR) {
+                            _dungeonmap.setRect(point.x, point.y, 1, 1, DOOR);
+                        }
+                        
+                    }
+                
+                }
+            }
+        } 
+        
+        // determine where to set doors and hallways per room
+        // since doorways are part of a room
+        public function drawHallways(_roomsA:Array):void {
+            
         }
     }
 }
