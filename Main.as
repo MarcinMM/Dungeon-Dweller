@@ -20,7 +20,6 @@ package
 		override public function init():void 
 		{
 			FP.console.enable();
-			trace("Houston we have Flashpunk?");
 		}
 	}
 	

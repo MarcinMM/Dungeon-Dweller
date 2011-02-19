@@ -6,57 +6,53 @@ package
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	import net.flashpunk.utils.Draw;	
 	import dungeon.components.Room;
+	import dungeon.components.Door;
+	import dungeon.components.Point;
+	import dungeon.components.Utils;
+	import dungeon.components.Node;
+	import dungeon.components.Nodemap;
 
 	/**
 	 * ...
 	 * @author MM
-	 * Tile 0: alpha (future)
-	 * Tile 1: the void (future)
-	 * Tile 2: brown stone
-	 * Tile 3: green stone
 	 */
 	public class Level extends Entity
 	{
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
 		public var _dungeonmap:Tilemap;
 		public var _grid:Grid;
+		public var _nodemap:Nodemap;
 
 		private const _roomsMax:int = 20;
 		private const _roomsBigChance:int = 2; // 20% chance, 2 out of 10
 		private const _roomsBigMax:int = 2;
 		private const _roomLimitMax:int = 11;
 		private const _roomLimitNormal:int = 6;
-		Input.define("DownLevel", Key.L);		
+		Input.define("DownLevel", Key.L);
 
 		public var _roomsA:Array = [];
 		private var _rooms:int = 0;
+
+        public static const FLOOR:int = 7;
+        public static const NWALL:int = 8;
+        public static const SWALL:int = 10;
+        public static const WWALL:int = 11;
+        public static const EWALL:int = 9;
+        public static const DOOR:int = 1;
+		public static const DEBUG:int = 2;
+		
+		public static const DEBUGR:int = 5;
+		public static const DEBUGG:int = 6;
 		
 		public var _step:int = 0;
 		
 		public function Level() 
 		{
 			FP.console.enable();
-			trace("begin");
+			drawLevel();
 			// init level tilemap and collision grid mask
-			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
-			drawLevel();			
-			graphic = _dungeonmap;
-			layer = 2;
-			
-			_grid = new Grid(Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT,0,0);
-			drawGrid();
-			mask = _grid;
-
-			type = "level";
-			
-			//_roomsMax = Math.round(Math.random() * 15) + 6; // this should give us a room number between 6 and 15
-			//if (_roomsMax > 15) _roomsMax = 15;
-			FP.log('rmax: ' + _roomsMax);
-		}
-
-		private function drawLevel():void {
-			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, 3); // background, 800x600 screen = 40x30 tiles, seems small?
 			
 			// TEH LOGIK
 			
@@ -73,16 +69,35 @@ package
 			 * - FUTURE: there will be some premades
 			 * - FUTURE: there will be hidden passages to secret rooms (right now algorithm will try to connect all, so this will be a post-generation thing)
 			 */
-			// 1. Need a room!
-			// Let's say a 20% chance generating a big room, with a max of 2
+			
+			//_roomsMax = Math.round(Math.random() * 15) + 6; // this should give us a room number between 6 and 15
+			//if (_roomsMax > 15) _roomsMax = 15;
+		}
+		
+		private function drawLevel():void {
+			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, DEBUG); 
+			graphic = _dungeonmap;
+			layer = 2;
+			
+			_grid = new Grid(Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT,0,0);
+			drawGrid();
+			mask = _grid;
 
-			var _bigRoomCount:int = 0;			
+			type = "level";
+			drawRooms();
+			_nodemap = new Nodemap(_dungeonmap, _roomsA);
+			//_nodemap.drawHallways();
+		}
+		
+		private function drawRooms():void {
+			var _bigRoomCount:int = 0;
 			var width:int = 0;
 			var height:int = 0;
 			var _bigRoomRand:int = 0;
 			var x:int = 0;
 			var y:int = 0;
-			
+
 			for (var i:int = 0; i < _roomsMax; i++) {
 				_bigRoomRand = Math.round(Math.random() * 10);
 				if ((_bigRoomRand < 2) && (_bigRoomCount < 2)) {
@@ -103,12 +118,10 @@ package
 				} else {
 					FP.log('no room added');
 				}
-			}
+			}			
 		}
 		
-		private function drawHallway(room1:int, room2:int):void {
-			
-		}
+		// alternate hallways to farthest/lowest NON-same-room doors
 		
 		private function drawGrid():void {
 			_grid.setRect(10,10,1,20,true);			

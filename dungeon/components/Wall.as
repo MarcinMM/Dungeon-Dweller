@@ -32,7 +32,7 @@ package dungeon.components
 				} else if (_pointCoord == span) {
 					_pointCoord = span - 1;
 				}
-				FP.log('vert wall with span:' + span + '-coord:' + _pointCoord);
+				//FP.log('vert wall with span:' + span + '-coord:' + _pointCoord);
 				point = new Point(start.x, start.y + _pointCoord);
 			} else {
 				// this wall is horizontal, our span is end x minus beginning x
@@ -44,7 +44,7 @@ package dungeon.components
 				} else if (_pointCoord == span) {
 					_pointCoord = span - 1;
 				}
-				FP.log('hor wall with span:' + span + '-coord:' + _pointCoord);
+				//FP.log('hor wall with span:' + span + '-coord:' + _pointCoord);
 				point = new Point(start.x + _pointCoord, start.y);
 			}
 			return point;

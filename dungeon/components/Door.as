@@ -16,5 +16,6 @@ package dungeon.components
         public var wall:String;
 		public var type:String; // normal door, hidden door, hole (or destroyed door)
 		public var state:Boolean; // 1 for closed, 0 for open?
+		
     }
 }
