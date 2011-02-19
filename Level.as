@@ -87,7 +87,7 @@ package
 			type = "level";
 			drawRooms();
 			_nodemap = new Nodemap(_dungeonmap, _roomsA);
-			//_nodemap.drawHallways();
+			_nodemap.drawHallways();
 		}
 		
 		private function drawRooms():void {

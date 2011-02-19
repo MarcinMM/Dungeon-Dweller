@@ -35,7 +35,7 @@ package dungeon.components
 
 		public function createNeighbors(node:Node):void {
 			var n:Node;
-			trace('node x and y:' + node.x + '-' + node.y);
+			//trace('node x and y:' + node.x + '-' + node.y);
 			n = getNode((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
 				node.addNeighbor(n);
