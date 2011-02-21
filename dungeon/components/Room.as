@@ -11,22 +11,16 @@ package dungeon.components
     public class Room
     {
         public function Room(initX:int, initY:int, initHeight:int, initWidth:int) {
+            // room coordinates are actually tile/grid coordinates, not actual x and y
+            // might want to standardise real x and y vs. grid x and y
             x = initX;
             y = initY;
             height = initHeight + 1; // height is actually the given room height + top and bottom borders
             width = initWidth + 1; // width is actually the given room width + top and bottom borders
             xRight = x + width; // therefore the far right edge is starting point + new width
             yBottom = y + height;
-            // now define walls and their endpoints
+            // now init walls 
             walls = [];
-            var newWall:Wall = new Wall(new Point(x,y), new Point(xRight,y), 'top');
-            walls.push(newWall);
-            newWall = new Wall(new Point(x,yBottom), new Point(xRight,yBottom), 'bottom');
-            walls.push(newWall);
-            newWall = new Wall(new Point(x,y), new Point(x,yBottom), 'left');
-            walls.push(newWall);
-            newWall = new Wall(new Point(xRight,y), new Point(xRight,yBottom),'right');
-            walls.push(newWall);
             // doors init
             doors['top'] = new Array();
             doors['bottom'] = new Array();
@@ -82,6 +76,15 @@ package dungeon.components
             
             // check for collisions, then start drawing
             if (!this.roomCollision(_roomsA) && success) {
+                // now that we know where this room really is, we can define walls
+                var newWall:Wall = new Wall(new Point(x,y), new Point(xRight,y), 'top');
+                walls.push(newWall);
+                newWall = new Wall(new Point(x,yBottom), new Point(xRight,yBottom), 'bottom');
+                walls.push(newWall);
+                newWall = new Wall(new Point(x,y), new Point(x,yBottom), 'left');
+                walls.push(newWall);
+                newWall = new Wall(new Point(xRight,y), new Point(xRight,yBottom),'right');
+                walls.push(newWall);                
                 // top, bottom, left, then right, the room itself
                 _dungeonmap.setRect(x, y, width+1, 1, Level.NWALL);
                 _dungeonmap.setRect(x, yBottom, width+1, 1, Level.SWALL);
@@ -90,14 +93,14 @@ package dungeon.components
                 // now floor
                 _dungeonmap.setRect(x+1,y+1,width-1,height-1, Level.FLOOR);
                 // now doors
+                trace("room x xRight y ybottom:" + x + "-" + xRight + "-" + y + "-" + yBottom);
                 drawDoors(_dungeonmap);
+
                 // now interactives
                 // drawWidgets();
                 // now clutter
                 // drawClutter();
                 
-                // finally add room to array since it was successful
-                FP.log('room add');
                 _roomsA.push(this);
             } else {
                 FP.log("room add fail");
@@ -136,7 +139,6 @@ package dungeon.components
                         // door chance successful, create a new door somewhere on this wall
                         // first find a point on the wall
                         point = _wall.findRandomPoint();
-                        
                         // draw the door only if it's a wall tile and door max hasn't been reached
                         if ((_dungeonmap.getTile(point.x, point.y) != Level.FLOOR) && (doorCount <= _maxDoorsPerRoom)) {
                             // check if random point isn't next to an existing door
@@ -166,6 +168,8 @@ package dungeon.components
                     }
                 }
             }
+            trace("doorCount:" + doorCount);
+            
             if (doorCount == 0) {
                 // add a door if there are none; all rooms should have doors
                 // even if some are secret
@@ -180,7 +184,7 @@ package dungeon.components
                             
                             // add door to room.wall property
                             doors[_wall.position].push(door);
-                            _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOOR);
+                            _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DEBUGG);
                             doorCount++;
                         }
                     }
@@ -207,6 +211,7 @@ package dungeon.components
                     }
                 }
             }
+            //trace("near from:" + sourceDoor.loc.x + "-" + sourceDoor.loc.y + "|to: " + destDoor.loc.x + "-" + destDoor.loc.y);
             return closestDoorPoint;
 		}
 		
@@ -229,6 +234,7 @@ package dungeon.components
                     }
                 }
             }
+            //trace("far from:" + sourceDoor.loc.x + "-" + sourceDoor.loc.y + "|to: " + destDoor.loc.x + "-" + destDoor.loc.y);
             return farthestDoorPoint;
 		}        
         

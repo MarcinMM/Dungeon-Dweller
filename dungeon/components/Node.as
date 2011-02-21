@@ -22,7 +22,7 @@ package dungeon.components
 			gCost = 0; 
 			hCost = 0; 
 			fCost = 0;
-			_id = (y*Dungeon.TILESX) + x;
+			_id = (y * Dungeon.TILESX) + x;
 			if (tileIndex == -1) {
 				tileIndex = initTileIndex;
 			}
@@ -102,14 +102,14 @@ package dungeon.components
 			// SAFTY OFF!
 			while ((i < 100) && (currentNode != endNode) && (openList.length != 0)) {
 				// Look for lowest F cost node
-				trace("open: " + openList.length + "|closed: " + closedList.length);
+				//trace("open: " + openList.length + "|closed: " + closedList.length);
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
 				
 				for each (var node:Node in currentNode.neighbors) {
-					trace("this neighbor: " + node._id);
+					//trace("this neighbor: " + node._id);
 					// if node is not on closed list
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
@@ -139,7 +139,7 @@ package dungeon.components
 			//trace('start: ' + this.x + '-' + this.y);
 			//trace('end: ' + endNode.x + '-' + endNode.y);
 			while (pathedNode != null && pathedNode != this) {
-				trace(pathedNode.x + "-" + pathedNode.y);
+				//trace(pathedNode.x + "-" + pathedNode.y);
 				path.push(pathedNode);
 				pathedNode = pathedNode.parent;
 			}

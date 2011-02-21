@@ -9,8 +9,8 @@ package
 	{
 		public static var player:Player;
 
-		public static const MAP_WIDTH:Number = 800;
-		public static const MAP_HEIGHT:Number = 600;
+		public static const MAP_WIDTH:Number = 400;
+		public static const MAP_HEIGHT:Number = 300;
 		public static const TILE_WIDTH:Number = 20;
 		public static const TILE_HEIGHT:Number = 20;
 		public static const TILESX:Number = MAP_WIDTH/TILE_WIDTH;

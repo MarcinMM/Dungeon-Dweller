@@ -6,6 +6,10 @@ package dungeon.components
 		public static function findDistance(pointA:Point, pointB:Point):Number {
 			return Math.sqrt((pointB.x - pointA.x)^2 + (pointB.y - pointA.y)^2);
 		}
+
+		public static function findNodeDistance(nodeA:Node, nodeB:Node):Number {
+			return Math.sqrt((nodeB.x - nodeA.x)^2 + (nodeB.y - nodeA.y)^2);
+		}
 		
 		public static function isAvailable(index:int, type:String):Boolean {			
 			// this will need to have some switches for corridor pathing and creature pathing

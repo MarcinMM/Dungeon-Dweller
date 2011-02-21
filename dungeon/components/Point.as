@@ -4,6 +4,7 @@ package dungeon.components
 
     public class Point {
 		public function Point(initX:int, initY:int) {
+			// these refer to grid X and Y,  not real coordinates X and Y on the display
 			x = initX;
 			y = initY;
 		}

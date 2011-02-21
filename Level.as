@@ -83,8 +83,8 @@ package
 			_grid = new Grid(Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT,0,0);
 			drawGrid();
 			mask = _grid;
-
 			type = "level";
+			
 			drawRooms();
 			_nodemap = new Nodemap(_dungeonmap, _roomsA);
 			_nodemap.drawHallways();
@@ -100,7 +100,7 @@ package
 
 			for (var i:int = 0; i < _roomsMax; i++) {
 				_bigRoomRand = Math.round(Math.random() * 10);
-				if ((_bigRoomRand < 2) && (_bigRoomCount < 2)) {
+				if ((_bigRoomRand < _roomsBigChance) && (_bigRoomCount < _roomsBigChance)) {
 					width = Math.round(Math.random() * _roomLimitMax + 3);
 					height = Math.round(Math.random() * _roomLimitMax + 3);
 					_bigRoomCount++;
