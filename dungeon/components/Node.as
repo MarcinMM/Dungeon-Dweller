@@ -100,14 +100,16 @@ package dungeon.components
 			var thisOpenIndex:int;
 			
 			// SAFTY OFF!
-			while ((i < 60) && (currentNode != endNode) && (openList.length != 0)) {
+			while ((i < 100) && (currentNode != endNode) && (openList.length != 0)) {
 				// Look for lowest F cost node
+				trace("open: " + openList.length + "|closed: " + closedList.length);
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
 				
 				for each (var node:Node in currentNode.neighbors) {
+					trace("this neighbor: " + node._id);
 					// if node is not on closed list
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
@@ -134,8 +136,8 @@ package dungeon.components
 			
 			// now go back from the ending node to start
 			var pathedNode:Node = endNode;
-			trace('start: ' + this.x + '-' + this.y);
-			trace('end: ' + endNode.x + '-' + endNode.y);
+			//trace('start: ' + this.x + '-' + this.y);
+			//trace('end: ' + endNode.x + '-' + endNode.y);
 			while (pathedNode != null && pathedNode != this) {
 				trace(pathedNode.x + "-" + pathedNode.y);
 				path.push(pathedNode);

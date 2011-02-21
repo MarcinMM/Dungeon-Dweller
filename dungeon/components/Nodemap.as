@@ -92,8 +92,10 @@ package dungeon.components
 		}
 		
 		public function getNode(x:int, y:int):Node {
+			trace("x and y from getNode: " + x + "-" + y);
 			if (x > 0 && y > 0 && x < Dungeon.TILESX && y < Dungeon.TILESY) {
-				return _nodes[(y*x) + x];
+				trace("node id from getNode: " + (y * Dungeon.TILESX) + x);
+				return _nodes[(y * Dungeon.TILESX) + x];
 			} else return null;
 		}		
 
