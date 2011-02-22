@@ -18,6 +18,7 @@ package dungeon.components
 			for (var row:uint = 0; row < Dungeon.TILESY; row++) {
 				for (var column:uint = 0; column < Dungeon.TILESX; column++) {
 					node = new Node(column, row, _dungeonmap.getTile(column, row));
+					trace("node at:" + column + "-" + row + ":" + node.x + "-" + node.y + "|with index of: " + _dungeonmap.getTile(column, row) + " and id: " + node._id);
 					_nodes[node._id] = node;
 				}
 			}

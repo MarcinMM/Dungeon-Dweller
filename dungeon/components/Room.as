@@ -168,7 +168,6 @@ package dungeon.components
                     }
                 }
             }
-            trace("doorCount:" + doorCount);
             
             if (doorCount == 0) {
                 // add a door if there are none; all rooms should have doors
@@ -211,7 +210,6 @@ package dungeon.components
                     }
                 }
             }
-            //trace("near from:" + sourceDoor.loc.x + "-" + sourceDoor.loc.y + "|to: " + destDoor.loc.x + "-" + destDoor.loc.y);
             return closestDoorPoint;
 		}
 		
@@ -234,7 +232,6 @@ package dungeon.components
                     }
                 }
             }
-            //trace("far from:" + sourceDoor.loc.x + "-" + sourceDoor.loc.y + "|to: " + destDoor.loc.x + "-" + destDoor.loc.y);
             return farthestDoorPoint;
 		}        
         

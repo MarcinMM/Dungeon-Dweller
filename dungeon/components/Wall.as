@@ -26,9 +26,9 @@ package dungeon.components
 				// this wall is vertical, our span is end y minus beginning y
 				// and point is on X coord line
 				span = end.y - start.y;
-				trace("v span in random point:" + span + "|between: " + start.y + " and " + end.y);
+				//trace("v span in random point:" + span + "|between: " + start.y + " and " + end.y);
 				_pointCoord = Math.round(Math.random() * span);
-				trace("pt: " + _pointCoord);
+				//trace("pt: " + _pointCoord);
 				if (_pointCoord == 0) {
 					_pointCoord = 1;
 				} else if (_pointCoord == span) {
@@ -40,9 +40,9 @@ package dungeon.components
 				// this wall is horizontal, our span is end x minus beginning x
 				// and point is on the Y coord line
 				span = end.x - start.x;
-				trace("h span in random point:" + span + "|between: " + start.x + " and " + end.x);
+				//trace("h span in random point:" + span + "|between: " + start.x + " and " + end.x);
 				_pointCoord = Math.round(Math.random() * span);
-				trace("pt: " + _pointCoord);
+				//trace("pt: " + _pointCoord);
 				if (_pointCoord == 0) {
 					_pointCoord = 1;
 				} else if (_pointCoord == span) {
@@ -51,7 +51,7 @@ package dungeon.components
 				//FP.log('hor wall with span:' + span + '-coord:' + _pointCoord);
 				point = new Point(start.x + _pointCoord, start.y);
 			}
-			trace("resulting door x-y: " + point.x + "-" + point.y);
+			//trace("resulting door x-y: " + point.x + "-" + point.y);
 			return point;
 		}
     }

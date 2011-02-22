@@ -4,11 +4,11 @@ package dungeon.components
 	
     public class Utils {
 		public static function findDistance(pointA:Point, pointB:Point):Number {
-			return Math.sqrt((pointB.x - pointA.x)^2 + (pointB.y - pointA.y)^2);
+			return Math.sqrt(Math.pow((pointB.x - pointA.x),2) + Math.pow((pointB.y - pointA.y),2));
 		}
 
 		public static function findNodeDistance(nodeA:Node, nodeB:Node):Number {
-			return Math.sqrt((nodeB.x - nodeA.x)^2 + (nodeB.y - nodeA.y)^2);
+			return Math.sqrt(Math.pow((nodeB.x - nodeA.x),2) + Math.pow((nodeB.y - nodeA.y),2));
 		}
 		
 		public static function isAvailable(index:int, type:String):Boolean {			
