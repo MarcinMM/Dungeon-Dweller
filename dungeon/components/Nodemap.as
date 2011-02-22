@@ -18,7 +18,7 @@ package dungeon.components
 			for (var row:uint = 0; row < Dungeon.TILESY; row++) {
 				for (var column:uint = 0; column < Dungeon.TILESX; column++) {
 					node = new Node(column, row, _dungeonmap.getTile(column, row));
-					trace("node at:" + column + "-" + row + ":" + node.x + "-" + node.y + "|with index of: " + _dungeonmap.getTile(column, row) + " and id: " + node._id);
+					//trace("node at:" + column + "-" + row + ":" + node.x + "-" + node.y + "|with index of: " + _dungeonmap.getTile(column, row) + " and id: " + node._id);
 					_nodes[node._id] = node;
 				}
 			}
@@ -36,10 +36,10 @@ package dungeon.components
 
 		public function createNeighbors(node:Node):void {
 			var n:Node;
-			//trace('node x and y:' + node.x + '-' + node.y);
 			n = getNode((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
 				node.addNeighbor(n);
+				
 			}
 			n = getNode((node.x)-1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
@@ -81,9 +81,10 @@ package dungeon.components
 
 			// A* time
 			// initialize node, nodemap, neighbours, and costs
-			var source:Node = new Node(sourceDoor.x, sourceDoor.y, 0);
-			path = source.findPath(destDoor);
-			
+			var source:Node = getNode(sourceDoor.x, sourceDoor.y);
+			var destNode:Node = getNode(destDoor.x, destDoor.y);
+			path = source.findPath(destNode);
+			trace("path size:" + path.length);
 			for each (var node:Node in path) {
 				_map.setRect(node.x, node.y, 1, 1, Level.DEBUGR);
 			}
@@ -93,10 +94,8 @@ package dungeon.components
 		}
 		
 		public function getNode(x:int, y:int):Node {
-			//trace("x and y from getNode: " + x + "-" + y);
-			if (x > 0 && y > 0 && x < Dungeon.TILESX && y < Dungeon.TILESY) {
-				//trace("node id from getNode: " + (y * Dungeon.TILESX) + x);
-				return _nodes[(y * Dungeon.TILESX) + x];
+			if ((x >= 0) && (y >= 0) && (x < Dungeon.TILESX) && (y < Dungeon.TILESY)) {
+				return _nodes[(y * x) + x];
 			} else return null;
 		}		
 

@@ -13,7 +13,7 @@ package dungeon.components
         public var hCost:int; // estimate heuristic to move here from ending position
         public var fCost:int;  // combined cost
 		private var parent:Node;
-		private var neighbors:Vector.<Node>;
+		public var neighbors:Vector.<Node>;
 		public var _id:uint;
 		public var tileIndex:int = -1;
         
@@ -42,7 +42,7 @@ package dungeon.components
 		}
 		
 		public function addNeighbor(node:Node):void {
-			// this could have checking for validity
+			// this could/should have checking for validity
 			neighbors.push(node);
 		}
 		
@@ -81,7 +81,7 @@ package dungeon.components
 			else return false;
 		}
 
-		public function findPath(endPoint:Point):Array {
+		public function findPath(endNode:Node):Array {
 			var path:Array = new Array();
 			var openList:Array = new Array();
 			var closedList:Array = new Array();
@@ -90,9 +90,7 @@ package dungeon.components
 			// may play with diagonal value to increase chance of straight lines
 			// but all that might result in is repeated L shaped diagonals instead of long hallways, hmm
 			
-			var endNode:Node = new Node(endPoint.x, endPoint.y, 0);
 			var currentNode:Node;
-			var adjNode:Node;
 			
 			openList.push(this);
 			
@@ -100,25 +98,29 @@ package dungeon.components
 			var thisOpenIndex:int;
 			
 			// SAFTY OFF!
-			while ((i < 100) && (currentNode != endNode) && (openList.length != 0)) {
+			while ((i < 200) && (currentNode != endNode) && (openList.length != 0)) {
 				// Look for lowest F cost node
-				//trace("open: " + openList.length + "|closed: " + closedList.length);
+				trace("open: " + openList.length + "|closed: " + closedList.length);
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
 				
 				for each (var node:Node in currentNode.neighbors) {
-					//trace("this neighbor: " + node._id);
+					trace("this neighbor: " + node._id);
 					// if node is not on closed list
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
 							node.findG(currentNode);
 							node.findH(endNode);
 							node.updateF();
+							trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost" + node.fCost);
 						if (openList.indexOf(node) == -1) {
+							trace("It's not on open list");
 							openList.push(node);
+							node.setParent(currentNode);
 						} else {
+							trace("It is on open list");							
 							// this means this node is already on the list, which in turn means
 							// a different G path was found to it
 							// check that path distance vs. previous path
@@ -127,6 +129,7 @@ package dungeon.components
 								
 								node.setParent(currentNode);
 								openList[thisOpenIndex] = node;
+								trace("index:" + thisOpenIndex + "-xy: " + node.x + "-" + node.y + "-gcost:" + node.getGCost());
 							}
 						}
 					}

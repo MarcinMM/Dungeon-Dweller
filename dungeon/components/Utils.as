@@ -20,9 +20,9 @@ package dungeon.components
 						(index == Level.SWALL) ||
 						(index == Level.WWALL))
 					{
-						return true;
-					} else {
 						return false;
+					} else {
+						return true;
 					}
 					break;
 				case "creature":

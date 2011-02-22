@@ -98,7 +98,9 @@ package
 			var x:int = 0;
 			var y:int = 0;
 
-			for (var i:int = 0; i < _roomsMax; i++) {
+// for debugging pathing we just want two rooms with one door each
+//			for (var i:int = 0; i < _roomsMax; i++) {
+			while (_rooms < 2) {
 				_bigRoomRand = Math.round(Math.random() * 10);
 				if ((_bigRoomRand < _roomsBigChance) && (_bigRoomCount < _roomsBigChance)) {
 					width = Math.round(Math.random() * _roomLimitMax + 3);

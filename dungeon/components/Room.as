@@ -132,8 +132,9 @@ package dungeon.components
             var doorCount:int = 0;
             var doorSuccess:Boolean = true;
 
-            for each(var _wall:Wall in walls) {                
+            for each(var _wall:Wall in walls) {
                 for (var i:int = 0; i < _maxDoorsPerWall; i++) {
+                    if (doorCount <= 1) {
                     doorSeed = Math.round(Math.random() * 10);
                     if (doorSeed < _doorChance) {
                         // door chance successful, create a new door somewhere on this wall
@@ -165,6 +166,7 @@ package dungeon.components
                                 doorCount++;
                             }
                         }
+                    }
                     }
                 }
             }
