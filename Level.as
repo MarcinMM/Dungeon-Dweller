@@ -141,6 +141,7 @@ package
 			if (Input.pressed("DownLevel")) {
 				// TODO: this needs a level saving and clearing routine
 				_roomsA = [];
+				_rooms = 0;
 				drawLevel();
 			}
 			
