@@ -10,24 +10,6 @@ package dungeon.components
 
     public class Room
     {
-        public function Room(initX:int, initY:int, initHeight:int, initWidth:int) {
-            // room coordinates are actually tile/grid coordinates, not actual x and y
-            // might want to standardise real x and y vs. grid x and y
-            x = initX;
-            y = initY;
-            height = initHeight + 1; // height is actually the given room height + top and bottom borders
-            width = initWidth + 1; // width is actually the given room width + top and bottom borders
-            xRight = x + width; // therefore the far right edge is starting point + new width
-            yBottom = y + height;
-            // now init walls 
-            walls = [];
-            // doors init
-            doors['top'] = new Array();
-            doors['bottom'] = new Array();
-            doors['left'] = new Array();
-            doors['right'] = new Array();
-        }
-        
         // statics
         public const _maxDoorsPerWall:int = 3;
         public const _maxDoorsPerRoom:int = 5;
@@ -49,6 +31,19 @@ package dungeon.components
         // TODO: room decor/clutter
         
         // TODO: room traps and widgets
+        
+        public function Room(initX:int, initY:int, initHeight:int, initWidth:int) {
+            // room coordinates are actually tile/grid coordinates, not actual x and y
+            // might want to standardise real x and y vs. grid x and y
+            x = initX;
+            y = initY;
+            height = initHeight + 1; // height is actually the given room height + top and bottom borders
+            width = initWidth + 1; // width is actually the given room width + top and bottom borders
+            xRight = x + width; // therefore the far right edge is starting point + new width
+            yBottom = y + height;
+            // now init walls 
+            walls = [];
+        }
     
         public function draw(_dungeonmap:Tilemap, _roomsA:Array):Array {
             // sooooo for this we need a starting point and an ending point
@@ -144,25 +139,28 @@ package dungeon.components
                         if ((_dungeonmap.getTile(point.x, point.y) != Level.FLOOR) && (doorCount <= _maxDoorsPerRoom)) {
                             // check if random point isn't next to an existing door
                             if (_wall.position == 'top' || _wall.position == 'bottom') {
-                                if ((_dungeonmap.getTile(point.x + 1, point.y) == Level.DOOR) ||
-                                   (_dungeonmap.getTile(point.x - 1, point.y) == Level.DOOR))
+                                if ((_dungeonmap.getTile(point.x + 1, point.y) == Level.DOORS['top']) ||
+                                   (_dungeonmap.getTile(point.x - 1, point.y) == Level.DOORS['bottom']) ||
+                                   (_dungeonmap.getTile(point.x + 1, point.y) == Level.DOORS['bottom']) ||
+                                   (_dungeonmap.getTile(point.x - 1, point.y) == Level.DOORS['top']))
                                 {
                                     doorSuccess = false;
                                 }
                             }
                             if (_wall.position == 'left' || _wall.position == 'right') {
-                                if ((_dungeonmap.getTile(point.x, point.y + 1) == Level.DOOR) ||
-                                   (_dungeonmap.getTile(point.x, point.y - 1) == Level.DOOR))
+                                if ((_dungeonmap.getTile(point.x, point.y + 1) == Level.DOORS['left']) ||
+                                   (_dungeonmap.getTile(point.x, point.y - 1) == Level.DOORS['right']) ||
+                                   (_dungeonmap.getTile(point.x, point.y + 1) == Level.DOORS['right']) ||
+                                   (_dungeonmap.getTile(point.x, point.y - 1) == Level.DOORS['left']))
                                 {
                                     doorSuccess = false;
                                 }
                             }
                             if (doorSuccess) {
                                 door = new Door(point,_wall.position);
-                                
                                 // add door to room.wall property
-                                doors[_wall.position].push(door);
-                                _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOOR);
+                                doors.push(door);
+                                _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOORS[_wall.position]);
                                 doorCount++;
                             }
                         }
@@ -170,6 +168,7 @@ package dungeon.components
                     }
                 }
             }
+            
             
             if (doorCount == 0) {
                 // add a door if there are none; all rooms should have doors
@@ -184,8 +183,8 @@ package dungeon.components
                             door = new Door(point,_wall.position);
                             
                             // add door to room.wall property
-                            doors[_wall.position].push(door);
-                            _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DEBUGG);
+                            doors.push(door);
+                            _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOORS[_wall.position]);
                             doorCount++;
                         }
                     }
@@ -197,19 +196,17 @@ package dungeon.components
             var closestDoorPoint:Point = new Point(0,0);
             var shortestDistance:Number = 1000;
             var currentDistance:Number = 0;
-            
 			for each (var otherRoom:Room in _roomsA) {
                 // ensure we are searching through OTHER rooms for the closest door
                 if ((otherRoom.x != x) && (otherRoom.y != y)) {
-                    for each (var doorA:Array in otherRoom.doors) {
-                        for each (var destDoor:Door in doorA) {
-                            currentDistance = Utils.findDistance(sourceDoor.loc, destDoor.loc);
-                            if (currentDistance < shortestDistance) {
-                                shortestDistance = currentDistance;
-                                closestDoorPoint = destDoor.loc;
-                            }
+                    for each (var destDoor:Door in otherRoom.doors) {
+                        currentDistance = Utils.findDistance(sourceDoor.loc, destDoor.loc);
+                        if (currentDistance < shortestDistance) {
+                            shortestDistance = currentDistance;
+                            closestDoorPoint = destDoor.loc;
                         }
                     }
+                    
                 }
             }
             return closestDoorPoint;
@@ -223,13 +220,11 @@ package dungeon.components
 			for each (var otherRoom:Room in _roomsA) {
                 // ensure we are searching through OTHER rooms for the closest door
                 if ((otherRoom.x != x) && (otherRoom.y != y)) {
-                    for each (var doorA:Array in otherRoom.doors) {
-                        for each (var destDoor:Door in doorA) {
-                            currentDistance = Utils.findDistance(sourceDoor.loc, destDoor.loc);
-                            if (currentDistance > farthestDistance) {
-                                farthestDistance = currentDistance;
-                                farthestDoorPoint = destDoor.loc;
-                            }
+                    for each (var destDoor:Door in otherRoom.doors) {
+                        currentDistance = Utils.findDistance(sourceDoor.loc, destDoor.loc);
+                        if (currentDistance > farthestDistance) {
+                            farthestDistance = currentDistance;
+                            farthestDoorPoint = destDoor.loc;
                         }
                     }
                 }

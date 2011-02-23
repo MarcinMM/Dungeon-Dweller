@@ -48,7 +48,7 @@ package dungeon.components
 		
 		// Manhattan H cost of path
 		public function findH(endNode:Node):void {			
-			hCost = Math.abs(endNode.x - x) + Math.abs(endNode.y - y);
+			hCost = (Math.abs(endNode.x - x) + Math.abs(endNode.y - y)) * 10;
 			updateF();
 		}
 		
@@ -85,51 +85,56 @@ package dungeon.components
 			var path:Array = new Array();
 			var openList:Array = new Array();
 			var closedList:Array = new Array();
+
+			trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
 			
 			// costs for traversing nodes vert/horizontally or diagonally
 			// may play with diagonal value to increase chance of straight lines
 			// but all that might result in is repeated L shaped diagonals instead of long hallways, hmm
 			
-			var currentNode:Node;
-			
+			var currentNode:Node = this;
 			openList.push(this);
 			
 			var i:int = 0;
 			var thisOpenIndex:int;
 			
 			// SAFTY OFF!
-			while ((i < 200) && (currentNode != endNode) && (openList.length != 0)) {
+			while ((i < 400) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
 				// Look for lowest F cost node
+				trace("i: " + i);
+				trace("end check: " + (currentNode.sameLoc(endNode)));
 				trace("open: " + openList.length + "|closed: " + closedList.length);
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
-				
+				trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
 				for each (var node:Node in currentNode.neighbors) {
-					trace("this neighbor: " + node._id);
+					thisOpenIndex = -1;
+					trace("neighbor: " + node.x + "-" + node.y);
 					// if node is not on closed list
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
 							node.findG(currentNode);
 							node.findH(endNode);
 							node.updateF();
-							trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost" + node.fCost);
+							trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost:" + node.fCost);
 						if (openList.indexOf(node) == -1) {
-							trace("It's not on open list");
+							trace("adding node to OL at:" + node.x + "-" + node.y);
 							openList.push(node);
 							node.setParent(currentNode);
+							trace(currentNode.x + "-" + currentNode.y + " became parent of " + node.x + "-" + node.y);
 						} else {
-							trace("It is on open list");							
 							// this means this node is already on the list, which in turn means
 							// a different G path was found to it
 							// check that path distance vs. previous path
 							thisOpenIndex = openList.indexOf(node);
+							trace("new path found for node at: " + openList[thisOpenIndex].x + "-" + openList[thisOpenIndex].y);
 							if (node.getGCost() < openList[thisOpenIndex].getGCost()) {
 								
 								node.setParent(currentNode);
 								openList[thisOpenIndex] = node;
-								trace("index:" + thisOpenIndex + "-xy: " + node.x + "-" + node.y + "-gcost:" + node.getGCost());
+								trace("replacing node at index:" + thisOpenIndex + "-xy: " + node.x + "-" + node.y + "-gcost:" + node.getGCost());
 							}
 						}
 					}
@@ -142,7 +147,7 @@ package dungeon.components
 			//trace('start: ' + this.x + '-' + this.y);
 			//trace('end: ' + endNode.x + '-' + endNode.y);
 			while (pathedNode != null && pathedNode != this) {
-				//trace(pathedNode.x + "-" + pathedNode.y);
+				trace("path:" + pathedNode.x + "-" + pathedNode.y);
 				path.push(pathedNode);
 				pathedNode = pathedNode.parent;
 			}

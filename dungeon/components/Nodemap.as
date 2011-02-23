@@ -60,17 +60,15 @@ package dungeon.components
 			
 			for each(var room:Room in roomsA) {
 				// make sure you search for doors in rooms OTHER than THIS one
-				for each(var sourceDoorA:Array in room.doors) {
-					for each (var sourceDoor:Door in sourceDoorA) {
-						if (Math.random() > 0.5) {
-							// find farthest
-							destDoor = room.findFarthestDoor(sourceDoor, roomsA);
-						} else {
-							// find nearest
-							destDoor = room.findNearestDoor(sourceDoor, roomsA);
-						}
-						createConnectingHallway(sourceDoor.loc, destDoor);
+				for each (var sourceDoor:Door in room.doors) {
+					if (Math.random() > 0.5) {
+						// find farthest
+						destDoor = room.findFarthestDoor(sourceDoor, roomsA);
+					} else {
+						// find nearest
+						destDoor = room.findNearestDoor(sourceDoor, roomsA);
 					}
+					createConnectingHallway(sourceDoor.loc, destDoor);
 				}
 			}
 		}
@@ -80,13 +78,18 @@ package dungeon.components
 			var path:Array = new Array();
 
 			// A* time
-			// initialize node, nodemap, neighbours, and costs
 			var source:Node = getNode(sourceDoor.x, sourceDoor.y);
 			var destNode:Node = getNode(destDoor.x, destDoor.y);
 			path = source.findPath(destNode);
 			trace("path size:" + path.length);
+			// we should be skipping the first and last
+			// tile for doors
+			var hCount:uint = 0;
 			for each (var node:Node in path) {
-				_map.setRect(node.x, node.y, 1, 1, Level.DEBUGR);
+				if (hCount > 0 && hCount < path.length) {
+					_map.setRect(node.x, node.y, 1, 1, Level.DEBUGG);
+				}
+				hCount++;
 			}
 
 			// then draw path, including walls
@@ -95,7 +98,7 @@ package dungeon.components
 		
 		public function getNode(x:int, y:int):Node {
 			if ((x >= 0) && (y >= 0) && (x < Dungeon.TILESX) && (y < Dungeon.TILESY)) {
-				return _nodes[(y * x) + x];
+				return _nodes[(y * Dungeon.TILESX) + x];
 			} else return null;
 		}		
 

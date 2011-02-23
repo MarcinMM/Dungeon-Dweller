@@ -18,7 +18,8 @@ package dungeon.components
 					if ((index == Level.NWALL) ||
 						(index == Level.EWALL) ||
 						(index == Level.SWALL) ||
-						(index == Level.WWALL))
+						(index == Level.WWALL) ||
+						(index == Level.FLOOR))
 					{
 						return false;
 					} else {

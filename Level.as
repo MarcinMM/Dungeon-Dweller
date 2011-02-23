@@ -40,8 +40,11 @@ package
         public static const SWALL:int = 10;
         public static const WWALL:int = 11;
         public static const EWALL:int = 9;
-        public static const DOOR:int = 1;
+		// top right bottom left
 		public static const DEBUG:int = 2;
+
+		public static const WALLS:Object = {N:8, S:10, W:11, E:9};		
+		public static const DOORS:Object = {left:15, right:13, top:12, bottom:14};
 		
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;
@@ -99,8 +102,8 @@ package
 			var y:int = 0;
 
 // for debugging pathing we just want two rooms with one door each
-//			for (var i:int = 0; i < _roomsMax; i++) {
-			while (_rooms < 2) {
+			for (var i:int = 0; i < _roomsMax; i++) {
+//			while (_rooms < 2) {
 				_bigRoomRand = Math.round(Math.random() * 10);
 				if ((_bigRoomRand < _roomsBigChance) && (_bigRoomCount < _roomsBigChance)) {
 					width = Math.round(Math.random() * _roomLimitMax + 3);
