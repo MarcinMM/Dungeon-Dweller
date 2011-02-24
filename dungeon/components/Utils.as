@@ -13,13 +13,18 @@ package dungeon.components
 		
 		public static function isAvailable(index:int, type:String):Boolean {			
 			// this will need to have some switches for corridor pathing and creature pathing
+			// TODO: this needs cleanup, but I'm confused by it. It should work for index simply being THE VOID, but it doesn't
 			switch(type) {
 				case "corridor":
 					if ((index == Level.NWALL) ||
 						(index == Level.EWALL) ||
 						(index == Level.SWALL) ||
 						(index == Level.WWALL) ||
-						(index == Level.FLOOR))
+						(index == Level.FLOOR) ||
+						(index == Level.CORNERS['TL']) ||
+						(index == Level.CORNERS['TR']) ||
+						(index == Level.CORNERS['BL']) ||
+						(index == Level.CORNERS['BR']))
 					{
 						return false;
 					} else {

@@ -98,15 +98,15 @@ package dungeon.components
 			var destNode:Node = getNode(destDoor.x, destDoor.y);
 			path = source.findPath(destNode);
 			trace("path size:" + path.length);
-			// we should be skipping the first and last
+			// do not paint over any tile that's a door already
 			// tile for doors
-			var hCount:uint = 0;
+			var tileIndex:int;
 			for each (var node:Node in path) {
-				if (hCount > 0 && hCount < path.length) {
+				tileIndex = _map.getTile(node.x, node.y);
+				if (Level.DOORSA.indexOf(tileIndex) == -1) {
 					_map.setRect(node.x, node.y, 1, 1, Level.FLOOR);
 					node.solid = false;
 				}
-				hCount++;
 			}
 
 			// then draw path, including walls

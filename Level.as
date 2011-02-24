@@ -43,12 +43,14 @@ package
 		// top right bottom left
 		public static const DEBUG:int = 2;
 
-		public static const WALLS:Object = {N:8, S:10, W:11, E:9};
+		public static const WALLS:Object = {left:11, right:9, top:8, bottom:10};
 		public static const DOORS:Object = {left:15, right:13, top:12, bottom:14};
 		public static const CORNERS:Object = {TL:19, TR:16, BL:18, BR:17};
+		public static const HALLWAYTILES:Array = [2]; // rock and floor is available for hallway making
 		
 		// nonsolids
-		public static const NONSOLIDS:Array = [7,12,13,14,15,16,17,18,19];
+		public static const NONSOLIDS:Array = [7,12,13,14,15]; // doors and floor
+		public static const DOORSA:Array = [12,13,14,15];
 		
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;
@@ -136,7 +138,6 @@ package
 		private function drawGrid():void {
 			//trace("nodemap size: " + _nodemap.length);
 			for each (var node:Node in _nodemap._nodes) {
-				trace("solid:" + node.solid);
 				_grid.setRect(node.x, node.y, 1, 1, node.solid);
 			}
 		}
