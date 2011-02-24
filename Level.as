@@ -43,11 +43,12 @@ package
 		// top right bottom left
 		public static const DEBUG:int = 2;
 
-		public static const WALLS:Object = {N:8, S:10, W:11, E:9};		
+		public static const WALLS:Object = {N:8, S:10, W:11, E:9};
 		public static const DOORS:Object = {left:15, right:13, top:12, bottom:14};
+		public static const CORNERS:Object = {TL:19, TR:16, BL:18, BR:17};
 		
 		// nonsolids
-		public static const NONSOLIDS:Array = [7,12,13,14,15];
+		public static const NONSOLIDS:Array = [7,12,13,14,15,16,17,18,19];
 		
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;
