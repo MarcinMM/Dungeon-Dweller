@@ -49,10 +49,7 @@ package
 				}
 				_step = Dungeon.player.STEP;
 				FP.log("Tile at player: " + _levelmask.getTile(Dungeon.player.x/20,Dungeon.player.y/20) + "|step:" + _step);
-				trace(_step);
 			}
 		}
-		
 	}
-
 }

@@ -85,6 +85,11 @@ package dungeon.components
                 _dungeonmap.setRect(x, yBottom, width+1, 1, Level.SWALL);
                 _dungeonmap.setRect(x, y, 1, height+1, Level.WWALL);
                 _dungeonmap.setRect(xRight, y, 1, height+1, Level.EWALL);
+                // now corners
+                _dungeonmap.setRect(x, y, 1, 1, Level.CORNERS['TL']);
+                _dungeonmap.setRect(xRight, y, 1, 1, Level.CORNERS['TR']);
+                _dungeonmap.setRect(x, yBottom, 1, 1, Level.CORNERS['BL']);
+                _dungeonmap.setRect(xRight, yBottom, 1, 1, Level.CORNERS['BR']);
                 // now floor
                 _dungeonmap.setRect(x+1,y+1,width-1,height-1, Level.FLOOR);
                 // now doors

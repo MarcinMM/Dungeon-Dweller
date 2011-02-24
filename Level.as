@@ -22,8 +22,8 @@ package
 	{
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
 		public var _dungeonmap:Tilemap;
-		public var _grid:Grid;
 		public var _nodemap:Nodemap;
+		public var _grid:Grid;
 
 		private const _roomsMax:int = 20;
 		private const _roomsBigChance:int = 2; // 20% chance, 2 out of 10
@@ -45,6 +45,9 @@ package
 
 		public static const WALLS:Object = {N:8, S:10, W:11, E:9};		
 		public static const DOORS:Object = {left:15, right:13, top:12, bottom:14};
+		
+		// nonsolids
+		public static const NONSOLIDS:Array = [7,12,13,14,15];
 		
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;
@@ -84,13 +87,17 @@ package
 			layer = 2;
 			
 			_grid = new Grid(Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT,0,0);
-			drawGrid();
 			mask = _grid;
 			type = "level";
 			
 			drawRooms();
 			_nodemap = new Nodemap(_dungeonmap, _roomsA);
 			_nodemap.drawHallways();
+
+			// this needs to be last, placed after traps, monsters, stairs etc
+			drawGrid();
+
+			placePlayer();
 		}
 		
 		private function drawRooms():void {
@@ -101,9 +108,7 @@ package
 			var x:int = 0;
 			var y:int = 0;
 
-// for debugging pathing we just want two rooms with one door each
 			for (var i:int = 0; i < _roomsMax; i++) {
-//			while (_rooms < 2) {
 				_bigRoomRand = Math.round(Math.random() * 10);
 				if ((_bigRoomRand < _roomsBigChance) && (_bigRoomCount < _roomsBigChance)) {
 					width = Math.round(Math.random() * _roomLimitMax + 3);
@@ -126,17 +131,40 @@ package
 			}			
 		}
 		
-		// alternate hallways to farthest/lowest NON-same-room doors
-		
+		// create collision grid from nodemap objects
 		private function drawGrid():void {
-			_grid.setRect(10,10,1,20,true);			
+			//trace("nodemap size: " + _nodemap.length);
+			for each (var node:Node in _nodemap._nodes) {
+				trace("solid:" + node.solid);
+				_grid.setRect(node.x, node.y, 1, 1, node.solid);
+			}
 		}
+
+		// find a random, non-trapped, non-monstered, non-stair position in 1st room
+		private function placePlayer():void {
+			var startingX:uint = 0;
+			var startingY:uint = 0;
+			var i:uint = 0;
+			
+			while ((_nodemap._nodes[(startingY * Dungeon.TILESX) + startingX].solid) && (i < 10)) {
+				startingX = (Math.round(Math.random() * _roomsA[0].width)) + _roomsA[0].x;
+				startingY = (Math.round(Math.random() * _roomsA[0].height)) + _roomsA[0].y;
+				trace("plr plc:" + startingX + "-" + startingY);
+				i++;
+			}
+			// TODO: now we have a non-wall (pillar, statue) location in room, check for
+			// other obstructions
+			Dungeon.player.setPlayerStartingPosition(startingX, startingY);
+		}
+		
 
 		override public function update():void {
 			// synchronize updates with player turn
 			// handle things like open doors, triggered traps, dried up fountains, etc.
 			if (_step != Dungeon.player.STEP) {
 				FP.watch(_roomsA.length);
+				_nodemap.update();
+				_step = Dungeon.player.STEP;
 			}
 			if (Input.pressed("DownLevel")) {
 				// TODO: this needs a level saving and clearing routine

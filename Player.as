@@ -28,6 +28,11 @@ package
 			y = 140;
 		}
 		
+		public function setPlayerStartingPosition(setX:int, setY:int):void {
+			x = setX * GRIDSIZE;
+			y = setY * GRIDSIZE;
+		}
+		
 		override public function update():void
 		{
 			var leftImpact:Boolean = false, rightImpact:Boolean = false, topImpact:Boolean = false, bottomImpact:Boolean = false;
@@ -47,18 +52,22 @@ package
 			if (Input.pressed("Left") && !rightImpact) {
 				x -= GRIDSIZE;
 				STEP++;
+				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
 			if (Input.pressed("Right") && !leftImpact) {
 				x += GRIDSIZE;
 				STEP++;
+				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
 			if (Input.pressed("Up") && !bottomImpact) {
 				y -= GRIDSIZE;
 				STEP++;
+				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
 			if (Input.pressed("Down") && !topImpact) {
 				y += GRIDSIZE;
 				STEP++;
+				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");

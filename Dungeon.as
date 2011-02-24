@@ -8,6 +8,7 @@ package
 	public class Dungeon extends World
 	{
 		public static var player:Player;
+		public static var level:Level;
 
 		public static const MAP_WIDTH:Number = 800;
 		public static const MAP_HEIGHT:Number = 600;
@@ -19,8 +20,9 @@ package
 		public function Dungeon() 
 		{
 			Dungeon.player = new Player;
+			Dungeon.level = new Level;
 			add(player);
-			add(new Level);
+			add(level);
 			add(new LevelMask);
 			add(new AnotherShip);
 		}

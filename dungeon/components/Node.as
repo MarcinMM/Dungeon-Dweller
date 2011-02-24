@@ -16,6 +16,7 @@ package dungeon.components
 		public var neighbors:Vector.<Node>;
 		public var _id:uint;
 		public var tileIndex:int = -1;
+		public var solid:Boolean;
         
         public function Node(initX:int, initY:int, initTileIndex:int) {
 			super(initX, initY);
@@ -27,6 +28,7 @@ package dungeon.components
 				tileIndex = initTileIndex;
 			}
 			neighbors = new Vector.<Node>();
+			solid = true;
         }
     	
 		public function getGCost():int {
@@ -86,7 +88,7 @@ package dungeon.components
 			var openList:Array = new Array();
 			var closedList:Array = new Array();
 
-			trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
+			//trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
 			
 			// costs for traversing nodes vert/horizontally or diagonally
 			// may play with diagonal value to increase chance of straight lines
@@ -101,55 +103,54 @@ package dungeon.components
 			// SAFTY OFF!
 			while ((i < 400) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
 				// Look for lowest F cost node
-				trace("i: " + i);
-				trace("end check: " + (currentNode.sameLoc(endNode)));
-				trace("open: " + openList.length + "|closed: " + closedList.length);
+				//trace("open: " + openList.length + "|closed: " + closedList.length);
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
-				trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
+				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
 				for each (var node:Node in currentNode.neighbors) {
 					thisOpenIndex = -1;
-					trace("neighbor: " + node.x + "-" + node.y);
+					//trace("neighbor: " + node.x + "-" + node.y);
 					// if node is not on closed list
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
 							node.findG(currentNode);
 							node.findH(endNode);
 							node.updateF();
-							trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost:" + node.fCost);
+							//trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost:" + node.fCost);
 						if (openList.indexOf(node) == -1) {
-							trace("adding node to OL at:" + node.x + "-" + node.y);
+							//trace("adding node to OL at:" + node.x + "-" + node.y);
 							openList.push(node);
 							node.setParent(currentNode);
-							trace(currentNode.x + "-" + currentNode.y + " became parent of " + node.x + "-" + node.y);
+							//trace(currentNode.x + "-" + currentNode.y + " became parent of " + node.x + "-" + node.y);
 						} else {
 							// this means this node is already on the list, which in turn means
 							// a different G path was found to it
 							// check that path distance vs. previous path
 							thisOpenIndex = openList.indexOf(node);
-							trace("new path found for node at: " + openList[thisOpenIndex].x + "-" + openList[thisOpenIndex].y);
+							//trace("new path found for node at: " + openList[thisOpenIndex].x + "-" + openList[thisOpenIndex].y);
 							if (node.getGCost() < openList[thisOpenIndex].getGCost()) {
 								
 								node.setParent(currentNode);
 								openList[thisOpenIndex] = node;
-								trace("replacing node at index:" + thisOpenIndex + "-xy: " + node.x + "-" + node.y + "-gcost:" + node.getGCost());
+								//trace("replacing node at index:" + thisOpenIndex + "-xy: " + node.x + "-" + node.y + "-gcost:" + node.getGCost());
 							}
 						}
 					}
 				i++;
 				}
 			}
-			
+			i = 0;
 			// now go back from the ending node to start
 			var pathedNode:Node = endNode;
 			//trace('start: ' + this.x + '-' + this.y);
 			//trace('end: ' + endNode.x + '-' + endNode.y);
-			while (pathedNode != null && pathedNode != this) {
-				trace("path:" + pathedNode.x + "-" + pathedNode.y);
+			while ((pathedNode != null && pathedNode != this) && (i < 100)) {
+				//trace("path:" + pathedNode.x + "-" + pathedNode.y);
 				path.push(pathedNode);
 				pathedNode = pathedNode.parent;
+				i++;
 			}
 			
 			/*
