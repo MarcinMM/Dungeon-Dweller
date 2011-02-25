@@ -36,6 +36,7 @@ package
 		private var _rooms:int = 0;
 
         public static const FLOOR:int = 7;
+		public static const HALL:int = 3;
         public static const NWALL:int = 8;
         public static const SWALL:int = 10;
         public static const WWALL:int = 11;

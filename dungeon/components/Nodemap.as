@@ -67,21 +67,86 @@ package dungeon.components
 		}
 		
 		public function drawHallways():void {
-			var destDoor:Point;
+			// make a copy of the rooms array
+			var roomList:Array = new Array();
+			roomList = roomList.concat(roomsA);
+
+			var randomRoomPick:int = 0;
+			var destRoomPick:int = 0;
+
+			// doors
+			var doorList:Array = new Array();
+			var usedDoorList:Array = new Array();
+			var destDoorIndex:uint;
+			var sourceDoorIndex:uint;
+			var destDoor:Door;
+			var sourceDoor:Door;
 			
+			// rooms
+			var startingRoom:Room;
+			var firstRoom:Room;
+			var splicedRoom:Array; // containing the room that was spliced out in element zero
+			var destRoom:Room;
+			
+			// setup door list from room.door 
 			for each(var room:Room in roomsA) {
-				// make sure you search for doors in rooms OTHER than THIS one
-				for each (var sourceDoor:Door in room.doors) {
-					if (Math.random() > 0.5) {
-						// find farthest
-						destDoor = room.findFarthestDoor(sourceDoor, roomsA);
-					} else {
-						// find nearest
-						destDoor = room.findNearestDoor(sourceDoor, roomsA);
-					}
-					createConnectingHallway(sourceDoor.loc, destDoor);
+				for each (var sourceD:Door in room.doors) {
+					doorList.push(sourceD);
 				}
 			}
+			
+			// set up starting room
+			randomRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
+			splicedRoom = roomList.splice(randomRoomPick, 1);
+			startingRoom = splicedRoom[0];
+			firstRoom = startingRoom;
+			
+			while (roomList.length > 0) {
+				// pick a random room for the new destination room
+				destRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
+				splicedRoom = roomList.splice(destRoomPick, 1);
+				destRoom = splicedRoom[0];
+
+				// now find random doors in each and connect them
+				sourceDoorIndex = Math.max(0,Math.round(Math.random() * startingRoom.doors.length) - 1);
+				sourceDoor = startingRoom.doors[sourceDoorIndex];
+				
+				destDoorIndex = Math.max(0,Math.round(Math.random() * destRoom.doors.length) - 1);
+				destDoor = destRoom.doors[destDoorIndex];
+				
+				createConnectingHallway(sourceDoor.loc, destDoor.loc);
+				
+				// the destination becomes the new starter point 
+				startingRoom = destRoom;
+				// now remove the used doors from doors
+				// somehow?
+			}
+			
+			// now we need to loop back around to the start (firstRoom)
+			// the last room is the last (destRoom)
+			destDoorIndex = Math.max(0,Math.round(Math.random() * destRoom.doors.length) - 1);
+			destDoor = destRoom.doors[destDoorIndex];
+			sourceDoorIndex = Math.max(0,Math.round(Math.random() * firstRoom.doors.length) - 1);
+			sourceDoor = startingRoom.doors[sourceDoorIndex];
+			
+			createConnectingHallway(destDoor.loc, sourceDoor.loc);
+			
+			/*
+			var destPoint:Point;
+			for each(room in roomsA) {
+				// make sure you search for doors in rooms OTHER than THIS one
+				for each (sourceDoor in room.doors) {
+					if (Math.random() > 0.5) {
+						// find farthest
+						destPoint = room.findFarthestDoor(sourceDoor, roomsA);
+					} else {
+						// find nearest
+						destPoint = room.findNearestDoor(sourceDoor, roomsA);
+					}
+					createConnectingHallway(sourceDoor.loc, destPoint);
+				}
+			} 
+			*/
 		}
 		
 		public function setNodeSolidity(coordX:uint, coordY:uint, solidity:Boolean):void {
@@ -91,6 +156,7 @@ package dungeon.components
 		
 		private function createConnectingHallway(sourceDoor:Point, destDoor:Point):void {
 			FP.log(sourceDoor.x + "-" + sourceDoor.y + "-" + destDoor.x + "-" + destDoor.y);
+			trace(sourceDoor.x + "-" + sourceDoor.y + "-" + destDoor.x + "-" + destDoor.y);
 			var path:Array = new Array();
 
 			// A* time
@@ -104,13 +170,10 @@ package dungeon.components
 			for each (var node:Node in path) {
 				tileIndex = _map.getTile(node.x, node.y);
 				if (Level.DOORSA.indexOf(tileIndex) == -1) {
-					_map.setRect(node.x, node.y, 1, 1, Level.FLOOR);
+					_map.setRect(node.x, node.y, 1, 1, Level.HALL);
 					node.solid = false;
 				}
 			}
-
-			// then draw path, including walls
-			
 		}
 		
 		public function getNode(x:int, y:int):Node {
