@@ -24,8 +24,6 @@ package dungeon.components
         public var yBottom:int;
         public var walls:Array;
         
-        // TODO: doors and holes
-        // Doors array has 4 members which are themselves array: left right top bottom
         public var doors:Array = [];
         
         // TODO: room decor/clutter
@@ -131,7 +129,7 @@ package dungeon.components
             var door:Door = new Door(point, 'top');
             var doorCount:int = 0;
             var doorSuccess:Boolean = true;
-
+			
             for each(var _wall:Wall in walls) {
                 for (var i:int = 0; i < _maxDoorsPerWall; i++) {
                     if (doorCount <= 1) {

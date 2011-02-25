@@ -67,21 +67,77 @@ package dungeon.components
 		}
 		
 		public function drawHallways():void {
-			var destDoor:Point;
+			// make a copy of the rooms array
+			var roomList:Array = new Array();
+			roomList = roomList.concat(roomsA);
+
+			var randomRoomPick:int = 0;
+			var destRoomPick:int = 0;
+
+			// doors
+			var doorList:Array = new Array();
+			var usedDoorList:Array = new Array();
+			var destDoorIndex:uint;
+			var sourceDoorIndex:uint;
+			var destDoor:Door;
+			var sourceDoor:Door;
 			
+			// rooms
+			var firstRoom:Room = roomList[0];
+			var startingRoom:Room;
+			var splicedRoom:Array; // containing the room that was spliced out in element zero
+			var destRoom:Room;
+			
+			// setup door list from room.door 
 			for each(var room:Room in roomsA) {
-				// make sure you search for doors in rooms OTHER than THIS one
-				for each (var sourceDoor:Door in room.doors) {
-					if (Math.random() > 0.5) {
-						// find farthest
-						destDoor = room.findFarthestDoor(sourceDoor, roomsA);
-					} else {
-						// find nearest
-						destDoor = room.findNearestDoor(sourceDoor, roomsA);
-					}
-					createConnectingHallway(sourceDoor.loc, destDoor);
+				for each (var sourceD:Door in room.doors) {
+					doorList.push(sourceD);
 				}
 			}
+			
+			while (roomList.length > 0) {
+				// pick a random room
+				randomRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
+				splicedRoom = roomList.splice(randomRoomPick, 1);
+				startingRoom = splicedRoom[0];
+				
+				// it's possible we're out of rooms now
+				if (roomList.length > 0) {
+					destRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
+					splicedRoom = roomList.splice(destRoomPick, 1);
+					destRoom = splicedRoom[0];
+				} else {
+					// so this room has to circle back to the first room
+					destRoom = firstRoom;
+				}
+				// now find random doors in each and connect them
+				sourceDoorIndex = Math.max(0,Math.round(Math.random() * startingRoom.doors.length) - 1);
+				sourceDoor = startingRoom.doors[sourceDoorIndex];
+				
+				destDoorIndex = Math.max(0,Math.round(Math.random() * destRoom.doors.length) - 1);
+				destDoor = destRoom.doors[destDoorIndex];
+				
+				createConnectingHallway(sourceDoor.loc, destDoor.loc);
+				// now remove the used doors from doors
+				// somehow?
+			}
+			
+			/*
+			var destPoint:Point;
+			for each(room in roomsA) {
+				// make sure you search for doors in rooms OTHER than THIS one
+				for each (sourceDoor in room.doors) {
+					if (Math.random() > 0.5) {
+						// find farthest
+						destPoint = room.findFarthestDoor(sourceDoor, roomsA);
+					} else {
+						// find nearest
+						destPoint = room.findNearestDoor(sourceDoor, roomsA);
+					}
+					createConnectingHallway(sourceDoor.loc, destPoint);
+				}
+			} 
+			*/
 		}
 		
 		public function setNodeSolidity(coordX:uint, coordY:uint, solidity:Boolean):void {
@@ -104,7 +160,7 @@ package dungeon.components
 			for each (var node:Node in path) {
 				tileIndex = _map.getTile(node.x, node.y);
 				if (Level.DOORSA.indexOf(tileIndex) == -1) {
-					_map.setRect(node.x, node.y, 1, 1, Level.FLOOR);
+					_map.setRect(node.x, node.y, 1, 1, Level.HALL);
 					node.solid = false;
 				}
 			}
