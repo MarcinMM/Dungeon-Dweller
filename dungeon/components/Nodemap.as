@@ -83,8 +83,8 @@ package dungeon.components
 			var sourceDoor:Door;
 			
 			// rooms
-			var firstRoom:Room = roomList[0];
 			var startingRoom:Room;
+			var firstRoom:Room;
 			var splicedRoom:Array; // containing the room that was spliced out in element zero
 			var destRoom:Room;
 			
@@ -95,21 +95,18 @@ package dungeon.components
 				}
 			}
 			
+			// set up starting room
+			randomRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
+			splicedRoom = roomList.splice(randomRoomPick, 1);
+			startingRoom = splicedRoom[0];
+			firstRoom = startingRoom;
+			
 			while (roomList.length > 0) {
-				// pick a random room
-				randomRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
-				splicedRoom = roomList.splice(randomRoomPick, 1);
-				startingRoom = splicedRoom[0];
-				
-				// it's possible we're out of rooms now
-				if (roomList.length > 0) {
-					destRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
-					splicedRoom = roomList.splice(destRoomPick, 1);
-					destRoom = splicedRoom[0];
-				} else {
-					// so this room has to circle back to the first room
-					destRoom = firstRoom;
-				}
+				// pick a random room for the new destination room
+				destRoomPick = Math.max(0, Math.round(Math.random() * roomList.length) - 1);
+				splicedRoom = roomList.splice(destRoomPick, 1);
+				destRoom = splicedRoom[0];
+
 				// now find random doors in each and connect them
 				sourceDoorIndex = Math.max(0,Math.round(Math.random() * startingRoom.doors.length) - 1);
 				sourceDoor = startingRoom.doors[sourceDoorIndex];
@@ -118,9 +115,21 @@ package dungeon.components
 				destDoor = destRoom.doors[destDoorIndex];
 				
 				createConnectingHallway(sourceDoor.loc, destDoor.loc);
+				
+				// the destination becomes the new starter point 
+				startingRoom = destRoom;
 				// now remove the used doors from doors
 				// somehow?
 			}
+			
+			// now we need to loop back around to the start (firstRoom)
+			// the last room is the last (destRoom)
+			destDoorIndex = Math.max(0,Math.round(Math.random() * destRoom.doors.length) - 1);
+			destDoor = destRoom.doors[destDoorIndex];
+			sourceDoorIndex = Math.max(0,Math.round(Math.random() * firstRoom.doors.length) - 1);
+			sourceDoor = startingRoom.doors[sourceDoorIndex];
+			
+			createConnectingHallway(destDoor.loc, sourceDoor.loc);
 			
 			/*
 			var destPoint:Point;
@@ -147,6 +156,7 @@ package dungeon.components
 		
 		private function createConnectingHallway(sourceDoor:Point, destDoor:Point):void {
 			FP.log(sourceDoor.x + "-" + sourceDoor.y + "-" + destDoor.x + "-" + destDoor.y);
+			trace(sourceDoor.x + "-" + sourceDoor.y + "-" + destDoor.x + "-" + destDoor.y);
 			var path:Array = new Array();
 
 			// A* time
@@ -164,9 +174,6 @@ package dungeon.components
 					node.solid = false;
 				}
 			}
-
-			// then draw path, including walls
-			
 		}
 		
 		public function getNode(x:int, y:int):Node {
