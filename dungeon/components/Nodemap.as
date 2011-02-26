@@ -122,14 +122,17 @@ package dungeon.components
 				// somehow?
 			}
 			
-			// now we need to loop back around to the start (firstRoom)
-			// the last room is the last (destRoom)
-			destDoorIndex = Math.max(0,Math.round(Math.random() * destRoom.doors.length) - 1);
-			destDoor = destRoom.doors[destDoorIndex];
-			sourceDoorIndex = Math.max(0,Math.round(Math.random() * firstRoom.doors.length) - 1);
-			sourceDoor = startingRoom.doors[sourceDoorIndex];
-			
-			createConnectingHallway(destDoor.loc, sourceDoor.loc);
+			// it is possible only one room generated
+			if ((destRoom != null) && (firstRoom != null)) {
+				// now we need to loop back around to the start (firstRoom)
+				// the last room is the last (destRoom)
+				destDoorIndex = Math.max(0,Math.round(Math.random() * destRoom.doors.length) - 1);
+				destDoor = destRoom.doors[destDoorIndex];
+				sourceDoorIndex = Math.max(0,Math.round(Math.random() * firstRoom.doors.length) - 1);
+				sourceDoor = firstRoom.doors[sourceDoorIndex];
+				
+				createConnectingHallway(destDoor.loc, sourceDoor.loc);
+			}
 			
 			/*
 			var destPoint:Point;

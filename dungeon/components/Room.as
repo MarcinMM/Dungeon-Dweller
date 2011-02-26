@@ -53,13 +53,13 @@ package dungeon.components
     
             // check bounds
             // FIXME: this is fubared somehow
-            if (xRight >= Dungeon.TILESX-1) {
-                width = Dungeon.TILESX - (x + 2);
-                xRight = Dungeon.TILESX - 2;
+            if (xRight >= Dungeon.TILESX-2) {
+                width = Dungeon.TILESX - (x + 3);
+                xRight = Dungeon.TILESX - 3;
             }
-            if (yBottom >= Dungeon.TILESY-1) {
-                height = Dungeon.TILESY - (y + 2);
-                yBottom = Dungeon.TILESY - 2;
+            if (yBottom >= Dungeon.TILESY-2) {
+                height = Dungeon.TILESY - (y + 3);
+                yBottom = Dungeon.TILESY - 3;
             }
             
             //  now it is possible we have a 0 width/height room			
