@@ -1,6 +1,7 @@
 package  
 {
 	import net.flashpunk.Entity;
+	import net.flashpunk.graphics.Text;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.FP;
@@ -78,11 +79,9 @@ package
 			 * - FUTURE: dungeons can be irregular shapes, but only 2 or 3 pixels out (or in) from rectangular
 			 * - FUTURE: there will be some premades
 			 * - FUTURE: there will be hidden passages to secret rooms (right now algorithm will try to connect all, so this will be a post-generation thing)
-			 */
-			
-			//_roomsMax = Math.round(Math.random() * 15) + 6; // this should give us a room number between 6 and 15
-			//if (_roomsMax > 15) _roomsMax = 15;
+			 */	
 		}
+
 		
 		private function drawLevel():void {
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);

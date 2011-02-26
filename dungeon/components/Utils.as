@@ -20,7 +20,7 @@ package dungeon.components
 						(index == Level.EWALL) ||
 						(index == Level.SWALL) ||
 						(index == Level.WWALL) ||
-						(index == Level.FLOOR) ||
+						//(index == Level.FLOOR) ||
 						(index == Level.CORNERS['TL']) ||
 						(index == Level.CORNERS['TR']) ||
 						(index == Level.CORNERS['BL']) ||

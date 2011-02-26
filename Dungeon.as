@@ -1,6 +1,9 @@
 package  
 {
 	import net.flashpunk.World;
+	import dungeon.utilities.StatusScreen;
+	import dungeon.utilities.GC;
+	
 	/**
 	 * ...
 	 * @author MM
@@ -9,6 +12,7 @@ package
 	{
 		public static var player:Player;
 		public static var level:Level;
+		public var statusScreen:StatusScreen;
 
 		public static const MAP_WIDTH:Number = 800;
 		public static const MAP_HEIGHT:Number = 600;
@@ -25,8 +29,13 @@ package
 			add(level);
 			add(new LevelMask);
 			add(new AnotherShip);
+			
+			// status screen creation
+			statusScreen = new StatusScreen();
+			statusScreen.visible = true;
+			//add(statusScreen.background);
+			addList(statusScreen.displayTexts);		
 		}
-		
 	}
 
 }
