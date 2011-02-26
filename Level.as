@@ -29,7 +29,7 @@ package
 		private const _roomsMax:int = 20;
 		private const _roomsBigChance:int = 2; // 20% chance, 2 out of 10
 		private const _roomsBigMax:int = 2;
-		private const _roomLimitMax:int = 11;
+		private const _roomLimitMax:int = 10;
 		private const _roomLimitNormal:int = 6;
 		Input.define("DownLevel", Key.L);
 
