@@ -101,14 +101,14 @@ package dungeon.components
 			var thisOpenIndex:int;
 			
 			// SAFTY OFF!
-			while ((i < 400) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
+			while ((i < 1000) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
 				// Look for lowest F cost node
 				//trace("open: " + openList.length + "|closed: " + closedList.length);
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
-				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
+				trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
 				for each (var node:Node in currentNode.neighbors) {
 					thisOpenIndex = -1;
 					//trace("neighbor: " + node.x + "-" + node.y);

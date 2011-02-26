@@ -61,6 +61,14 @@ package dungeon.components
                 height = Dungeon.TILESY - (y + 3);
                 yBottom = Dungeon.TILESY - 3;
             }
+			if (x < 1) {
+				width = width - 2;
+				x = 2;
+			}
+			if (y < 1) {
+				height = height - 2;
+				y = 2;
+			}
             
             //  now it is possible we have a 0 width/height room			
             if ( (width <= 1) || (height <= 1) ) {
@@ -175,22 +183,20 @@ package dungeon.components
             
             if (doorCount == 0) {
                 // add a door if there are none; all rooms should have doors
-                // even if some are secret
-                // pick a wall at random and add a door
+                // pick a wall at (4 walls, so a random out of 4)
+				doorSeed = Math.round(Math.random() * 3);
+				var doorIndex:uint = 0;
                 for each(_wall in walls) {
-                    if (doorCount == 0) {
-                        doorSeed = Math.round(Math.random() * 10);
-                        if (doorSeed > 5) {
-    
-                            point = _wall.findRandomPoint();
-                            door = new Door(point,_wall.position);
-                            
-                            // add door to room.wall property
-                            doors.push(door);
-                            _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOORS[_wall.position]);
-                            doorCount++;
-                        }
+                    if (doorIndex == doorSeed) {
+						point = _wall.findRandomPoint();
+						door = new Door(point,_wall.position);
+						
+						// add door to room.wall property
+						doors.push(door);
+						_dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOORS[_wall.position]);
+						doorCount++;
                     }
+					doorIndex++;
                 }
             }
         }
