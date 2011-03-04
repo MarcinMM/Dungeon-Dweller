@@ -1,4 +1,4 @@
-package dungeon.components
+package dungeon.structure
 {
 	import net.flashpunk.FP;
 

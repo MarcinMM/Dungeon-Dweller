@@ -16,6 +16,16 @@ package
 		public var STEP:int = 0;
 		public var LIGHT_RADIUS:int = 1;
 		
+		public var EQ_WEAPONS:Array;
+		public var EQ_ARMOR:Array;
+		public var EQ_JEWELRY:Array;
+		
+		public var ARMOR:Array;
+		public var WEAPONS:Array;
+		public var SCROLLS:Array;
+		public var POTIONS:Array;
+		public var JEWELRY:Array;
+		
 		public function Player() 
 		{
 			graphic = new Image(PLAYER);

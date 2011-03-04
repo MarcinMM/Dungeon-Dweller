@@ -1,12 +1,12 @@
-package dungeon.components
+package dungeon.structure
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Tilemap;
 	//import net.flashpunk.masks.Grid;
 	import net.flashpunk.FP;
-    import dungeon.components.Point;
-    import dungeon.components.Door;
-    import dungeon.components.Wall;
+    import dungeon.structure.Point;
+    import dungeon.structure.Door;
+    import dungeon.structure.Wall;
 
     public class Room
     {

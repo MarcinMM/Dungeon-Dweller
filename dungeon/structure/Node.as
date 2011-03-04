@@ -1,6 +1,6 @@
-package dungeon.components
+package dungeon.structure
 {
-	import dungeon.components.Point;
+	import dungeon.structure.Point;
 	
 	/**
 	  * Like a point, but with weights depending on its position within a pathfinding call
@@ -108,7 +108,7 @@ package dungeon.components
 				// Switch it to the closed list
 				currentNode = openList.shift();
 				closedList.push(currentNode);
-				trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
+				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
 				for each (var node:Node in currentNode.neighbors) {
 					thisOpenIndex = -1;
 					//trace("neighbor: " + node.x + "-" + node.y);

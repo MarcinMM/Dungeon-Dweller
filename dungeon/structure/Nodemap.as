@@ -1,7 +1,7 @@
-package dungeon.components
+package dungeon.structure
 {
-	import dungeon.components.Point;
-	import dungeon.components.Node;
+	import dungeon.structure.Point;
+	import dungeon.structure.Node;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.FP;
 	
