@@ -1,6 +1,6 @@
-package dungeon.components
+package dungeon.structure
 {
-	import dungeon.components.Point;
+	import dungeon.structure.Point;
 	
     public class Utils {
 		public static function findDistance(pointA:Point, pointB:Point):Number {

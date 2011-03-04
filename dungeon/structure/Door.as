@@ -1,7 +1,7 @@
-package dungeon.components
+package dungeon.structure
 {
 	import net.flashpunk.FP;
-	import dungeon.components.Point;
+	import dungeon.structure.Point;
 
     public class Door {
 

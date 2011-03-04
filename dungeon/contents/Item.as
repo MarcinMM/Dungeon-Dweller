@@ -1,0 +1,43 @@
+package dungeon.contents 
+{
+	/**
+	 * ...
+	 * @author MM
+	 */
+	public class Item 
+	{
+		// intrinsics
+		public var VALUE:uint;
+		public var WEIGHT:uint;
+		public var CURSED:Boolean;
+		public var BLESSED:Boolean;
+		public var ITEM_LEVEL:uint;
+		public var MODIFIER:int;
+		
+		// ownership
+		public var OWNED:Boolean;
+		public var IN_STORE:Boolean;
+		public var STOLEN:Boolean;
+		
+		// properties
+		public const DESC_MODIFIER:Array = ["orcish", "elven", "dwarven", "draconic", "bone"];
+		
+		
+		// items get generated on level creation at random
+		// we need an item quota perhaps based on dungeon level depth
+		// 
+
+		public function Item() 
+		{
+			// initialise various bits
+			// we can set a chance of cursed or blessed universally
+			// just about everything else? probably should be init'd in subclasses
+			
+		}
+		
+		// common functions, what could they be?
+		// carried vs. not carried? or player?
+		// equipped vs not equipped? or on player?
+	}
+
+}
