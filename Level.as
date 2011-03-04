@@ -62,7 +62,7 @@ package
 		public var _step:int = 0;
 		
 		// more level entities
-		public var ITEMS:Array;
+		public var ITEMS:Array = [];
 		public var ITEM_GEN:Object = {
 			0: generateWeapon,
 			1: generateWeapon,
@@ -76,7 +76,10 @@ package
 			8: generatePotion,
 			9: generatePotion,
 			10: generateJewelry,
-			11: generateUnique */
+			11: generateWand,
+			12: generateGem,
+			13: generateMoney,
+			14: generateUnique */
 		}
 		
 		public function Level() 

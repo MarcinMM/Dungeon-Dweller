@@ -22,7 +22,6 @@ package dungeon.contents
 		// properties
 		public const DESC_MODIFIER:Array = ["orcish", "elven", "dwarven", "draconic", "bone"];
 		
-		
 		// items get generated on level creation at random
 		// we need an item quota perhaps based on dungeon level depth
 		// 
@@ -32,7 +31,17 @@ package dungeon.contents
 			// initialise various bits
 			// we can set a chance of cursed or blessed universally
 			// just about everything else? probably should be init'd in subclasses
+			var curseRand:uint = Math.round(Math.random() * 100);
+			if (curseRand < 5) {
+				CURSED = true;
+			} else {
+				var blessRand:uint = Math.round(Math.random() * 100);
+				if (blessRand < 5) {
+					BLESSED = true;
+				}
+			}
 			
+			// weight and value and level has to draw from item and from level ...
 		}
 		
 		// common functions, what could they be?
