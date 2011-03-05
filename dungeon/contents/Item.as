@@ -1,11 +1,15 @@
 package dungeon.contents 
 {
+	import dungeon.structure.Point;
 	/**
 	 * ...
 	 * @author MM
 	 */
 	public class Item 
 	{
+		// position when not in inventory
+		public var dropLoc:Point;
+		
 		// intrinsics
 		public var VALUE:uint;
 		public var WEIGHT:uint;

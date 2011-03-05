@@ -27,6 +27,7 @@ package
 			Dungeon.level = new Level;
 			add(player);
 			add(level);
+			add(new ItemMask);
 			add(new LevelMask);
 			add(new AnotherShip);
 			
