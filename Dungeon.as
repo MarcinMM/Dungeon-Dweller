@@ -12,6 +12,7 @@ package
 	{
 		public static var player:Player;
 		public static var level:Level;
+		public static var items:ItemMask;
 		public var statusScreen:StatusScreen;
 
 		public static const MAP_WIDTH:Number = 800;
@@ -25,10 +26,10 @@ package
 		{
 			Dungeon.player = new Player;
 			Dungeon.level = new Level;
+			Dungeon.items = new ItemMask;
 			add(player);
 			add(level);
-			add(new ItemMask);
-			add(new LevelMask);
+			add(items);
 			add(new AnotherShip);
 			
 			// status screen creation

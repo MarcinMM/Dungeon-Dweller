@@ -12,7 +12,7 @@ package dungeon.contents
 		public const MATERIALS:Array = ["Hide", "Iron", "Copper", "Steel", "Bone", "Wood"];
 		public const SLOTS:Array = ["Legs", "Head", "Chest", "Hands", "Arms", "Cloak", "Feet"];
 		
-		public const 
+		public const TILE_INDEX:uint = 0;
 		
 		public var armorMaterial:String;
 		public var armorType:String;
@@ -29,6 +29,11 @@ package dungeon.contents
 			armorSlot = SLOTS[randSlot];
 			
 			super();
+
+			// set which tile this weapon is, based on type probably
+			// at the moment defaulting to 0
+			tileIndex = TILE_INDEX;
+			DESCRIPTION = armorMaterial + " " + armorType + " " + armorSlot;
 			
 		}
 		

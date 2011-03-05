@@ -18,6 +18,8 @@ package dungeon.contents
 		public const RANGED:Array = ["Bow", "Crossbow", "Sling", "Wand", "Throwing axe", "Throwing knife", "Shuriken"];
 		public const AXE:Array = ["Axe", "Double-headed Axe", "Battleaxe", "Tomahawk"];
 		
+		public const TILE_INDEX:uint = 0;
+		
 		public const SUBTYPE:Object = {
 			H1SWORD: H1SWORD,
 			H2SWORD: H2SWORD,
@@ -46,6 +48,11 @@ package dungeon.contents
 			weaponMaterial = MATERIAL[randMat];
 			
 			super();
+			
+			// set which tile this weapon is, based on type probably
+			// at the moment defaulting to 0
+			tileIndex = TILE_INDEX;
+			DESCRIPTION = weaponMaterial + " " + weaponSubtype;
 			
 		}
 		

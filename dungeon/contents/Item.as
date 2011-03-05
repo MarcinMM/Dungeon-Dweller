@@ -9,6 +9,9 @@ package dungeon.contents
 	{
 		// position when not in inventory
 		public var dropLoc:Point;
+
+		// which tile this item is represented by
+		public var tileIndex:uint = 0;
 		
 		// intrinsics
 		public var VALUE:uint;
@@ -25,6 +28,7 @@ package dungeon.contents
 		
 		// properties
 		public const DESC_MODIFIER:Array = ["orcish", "elven", "dwarven", "draconic", "bone"];
+		public var DESCRIPTION:String;
 		
 		// items get generated on level creation at random
 		// we need an item quota perhaps based on dungeon level depth
@@ -46,6 +50,12 @@ package dungeon.contents
 			}
 			
 			// weight and value and level has to draw from item and from level ...
+			
+			
+			// location, currently random within bounds
+			var newX:uint = Math.round(Math.random() * Dungeon.TILESX);
+			var newY:uint = Math.round(Math.random() * Dungeon.TILESY);
+			dropLoc = new Point(newX, newY);
 		}
 		
 		// common functions, what could they be?

@@ -1,5 +1,6 @@
 package  
 {
+	import dungeon.contents.Item;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -78,6 +79,10 @@ package
 				y += GRIDSIZE;
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
+			}
+			if (collide("items", x, y)) {
+				var item:Item = collide("items", x, y) as Item;
+				FP.log("You see here a " + item.DESCRIPTION);
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");

@@ -61,27 +61,6 @@ package
 		
 		public var _step:int = 0;
 		
-		// more level entities
-		public var ITEMS:Array = [];
-		public var ITEM_GEN:Object = {
-			0: generateWeapon,
-			1: generateWeapon,
-			2: generateArmor,
-			3: generateArmor
-			/*
-			4: generateScroll,
-			5: generateScroll,
-			6: generateScroll,
-			7: generatePotion,
-			8: generatePotion,
-			9: generatePotion,
-			10: generateJewelry,
-			11: generateWand,
-			12: generateGem,
-			13: generateMoney,
-			14: generateUnique */
-		}
-		
 		public function Level() 
 		{
 			FP.console.enable();
@@ -120,10 +99,6 @@ package
 			_nodemap = new Nodemap(_dungeonmap, _roomsA);
 			_nodemap.drawHallways();
 
-			// this needs to be last, placed after traps, monsters, stairs etc
-			
-			addItems();
-			
 			drawGrid();
 
 			placePlayer();
@@ -159,28 +134,6 @@ package
 				}
 			}			
 		}
-		
-		// generate items for the level and handle drawing them as well
-		private function addItems():void {
-			for (var i:uint = 0; i < 10; i++) {
-				var itemGen:uint = Math.round(Math.random() * 3);
-				var callback:Function = ITEM_GEN[itemGen];
-				callback();
-				//ITEMS.push(item); // add item to level item array
-			}
-		}
-		
-		// handlers for generating new items and pushing them to the level item collection
-		private function generateWeapon():void {
-			var weapon:Weapon = new Weapon();
-			ITEMS.push(weapon);
-		}
-
-		private function generateArmor():void {
-			var armor:Armor = new Armor();
-			ITEMS.push(armor);
-		}
-
 		
 		// create collision grid from nodemap objects
 		private function drawGrid():void {
