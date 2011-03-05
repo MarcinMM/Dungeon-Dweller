@@ -62,7 +62,7 @@ package
 		public var _step:int = 0;
 		
 		// more level entities
-		public var ITEMS:Array;
+		public var ITEMS:Array = [];
 		public var ITEM_GEN:Object = {
 			0: generateWeapon,
 			1: generateWeapon,
@@ -76,7 +76,10 @@ package
 			8: generatePotion,
 			9: generatePotion,
 			10: generateJewelry,
-			11: generateUnique */
+			11: generateWand,
+			12: generateGem,
+			13: generateMoney,
+			14: generateUnique */
 		}
 		
 		public function Level() 
@@ -107,7 +110,7 @@ package
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, DEBUG); 
 			graphic = _dungeonmap;
-			layer = 2;
+			layer = 3;
 			
 			_grid = new Grid(Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT,0,0);
 			mask = _grid;
