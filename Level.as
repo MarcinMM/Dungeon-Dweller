@@ -37,7 +37,28 @@ package
 
 		public var _roomsA:Array = [];
 		private var _rooms:int = 0;
+		public var ITEMS:Array = [];
 
+		// more level entities
+		public var ITEM_GEN:Object = {
+			0: generateWeapon,
+			1: generateWeapon,
+			2: generateArmor,
+			3: generateArmor
+			/*
+			4: generateScroll,
+			5: generateScroll,
+			6: generateScroll,
+			7: generatePotion,
+			8: generatePotion,
+			9: generatePotion,
+			10: generateJewelry,
+			11: generateWand,
+			12: generateGem,
+			13: generateMoney,
+			14: generateUnique */
+		}
+		
         public static const FLOOR:int = 7;
 		public static const HALL:int = 3;
         public static const NWALL:int = 8;
@@ -101,6 +122,8 @@ package
 
 			drawGrid();
 
+			createItems();
+			
 			placePlayer();
 		}
 		
@@ -134,6 +157,28 @@ package
 				}
 			}			
 		}
+
+		public function createItems():void {
+			// generate items for the level and handle drawing them as well
+			for (var i:uint = 0; i < 10; i++) {
+				var itemGen:uint = Math.round(Math.random() * 3);
+				var callback:Function = ITEM_GEN[itemGen];
+				callback();
+			}
+			// now draw the items from ITEMS array
+			//ITEMS.forEach(drawItem);
+		}
+		
+		// handlers for generating new items and pushing them to the level item collection
+		private function generateWeapon():void {
+			var weapon:Weapon = new Weapon();
+			ITEMS.push(weapon);
+		}
+
+		private function generateArmor():void {
+			var armor:Armor = new Armor();
+			ITEMS.push(armor);
+		}		
 		
 		// create collision grid from nodemap objects
 		private function drawGrid():void {

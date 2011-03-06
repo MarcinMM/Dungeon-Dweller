@@ -12,7 +12,6 @@ package
 	{
 		public static var player:Player;
 		public static var level:Level;
-		public static var items:ItemMask;
 		public var statusScreen:StatusScreen;
 
 		public static const MAP_WIDTH:Number = 800;
@@ -26,10 +25,14 @@ package
 		{
 			Dungeon.player = new Player;
 			Dungeon.level = new Level;
-			Dungeon.items = new ItemMask;
 			add(player);
 			add(level);
-			add(items);
+			
+			// now add all the items as entities; items were generated in level creation
+			// we will need an UNloader or perhaps REloader as well
+			// but this is the init
+			Dungeon.level.ITEMS.forEach(addItem);
+			
 			add(new AnotherShip);
 			
 			// status screen creation
@@ -37,6 +40,11 @@ package
 			statusScreen.visible = true;
 			//add(statusScreen.background);
 			addList(statusScreen.displayTexts);		
+		}
+		
+		private function addItem(item:*, index:int, array:Array):void {
+			// instead of drawing we're actually adding to world
+			add(item);
 		}
 	}
 

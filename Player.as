@@ -81,8 +81,14 @@ package
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
 			if (collide("items", x, y)) {
-				var item:Item = collide("items", x, y) as Item;
-				FP.log("You see here a " + item.DESCRIPTION);
+				var itemAr:Array = [];
+				collideInto("items", x, y, itemAr);
+				// we can either find the item at this location by 
+				// iterating through items array with x and y coordinates of collision
+				// or every new item becomes a Dungeon class entity
+				var itemMask:ItemMask = itemAr[0];
+				//var foundItemAr:Array = itemMask.getItemsAtCoords(x, y);
+				FP.log("You see here an item "); //+ item.DESCRIPTION);
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");

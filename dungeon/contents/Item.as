@@ -1,15 +1,14 @@
 package dungeon.contents 
 {
 	import dungeon.structure.Point;
+	import net.flashpunk.Entity;
 	/**
 	 * ...
 	 * @author MM
 	 */
-	public class Item 
+	public class Item extends Entity
 	{
-		// position when not in inventory
-		public var dropLoc:Point;
-
+		[Embed(source = '../../assets/itemtile.png')] private const ITEMTILEMAP:Class;
 		// which tile this item is represented by
 		public var tileIndex:uint = 0;
 		
@@ -55,7 +54,9 @@ package dungeon.contents
 			// location, currently random within bounds
 			var newX:uint = Math.round(Math.random() * Dungeon.TILESX);
 			var newY:uint = Math.round(Math.random() * Dungeon.TILESY);
-			dropLoc = new Point(newX, newY);
+			x = newX;
+			y = newY;
+			setHitbox(Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 		}
 		
 		// common functions, what could they be?

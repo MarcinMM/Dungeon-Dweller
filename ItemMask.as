@@ -35,7 +35,8 @@ package
 			12: generateGem,
 			13: generateMoney,
 			14: generateUnique */
-		}		
+		}
+		
 		public function ItemMask() 
 		{
 			_itemmap = new Tilemap(ITEMTILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
@@ -58,6 +59,7 @@ package
 			}
 			ITEMS.forEach(drawItem);
 		}
+		
 		
 		private function drawItem(item:*, index:int, array:Array):void {
 			_itemmap.setRect(item.dropLoc.x, item.dropLoc.y, 1, 1, item.tileIndex);
