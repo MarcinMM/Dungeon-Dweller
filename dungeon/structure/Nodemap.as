@@ -190,7 +190,6 @@ package dungeon.structure
 			// report on player tile solidity
 			if (_step != Dungeon.player.STEP) {
 				var node:Node = getNode(Dungeon.player.x/20, Dungeon.player.y/20);
-				FP.log('following in nodemap, solid: ' + node.solid);
 				_step = Dungeon.player.STEP;
 			}
 		}

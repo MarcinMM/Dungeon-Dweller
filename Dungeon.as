@@ -39,7 +39,7 @@ package
 			statusScreen = new StatusScreen();
 			statusScreen.visible = true;
 			//add(statusScreen.background);
-			addList(statusScreen.displayTexts);		
+			addList(statusScreen.displayTexts);
 		}
 		
 		private function addItem(item:*, index:int, array:Array):void {

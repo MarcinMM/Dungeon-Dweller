@@ -2,13 +2,17 @@ package dungeon.contents
 {
 	import dungeon.structure.Point;
 	import net.flashpunk.Entity;
+	import net.flashpunk.graphics.*;
+	import net.flashpunk.FP;
 	/**
 	 * ...
 	 * @author MM
 	 */
 	public class Item extends Entity
 	{
-		[Embed(source = '../../assets/itemtile.png')] private const ITEMTILEMAP:Class;
+		// local step, to be synced with global PLAYER step
+		private var _step:uint = 0;
+		
 		// which tile this item is represented by
 		public var tileIndex:uint = 0;
 		
@@ -50,18 +54,33 @@ package dungeon.contents
 			
 			// weight and value and level has to draw from item and from level ...
 			
-			
 			// location, currently random within bounds
 			var newX:uint = Math.round(Math.random() * Dungeon.TILESX);
 			var newY:uint = Math.round(Math.random() * Dungeon.TILESY);
-			x = newX;
-			y = newY;
+			x = newX * Dungeon.TILE_WIDTH;
+			y = newY * Dungeon.TILE_HEIGHT;
+			
 			setHitbox(Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+			
+			type = "items";
 		}
 		
 		// common functions, what could they be?
 		// carried vs. not carried? or player?
 		// equipped vs not equipped? or on player?
+		override public function update():void
+		{
+			// synchronize with global step
+			if (_step != Dungeon.player.STEP) {
+				_step = Dungeon.player.STEP;
+				if (collide("player", x, y)) {
+					FP.log("collision with player");
+					//var s:Player = collide("player", x, y) as Player;
+					FP.log("This is a: " + DESCRIPTION);
+				}
+			}
+		}
+
 	}
 
 }

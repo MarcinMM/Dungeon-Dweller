@@ -1,11 +1,17 @@
 package dungeon.contents 
 {
+	import dungeon.structure.Point;
+	import net.flashpunk.Entity;
+	import net.flashpunk.graphics.*;
+
 	/**
 	 * ...
 	 * @author MM
 	 */
 	public class Weapon extends Item 
 	{
+		[Embed(source = '../../assets/weapon.png')] private const WEAPON:Class;
+		
 		public const MATERIAL:Array = ["Bone", "Wood", "Copper", "Iron", "Silver", "Mithril", "Steel"];
 		
 		public const TYPE:Array = ["H2SWORD", "H1SWORD", "CURVED", "BLUNT", "DAGGER", "POLEARM", "RANGED", "AXE"];
@@ -53,6 +59,9 @@ package dungeon.contents
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
 			DESCRIPTION = weaponMaterial + " " + weaponSubtype;
+
+			graphic = new Image(WEAPON);
+
 			
 		}
 		

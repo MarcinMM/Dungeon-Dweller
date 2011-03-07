@@ -1,11 +1,14 @@
 package dungeon.contents 
 {
+	import net.flashpunk.graphics.*;
 	/**
 	 * ...
 	 * @author MM
 	 */
 	public class Armor extends Item 
 	{
+		[Embed(source = '../../assets/armor.png')] private const ARMOR:Class;
+
 		// armor class and type (leather, chain, plate, other)
 		public var CLASS:uint;
 		public const TYPE:Array = ["Leather", "Chain", "Plate", "Scale", "Splint", "Banded", "Studded Leather"];
@@ -35,6 +38,7 @@ package dungeon.contents
 			tileIndex = TILE_INDEX;
 			DESCRIPTION = armorMaterial + " " + armorType + " " + armorSlot;
 			
+			graphic = new Image(ARMOR);
 		}
 		
 	}

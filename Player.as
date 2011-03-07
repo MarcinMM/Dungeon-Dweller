@@ -37,6 +37,7 @@ package
 			setHitbox(20, 20);
 			x = 140;
 			y = 140;
+			type = "player";
 		}
 		
 		public function setPlayerStartingPosition(setX:int, setY:int):void {
@@ -86,9 +87,9 @@ package
 				// we can either find the item at this location by 
 				// iterating through items array with x and y coordinates of collision
 				// or every new item becomes a Dungeon class entity
-				var itemMask:ItemMask = itemAr[0];
+				//var itemMask:ItemMask = itemAr[0];
 				//var foundItemAr:Array = itemMask.getItemsAtCoords(x, y);
-				FP.log("You see here an item "); //+ item.DESCRIPTION);
+				//FP.log("You see here an item "); //+ item.DESCRIPTION);
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");
