@@ -13,7 +13,7 @@ package dungeon.contents
 		public var CLASS:uint;
 		public const TYPE:Array = ["Leather", "Chain", "Plate", "Scale", "Splint", "Banded", "Studded Leather"];
 		public const MATERIALS:Array = ["Hide", "Iron", "Copper", "Steel", "Bone", "Wood"];
-		public const SLOTS:Array = ["Legs", "Head", "Chest", "Hands", "Arms", "Cloak", "Feet"];
+		public const SLOTS:Array = ["Greaves", "Helm", "Chestpiece", "Gloves", "Cloak", "Boots"];
 		
 		public const TILE_INDEX:uint = 0;
 		

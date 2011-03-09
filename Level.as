@@ -124,6 +124,8 @@ package
 
 			createItems();
 			
+			placeItems();
+			
 			placePlayer();
 		}
 		
@@ -158,6 +160,25 @@ package
 			}			
 		}
 
+		// this will not only draw items but extra clutter
+		// probably monsters
+		// stairs
+		// add interesting room features
+		// etc
+		public function placeItems():void {
+			var x:uint = 0;
+			var y:uint = 0;
+			var roomIndex:uint = 0;
+
+			for each (var item:* in ITEMS) {
+				roomIndex = Math.max(0, (Math.round(Math.random() * _roomsA.length) - 1));
+				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
+				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+				item.x = x;
+				item.y = y;
+			}
+		}
+		
 		public function createItems():void {
 			// generate items for the level and handle drawing them as well
 			for (var i:uint = 0; i < 10; i++) {
