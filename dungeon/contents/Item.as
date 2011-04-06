@@ -30,7 +30,7 @@ package dungeon.contents
 		public var STOLEN:Boolean;
 		
 		// properties
-		public const DESC_MODIFIER:Array = ["orcish", "elven", "dwarven", "draconic", "bone"];
+		public const DESC_MODIFIER:Array = ["orcish", "elven", "dwarven", "draconic"];
 		public var DESCRIPTION:String;
 		
 		// items get generated on level creation at random
@@ -42,6 +42,7 @@ package dungeon.contents
 			// initialise various bits
 			// we can set a chance of cursed or blessed universally
 			// just about everything else? probably should be init'd in subclasses
+			// cursed/blessed chance is hardcoded at 5%
 			var curseRand:uint = Math.round(Math.random() * 100);
 			if (curseRand < 5) {
 				CURSED = true;
