@@ -1,6 +1,7 @@
 package dungeon.contents 
 {
 	import net.flashpunk.graphics.*;
+	import dungeon.utilities.GC;
 	/**
 	 * ...
 	 * @author MM
@@ -55,6 +56,9 @@ package dungeon.contents
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
 			DESCRIPTION = armorMaterial + armorType + armorSlot;
+			ITEM_TYPE = GC.C_ITEM_ARMOR;
+			
+			
 			
 			graphic = new Image(ARMOR);
 		}

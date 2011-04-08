@@ -12,7 +12,7 @@ package
 	{
 		public static var player:Player;
 		public static var level:Level;
-		public var statusScreen:StatusScreen;
+		public static var statusScreen:StatusScreen;
 
 		public static const MAP_WIDTH:Number = 800;
 		public static const MAP_HEIGHT:Number = 600;

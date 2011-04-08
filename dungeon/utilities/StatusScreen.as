@@ -74,9 +74,11 @@ package dungeon.utilities
 			//background.visible = _visible;
 			for each (var d:DisplayText in displayTexts)
 			{
-				//d.visible = _visible;	
+				d.visible = _visible;	
 			}
 		}
+		
+		
 	}
 
 }

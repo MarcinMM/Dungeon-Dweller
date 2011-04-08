@@ -6,6 +6,8 @@ package
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	import dungeon.utilities.StatusScreen;
+
 	/**
 	 * ...
 	 * @author MM
@@ -21,11 +23,13 @@ package
 		public var EQ_ARMOR:Array;
 		public var EQ_JEWELRY:Array;
 		
-		public var ARMOR:Array;
-		public var WEAPONS:Array;
-		public var SCROLLS:Array;
-		public var POTIONS:Array;
-		public var JEWELRY:Array;
+		public var ARMOR:Array = new Array();
+		public var WEAPONS:Array = new Array();
+		public var SCROLLS:Array = new Array();
+		public var POTIONS:Array = new Array();
+		public var JEWELRY:Array = new Array();
+		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
+		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
 		
 		public function Player() 
 		{
@@ -34,6 +38,7 @@ package
 			Input.define("Right", Key.RIGHT);
 			Input.define("Up", Key.UP);
 			Input.define("Down", Key.DOWN);
+			Input.define("I", Key.I);
 			setHitbox(20, 20);
 			x = 140;
 			y = 140;
@@ -81,15 +86,37 @@ package
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
+			if (Input.pressed("I")) {
+				if (Dungeon.statusScreen.visible == false) {
+					Dungeon.statusScreen.visible = true;
+					FP.log("inventory shown");
+				} else {
+					Dungeon.statusScreen.visible = false;					
+					FP.log("inventory hidden");
+				}
+			}
 			if (collide("items", x, y)) {
 				var itemAr:Array = [];
 				collideInto("items", x, y, itemAr);
-				// we can either find the item at this location by 
-				// iterating through items array with x and y coordinates of collision
-				// or every new item becomes a Dungeon class entity
-				//var itemMask:ItemMask = itemAr[0];
-				//var foundItemAr:Array = itemMask.getItemsAtCoords(x, y);
-				//FP.log("You see here an item "); //+ item.DESCRIPTION);
+				// potentially could collide with all objects on the ground here
+				// so we'll have to iterate
+				FP.log("You see here an item :" + itemAr[0].DESCRIPTION + "|" + itemAr[0].ITEM_TYPE);
+
+				// here's the code to give item to player, I guess we'll check for pickup at some point
+				// for testing assume autopickup
+				var newType:String = itemAr[0].ITEM_TYPE;
+				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
+
+				// now remove it from level array
+				Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[0]), 1);
+				
+				// and from the display and nodemap
+				// actually, just realized entities are an intrinsic part of the map
+				// they can't be "removed" - they have to be relocated off screen instead
+				// calculate a position 10/10 tiles (not pixels) off the current resolution
+				itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
+				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+				
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");

@@ -23,6 +23,7 @@ package dungeon.contents
 		public var BLESSED:Boolean;
 		public var ITEM_LEVEL:uint;
 		public var MODIFIER:int;
+		public var ITEM_TYPE:uint;
 		
 		// ownership
 		public var OWNED:Boolean;

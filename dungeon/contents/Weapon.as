@@ -3,6 +3,7 @@ package dungeon.contents
 	import dungeon.structure.Point;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.*;
+	import dungeon.utilities.GC;
 
 	/**
 	 * ...
@@ -83,6 +84,7 @@ package dungeon.contents
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
 			DESCRIPTION = weaponMaterial + weaponSubtype;
+			ITEM_TYPE = GC.C_ITEM_WEAPON;
 
 			graphic = new Image(WEAPON);
 
