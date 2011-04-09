@@ -19,6 +19,10 @@ package dungeon.utilities
 		public var gridDisplay:DisplayText;
 		public var inventoryTexts:Array = new Array();
 		
+		private var invPointer:uint = 0;
+		private var invPointerColor:String = "0xFF0000"; 
+		private var invLabels:Array = ["- Armor", "- Weapons"];
+		
 		private var visibility:Boolean = false;
 		
 		public function StatusScreen() 
@@ -57,6 +61,42 @@ package dungeon.utilities
 			displayTexts.push(agilityDisplay);
 */			
 			//displayTexts.push(gridDisplay);
+		}
+		
+		// traversal of inventory
+		public function up():void {
+			if (invPointer == 1) {
+				invPointer = 1;
+			} else {
+				if ( (invLabels.indexOf(inventoryTexts[invPointer-1].displayText.text) != -1) && (invPointer - 2 > 0) ){
+					inventoryTexts[invPointer].displayText.color = invPointerColor;
+					invPointer = invPointer - 2;
+					invPointerColor = inventoryTexts[invPointer].displayText.color;
+					inventoryTexts[invPointer].displayText.color = "0x00FF00";
+				} else {
+					inventoryTexts[invPointer].displayText.color = invPointerColor;
+					invPointer--;
+					invPointerColor = inventoryTexts[invPointer].displayText.color;
+					inventoryTexts[invPointer].displayText.color = "0x00FF00";
+				}
+			}
+		}
+		
+		public function down():void {
+			inventoryTexts[invPointer].displayText.color = invPointerColor;
+			invPointer++;
+			if (invPointer > inventoryTexts.length) {
+				invPointer = inventoryTexts.length;
+			} else {
+				if ( (invLabels.indexOf(inventoryTexts[invPointer].displayText.text) != -1) && (invPointer + 1 < inventoryTexts.length) ) {
+					invPointer = invPointer + 1;
+					invPointerColor = inventoryTexts[invPointer].displayText.color;
+					inventoryTexts[invPointer].displayText.color = "0x00FF00";
+				} else {
+					invPointerColor = inventoryTexts[invPointer].displayText.color;
+					inventoryTexts[invPointer].displayText.color = "0x00FF00";
+				}
+			}
 		}
 		
 		public function updateInventory():void {

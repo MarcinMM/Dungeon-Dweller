@@ -31,6 +31,8 @@ package
 		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
 		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
 		
+		public var INVENTORY_OPEN:Boolean = false;
+		
 		public function Player() 
 		{
 			graphic = new Image(PLAYER);
@@ -67,31 +69,44 @@ package
 			if (collide("npcShip", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
 				rightImpact = true;
 			}
-			if (Input.pressed("Left") && !rightImpact) {
+			
+			// Player movement
+			if (Input.pressed("Left") && !rightImpact && !INVENTORY_OPEN) {
 				x -= GRIDSIZE;
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
-			if (Input.pressed("Right") && !leftImpact) {
+			if (Input.pressed("Right") && !leftImpact && !INVENTORY_OPEN) {
 				x += GRIDSIZE;
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
-			if (Input.pressed("Up") && !bottomImpact) {
+			if (Input.pressed("Up") && !bottomImpact && !INVENTORY_OPEN) {
 				y -= GRIDSIZE;
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
-			if (Input.pressed("Down") && !topImpact) {
+			if (Input.pressed("Down") && !topImpact && !INVENTORY_OPEN) {
 				y += GRIDSIZE;
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
+
+			// Inventory Management
+			if (Input.pressed("Up") && INVENTORY_OPEN) {
+				Dungeon.statusScreen.up();
+			}
+			if (Input.pressed("Down") && INVENTORY_OPEN) {
+				Dungeon.statusScreen.down();
+			}
 			if (Input.pressed("I")) {
+				// this needs to suspend movement and turn directional keys to inventory traversal
 				if (Dungeon.statusScreen.visible == false) {
 					Dungeon.statusScreen.visible = true;
+					INVENTORY_OPEN = true;
 				} else {
 					Dungeon.statusScreen.visible = false;					
+					INVENTORY_OPEN = false;
 				}
 			}
 			if (collide("items", x, y)) {
