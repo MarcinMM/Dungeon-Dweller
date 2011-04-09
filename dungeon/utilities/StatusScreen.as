@@ -17,7 +17,10 @@ package dungeon.utilities
 		public var agilityDisplay:DisplayText;
 */		// only worried about this for now
 		public var gridDisplay:DisplayText;
+		// non-equipped items, listed below 
 		public var inventoryTexts:Array = new Array();
+		// equipped items, listed first
+		public var inventoryEquippedTexts:Array = new Array();
 		
 		private var invPointer:uint = 0;
 		private var invPointerColor:String = "0xFF0000"; 

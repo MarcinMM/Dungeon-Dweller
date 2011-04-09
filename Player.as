@@ -18,11 +18,7 @@ package
 		private const GRIDSIZE:int = 20;
 		public var STEP:int = 0;
 		public var LIGHT_RADIUS:int = 1;
-		
-		public var EQ_WEAPONS:Array;
-		public var EQ_ARMOR:Array;
-		public var EQ_JEWELRY:Array;
-		
+			
 		public var ARMOR:Array = new Array();
 		public var WEAPONS:Array = new Array();
 		public var SCROLLS:Array = new Array();

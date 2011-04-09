@@ -27,6 +27,7 @@ package dungeon.contents
 		
 		// ownership
 		public var OWNED:Boolean;
+		public var EQUIPPED:Boolean;
 		public var IN_STORE:Boolean;
 		public var STOLEN:Boolean;
 		
