@@ -32,6 +32,7 @@ package
 		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
 		
 		public var INVENTORY_OPEN:Boolean = false;
+		public var INVENTORY_SIZE:uint = 0;
 		
 		public function Player() 
 		{
@@ -120,6 +121,7 @@ package
 				// for testing assume autopickup
 				var newType:String = itemAr[0].ITEM_TYPE;
 				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
+				INVENTORY_SIZE++;
 
 				// now remove it from level array
 				Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[0]), 1);

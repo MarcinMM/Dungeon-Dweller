@@ -51,7 +51,7 @@ package dungeon.utilities
 			}
 			*/
 			// we need a line of text that spans the screen that can be updated later
-			for (i = 0; i < 12; i++) {
+			for (i = 0; i < 36; i++) {
 				itemAr[i] = new DisplayText("", (Dungeon.MAP_WIDTH/2) + 5, ((i+1)*15), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, (Dungeon.MAP_WIDTH/2));
 				inventoryTexts.push(itemAr[i]);
 			}
@@ -85,10 +85,11 @@ package dungeon.utilities
 		public function down():void {
 			inventoryTexts[invPointer].displayText.color = invPointerColor;
 			invPointer++;
-			if (invPointer > inventoryTexts.length) {
-				invPointer = inventoryTexts.length;
+			var itemLength:uint = Dungeon.player.INVENTORY_SIZE + invLabels.length;
+			if (invPointer > itemLength) {
+				invPointer = itemLength;
 			} else {
-				if ( (invLabels.indexOf(inventoryTexts[invPointer].displayText.text) != -1) && (invPointer + 1 < inventoryTexts.length) ) {
+				if ( (invLabels.indexOf(inventoryTexts[invPointer].displayText.text) != -1) && (invPointer + 1 < itemLength) ) {
 					invPointer = invPointer + 1;
 					invPointerColor = inventoryTexts[invPointer].displayText.color;
 					inventoryTexts[invPointer].displayText.color = "0x00FF00";
