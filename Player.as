@@ -89,10 +89,8 @@ package
 			if (Input.pressed("I")) {
 				if (Dungeon.statusScreen.visible == false) {
 					Dungeon.statusScreen.visible = true;
-					FP.log("inventory shown");
 				} else {
 					Dungeon.statusScreen.visible = false;					
-					FP.log("inventory hidden");
 				}
 			}
 			if (collide("items", x, y)) {
@@ -100,7 +98,7 @@ package
 				collideInto("items", x, y, itemAr);
 				// potentially could collide with all objects on the ground here
 				// so we'll have to iterate
-				FP.log("You see here an item :" + itemAr[0].DESCRIPTION + "|" + itemAr[0].ITEM_TYPE);
+				FP.log("You see here an item :" + itemAr[0].DESCRIPTION);
 
 				// here's the code to give item to player, I guess we'll check for pickup at some point
 				// for testing assume autopickup
@@ -117,6 +115,8 @@ package
 				itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
 				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
 				
+				// now update inventory object
+				Dungeon.statusScreen.updateInventory();				
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");

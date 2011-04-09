@@ -38,8 +38,9 @@ package
 			// status screen creation
 			statusScreen = new StatusScreen();
 			statusScreen.visible = true;
-			//add(statusScreen.background);
+			add(statusScreen.background);
 			addList(statusScreen.displayTexts);
+			addList(statusScreen.inventoryTexts);
 		}
 		
 		private function addItem(item:*, index:int, array:Array):void {

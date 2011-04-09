@@ -58,8 +58,6 @@ package dungeon.contents
 			DESCRIPTION = armorMaterial + armorType + armorSlot;
 			ITEM_TYPE = GC.C_ITEM_ARMOR;
 			
-			
-			
 			graphic = new Image(ARMOR);
 		}
 		

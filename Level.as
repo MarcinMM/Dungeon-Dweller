@@ -225,7 +225,6 @@ package
 			// other obstructions
 			Dungeon.player.setPlayerStartingPosition(startingX, startingY);
 		}
-		
 
 		override public function update():void {
 			// synchronize updates with player turn
@@ -241,9 +240,6 @@ package
 				_rooms = 0;
 				drawLevel();
 			}
-			
 		}
-		
 	}
-
 }

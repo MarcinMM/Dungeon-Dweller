@@ -87,8 +87,6 @@ package dungeon.contents
 			ITEM_TYPE = GC.C_ITEM_WEAPON;
 
 			graphic = new Image(WEAPON);
-
-			
 		}
 		
 	}
