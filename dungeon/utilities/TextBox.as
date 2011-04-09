@@ -18,9 +18,8 @@ package dungeon.utilities
 		public function TextBox(_xOffset:Number, _yOffset:Number, _scaleX:Number, _scaleY:Number) 
 		{
 			image = new Image(GFX.TEXT_BOX);
-			image.scaleX = 1;
-			image.scaleY = 1;
-			image.scale = 1;
+			image.scaleX = _scaleX;
+			image.scaleY = _scaleY;
 
 			graphic = image;
 			

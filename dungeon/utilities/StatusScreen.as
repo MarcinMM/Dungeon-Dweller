@@ -23,7 +23,7 @@ package dungeon.utilities
 		
 		public function StatusScreen() 
 		{
-			background = new TextBox((Dungeon.MAP_WIDTH/2), 20, (Dungeon.MAP_WIDTH/2), Dungeon.MAP_HEIGHT);
+			background = new TextBox((Dungeon.MAP_WIDTH/2), 20, (Dungeon.TILESX/2), Dungeon.TILESY);
 			
 /*			experienceDisplay = new DisplayText(GC.EXPERIENCE_STRING + ": ", 245, 40, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
 			strengthDisplay = new DisplayText(GC.STRENGTH_STRING + ": ", 245, 55, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
