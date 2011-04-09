@@ -34,6 +34,7 @@ package dungeon.utilities
 			var vGridAr:Array = new Array(35);
 			var itemAr:Array = new Array();
 			var i:uint = 0;
+
 			/*
 			for (var i:uint = 0; i < 40; i++) {
 				hGridAr[i] = new DisplayText((i.toString()), (i * 20) + 2, 20-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 20);
@@ -47,7 +48,7 @@ package dungeon.utilities
 			*/
 			// we need a line of text that spans the screen that can be updated later
 			for (i = 0; i < 12; i++) {
-				itemAr[i] = new DisplayText("", (Dungeon.MAP_WIDTH/2), ((i+1)*20), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, (Dungeon.MAP_WIDTH/2));
+				itemAr[i] = new DisplayText("", (Dungeon.MAP_WIDTH/2) + 5, ((i+1)*15), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, (Dungeon.MAP_WIDTH/2));
 				inventoryTexts.push(itemAr[i]);
 			}
 

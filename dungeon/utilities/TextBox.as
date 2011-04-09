@@ -26,7 +26,8 @@ package dungeon.utilities
 			x = _xOffset;
 			y = _yOffset;
 			
-			layer = 1;
+			layer = 10;
+			visible = false;
 		}
 		
 		override public function update():void

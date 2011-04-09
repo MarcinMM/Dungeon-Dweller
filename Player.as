@@ -43,6 +43,7 @@ package
 			x = 140;
 			y = 140;
 			type = "player";
+			layer = 20;
 		}
 		
 		public function setPlayerStartingPosition(setX:int, setY:int):void {
