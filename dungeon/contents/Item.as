@@ -36,6 +36,9 @@ package dungeon.contents
 		public var DESCRIPTION:String; // stores un-identified text
 		public var TRUE_DESCRIPTION:String; // stores fully identified text
 		
+		// Inventory Management
+		public var invLetter:String = "";
+		
 		// items get generated on level creation at random
 		// we need an item quota perhaps based on dungeon level depth
 		// 

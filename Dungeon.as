@@ -37,7 +37,6 @@ package
 			
 			// status screen creation
 			statusScreen = new StatusScreen();
-			statusScreen.visible = true;
 			add(statusScreen.background);
 			addList(statusScreen.displayTexts);
 			addList(statusScreen.inventoryTexts);

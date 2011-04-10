@@ -27,6 +27,7 @@ package dungeon.utilities
 			displayText.font = _font;
 			displayText.scrollX = 0;
 			displayText.scrollY = 0;
+			visible = false;
 		}
 	}
 }

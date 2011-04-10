@@ -26,12 +26,15 @@ package dungeon.utilities
 		private var invPointerColor:String = "0xFF0000"; 
 		private var invLabels:Array = ["- Armor", "- Weapons"];
 		
+		public var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+		public var invLeterrsAss:Array = [];
+		
 		private var visibility:Boolean = false;
 		
 		public function StatusScreen() 
 		{
 			background = new TextBox((Dungeon.MAP_WIDTH/2), 20, (Dungeon.TILESX/2), Dungeon.TILESY);
-			
+			background.visible = false;
 /*			experienceDisplay = new DisplayText(GC.EXPERIENCE_STRING + ": ", 245, 40, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
 			strengthDisplay = new DisplayText(GC.STRENGTH_STRING + ": ", 245, 55, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
 			agilityDisplay = new DisplayText(GC.AGILITY_STRING + ": ", 245, 70, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
@@ -76,7 +79,7 @@ package dungeon.utilities
 					invPointer = invPointer - 2;
 					invPointerColor = inventoryTexts[invPointer].displayText.color;
 					inventoryTexts[invPointer].displayText.color = "0x00FF00";
-				} else {
+				} else if (invLabels.indexOf(inventoryTexts[invPointer-1].displayText.text) == -1) {
 					inventoryTexts[invPointer].displayText.color = invPointerColor;
 					invPointer--;
 					invPointerColor = inventoryTexts[invPointer].displayText.color;
@@ -89,14 +92,15 @@ package dungeon.utilities
 			inventoryTexts[invPointer].displayText.color = invPointerColor;
 			invPointer++;
 			var itemLength:uint = Dungeon.player.INVENTORY_SIZE + invLabels.length;
-			if (invPointer > itemLength) {
-				invPointer = itemLength;
+			if (invPointer >= itemLength) {
+				invPointer = (itemLength - 1);
+				inventoryTexts[invPointer].displayText.color = "0x00FF00";
 			} else {
 				if ( (invLabels.indexOf(inventoryTexts[invPointer].displayText.text) != -1) && (invPointer + 1 < itemLength) ) {
 					invPointer = invPointer + 1;
 					invPointerColor = inventoryTexts[invPointer].displayText.color;
 					inventoryTexts[invPointer].displayText.color = "0x00FF00";
-				} else {
+				} else if (invLabels.indexOf(inventoryTexts[invPointer-1].displayText.text) == -1) {
 					invPointerColor = inventoryTexts[invPointer].displayText.color;
 					inventoryTexts[invPointer].displayText.color = "0x00FF00";
 				}
@@ -110,8 +114,13 @@ package dungeon.utilities
 			inventoryTexts[0].displayText.text = "- Armor";
 
 			for (var j:uint = 0; j < Dungeon.player.ITEMS[GC.C_ITEM_ARMOR].length; j++) {
-				inventoryTexts[i].displayText.text = Dungeon.player.ITEMS[GC.C_ITEM_ARMOR][j].DESCRIPTION;
-				inventoryTexts[i].displayText.color = "0xFFFFFF";
+				if (Dungeon.player.ITEMS[GC.C_ITEM_ARMOR][j].EQUIPPED) {
+					inventoryTexts[i].displayText.text = "(*) " + Dungeon.player.ITEMS[GC.C_ITEM_ARMOR][j].invLetter + " - " + Dungeon.player.ITEMS[GC.C_ITEM_ARMOR][j].DESCRIPTION;
+					inventoryTexts[i].displayText.color = "0x0000FF";					
+				} else {
+					inventoryTexts[i].displayText.text = Dungeon.player.ITEMS[GC.C_ITEM_ARMOR][j].invLetter + " - " + Dungeon.player.ITEMS[GC.C_ITEM_ARMOR][j].DESCRIPTION;
+					inventoryTexts[i].displayText.color = "0xFFFFFF";
+				}
 				i++;
 			}
 
@@ -120,8 +129,13 @@ package dungeon.utilities
 			i++;
 
 			for (j = 0; j < Dungeon.player.ITEMS[GC.C_ITEM_WEAPON].length; j++) {
-				inventoryTexts[i].displayText.text = Dungeon.player.ITEMS[GC.C_ITEM_WEAPON][j].DESCRIPTION;
-				inventoryTexts[i].displayText.color = "0xFFFFFF";
+				if (Dungeon.player.ITEMS[GC.C_ITEM_WEAPON][j].EQUIPPED) {
+					inventoryTexts[i].displayText.text = "(*) " + Dungeon.player.ITEMS[GC.C_ITEM_WEAPON][j].invLetter + " - " + Dungeon.player.ITEMS[GC.C_ITEM_WEAPON][j].DESCRIPTION;
+					inventoryTexts[i].displayText.color = "0x0000FF";
+				} else {
+					inventoryTexts[i].displayText.text = Dungeon.player.ITEMS[GC.C_ITEM_WEAPON][j].invLetter + " - " + Dungeon.player.ITEMS[GC.C_ITEM_WEAPON][j].DESCRIPTION;
+					inventoryTexts[i].displayText.color = "0xFFFFFF";
+				}
 				i++;
 			}
 		}

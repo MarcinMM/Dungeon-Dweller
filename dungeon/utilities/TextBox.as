@@ -26,7 +26,7 @@ package dungeon.utilities
 			x = _xOffset;
 			y = _yOffset;
 			
-			layer = 10;
+			layer = 15;
 			visible = false;
 		}
 		

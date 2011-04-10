@@ -7,6 +7,7 @@ package
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import dungeon.utilities.StatusScreen;
+	import dungeon.utilities.GC;
 
 	/**
 	 * ...
@@ -30,6 +31,9 @@ package
 		public var INVENTORY_OPEN:Boolean = false;
 		public var INVENTORY_SIZE:uint = 0;
 		
+		public static var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+		public var invLeterrsAss:Array = [];
+		
 		public function Player() 
 		{
 			graphic = new Image(PLAYER);
@@ -38,6 +42,14 @@ package
 			Input.define("Up", Key.UP);
 			Input.define("Down", Key.DOWN);
 			Input.define("I", Key.I);
+			Input.define("a", Key.A);
+
+			/*
+			 * for each (var letter:String in invLettersUnass) {
+				Input.define(letter, letter.charCodeAt);
+			}*/
+			
+			//Input.define("a", Key.a);
 			setHitbox(20, 20);
 			x = 140;
 			y = 140;
@@ -48,6 +60,31 @@ package
 		public function setPlayerStartingPosition(setX:int, setY:int):void {
 			x = setX * GRIDSIZE;
 			y = setY * GRIDSIZE;
+		}
+		
+		// Equip, wield, wear or whatever? This needs to do hand-detection, applying effects, modifying attack, defense and resistances
+		// and everything else that happens when you uh "activate" an item. :D
+		public function activateItemAt(letter:String):void {
+			// first we need to find which item this is by its identifying letter
+			for each (var itemAr:Array in ITEMS) {
+				for each (var item:* in itemAr) {
+					if (item.invLetter == letter) {
+						var foundItem:Item = item;
+					}
+				}
+			}
+			
+			// then toggle equipped status in the found location
+			foundItem.EQUIPPED = true;
+			// then process whatever happens based on item type
+			// this is probably a massive TODO
+			switch(foundItem.ITEM_TYPE) {
+				case GC.C_ITEM_ARMOR:
+					break;
+				case GC.C_ITEM_WEAPON:
+					break;
+			}
+			Dungeon.statusScreen.updateInventory();
 		}
 		
 		override public function update():void
@@ -90,11 +127,18 @@ package
 			}
 
 			// Inventory Management
-			if (Input.pressed("Up") && INVENTORY_OPEN) {
-				Dungeon.statusScreen.up();
-			}
-			if (Input.pressed("Down") && INVENTORY_OPEN) {
-				Dungeon.statusScreen.down();
+			if (INVENTORY_OPEN) {
+				if (Input.pressed("Up")) {
+					Dungeon.statusScreen.up();
+				}
+				if (Input.pressed("Down")) {
+					Dungeon.statusScreen.down();
+				}
+				// now all inventory keys
+				if (Input.pressed("a")) {
+					activateItemAt("a");
+				}
+				
 			}
 			if (Input.pressed("I")) {
 				// this needs to suspend movement and turn directional keys to inventory traversal
@@ -109,6 +153,7 @@ package
 			if (collide("items", x, y)) {
 				var itemAr:Array = [];
 				collideInto("items", x, y, itemAr);
+				trace(Dungeon.statusScreen.background.visible);
 				// potentially could collide with all objects on the ground here
 				// so we'll have to iterate
 				FP.log("You see here an item :" + itemAr[0].DESCRIPTION);
@@ -116,6 +161,11 @@ package
 				// here's the code to give item to player, I guess we'll check for pickup at some point
 				// for testing assume autopickup
 				var newType:String = itemAr[0].ITEM_TYPE;
+				// find a new letter for this and assign it to this item
+				var newLetter:String = invLettersUnass.shift();
+				invLeterrsAss.push(newLetter);
+				itemAr[0].invLetter = newLetter;
+				// now add item to local items
 				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
 				INVENTORY_SIZE++;
 
@@ -130,7 +180,7 @@ package
 				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
 				
 				// now update inventory object
-				Dungeon.statusScreen.updateInventory();				
+				Dungeon.statusScreen.updateInventory();	
 			}
 			//FP.log("Step: " + STEP);
 			//FP.watch("STEP");
