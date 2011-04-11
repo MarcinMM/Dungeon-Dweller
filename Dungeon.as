@@ -13,6 +13,8 @@ package
 		public static var player:Player;
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
+		
+		public var items:Array = new Array();
 
 		public static const MAP_WIDTH:Number = 800;
 		public static const MAP_HEIGHT:Number = 600;
@@ -23,6 +25,8 @@ package
 		
 		public function Dungeon() 
 		{
+			weapons = dataloader.setupItems();
+			
 			Dungeon.player = new Player;
 			Dungeon.level = new Level;
 			add(player);

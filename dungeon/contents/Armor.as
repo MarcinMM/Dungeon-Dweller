@@ -23,6 +23,21 @@ package dungeon.contents
 		public var armorMaterial:String;
 		public var armorType:String;
 		public var armorSlot:String;
+
+					<name>Leather Vest</name>
+			<material>Cloth</material>
+			<slot>HEAD</slot>
+			<defense>2</defense>
+			<attack>0</attack>
+			<crit>0</crit>
+			<strengthReq>0</strengthReq>
+
+		
+		// combat vars
+		public var defense:uint;
+		public var attack:uint;
+		public var crit:Number;
+		public var strengthReq:uint;
 		
 		public function Armor() 
 		{

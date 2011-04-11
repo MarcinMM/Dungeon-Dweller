@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+<items>
+	<weapons>
+		<weapon>
+			<name>Gladius</name>
+			<attack>4</attack>
+			<defense>5</defense>
+			<pen>.40</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>8</strengthReq>
+		</weapon>
+		<weapon>
+			<name>Spatha</name>
+			<attack>5</attack>
+			<defense>5</defense>
+			<pen>.40</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.10</crit>
+			<strengthReq>10</strengthReq>
+		</weapon>
+		<weapon>
+			<name>Short Sword</name>
+			<attack>4</attack>
+			<defense>5</defense>
+			<pen>.50</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>8</strengthReq>
+		</weapon>
+	</weapons>
+	<armors>
+		<armor>
+			<name>Leather Vest</name>
+			<material>Cloth</material>
+			<slot>HEAD</slot>
+			<defense>2</defense>
+			<attack>0</attack>
+			<crit>0</crit>
+			<strengthReq>0</strengthReq>
+		</armor>
+		<armor>
+			<name>Chain Vest</name>
+			<material>Iron</material>
+			<slot>CHEST</slot>
+			<defense>4</defense>
+			<attack>0</attack>
+			<crit>2</crit>
+			<strengthReq>10</strengthReq>
+		</armor>
+		<armor>
+			<name>Scale Greaves</name>
+			<material>Steel</material>
+			<slot>LEGS</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+		</armor>
+	</armors>
+	<materials>
+		<material>
+			<type>Copper</type>
+			<modifier>1</modifier>
+			<rarity>1.0</rarity>
+			<upperRarityThreshold>0</upperRarityThreshold>
+			<upperRarityIncrement>0</upperRarityIncrement>
+			<lowerRarityThreshold>3</lowerRarityThreshold>
+			<lowerRarityIncrement>.20</lowerRarityIncrement>
+			<shatter>0</shatter>
+			<burn>0</burn>
+			<rust>0</rust>
+			<specialAgainst>0</specialAgainst>
+			<specialModifier>0</specialModifier>
+		</material>
+		<material>
+			<type>Iron</type>
+			<modifier>1</modifier>
+			<rarity>.90</rarity>
+			<upperRarityThreshold>3</upperRarityThreshold>
+			<upperRarityIncrement>.1</upperRarityIncrement>
+			<lowerRarityThreshold>5</lowerRarityThreshold>
+			<lowerRarityIncrement>.1</lowerRarityIncrement>
+			<shatter>0</shatter>
+			<burn>0</burn>
+			<rust>0.05</rust>
+			<specialAgainst>0</specialAgainst>
+			<specialModifier>0</specialModifier>
+		</material>
+	</materials>
+</items>
+</data>

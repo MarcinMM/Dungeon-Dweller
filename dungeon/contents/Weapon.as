@@ -43,6 +43,16 @@ package dungeon.contents
 		public var weaponSubtype:String;
 		public var weaponMaterial:String;
 		
+		// combat vars
+		public var attack:uint;
+		public var defense:uint;
+		public var pen:Number;
+		public var hands:uint;
+		public var offhand:Boolean;
+		public var offhandRating:Number;
+		public var crit:Number;
+		public var strengthReq:uint;
+		
 		public function Weapon() 
 		{
 			var randType:uint = Math.round(Math.random() * (TYPE.length-1));
