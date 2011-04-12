@@ -25,10 +25,7 @@ package dungeon.utilities
 		private var invPointer:uint = 0;
 		private var invPointerColor:String = "0xFF0000"; 
 		private var invLabels:Array = ["- Armor", "- Weapons"];
-		
-		public var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-		public var invLeterrsAss:Array = [];
-		
+			
 		private var visibility:Boolean = false;
 		
 		public function StatusScreen() 

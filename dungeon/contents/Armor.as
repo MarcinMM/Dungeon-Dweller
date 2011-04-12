@@ -25,10 +25,10 @@ package dungeon.contents
 		public var armorSlot:String;
 		
 		// combat vars
-		public var defense:uint;
-		public var attack:uint;
-		public var crit:Number;
-		public var strengthReq:uint;
+		public var defense:uint = 0;
+		public var attack:uint = 0;
+		public var crit:Number = 0;
+		public var strengthReq:uint = 0;
 		
 		public function Armor() 
 		{

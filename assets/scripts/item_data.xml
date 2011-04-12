@@ -35,6 +35,204 @@
 			<strengthReq>8</strengthReq>
 			<type>H1SWORD</type>
 		</weapon>
+		<weapon name="Long Sword">
+			<attack>5</attack>
+			<defense>5</defense>
+			<pen>.50</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.1</crit>
+			<strengthReq>10</strengthReq>
+			<type>H1SWORD</type>
+		</weapon>
+		<weapon name="Falchion">
+			<attack>6</attack>
+			<defense>4</defense>
+			<pen>.30</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.08</crit>
+			<strengthReq>11</strengthReq>
+			<type>H1SWORD</type>
+		</weapon>
+		<weapon name="Rapier">
+			<attack>4</attack>
+			<defense>6</defense>
+			<pen>.70</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>9</strengthReq>
+			<type>H1SWORD</type>
+		</weapon>
+		<weapon name="Claymore">
+			<attack>7</attack>
+			<defense>3</defense>
+			<pen>.60</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>13</strengthReq>
+			<type>H2SWORD</type>
+		</weapon>
+		<weapon name="Nodachi">
+			<attack>7</attack>
+			<defense>5</defense>
+			<pen>.30</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>13</strengthReq>
+			<type>H2SWORD</type>
+		</weapon>
+		<weapon name="Flamberge">
+			<attack>7</attack>
+			<defense>4</defense>
+			<pen>.60</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>13</strengthReq>
+			<type>H2SWORD</type>
+		</weapon>
+		<weapon name="Kodachi">
+			<attack>5</attack>
+			<defense>7</defense>
+			<pen>.30</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>8</strengthReq>
+			<type>CURVED</type>
+		</weapon>
+		<weapon name="Katana">
+			<attack>6</attack>
+			<defense>7</defense>
+			<pen>.30</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>9</strengthReq>
+			<type>CURVED</type>
+		</weapon>
+		<weapon name="Saber">
+			<attack>6</attack>
+			<defense>6</defense>
+			<pen>.30</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.10</crit>
+			<strengthReq>9</strengthReq>
+			<type>CURVED</type>
+		</weapon>
+		<weapon name="Scimitar">
+			<attack>6</attack>
+			<defense>6</defense>
+			<pen>.30</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.10</crit>
+			<strengthReq>9</strengthReq>
+			<type>CURVED</type>
+		</weapon>
+		<weapon name="Falcata">
+			<attack>6</attack>
+			<defense>5</defense>
+			<pen>.40</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>11</strengthReq>
+			<type>CURVED</type>
+		</weapon>
+		<weapon name="Morning Star">
+			<attack>5</attack>
+			<defense>3</defense>
+			<pen>.40</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>11</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
+		<weapon name="Mace">
+			<attack>6</attack>
+			<defense>3</defense>
+			<pen>.70</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.07</crit>
+			<strengthReq>11</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
+		<weapon name="Flail">
+			<attack>4</attack>
+			<defense>3</defense>
+			<pen>.20</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>10</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
+		<weapon name="Club">
+			<attack>5</attack>
+			<defense>4</defense>
+			<pen>.20</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>10</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
+		<weapon name="Warhammer">
+			<attack>6</attack>
+			<defense>4</defense>
+			<pen>.70</pen>
+			<hands>1</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.07</crit>
+			<strengthReq>11</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
+		<weapon name="Great Warhammer">
+			<attack>8</attack>
+			<defense>2</defense>
+			<pen>.70</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>13</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
+		<weapon name="Maul">
+			<attack>8</attack>
+			<defense>2</defense>
+			<pen>.40</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>13</strengthReq>
+			<type>BLUNT</type>
+		</weapon>
 	</weapons>
 	<armors>
 		<armor name="Leather Vest">
@@ -114,6 +312,71 @@
 			<rust>0.05</rust>
 			<specialAgainst>0</specialAgainst>
 			<specialModifier>0</specialModifier>
+		</material>
+		<material name="Silver">
+			<modifier>1</modifier>
+			<rarity>30</rarity>
+			<upperRarityThreshold>8</upperRarityThreshold>
+			<upperRarityIncrement>10</upperRarityIncrement>
+			<lowerRarityThreshold>0</lowerRarityThreshold>
+			<lowerRarityIncrement>0</lowerRarityIncrement>
+			<shatter>0</shatter>
+			<burn>0</burn>
+			<rust>0</rust>
+			<specialAgainst>SILVER</specialAgainst>
+			<specialModifier>2</specialModifier>
+		</material>
+		<material name="Mithril">
+			<modifier>1.2</modifier>
+			<rarity>20</rarity>
+			<upperRarityThreshold>10</upperRarityThreshold>
+			<upperRarityIncrement>10</upperRarityIncrement>
+			<lowerRarityThreshold>0</lowerRarityThreshold>
+			<lowerRarityIncrement>0</lowerRarityIncrement>
+			<shatter>0.05</shatter>
+			<burn>0</burn>
+			<rust>0</rust>
+			<specialAgainst>LIGHT</specialAgainst>
+			<specialModifier>1.1</specialModifier>			
+		</material>
+		<material name="Bone">
+			<modifier>0.9</modifier>
+			<rarity>100</rarity>
+			<upperRarityThreshold>0</upperRarityThreshold>
+			<upperRarityIncrement>0</upperRarityIncrement>
+			<lowerRarityThreshold>6</lowerRarityThreshold>
+			<lowerRarityIncrement>30</lowerRarityIncrement>
+			<shatter>0.05</shatter>
+			<burn>0.03</burn>
+			<rust>0</rust>
+			<specialAgainst>0</specialAgainst>
+			<specialModifier>0</specialModifier>
+		</material>
+		<material name="Wood">
+			<modifier>0.7</modifier>
+			<rarity>100</rarity>
+			<upperRarityThreshold>0</upperRarityThreshold>
+			<upperRarityIncrement>0</upperRarityIncrement>
+			<lowerRarityThreshold>3</lowerRarityThreshold>
+			<lowerRarityIncrement>30</lowerRarityIncrement>
+			<shatter>0.03</shatter>
+			<burn>0.1</burn>
+			<rust>0</rust>
+			<specialAgainst></specialAgainst>
+			<specialModifier>0</specialModifier>
+		</material>
+		<material name="Obsidian">
+			<modifier>1.1</modifier>
+			<rarity>5</rarity>
+			<upperRarityThreshold>0</upperRarityThreshold>
+			<upperRarityIncrement>0</upperRarityIncrement>
+			<lowerRarityThreshold>0</lowerRarityThreshold>
+			<lowerRarityIncrement>0</lowerRarityIncrement>
+			<shatter>0.03</shatter>
+			<burn>0</burn>
+			<rust>0</rust>
+			<specialAgainst>0</specialAgainst>
+			<specialModifier>0</specialModifier>			
 		</material>
 	</materials>
 </items>

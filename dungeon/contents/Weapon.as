@@ -21,15 +21,15 @@ package dungeon.contents
 		public var weaponType:String;
 		public var weaponMaterial:String;
 		
-		// combat vars
-		public var attack:uint;
-		public var defense:uint;
-		public var pen:Number;
-		public var hands:uint;
-		public var offhand:Boolean;
-		public var offhandRating:Number;
-		public var crit:Number;
-		public var strengthReq:uint;
+		// combat vars, empty hands by default?
+		public var attack:uint = 0;
+		public var defense:uint = 0;
+		public var pen:Number = 0;
+		public var hands:uint = 1;
+		public var offhand:Boolean = false;
+		public var offhandRating:Number = 0;
+		public var crit:Number = 0.3;
+		public var strengthReq:uint = 0;
 		
 		public function Weapon() 
 		{
