@@ -2,8 +2,7 @@
 <data>
 <items>
 	<weapons>
-		<weapon>
-			<name>Gladius</name>
+		<weapon name="Gladius">
 			<attack>4</attack>
 			<defense>5</defense>
 			<pen>.40</pen>
@@ -12,9 +11,9 @@
 			<offhandRating>0</offhandRating>
 			<crit>.15</crit>
 			<strengthReq>8</strengthReq>
+			<type>H1SWORD</type>
 		</weapon>
-		<weapon>
-			<name>Spatha</name>
+		<weapon name="Spatha">
 			<attack>5</attack>
 			<defense>5</defense>
 			<pen>.40</pen>
@@ -23,9 +22,9 @@
 			<offhandRating>0</offhandRating>
 			<crit>.10</crit>
 			<strengthReq>10</strengthReq>
+			<type>H1SWORD</type>
 		</weapon>
-		<weapon>
-			<name>Short Sword</name>
+		<weapon name="Short Sword">
 			<attack>4</attack>
 			<defense>5</defense>
 			<pen>.50</pen>
@@ -34,11 +33,11 @@
 			<offhandRating>0</offhandRating>
 			<crit>.15</crit>
 			<strengthReq>8</strengthReq>
+			<type>H1SWORD</type>
 		</weapon>
 	</weapons>
 	<armors>
-		<armor>
-			<name>Leather Vest</name>
+		<armor name="Leather Vest">
 			<material>Cloth</material>
 			<slot>HEAD</slot>
 			<defense>2</defense>
@@ -46,8 +45,7 @@
 			<crit>0</crit>
 			<strengthReq>0</strengthReq>
 		</armor>
-		<armor>
-			<name>Chain Vest</name>
+		<armor name="Chain Vest">
 			<material>Iron</material>
 			<slot>CHEST</slot>
 			<defense>4</defense>
@@ -55,8 +53,7 @@
 			<crit>2</crit>
 			<strengthReq>10</strengthReq>
 		</armor>
-		<armor>
-			<name>Scale Greaves</name>
+		<armor name="Scale Greaves">
 			<material>Steel</material>
 			<slot>LEGS</slot>
 			<defense>6</defense>
@@ -66,28 +63,52 @@
 		</armor>
 	</armors>
 	<materials>
-		<material>
-			<type>Copper</type>
+		<material name="null">
 			<modifier>1</modifier>
-			<rarity>1.0</rarity>
+			<rarity>1</rarity>
+			<upperRarityThreshold>0</upperRarityThreshold>
+			<upperRarityIncrement>0</upperRarityIncrement>
+			<lowerRarityThreshold>0</lowerRarityThreshold>
+			<lowerRarityIncrement>0</lowerRarityIncrement>
+			<shatter>0</shatter>
+			<burn>0</burn>
+			<rust>0</rust>
+			<specialAgainst>0</specialAgainst>
+			<specialModifier>0</specialModifier>			
+		</material>
+		<material name="Copper">
+			<modifier>0.9</modifier>
+			<rarity>100</rarity>
 			<upperRarityThreshold>0</upperRarityThreshold>
 			<upperRarityIncrement>0</upperRarityIncrement>
 			<lowerRarityThreshold>3</lowerRarityThreshold>
-			<lowerRarityIncrement>.20</lowerRarityIncrement>
+			<lowerRarityIncrement>20</lowerRarityIncrement>
 			<shatter>0</shatter>
 			<burn>0</burn>
 			<rust>0</rust>
 			<specialAgainst>0</specialAgainst>
 			<specialModifier>0</specialModifier>
 		</material>
-		<material>
-			<type>Iron</type>
+		<material name="Iron">
 			<modifier>1</modifier>
-			<rarity>.90</rarity>
+			<rarity>100</rarity>
 			<upperRarityThreshold>3</upperRarityThreshold>
-			<upperRarityIncrement>.1</upperRarityIncrement>
+			<upperRarityIncrement>10</upperRarityIncrement>
 			<lowerRarityThreshold>5</lowerRarityThreshold>
-			<lowerRarityIncrement>.1</lowerRarityIncrement>
+			<lowerRarityIncrement>10</lowerRarityIncrement>
+			<shatter>0</shatter>
+			<burn>0</burn>
+			<rust>0.05</rust>
+			<specialAgainst>0</specialAgainst>
+			<specialModifier>0</specialModifier>
+		</material>
+		<material name="Steel">
+			<modifier>1.1</modifier>
+			<rarity>90</rarity>
+			<upperRarityThreshold>6</upperRarityThreshold>
+			<upperRarityIncrement>10</upperRarityIncrement>
+			<lowerRarityThreshold>6</lowerRarityThreshold>
+			<lowerRarityIncrement>10</lowerRarityIncrement>
 			<shatter>0</shatter>
 			<burn>0</burn>
 			<rust>0.05</rust>

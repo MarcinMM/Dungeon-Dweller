@@ -90,17 +90,16 @@ package
 		override public function update():void
 		{
 			var leftImpact:Boolean = false, rightImpact:Boolean = false, topImpact:Boolean = false, bottomImpact:Boolean = false;
-			//var s:AnotherShip = collide("npcShip", x, y) as AnotherShip;
-			if (collide("npcShip", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
+			if (collide("npc", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
 				topImpact = true;
 			}
-			if (collide("npcShip", x, y - GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
+			if (collide("npc", x, y - GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
 				bottomImpact = true;
 			}
-			if (collide("npcShip", x + GRIDSIZE, y) || collide("level", x + GRIDSIZE, y)) {
+			if (collide("npc", x + GRIDSIZE, y) || collide("level", x + GRIDSIZE, y)) {
 				leftImpact = true;
 			}
-			if (collide("npcShip", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
+			if (collide("npc", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
 				rightImpact = true;
 			}
 			

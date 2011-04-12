@@ -3,6 +3,7 @@ package
 	import net.flashpunk.World;
 	import dungeon.utilities.StatusScreen;
 	import dungeon.utilities.GC;
+	import dungeon.utilities.DataLoader;
 	
 	/**
 	 * ...
@@ -22,10 +23,12 @@ package
 		public static const TILE_HEIGHT:Number = 20;
 		public static const TILESX:Number = MAP_WIDTH/TILE_WIDTH;
 		public static const TILESY:Number = MAP_HEIGHT/TILE_HEIGHT;
+
+		public static var dataloader:DataLoader = new DataLoader();
 		
 		public function Dungeon() 
 		{
-			weapons = dataloader.setupItems();
+			dataloader.setupItems();
 			
 			Dungeon.player = new Player;
 			Dungeon.level = new Level;
@@ -37,7 +40,7 @@ package
 			// but this is the init
 			Dungeon.level.ITEMS.forEach(addItem);
 			
-			add(new AnotherShip);
+			add(new NPC);
 			
 			// status screen creation
 			statusScreen = new StatusScreen();

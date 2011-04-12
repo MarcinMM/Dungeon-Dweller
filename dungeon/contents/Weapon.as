@@ -4,6 +4,8 @@ package dungeon.contents
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.*;
 	import dungeon.utilities.GC;
+	import dungeon.utilities.MaterialPrototype;
+	import dungeon.utilities.WeaponPrototype;
 
 	/**
 	 * ...
@@ -12,35 +14,11 @@ package dungeon.contents
 	public class Weapon extends Item 
 	{
 		[Embed(source = '../../assets/weapon.png')] private const WEAPON:Class;
-		
-		public const MATERIAL:Array = ["Bone", "Wood", "Obsidian-laced", "Copper", "Iron", "Steel", "Silver", "Mithril"];
-		
-		public const TYPE:Array = ["H2SWORD", "H1SWORD", "CURVED", "BLUNT", "DAGGER", "POLEARM", "RANGED", "AXE"];
-		public const H1SWORD:Array = ["Gladius", "Short sword", "Rapier", "Falchion", "Spatha"];
-		public const H2SWORD:Array = ["Claymore", "Nodachi", "Flamberge"];
-		public const CURVED:Array = ["Katana", "Saber", "Scimitar", "Falcata"];
-		public const BLUNT:Array = ["Morning Star", "Mace", "Flail", "Club", "Warhammer", "Maul"];
-		public const DAGGER:Array = ["Stiletto", "Kris", "Dagger", "Misericorde", "Katars", "Dirk", "Kukri", "Main-gauche"];
-		public const POLEARM:Array = ["Spear", "Halberd", "Glaive", "Naginata", "Bardiche"];
-		public const RANGED:Array = ["Bow", "Crossbow", "Sling", "Wand", "Throwing axe", "Throwing knife", "Shuriken"];
-		public const AXE:Array = ["Axe", "Double-headed Axe", "Battleaxe", "Tomahawk"];
-		
+
 		public const TILE_INDEX:uint = 0;
-		
-		public const SUBTYPE:Object = {
-			H1SWORD: H1SWORD,
-			H2SWORD: H2SWORD,
-			CURVED: CURVED,
-			BLUNT: BLUNT,
-			DAGGER: DAGGER,
-			POLEARM: POLEARM,
-			RANGED: RANGED,
-			AXE: AXE
-		};
-		
+
 		// now vars
 		public var weaponType:String;
-		public var weaponSubtype:String;
 		public var weaponMaterial:String;
 		
 		// combat vars
@@ -55,37 +33,75 @@ package dungeon.contents
 		
 		public function Weapon() 
 		{
-			var randType:uint = Math.round(Math.random() * (TYPE.length-1));
-			weaponType = TYPE[randType];
+			var randWeapon:uint = Math.round(Math.random() * (Dungeon.dataloader.weapons.length - 1));
+			var weaponPrototype:WeaponPrototype = Dungeon.dataloader.weapons[randWeapon];
+			var materialPrototype:MaterialPrototype = new MaterialPrototype;
 			
-			var randSubtype:uint = Math.round(Math.random() * (SUBTYPE[weaponType].length-1));
-			weaponSubtype = SUBTYPE[weaponType][randSubtype];
+			// how to select from materials based on rarity? Iterate through all?
+			// Formula: rarity = materialRarity - (Max((lowerLevelTreshold - Level),0) * lowerTresholdIncrement) - ((Max(Level - UpperLevelTreshold),0)
+			// Then if the material rand is larger than computed rarity, this material is allowed
+			var randMaterial:uint = Math.round(Math.random() * 100);
+			var adjustedMaterialRarity:uint;
+			var materialRarity:uint = 0;
+			var selectedMaterial:uint = 0;
+			var allowedMaterials:Array = new Array();
+			var finalMaterialRand:uint = 0;
 			
-			// need to weight this away from bone and wood, those should be relatively rare
-			// later add a weight based on level so as to not find silver and mithril right away
-			var randMat:uint = Math.round(Math.random() * (MATERIAL.length-1));
-			weaponMaterial = MATERIAL[randMat] + " ";
+			// vars for testing
+			var lowerThreshold:int = 0;
+			var upperThreshold:int = 0;
+			
+			// could this be done any other way than a foreach?
+			for (var i:uint = 1; i < Dungeon.dataloader.materials.length; i++) {
+				materialPrototype = Dungeon.dataloader.materials[i];
+				
+				// hmm can't access Dungeon.level.dungeonDepth
+				lowerThreshold = Math.max((1 - materialPrototype.lowerRarityThreshold), 0) * materialPrototype.lowerRarityIncrement;
+				upperThreshold = Math.max((materialPrototype.upperRarityThreshold - 1), 0) * materialPrototype.upperRarityIncrement;
+				adjustedMaterialRarity = materialPrototype.rarity - lowerThreshold - upperThreshold;
+				
+				// change this to adding all materials that pass probability
+				// then do another random on the resulting array
+				if (randMaterial < adjustedMaterialRarity) {
+					allowedMaterials.push(i);
+				}
+			}
+			
+			finalMaterialRand = Math.round(Math.random() * (allowedMaterials.length - 1));
+			
+			materialPrototype = Dungeon.dataloader.materials[allowedMaterials[finalMaterialRand]];
 			
 			// weapon post-processing to remove silliness
 			// slings should not have a type, shurikens shouldn't be made of wood (a duck!)
 			// other ranged weapons should be "laced" with a certain extra material, not made of it
-			if (weaponType == "RANGED") {
-				switch(weaponSubtype) {
+			if (weaponPrototype.type == "RANGED") {
+				switch(weaponPrototype.name) {
 					case "Sling":
-						weaponMaterial = "";
+						materialPrototype = Dungeon.dataloader.materials[0]; // no material
 						break;
 					case "Shuriken":
-						if (weaponMaterial == "Wood ") {
-							weaponMaterial = "Steel ";
+						if (materialPrototype == Dungeon.dataloader.materials[1]) {
+							materialPrototype = Dungeon.dataloader.materials[3]; // this needs to be steel
 						}
 						break;
 					case "Bow":
 					case "Crossbow":
 					case "Wand":
-						weaponMaterial = weaponMaterial + "-laced ";
+						materialPrototype = Dungeon.dataloader.materials[0]; // this needs to be no material
 						break;
 				}
 			}
+			
+			// now that we have material selected, we need to apply the modifiers and set the final vars
+			
+			attack = Math.floor(materialPrototype.modifier * weaponPrototype.attack);
+			defense = Math.floor(materialPrototype.modifier * weaponPrototype.defense);
+			pen = materialPrototype.modifier * weaponPrototype.pen;
+			hands = weaponPrototype.hands;
+			offhand = weaponPrototype.offhand;
+			offhandRating = weaponPrototype.offhandRating;
+			crit = materialPrototype.modifier * weaponPrototype.crit;
+			strengthReq = weaponPrototype.strengthReq;
 			
 			super();
 			
@@ -93,7 +109,7 @@ package dungeon.contents
 			// this will be used for overlaying the player character to show equipment
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
-			DESCRIPTION = weaponMaterial + weaponSubtype;
+			DESCRIPTION = materialPrototype.name + weaponPrototype.name;
 			ITEM_TYPE = GC.C_ITEM_WEAPON;
 
 			graphic = new Image(WEAPON);

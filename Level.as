@@ -82,6 +82,9 @@ package
 		
 		public var _step:int = 0;
 		
+		// Level game data
+		public var dungeonDepth:uint = 1;
+		
 		public function Level() 
 		{
 			FP.console.enable();
