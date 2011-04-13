@@ -114,7 +114,7 @@ package
 					if (item.EQUIPPED) {
 						switch(item.ITEM_TYPE) {
 							case GC.C_ITEM_ARMOR:
-								switch(item.slot) {
+								switch(item.armorSlot) {
 									case "LEGS":
 										legSlot = item;
 									break;
@@ -149,14 +149,19 @@ package
 			// weapon and stat for att and def are averaged, then armor is added
 			// I am not sure if that makes sense, but it comes out to a sword having def. about equal to a chain chestplate
 			// I guess natural stat max is 20
-			STATS[GC.STATUS_ATT] = Math.floor(((STATS[GC.STATUS_STR] + weapon.attack + (0.2 * STATS[GC.STATUS_AGI]))/3) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
-			STATS[GC.STATUS_DEF] = Math.floor(((STATS[GC.STATUS_AGI] + (0.2 * STATS[GC.STATUS_STR]) + weapon.defense)/3) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
+			// New idea: everything that relies on stats for boosts should only do so above 10pts of said stat, as 10pts is the baseline
+			// New idea 2: strength and agility are %-based (of 10) multipliers on weapon attack and defence. Armor attack and defence is unaffected by stats.
+			STATS[GC.STATUS_ATT] = Math.floor((((STATS[GC.STATUS_STR] / 10) + (0.02 * (STATS[GC.STATUS_AGI] / 10))) * weapon.attack) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			//STATS[GC.STATUS_ATT] = Math.floor(((STATS[GC.STATUS_STR] - 10) + weapon.attack + (0.2 * (STATS[GC.STATUS_AGI] - 10))) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			STATS[GC.STATUS_ATT_MIN] = Math.ceil(STATS[GC.STATUS_ATT] / 2); // upper limit of half of calculated
+			STATS[GC.STATUS_DEF] = Math.floor((((STATS[GC.STATUS_AGI] / 10) + (0.2 * (STATS[GC.STATUS_STR] / 10))) * weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
+			//STATS[GC.STATUS_DEF] = Math.floor(((STATS[GC.STATUS_AGI] - 10) + (0.2 * (STATS[GC.STATUS_STR] - 10)) + weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
 			STATS[GC.STATUS_CRITDEF] = Math.floor((STATS[GC.STATUS_AGI] * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
-			STATS[GC.STATUS_PEN] = weapon.pen + (0.01 * STATS[GC.STATUS_STR]);
-			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS]));
-			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS]; // plus items
-			STATS[GC.STATUS_SPPOWER] = STATS[GC.STATUS_WIS]; // plus items 
-			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_WIS]; // plus items
+			STATS[GC.STATUS_PEN] = weapon.pen + (0.02 * (STATS[GC.STATUS_STR] - 10));
+			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS] - 20));
+			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items
+			STATS[GC.STATUS_SPPOWER] = Math.floor(STATS[GC.STATUS_INT]/10); // straight dmg multiplier for spells, plus items; items should have % boosts, maybe lesser and greater spellpower being 5 and 10% boosts each?
+			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_LEVEL]; // plus items. should this be alterable?
 			STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
 			
 			Dungeon.statusScreen.statUpdate(STATS);

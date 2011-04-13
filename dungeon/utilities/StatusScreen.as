@@ -212,8 +212,8 @@ package dungeon.utilities
 			attDisplay.displayText.text = "ATT: " + _stats[GC.STATUS_ATT];
 			defDisplay.displayText.text = "DEF: " + _stats[GC.STATUS_DEF];
 			critdefDisplay.displayText.text = "CRD: " + _stats[GC.STATUS_CRITDEF];
-			perDisplay.displayText.text = "PER: " + _stats[GC.STATUS_PER];
-			penDisplay.displayText.text = "PEN: " + _stats[GC.STATUS_PEN];
+			perDisplay.displayText.text = "PER: " + _stats[GC.STATUS_PER].toFixed(2);
+			penDisplay.displayText.text = "PEN: " + _stats[GC.STATUS_PEN].toFixed(2);
 			sppowerDisplay.displayText.text = "SPP: " + _stats[GC.STATUS_SPPOWER];
 			splevelDisplay.displayText.text = "SPL: " + _stats[GC.STATUS_SPLEVEL];
 		}

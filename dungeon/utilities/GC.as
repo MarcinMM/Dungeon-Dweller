@@ -37,6 +37,7 @@ package dungeon.utilities
 
 		// derived constants for arrays
 		public static const STATUS_ATT:uint = 10; // mostly strength + bit of agi + item stat attack
+		public static const STATUS_ATT_MIN:uint = 17; // minimum attack value for RNG
 		public static const STATUS_DEF:uint = 11; // mostly agi + bit of str + item stat
 		public static const STATUS_CRITDEF:uint = 12; // bit of agi + armor, not sure how this works yet
 		public static const STATUS_PER:uint = 13; // persuasion, cha + bit of str + bit of wis
