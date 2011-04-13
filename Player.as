@@ -49,6 +49,7 @@ package
 			Input.define("a", Key.A);
 			Input.define("b", Key.B);
 			Input.define("c", Key.C);
+			Input.define("ENTER", Key.ENTER);
 
 			/*
 			 * for each (var letter:String in invLettersUnass) {
@@ -145,10 +146,14 @@ package
 				}
 			}
 
-			STATS[GC.STATUS_ATT] = Math.floor(STATS[GC.STATUS_STR] + weapon.attack + (0.2 * STATS[GC.STATUS_AGI]) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
-			STATS[GC.STATUS_DEF] = Math.floor(STATS[GC.STATUS_AGI] + (0.2 * STATS[GC.STATUS_STR]) + weapon.defense + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
+			// weapon and stat for att and def are averaged, then armor is added
+			// I am not sure if that makes sense, but it comes out to a sword having def. about equal to a chain chestplate
+			// I guess natural stat max is 20
+			STATS[GC.STATUS_ATT] = Math.floor(((STATS[GC.STATUS_STR] + weapon.attack + (0.2 * STATS[GC.STATUS_AGI]))/3) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			STATS[GC.STATUS_DEF] = Math.floor(((STATS[GC.STATUS_AGI] + (0.2 * STATS[GC.STATUS_STR]) + weapon.defense)/3) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
 			STATS[GC.STATUS_CRITDEF] = Math.floor((STATS[GC.STATUS_AGI] * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
-			STATS[GC.STATUS_PEN] = weapon.pen + (0.05 * STATS[GC.STATUS_STR]);
+			STATS[GC.STATUS_PEN] = weapon.pen + (0.01 * STATS[GC.STATUS_STR]);
+			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS]));
 			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS]; // plus items
 			STATS[GC.STATUS_SPPOWER] = STATS[GC.STATUS_WIS]; // plus items 
 			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_WIS]; // plus items
@@ -174,20 +179,20 @@ package
 				}
 			}
 			
-			// then toggle equipped status in the found location
-			foundItem.EQUIPPED = true;
-			// then process whatever happens based on item type
-			// this is probably a massive TODO
+			
+			// then unequip the currently equipped item in that location
 			switch(foundItem.ITEM_TYPE) {
 				case GC.C_ITEM_ARMOR:
 					// this needs to unequip based on slot, atm it unequips all
+					var armorItem:Armor = foundItem as Armor;
 					for each (var armor:Armor in ITEMS[GC.C_ITEM_ARMOR]) {
-						if (armor.EQUIPPED) {
+						if (armor.EQUIPPED && (armor.armorSlot == armorItem.armorSlot)) {
 							armor.EQUIPPED = false;
 						}
 					}
 				break;
 				case GC.C_ITEM_WEAPON:
+					var weaponItem:Weapon = foundItem as Weapon;
 					// this needs to unequip based on handedness, atm it unequips all
 					for each (var weapon:Weapon in ITEMS[GC.C_ITEM_WEAPON]) {
 						if (weapon.EQUIPPED) {
@@ -196,6 +201,8 @@ package
 					}
 				break;
 			}
+			// then toggle equipped status in the found location
+			foundItem.EQUIPPED = true;			
 			// regardless of item equipment, stats need to be recalculated 
 			updatePlayerDerivedStats();
 			Dungeon.statusScreen.updateInventory();
