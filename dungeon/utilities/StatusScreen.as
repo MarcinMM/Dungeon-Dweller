@@ -2,6 +2,7 @@ package dungeon.utilities
 {
 	import dungeon.utilities.DisplayText;
 	import dungeon.utilities.TextBox;
+	import flash.utils.IDataInput;
 	import net.flashpunk.Entity;
 	
 	/**
@@ -11,14 +12,36 @@ package dungeon.utilities
 	public class StatusScreen
 	{
 		public var background:TextBox;
-		public var displayTexts:Array = new Array();
-/*		public var experienceDisplay:DisplayText;
-		public var strengthDisplay:DisplayText;
-		public var agilityDisplay:DisplayText;
-*/		// only worried about this for now
+
+		// intrinsic stats display
+		public var levelDisplay:DisplayText;
+		public var xpDisplay:DisplayText;
+		public var hpDisplay:DisplayText;
+		public var strDisplay:DisplayText;
+		public var agiDisplay:DisplayText;
+		public var intDisplay:DisplayText;
+		public var wisDisplay:DisplayText;
+		public var chaDisplay:DisplayText;
+		public var conDisplay:DisplayText;
+		public var manaDisplay:DisplayText;
+		
+		// derived stats display, only for alpha/beta etc.
+		public var attDisplay:DisplayText;
+		public var defDisplay:DisplayText;
+		public var critdefDisplay:DisplayText;
+		public var perDisplay:DisplayText;
+		public var penDisplay:DisplayText;
+		public var sppowerDisplay:DisplayText;
+		public var splevelDisplay:DisplayText;	
+
+		// only worried about this for now
 		public var gridDisplay:DisplayText;
 		// non-equipped items, listed below 
 		public var inventoryTexts:Array = new Array();
+		// stats display texts
+		public var displayTexts:Array = new Array();
+		// combat texts
+
 		// equipped items, listed first
 		public var inventoryEquippedTexts:Array = new Array();
 		
@@ -32,17 +55,34 @@ package dungeon.utilities
 		{
 			background = new TextBox((Dungeon.MAP_WIDTH/2), 20, (Dungeon.TILESX/2), Dungeon.TILESY);
 			background.visible = false;
-/*			experienceDisplay = new DisplayText(GC.EXPERIENCE_STRING + ": ", 245, 40, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
-			strengthDisplay = new DisplayText(GC.STRENGTH_STRING + ": ", 245, 55, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
-			agilityDisplay = new DisplayText(GC.AGILITY_STRING + ": ", 245, 70, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 500);
-*/
+			
+			levelDisplay = new DisplayText("Lvl: ", 0, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			xpDisplay = new DisplayText("XP: ", 60, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			hpDisplay = new DisplayText( "HP: ", 120, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			manaDisplay = new DisplayText( "MAN: ", 180, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			strDisplay = new DisplayText( "STR: ", 240, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			agiDisplay = new DisplayText( "AGI: ", 300, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			intDisplay = new DisplayText( "INT: ", 360, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			wisDisplay = new DisplayText( "WIS: ", 420, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			chaDisplay = new DisplayText( "CHA: ", 480, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			conDisplay = new DisplayText( "CON: ", 540, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+
+			// derived
+			attDisplay = new DisplayText( "ATT: ", 0, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			defDisplay = new DisplayText( "DEF: ", 60, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			critdefDisplay = new DisplayText( "CRD: ", 120, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			perDisplay = new DisplayText( "PER: ", 180, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			penDisplay = new DisplayText( "PEN: ", 240, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			sppowerDisplay = new DisplayText( "SPR: ", 300, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			splevelDisplay = new DisplayText( "SPL: ", 360, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			
 			// we'll need a grid foreach here
 			var hGridAr:Array = new Array(45);
 			var vGridAr:Array = new Array(35);
 			var itemAr:Array = new Array();
 			var i:uint = 0;
 
-			/*
+			/* pathfinding grids
 			for (var i:uint = 0; i < 40; i++) {
 				hGridAr[i] = new DisplayText((i.toString()), (i * 20) + 2, 20-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 20);
 				displayTexts.push(hGridAr[i]);
@@ -59,11 +99,30 @@ package dungeon.utilities
 				inventoryTexts.push(itemAr[i]);
 			}
 
-/*			displayTexts.push(experienceDisplay);
-			displayTexts.push(strengthDisplay);
-			displayTexts.push(agilityDisplay);
-*/			
-			//displayTexts.push(gridDisplay);
+			displayTexts.push(xpDisplay);
+			displayTexts.push(levelDisplay);
+			displayTexts.push(hpDisplay);
+			displayTexts.push(manaDisplay);
+			displayTexts.push(hpDisplay);
+			displayTexts.push(strDisplay);
+			displayTexts.push(agiDisplay);
+			displayTexts.push(wisDisplay);
+			displayTexts.push(chaDisplay);
+			displayTexts.push(conDisplay);
+			displayTexts.push(intDisplay);
+			
+			displayTexts.push(attDisplay);
+			displayTexts.push(defDisplay);
+			displayTexts.push(critdefDisplay);
+			displayTexts.push(perDisplay);
+			displayTexts.push(penDisplay);
+			displayTexts.push(sppowerDisplay);
+			displayTexts.push(splevelDisplay);
+			
+			for each (var d:DisplayText in displayTexts)
+			{
+				d.visible = true;
+			}
 		}
 		
 		// traversal of inventory
@@ -137,20 +196,27 @@ package dungeon.utilities
 			}
 		}
 		
-		public function set stats(_stats:Array):void
+		public function statUpdate(_stats:Array):void
 		{
-/*			healthDisplay.displayText.text = GC.HEALTH_STRING + ": " + _stats[GC.STATUS_HEALTH] + "/" + _stats[GC.STATUS_MAX_HEALTH];
-			manaDisplay.displayText.text = GC.MANA_STRING + ": " + _stats[GC.STATUS_MANA] + "/" + _stats[GC.STATUS_MAX_MANA];
-			strengthDisplay.displayText.text = GC.STRENGTH_STRING + ": " + _stats[GC.STATUS_STRENGTH];
-			agilityDisplay.displayText.text = GC.AGILITY_STRING + ": " + _stats[GC.STATUS_AGILITY];
-			spiritualityDisplay.displayText.text = GC.SPIRITUALITY_STRING + ": " + _stats[GC.STATUS_SPIRITUALITY];
-			experienceDisplay.displayText.text = GC.EXPERIENCE_STRING + ": " + _stats[GC.STATUS_EXPERIENCE];
+			levelDisplay.displayText.text = "LVL: " + _stats[GC.STATUS_LEVEL];
+			xpDisplay.displayText.text = "XP: " + _stats[GC.STATUS_XP];
+			hpDisplay.displayText.text = "HP: " + _stats[GC.STATUS_HP];
+			strDisplay.displayText.text = "STR: " + _stats[GC.STATUS_STR];
+			agiDisplay.displayText.text = "AGI: " + _stats[GC.STATUS_AGI];
+			intDisplay.displayText.text = "INT: " + _stats[GC.STATUS_INT];
+			wisDisplay.displayText.text = "WIS: " + _stats[GC.STATUS_WIS];
+			chaDisplay.displayText.text = "CHA: " + _stats[GC.STATUS_CHA];
+			conDisplay.displayText.text = "CON: " + _stats[GC.STATUS_CON];
+			manaDisplay.displayText.text = "MNA: " + _stats[GC.STATUS_MANA];
 			
-			damageRatingDisplay.displayText.text = GC.DAMAGE_STRING + ": " + _stats[GC.STATUS_DAMAGE];
-			damageTypeDisplay.displayText.text = GC.DAMAGE_TYPE_STRING + ": " + Weapon.getDamageType(_stats[GC.STATUS_DAMAGE_TYPE]);
-			attackTypeDisplay.displayText.text = GC.ATTACK_TYPE_STRING + ": " + Weapon.getAttackType(_stats[GC.STATUS_ATTACK_TYPE]);
-			armorRatingDisplay.displayText.text = GC.ARMOR_STRING + ": " + _stats[GC.STATUS_ARMOR];
-*/		}
+			attDisplay.displayText.text = "ATT: " + _stats[GC.STATUS_ATT];
+			defDisplay.displayText.text = "DEF: " + _stats[GC.STATUS_DEF];
+			critdefDisplay.displayText.text = "CRD: " + _stats[GC.STATUS_CRITDEF];
+			perDisplay.displayText.text = "PER: " + _stats[GC.STATUS_PER];
+			penDisplay.displayText.text = "PEN: " + _stats[GC.STATUS_PEN];
+			sppowerDisplay.displayText.text = "SPP: " + _stats[GC.STATUS_SPPOWER];
+			splevelDisplay.displayText.text = "SPL: " + _stats[GC.STATUS_SPLEVEL];
+		}
 		
 		public function get visible():Boolean
 		{
@@ -164,10 +230,6 @@ package dungeon.utilities
 			for each (var d:DisplayText in inventoryTexts)
 			{
 				d.visible = _visible;	
-			}
-			for each (d in displayTexts)
-			{
-				//d.visible = _visible;	
 			}
 		}
 		

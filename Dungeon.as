@@ -29,6 +29,8 @@ package
 		public function Dungeon() 
 		{
 			dataloader.setupItems();
+
+			statusScreen = new StatusScreen();
 			
 			Dungeon.player = new Player;
 			Dungeon.level = new Level;
@@ -43,7 +45,6 @@ package
 			add(new NPC);
 			
 			// status screen creation
-			statusScreen = new StatusScreen();
 			add(statusScreen.background);
 			addList(statusScreen.displayTexts);
 			addList(statusScreen.inventoryTexts);

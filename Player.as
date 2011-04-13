@@ -35,26 +35,8 @@ package
 		public static var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		public var invLeterrsAss:Array = [];
 		
-		// Intrinsic Stats
-		public var LVL:uint; // player level
-		public var XP:uint; // player XP
-		public var STR:uint; // attack modifier, small defense modifier, small persuasion
-		public var AGI:uint; // small attack and big defense modifier
-		public var INT:uint; // spell attack and allowed spell memorization
-		public var WIS:uint; // mana pool and spell defense and small persuasion
-		public var CHA:uint; // persuasion success chance modifier
-		public var CON:uint; // HP, 
-		
-		// Calculated and derived stats
-		public var ATT:uint; // mostly strength + bit of agi + item stat attack
-		public var DEF:uint; // mostly agi + bit of str + item stat
-		public var CRITDEF:uint; // bit of agi + armor, not sure how this works yet
-		public var PER:uint; // persuasion, cha + bit of str + bit of wis
-		public var PEN:uint; // armor + bit of str
-		public var MANA:uint; // mostly wisdom I guess?
-		public var SPPOWER:uint; // int?
-		public var SPLEVEL:uint; // int based on level, maybe same as level?
-		public var HP:uint; // CON + bit of STR + bit of AGI
+		// Stat Array
+		public var STATS:Array = new Array();
 		
 		public function Player() 
 		{
@@ -84,30 +66,32 @@ package
 		}
 		
 		public function setPlayerStats(playerClass:String):void {
+			STATS[GC.STATUS_LEVEL] = 1;
+			STATS[GC.STATUS_XP] = 0;
 			switch(playerClass) {
 				case "bruiser":
-					STR = 14;
-					AGI = 10;
-					INT = 10;
-					WIS = 10;
-					CHA = 10;
-					CON = 14;
+					STATS[GC.STATUS_STR] = 14;
+					STATS[GC.STATUS_AGI] = 10;
+					STATS[GC.STATUS_INT] = 10;
+					STATS[GC.STATUS_WIS] = 10;
+					STATS[GC.STATUS_CHA] = 10;
+					STATS[GC.STATUS_CON] = 14;
 					break;
 				case "shaman":
-					STR = 10;
-					AGI = 10;
-					INT = 13;
-					WIS = 13;
-					CHA = 12;
-					CON = 10;
+					STATS[GC.STATUS_STR] = 10;
+					STATS[GC.STATUS_AGI] = 10;
+					STATS[GC.STATUS_INT] = 13;
+					STATS[GC.STATUS_WIS] = 13;
+					STATS[GC.STATUS_CHA] = 12;
+					STATS[GC.STATUS_CON] = 10;
 					break;
 				case "scout":
-					STR = 11;
-					AGI = 12;
-					INT = 11;
-					WIS = 11;
-					CHA = 11;
-					CON = 12;
+					STATS[GC.STATUS_STR] = 11;
+					STATS[GC.STATUS_AGI] = 12;
+					STATS[GC.STATUS_INT] = 11;
+					STATS[GC.STATUS_WIS] = 11;
+					STATS[GC.STATUS_CHA] = 11;
+					STATS[GC.STATUS_CON] = 12;
 					break;
 			}
 		}
@@ -159,14 +143,16 @@ package
 				}
 			}
 
-			ATT = Math.floor(STR + weapon.attack + (0.2 * AGI) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
-			DEF = Math.floor(AGI + (0.2 * STR) + weapon.defense + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
-			CRITDEF = Math.floor((AGI * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
-			PEN = weapon.pen + (0.05 * STR);
-			MANA = WIS; // plus items
-			SPPOWER = INT; // plus items 
-			SPLEVEL = INT; // plus items
-			HP = CON; // plus items
+			STATS[GC.STATUS_ATT] = Math.floor(STATS[GC.STATUS_STR] + weapon.attack + (0.2 * STATS[GC.STATUS_AGI]) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			STATS[GC.STATUS_DEF] = Math.floor(STATS[GC.STATUS_AGI] + (0.2 * STATS[GC.STATUS_STR]) + weapon.defense + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
+			STATS[GC.STATUS_CRITDEF] = Math.floor((STATS[GC.STATUS_AGI] * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
+			STATS[GC.STATUS_PEN] = weapon.pen + (0.05 * STATS[GC.STATUS_STR]);
+			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS]; // plus items
+			STATS[GC.STATUS_SPPOWER] = STATS[GC.STATUS_WIS]; // plus items 
+			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_WIS]; // plus items
+			STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
+			
+			Dungeon.statusScreen.statUpdate(STATS);
 		}
 		
 		public function setPlayerStartingPosition(setX:int, setY:int):void {
