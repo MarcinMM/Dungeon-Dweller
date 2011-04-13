@@ -47,6 +47,8 @@ package
 			Input.define("Down", Key.DOWN);
 			Input.define("I", Key.I);
 			Input.define("a", Key.A);
+			Input.define("b", Key.B);
+			Input.define("c", Key.C);
 
 			/*
 			 * for each (var letter:String in invLettersUnass) {
@@ -248,6 +250,12 @@ package
 				// now all inventory keys
 				if (Input.pressed("a")) {
 					activateItemAt("a");
+				}
+				if (Input.pressed("b")) {
+					activateItemAt("b");
+				}
+				if (Input.pressed("c")) {
+					activateItemAt("c");
 				}
 				
 			}
