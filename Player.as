@@ -49,6 +49,7 @@ package
 			Input.define("a", Key.A);
 			Input.define("b", Key.B);
 			Input.define("c", Key.C);
+			Input.define("d", Key.D);
 			Input.define("ENTER", Key.ENTER);
 
 			/*
@@ -56,7 +57,6 @@ package
 				Input.define(letter, letter.charCodeAt);
 			}*/
 			
-			//Input.define("a", Key.a);
 			setHitbox(20, 20);
 			x = 140;
 			y = 140;
@@ -184,33 +184,35 @@ package
 				}
 			}
 			
-			
-			// then unequip the currently equipped item in that location
-			switch(foundItem.ITEM_TYPE) {
-				case GC.C_ITEM_ARMOR:
-					// this needs to unequip based on slot, atm it unequips all
-					var armorItem:Armor = foundItem as Armor;
-					for each (var armor:Armor in ITEMS[GC.C_ITEM_ARMOR]) {
-						if (armor.EQUIPPED && (armor.armorSlot == armorItem.armorSlot)) {
-							armor.EQUIPPED = false;
+			// if not found, we need to skip the entire equip/unequip thing
+			if (foundItem != null) {
+				// then unequip the currently equipped item in that location
+				switch(foundItem.ITEM_TYPE) {
+					case GC.C_ITEM_ARMOR:
+						// this needs to unequip based on slot, atm it unequips all
+						var armorItem:Armor = foundItem as Armor;
+						for each (var armor:Armor in ITEMS[GC.C_ITEM_ARMOR]) {
+							if (armor.EQUIPPED && (armor.armorSlot == armorItem.armorSlot)) {
+								armor.EQUIPPED = false;
+							}
 						}
-					}
-				break;
-				case GC.C_ITEM_WEAPON:
-					var weaponItem:Weapon = foundItem as Weapon;
-					// this needs to unequip based on handedness, atm it unequips all
-					for each (var weapon:Weapon in ITEMS[GC.C_ITEM_WEAPON]) {
-						if (weapon.EQUIPPED) {
-							weapon.EQUIPPED = false;
+					break;
+					case GC.C_ITEM_WEAPON:
+						var weaponItem:Weapon = foundItem as Weapon;
+						// this needs to unequip based on handedness, atm it unequips all
+						for each (var weapon:Weapon in ITEMS[GC.C_ITEM_WEAPON]) {
+							if (weapon.EQUIPPED) {
+								weapon.EQUIPPED = false;
+							}
 						}
-					}
-				break;
+					break;
+				}
+				// then toggle equipped status in the found location
+				foundItem.EQUIPPED = true;			
+				// regardless of item equipment, stats need to be recalculated 
+				updatePlayerDerivedStats();
+				Dungeon.statusScreen.updateInventory();
 			}
-			// then toggle equipped status in the found location
-			foundItem.EQUIPPED = true;			
-			// regardless of item equipment, stats need to be recalculated 
-			updatePlayerDerivedStats();
-			Dungeon.statusScreen.updateInventory();
 		}
 		
 		override public function update():void
@@ -258,18 +260,14 @@ package
 				}
 				if (Input.pressed("Down")) {
 					Dungeon.statusScreen.down();
+				} else {
+					// now test all keys for inventory
+					var lastKey:uint = Input.lastKey;
+					if ((lastKey != 73) && (lastKey >= 65) && (lastKey <= 90)) {
+						FP.log(GC.KEYS[lastKey]);
+						activateItemAt(GC.KEYS[lastKey]);
+					}
 				}
-				// now all inventory keys
-				if (Input.pressed("a")) {
-					activateItemAt("a");
-				}
-				if (Input.pressed("b")) {
-					activateItemAt("b");
-				}
-				if (Input.pressed("c")) {
-					activateItemAt("c");
-				}
-				
 			}
 			if (Input.pressed("I")) {
 				// this needs to suspend movement and turn directional keys to inventory traversal

@@ -109,7 +109,7 @@ package dungeon.contents
 			// this will be used for overlaying the player character to show equipment
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
-			DESCRIPTION = materialPrototype.name + weaponPrototype.name;
+			DESCRIPTION = materialPrototype.name + " " + weaponPrototype.name;
 			ITEM_TYPE = GC.C_ITEM_WEAPON;
 
 			graphic = new Image(WEAPON);

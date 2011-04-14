@@ -61,7 +61,7 @@ package dungeon.contents
 			// this will be used for overlaying the player character to show equipment
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
-			DESCRIPTION = armorMaterial + armorType + armorSlot;
+			DESCRIPTION = armorMaterial + " " + armorType + " " + armorSlot;
 			ITEM_TYPE = GC.C_ITEM_ARMOR;
 			
 			graphic = new Image(ARMOR);
