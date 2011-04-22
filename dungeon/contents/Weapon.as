@@ -30,6 +30,7 @@ package dungeon.contents
 		public var offhandRating:Number = 0;
 		public var crit:Number = 0.3;
 		public var strengthReq:uint = 0;
+		public var rating:Number;
 		
 		public function Weapon() 
 		{
@@ -102,6 +103,7 @@ package dungeon.contents
 			offhandRating = weaponPrototype.offhandRating;
 			crit = materialPrototype.modifier * weaponPrototype.crit;
 			strengthReq = weaponPrototype.strengthReq;
+			rating = (attack * pen) + (attack * crit * pen) + defense; // absolute weapon rating used for creatures to determine relative weapon quality
 			
 			super();
 			

@@ -84,10 +84,13 @@ package
 		
 		// this can be used to achieve goals such as pickup item or attack another entity, or seek escape route
 		public function pathedMovement(pointA:Point, pointB:Point):Point {
-			
+
 		}
 		
-		
+		// swarm cohort check
+		public function checkSwarmInRoom():Boolean {
+			return false;
+		}
 		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {

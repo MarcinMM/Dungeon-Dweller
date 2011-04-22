@@ -13,7 +13,8 @@ package dungeon.structure
         public var hCost:int; // estimate heuristic to move here from ending position
         public var fCost:int;  // combined cost
 		private var parent:Node;
-		public var neighbors:Vector.<Node>;
+		public var solidNeighbors:Vector.<Node>;
+		public var walkingNeighbors:Vector.<Node>;
 		public var _id:uint;
 		public var tileIndex:int = -1;
 		public var solid:Boolean;
@@ -27,7 +28,8 @@ package dungeon.structure
 			if (tileIndex == -1) {
 				tileIndex = initTileIndex;
 			}
-			neighbors = new Vector.<Node>();
+			solidNeighbors = new Vector.<Node>();
+			walkingNeighbors = new Vector.<Node>();
 			solid = true;
         }
     	
@@ -43,13 +45,17 @@ package dungeon.structure
 			return parent;
 		}
 		
-		public function addNeighbor(node:Node):void {
+		public function addWalkingNeighbor(node:Node):void {
+			walkingNeighbors.push(node);
+		}
+		
+		public function addSolidNeighbor(node:Node):void {
 			// this could/should have checking for validity
-			neighbors.push(node);
+			solidNeighbors.push(node);
 		}
 		
 		// Manhattan H cost of path
-		public function findH(endNode:Node):void {			
+		public function findH(endNode:Node):void {
 			hCost = (Math.abs(endNode.x - x) + Math.abs(endNode.y - y)) * 10;
 			updateF();
 		}
@@ -83,6 +89,7 @@ package dungeon.structure
 			else return false;
 		}
 
+		// this needs a selector for type of path to find - corridor through rock or walking for creature access
 		public function findPath(endNode:Node):Array {
 			var path:Array = new Array();
 			var openList:Array = new Array();
@@ -109,7 +116,7 @@ package dungeon.structure
 				currentNode = openList.shift();
 				closedList.push(currentNode);
 				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
-				for each (var node:Node in currentNode.neighbors) {
+				for each (var node:Node in currentNode.solidNeighbors) {
 					thisOpenIndex = -1;
 					//trace("neighbor: " + node.x + "-" + node.y);
 					// if node is not on closed list

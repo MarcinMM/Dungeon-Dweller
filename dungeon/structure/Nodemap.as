@@ -28,7 +28,7 @@ package dungeon.structure
 			// go through and set up neighbours for all nodes
 			
 			for each (node in _nodes) {
-				createNeighbors(node);
+				createSolidNeighbors(node);
 			}
 			_map = _dungeonmap;
 			roomsA = _roomsA;
@@ -45,24 +45,45 @@ package dungeon.structure
 			}
 		}
 		
-		public function createNeighbors(node:Node):void {
+		// this is neighbour creation for hallways, which go through solid rock
+		// we need another set of neighbours for monsters who use hallways, floors and doors
+		public function createSolidNeighbors(node:Node):void {
 			var n:Node;
 			n = getNode((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
-				node.addNeighbor(n);
-				
+				node.addSolidNeighbor(n);
 			}
 			n = getNode((node.x)-1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
-				node.addNeighbor(n);
+				node.addSolidNeighbor(n);
 			}
 			n = getNode(node.x, (node.y)+1);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
-				node.addNeighbor(n);
+				node.addSolidNeighbor(n);
 			}
 			n = getNode(node.x, (node.y)-1);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
-				node.addNeighbor(n);
+				node.addSolidNeighbor(n);
+			}
+		}
+		
+		public function createWalkingNeighbors(node:Node):void {
+			var n:Node;
+			n = getNode((node.x)+1, node.y);
+			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
+				node.addWalkingNeighbor(n);
+			}
+			n = getNode((node.x)-1, node.y);
+			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
+				node.addWalkingNeighbor(n);
+			}
+			n = getNode(node.x, (node.y)+1);
+			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
+				node.addWalkingNeighbor(n);
+			}
+			n = getNode(node.x, (node.y)-1);
+			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
+				node.addWalkingNeighbor(n);
 			}
 		}
 		
