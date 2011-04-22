@@ -7,5 +7,6 @@ More documentation later. Project under *very* slow development.
 # TODO
 
 * Fix hallways.
-* Player spawns in walls.
-* Clean up pathway collisions with solids for hallway generation.
+* NPC pathing through existing corridors.
+* Basic NPC behavior.
+* Advanced NPC behavior! HAR.
