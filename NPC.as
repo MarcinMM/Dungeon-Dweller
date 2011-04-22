@@ -1,5 +1,6 @@
 package  
 {
+	import dungeon.structure.Node;
 	import dungeon.structure.Point;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
@@ -28,9 +29,11 @@ package
 		public var STATS:Array = new Array();
 		
 		// pathing status
+		private var POSITION:Point;
 		private var PATHING:Boolean = false;
 		private var ENGAGED:Boolean = false;
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
+		private var PATH:Array = new Array();
 		
 		public function NPC() 
 		{
@@ -40,10 +43,11 @@ package
 			setHitbox(20, 20);
 			type = "npc";
 			STEP = Dungeon.player.STEP;
+			POSITION = new Point(x, y);
 		}
 		
 		// when no path request is being made, i.e. equivalent of idle animation
-		public function idleMovement():Point {
+		public function idleMovement():void {
 			var impactsAllowed:Array = ["up","down","left","right"];
 			// NPC considering a step, see what's allowed
 			if (collide("npc", x, y + GRIDSIZE) || collide("player", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
@@ -61,7 +65,7 @@ package
 
 			// NPC movement
 			// select random index then perform movement
-			var rndMove = Math.round(Math.random() * impactsAllowed.length));
+			var rndMove:uint = Math.round(Math.random() * impactsAllowed.length);
 			switch (rndMove) {
 				case "up":
 				y -= GRIDSIZE;
@@ -79,12 +83,31 @@ package
 				x -= GRIDSIZE;
 				STEP++;
 				break;
-			}		
+			}
 		}
 		
 		// this can be used to achieve goals such as pickup item or attack another entity, or seek escape route
-		public function pathedMovement(pointA:Point, pointB:Point):Point {
-
+		public function initPathedMovement(pointA:Point, pointB:Point):void {
+			var source:Node = new Node(pointA.x, pointA.y, -1);
+			var destNode:Node = new Node(pointB.x, pointB.y, -1);
+			PATH = source.findPath(destNode, 'creature');
+			PATH.reverse();
+			trace("path size:" + PATH.length);
+		}
+		
+		// get next point in the path
+		// continue until depleted
+		public function pathedMovementStep():Boolean {
+			if (PATH.length != 0) {
+				var newLoc:Node = PATH.pop();
+				x = newLoc.x;
+				y = newLoc.y;
+				return true;
+			} else {
+				// path ended, now what?
+				// something must be able to read the return here and act appropriately
+				return false;
+			}
 		}
 		
 		// swarm cohort check
@@ -106,11 +129,15 @@ package
 				// 5. After item/attack succesful resume idling
 				
 				idleMovement();
-
+				
+				// perform checks or check for events that would cause a path
+				// let's start with player location check
+				// perhaps if less than 10 in combined x+y direction, we make a path
+				// unless a path length is already existing
+				// this means that only one path can be running at a time
+				// so we'll need another type of check
 				
 
-				
-				
 				// finally sync NPC with player
 				STEP = Dungeon.player.STEP;
 			}

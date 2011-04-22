@@ -28,6 +28,10 @@ package dungeon.structure
 			if (tileIndex == -1) {
 				tileIndex = initTileIndex;
 			}
+			if (initTileIndex == -1) {
+				// this means we're initing an alredy existing node, so we need to grab the tile index from the nodemap
+				tileIndex = Dungeon.level._dungeonmap.getIndex(x, y);
+			}
 			solidNeighbors = new Vector.<Node>();
 			walkingNeighbors = new Vector.<Node>();
 			solid = true;
@@ -90,11 +94,13 @@ package dungeon.structure
 		}
 
 		// this needs a selector for type of path to find - corridor through rock or walking for creature access
-		public function findPath(endNode:Node):Array {
+		public function findPath(endNode:Node, type:String):Array {
 			var path:Array = new Array();
 			var openList:Array = new Array();
 			var closedList:Array = new Array();
-
+			
+			var neighborList:Vector.<Node>;
+			
 			//trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
 			
 			// costs for traversing nodes vert/horizontally or diagonally
@@ -106,6 +112,13 @@ package dungeon.structure
 			
 			var i:int = 0;
 			var thisOpenIndex:int;
+
+			if (type == "corridor") {
+				neighborList = currentNode.solidNeighbors;
+			} else if (type == "creature") {
+				neighborList = currentNode.walkingNeighbors;
+			}
+
 			
 			// SAFTY OFF!
 			while ((i < 1000) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
@@ -114,9 +127,14 @@ package dungeon.structure
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
+				if (type == "corridor") {
+					neighborList = currentNode.solidNeighbors;
+				} else if (type == "creature") {
+					neighborList = currentNode.walkingNeighbors;
+				}
 				closedList.push(currentNode);
 				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
-				for each (var node:Node in currentNode.solidNeighbors) {
+				for each (var node:Node in neighborList) {
 					thisOpenIndex = -1;
 					//trace("neighbor: " + node.x + "-" + node.y);
 					// if node is not on closed list
@@ -145,7 +163,7 @@ package dungeon.structure
 							}
 						}
 					}
-				i++;
+					i++;
 				}
 			}
 			i = 0;
