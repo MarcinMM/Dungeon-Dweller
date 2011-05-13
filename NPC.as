@@ -24,7 +24,11 @@ package
 		public var JEWELRY:Array = new Array();
 		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
 		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
-				
+		
+		// What is this thing? And what type of descriptors do we need? Let's start simple.
+		public var NPCType:String;
+		public var NPCLevel:uint;
+		
 		// Stat Array
 		public var STATS:Array = new Array();
 		
@@ -38,12 +42,20 @@ package
 		public function NPC() 
 		{
 			graphic = new Image(NPCGraphic);
-			x = 100;
-			y = 100;
 			setHitbox(20, 20);
 			type = "npc";
 			STEP = Dungeon.player.STEP;
 			POSITION = new Point(x, y);
+			
+			// now, what shall this critter be?
+			determineNPCType();
+			
+			// TODO: what shall it wear/wield?
+			// determineNPCEquipment();
+			
+			// and what kind of stats does it have?
+			setNPCStats(NPCType, NPCLevel);
+			setNPCDerivedStats(NPCType, NPCLevel);
 		}
 		
 		// when no path request is being made, i.e. equivalent of idle animation
@@ -65,8 +77,10 @@ package
 
 			// NPC movement
 			// select random index then perform movement
+			// TODO: use array constants here instead of the clumsy assign
 			var rndMove:uint = Math.round(Math.random() * impactsAllowed.length);
-			switch (rndMove) {
+			var rndMoveString:String = impactsAllowed[rndMove];
+			switch (rndMoveString) {
 				case "up":
 				y -= GRIDSIZE;
 				STEP++;
@@ -113,6 +127,33 @@ package
 		// swarm cohort check
 		public function checkSwarmInRoom():Boolean {
 			return false;
+		}
+		
+		// TODO: Monster Library
+		// This needs to pull from some library of monsters, just like items do. 
+		public function determineNPCType():void {
+			NPCType = "orc";
+			NPCLevel = 1;
+		}
+		
+		// we might need this to be available for the player, when morphed
+		public function setNPCStats(npcType:String, npcLevel:uint):void {
+			// TODO: use Creature level class
+			// who knows, some massive
+			STATS[GC.STATUS_STR] = 14;
+			STATS[GC.STATUS_AGI] = 10;
+			STATS[GC.STATUS_INT] = 10;
+			STATS[GC.STATUS_WIS] = 10;
+			STATS[GC.STATUS_CHA] = 10;
+			STATS[GC.STATUS_CON] = 14;			
+		}
+		
+		
+		public function setNPCDerivedStats(npcType:String, npcLevel:uint):void {
+			// TODO: use Creature level class
+			STATS[GC.STATUS_ATT] = 7;
+			STATS[GC.STATUS_DEF] = 7;
+			STATS[GC.STATUS_HP] = 15;
 		}
 		
 		override public function update():void {

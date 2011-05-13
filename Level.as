@@ -38,6 +38,7 @@ package
 		public var _roomsA:Array = [];
 		private var _rooms:int = 0;
 		public var ITEMS:Array = [];
+		public var NPCS:Array = [];
 
 		// more level entities
 		public var ITEM_GEN:Object = {
@@ -130,6 +131,10 @@ package
 			placeItems();
 			
 			placePlayer();
+			
+			// TODO: Add NPCs!
+			// Should probably be stored as array just like items, attached to level
+			createAndPlaceNPCs();
 		}
 		
 		private function drawRooms():void {
@@ -229,6 +234,31 @@ package
 			Dungeon.player.setPlayerStartingPosition(startingX, startingY);
 		}
 
+		private function createAndPlaceNPCs():void {
+			// TODO:
+			// need a way to determine random number of NPCs
+			// need a way to adjust their level (+/-1 of actual dungeon maybe?)
+			// need a way to draw from pool of possible NPCs, level appropriate
+			// NPCs should have level ranges just like weapons/armor
+			var x:uint = 0;
+			var y:uint = 0;
+			var roomIndex:uint = 0;
+			
+			for (var j:int = 0; j < 10; j++) {
+				var newNPC:NPC = new NPC();
+				NPCS.push(newNPC);
+			}
+			
+			for each (var npc:* in NPCS) {
+				roomIndex = Math.max(0, (Math.round(Math.random() * _roomsA.length) - 1));
+				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
+				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+				npc.x = x;
+				npc.y = y;
+				
+			}			
+		}
+		
 		override public function update():void {
 			// synchronize updates with player turn
 			// handle things like open doors, triggered traps, dried up fountains, etc.

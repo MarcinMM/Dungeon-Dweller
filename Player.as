@@ -99,6 +99,8 @@ package
 			}
 		}
 		
+		// this also needs to work for monsters so we need to pull it out into either a higher tier class (say Creature? includes player and NPCs)
+		// or make it a Util function. I like 1st approach better, I think.
 		public function updatePlayerDerivedStats():void {
 			// this will vary by class and equipment type later
 			var weapon:Weapon = new Weapon();

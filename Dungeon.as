@@ -42,7 +42,8 @@ package
 			// but this is the init
 			Dungeon.level.ITEMS.forEach(addItem);
 			
-			add(new NPC);
+			// ditto for entities
+			Dungeon.level.NPCS.forEach(addNPC);
 			
 			// status screen creation
 			add(statusScreen.background);
@@ -54,6 +55,12 @@ package
 			// instead of drawing we're actually adding to world
 			add(item);
 		}
+
+		private function addNPC(npc:*, index:int, array:Array):void {
+			// instead of drawing we're actually adding to world
+			add(npc);
+		}
+
 	}
 
 }
