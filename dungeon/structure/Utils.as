@@ -11,7 +11,7 @@ package dungeon.structure
 			return Math.sqrt(Math.pow((nodeB.x - nodeA.x),2) + Math.pow((nodeB.y - nodeA.y),2));
 		}
 		
-		public static function isAvailable(index:int, type:String):Boolean {			
+		public static function isAvailable(index:int, type:String):Boolean {
 			// this will need to have some switches for corridor pathing and creature pathing
 			// TODO: this needs cleanup, but I'm confused by it. It should work for index simply being THE VOID, but it doesn't
 			switch(type) {

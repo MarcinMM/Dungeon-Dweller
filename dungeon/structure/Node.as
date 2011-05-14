@@ -120,7 +120,7 @@ package dungeon.structure
 			}
 
 			
-			// SAFTY OFF!
+			// SAFTY OFF! [sic]
 			while ((i < 1000) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
 				// Look for lowest F cost node
 				//trace("open: " + openList.length + "|closed: " + closedList.length);

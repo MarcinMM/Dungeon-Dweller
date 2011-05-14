@@ -11,7 +11,7 @@ package
 	 */
 	public class NPC extends Entity
 	{
-		[Embed(source = 'assets/player.png')] private const NPCGraphic:Class;
+		[Embed(source = 'assets/npc1.png')] private const NPCGraphic:Class;
 		// some defaults and inits
 		private const GRIDSIZE:int = 20;
 		public var STEP:int = 0;
@@ -65,24 +65,24 @@ package
 			if (collide("npc", x, y + GRIDSIZE) || collide("player", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
 				impactsAllowed.splice(impactsAllowed.indexOf("down"),1);
 			}
-			if (collide("npc", x, y - GRIDSIZE) || collide("player", x, y + GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
+			if (collide("npc", x, y - GRIDSIZE) || collide("player", x, y - GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
 				impactsAllowed.splice(impactsAllowed.indexOf("up"),1);
 			}
-			if (collide("npc", x + GRIDSIZE, y) || collide("player", x, y + GRIDSIZE) || collide("level", x + GRIDSIZE, y)) {
+			if (collide("npc", x + GRIDSIZE, y) || collide("player", x + GRIDSIZE, y) || collide("level", x + GRIDSIZE, y)) {
 				impactsAllowed.splice(impactsAllowed.indexOf("right"),1);
 			}
-			if (collide("npc", x - GRIDSIZE, y) || collide("player", x, y + GRIDSIZE) || collide("level", x - GRIDSIZE, y)){
+			if (collide("npc", x - GRIDSIZE, y) || collide("player", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
 				impactsAllowed.splice(impactsAllowed.indexOf("left"),1);
 			}
 
 			// NPC movement
 			// select random index then perform movement
 			// TODO: use array constants here instead of the clumsy assign
-			var rndMove:uint = Math.round(Math.random() * impactsAllowed.length);
+			var rndMove:uint = Math.round(Math.random() * (impactsAllowed.length - 1));
 			var rndMoveString:String = impactsAllowed[rndMove];
 			switch (rndMoveString) {
 				case "up":
-				y -= GRIDSIZE;
+				y += GRIDSIZE;
 				STEP++;
 				break;
 				case "down":
@@ -94,7 +94,7 @@ package
 				STEP++;
 				break;
 				case "right":
-				x -= GRIDSIZE;
+				x += GRIDSIZE;
 				STEP++;
 				break;
 			}

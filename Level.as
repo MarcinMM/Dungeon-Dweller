@@ -132,8 +132,6 @@ package
 			
 			placePlayer();
 			
-			// TODO: Add NPCs!
-			// Should probably be stored as array just like items, attached to level
 			createAndPlaceNPCs();
 		}
 		
