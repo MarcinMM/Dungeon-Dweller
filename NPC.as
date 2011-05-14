@@ -82,11 +82,11 @@ package
 			var rndMoveString:String = impactsAllowed[rndMove];
 			switch (rndMoveString) {
 				case "up":
-				y += GRIDSIZE;
+				y -= GRIDSIZE;
 				STEP++;
 				break;
 				case "down":
-				y -= GRIDSIZE;
+				y += GRIDSIZE;
 				STEP++;
 				break;
 				case "left":
