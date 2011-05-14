@@ -10,3 +10,4 @@ More documentation later. Project under *very* slow and infrequent development.
 * NPC object pickup.
 * NPC stat modification by item.
 * NPC variation. No idea what that means at the moment - it'll be fun finding out!
+* Player/friend swap code needed for tight quarters.
