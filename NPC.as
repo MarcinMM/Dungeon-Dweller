@@ -56,6 +56,8 @@ package
 			// and what kind of stats does it have?
 			setNPCStats(NPCType, NPCLevel);
 			setNPCDerivedStats(NPCType, NPCLevel);
+			
+			layer = 20;
 		}
 		
 		// when no path request is being made, i.e. equivalent of idle animation
