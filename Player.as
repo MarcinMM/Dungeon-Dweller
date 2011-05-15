@@ -220,18 +220,37 @@ package
 			}
 		}
 		
+		public function 
+		
 		override public function update():void
 		{
-			// First we check for any STEP increasing activities, like moving
-			// or actions being taken such as:
-			// * digging
-			// * zapping
-			// * quaffing, reading
-			// * equipping/unequipping (1 turn regardless to keep things simple)
-			// * praying (?)
-			// * inscribing
-			// * etc
-
+			// some pseudocode for movement and melee combat processing
+			/* // so this top part runs every frame
+			 * if (!inventory AND directionalInput) {
+			 *   setMoveFlag();
+			 * }
+			 * // but this runs only when move flag is set so that collision, combat, stat updates etc. are not checked/processed every time
+			 * if (moveFlag) {
+			 *   checkCollisionWall();
+			 *   checkCollisionNPC();
+			 *   if (!notWallCollision && !notNPCCollision) {
+			 *     processMove();
+			 *     postMove(); // item pickup, room lighting, monster awareness check
+			 *     STEP++;
+			 *   }
+			 *   else if (npcCollision) {
+			 *     processCombat(); // both player and NPC response
+			 *     postCombat(); // combat noise propagation, blood splatters ... other?
+			 *     STEP++;
+			 *   }
+			 * } else if (!inventory AND !directionalInput) {
+			 * 	 // TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
+			 * } else if (inventory) {
+			 *    processInventoryOps();
+			 * }
+			 * 
+			 * */
+			
 			// TODO: need to pull out collision check into a method
 			// currently we check collision and then monitor input AND collision
 			// this is expensive because it checks collision each frame - we really only need to check collision each keypress!
@@ -260,6 +279,8 @@ package
 			
 			// now perform actions such as combat and item pickup checks and looking
 			// and other things dependent on STEP changing
+			
+			if (newStep) {}
 			
 			var leftImpact:Boolean = false, rightImpact:Boolean = false, topImpact:Boolean = false, bottomImpact:Boolean = false;
 			if (collide("npc", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {

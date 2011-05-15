@@ -15,3 +15,5 @@ More documentation later. Project under *very* slow and infrequent development.
 * Shift + direction goes through entire hallway.
 * Apparently copper leather still exists.
 * Def numbers fluctuate with same gear.
+* Add rest of items to XML.
+* Consider using lastKey along with pressed(ANY) for figuring out what key was pressed?
