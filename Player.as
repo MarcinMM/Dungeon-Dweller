@@ -222,21 +222,21 @@ package
 		
 		override public function update():void
 		{
-			var leftImpact:Boolean = false, rightImpact:Boolean = false, topImpact:Boolean = false, bottomImpact:Boolean = false;
-			if (collide("npc", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
-				topImpact = true;
-			}
-			if (collide("npc", x, y - GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
-				bottomImpact = true;
-			}
-			if (collide("npc", x + GRIDSIZE, y) || collide("level", x + GRIDSIZE, y)) {
-				leftImpact = true;
-			}
-			if (collide("npc", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
-				rightImpact = true;
-			}
-			
-			// Player movement
+			// First we check for any STEP increasing activities, like moving
+			// or actions being taken such as:
+			// * digging
+			// * zapping
+			// * quaffing, reading
+			// * equipping/unequipping (1 turn regardless to keep things simple)
+			// * praying (?)
+			// * inscribing
+			// * etc
+
+			// TODO: need to pull out collision check into a method
+			// currently we check collision and then monitor input AND collision
+			// this is expensive because it checks collision each frame - we really only need to check collision each keypress!
+			// so we need to only trigger collision checks on active keypresses and put this entire block below
+			// into one, cleaner function
 			if (Input.pressed("Left") && !rightImpact && !INVENTORY_OPEN) {
 				x -= GRIDSIZE;
 				STEP++;
@@ -257,6 +257,24 @@ package
 				STEP++;
 				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
+			
+			// now perform actions such as combat and item pickup checks and looking
+			// and other things dependent on STEP changing
+			
+			var leftImpact:Boolean = false, rightImpact:Boolean = false, topImpact:Boolean = false, bottomImpact:Boolean = false;
+			if (collide("npc", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
+				topImpact = true;
+			}
+			if (collide("npc", x, y - GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
+				bottomImpact = true;
+			}
+			if (collide("npc", x + GRIDSIZE, y) || collide("level", x + GRIDSIZE, y)) {
+				leftImpact = true;
+			}
+			if (collide("npc", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
+				rightImpact = true;
+			}
+			
 
 			// Inventory Management
 			if (INVENTORY_OPEN) {
