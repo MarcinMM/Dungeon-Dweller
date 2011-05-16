@@ -80,7 +80,7 @@ package dungeon.utilities
 			splevelDisplay = new DisplayText( "SPL: ", 360, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			
 			// status combat text + debug text while in alpha/beta/LOLZ
-			textDisplay = new DisplayText( "TXT: ", 360, (Dungeon.MAP_HEIGHT - 60), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			textDisplay = new DisplayText( "TXT: ", 0, (Dungeon.MAP_HEIGHT - 60), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
 			
 			// we'll need a grid foreach here
 			var hGridAr:Array = new Array(45);

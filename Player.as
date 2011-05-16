@@ -39,7 +39,7 @@ package
 		public var STATS:Array = new Array();
 		
 		// Collision stats
-		public var COLLISION:Array = [0, 0, 0, 0];
+		public var COLLISION:Array = [0, 0, 0, 0, 0];
 		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
 		
 		public function Player() 
@@ -240,9 +240,11 @@ package
 			if (Input.pressed(GC.DIR_DOWN_TEXT) && (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
 				y += GRIDSIZE;
 				STEP++;
-			}			
+			}
+			// Dungeon.statusScreen.updateCombatText("Bonk! You run into a wall and lose 3,000 HP!");
 		}
 		
+		// all this does is populate all directions in which player is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
 			if (collide(collisionEntity, x, y + GRIDSIZE)) {
 				COLLISION[GC.DIR_UP] = collisionConstant;
@@ -261,37 +263,6 @@ package
 				COLLISION_TYPE = collisionConstant;
 			}			
 		}
-		
-		/*
-		public function checkCollisionWall():void {
-			if (collide("level", x, y + GRIDSIZE)) {
-				COLLISION[GC.DIR_UP] = GC.COLLISION_WALL;
-			}
-			if (collide("level", x, y - GRIDSIZE)) {
-				COLLISION[GC.DIR_DOWN] = GC.COLLISION_WALL;
-			}
-			if (collide("level", x + GRIDSIZE, y)) {
-				COLLISION[GC.DIR_LEFT] = GC.COLLISION_WALL;
-			}
-			if (collide("level", x - GRIDSIZE, y)){
-				COLLISION[GC.DIR_RIGHT] = GC.COLLISION_WALL;
-			}
-		}
-		
-		public function checkCollisionNPC():int {
-			if (collide("npc", x, y + GRIDSIZE)) {
-				COLLISION[GC.DIR_UP] = GC.COLLISION_NPC;
-			}
-			if (collide("npc", x, y - GRIDSIZE)) {
-				COLLISION[GC.DIR_DOWN] = GC.COLLISION_NPC;
-			}
-			if (collide("npc", x + GRIDSIZE, y)) {
-				COLLISION[GC.DIR_LEFT] = GC.COLLISION_NPC;
-			}
-			if (collide("npc", x - GRIDSIZE, y)){
-				COLLISION[GC.DIR_RIGHT] = GC.COLLISION_NPC;
-			}
-		}*/
 		
 		public function postMove():void {
 			// TODO: atm this is item pick-up code dumped in from update, needs a once over
@@ -317,9 +288,7 @@ package
 				// now remove it from level array
 				Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[0]), 1);
 				
-				// and from the display and nodemap
-				// actually, just realized entities are an intrinsic part of the map
-				// they can't be "removed" - they have to be relocated off screen instead
+				// entities can't be "removed" - they have to be relocated off screen instead
 				// calculate a position 10/10 tiles (not pixels) off the current resolution
 				itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
 				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
@@ -356,6 +325,7 @@ package
 		override public function update():void
 		{
 			COLLISION_TYPE = GC.COLLISION_NONE;
+			COLLISION = [0, 0, 0, 0, 0];
 			var directionInput:Boolean = false;
 			var direction:int; // need to setup some GC directional constants for this
 			var wallCollision:int = 0;
@@ -380,19 +350,12 @@ package
 			if (directionInput) {
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
-				
-				if (COLLISION_TYPE == GC.COLLISION_NONE) {
-					processMove();
-					postMove();
-					STEP++;
-				} else if (COLLISION_TYPE == GC.COLLISION_NPC) {
-					// may or may not be combat, so just call it collision
-					processNPCCollision();
-					postNPCCollision();
-					STEP++;
-				} else if (COLLISION_TYPE == GC.COLLISION_WALL) {
-					Dungeon.statusScreen.updateCombatText("Bonk! You run into a wall and lose 3,000 HP!");
-				}
+
+				processMove();
+				// TODO: postMove();
+				// TODO: processNPCCollision();
+				// TODO: postNPCCollision();
+
 			} else if (!directionInput && !INVENTORY_OPEN) {
 				// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
 			} else if (INVENTORY_OPEN) {
