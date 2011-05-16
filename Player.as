@@ -1,5 +1,6 @@
 package  
 {
+	import dungeon.Creature;
 	import dungeon.contents.Armor;
 	import dungeon.contents.Item;
 	import dungeon.contents.Weapon;
@@ -14,10 +15,9 @@ package
 	 * ...
 	 * @author MM
 	 */
-	public class Player extends Entity
+	public class Player extends Creature
 	{
 		[Embed(source = 'assets/player.png')] private const PLAYER:Class;
-		private const GRIDSIZE:int = 20;
 		public var STEP:int = 0;
 		public var LIGHT_RADIUS:int = 1;
 			
@@ -38,12 +38,9 @@ package
 		// Stat Array
 		public var STATS:Array = new Array();
 		
-		// Collision stats
-		public var COLLISION:Array = [0, 0, 0, 0, 0];
-		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
-		
 		public function Player() 
 		{
+			super();
 			graphic = new Image(PLAYER);
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
@@ -225,43 +222,36 @@ package
 		}
 		
 		public function processMove():void {
-			if (Input.pressed(GC.DIR_LEFT_TEXT) && (COLLISION[GC.DIR_RIGHT] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
-				x -= GRIDSIZE;
-				STEP++;
+			MOVE_DIR = 0;
+			if (Input.pressed(GC.DIR_LEFT_TEXT) && !INVENTORY_OPEN) {
+				MOVE_DIR = GC.DIR_LEFT;
+				if (COLLISION[GC.DIR_LEFT] == GC.COLLISION_NONE) {
+					x -= GRIDSIZE;
+					STEP++;
+				}
 			}
-			if (Input.pressed(GC.DIR_RIGHT_TEXT) && (COLLISION[GC.DIR_LEFT] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
-				x += GRIDSIZE;
-				STEP++;
+			if (Input.pressed(GC.DIR_RIGHT_TEXT) && !INVENTORY_OPEN) {
+				MOVE_DIR = GC.DIR_RIGHT;
+				if (COLLISION[GC.DIR_RIGHT] == GC.COLLISION_NONE) {
+					x += GRIDSIZE;
+					STEP++;
+				}
 			}
-			if (Input.pressed(GC.DIR_UP_TEXT) && (COLLISION[GC.DIR_DOWN] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
-				y -= GRIDSIZE;
-				STEP++;
+			if (Input.pressed(GC.DIR_UP_TEXT) && !INVENTORY_OPEN) {
+				MOVE_DIR = GC.DIR_UP;
+				if (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) {
+					y -= GRIDSIZE;
+					STEP++;
+				}
 			}
-			if (Input.pressed(GC.DIR_DOWN_TEXT) && (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
-				y += GRIDSIZE;
-				STEP++;
+			if (Input.pressed(GC.DIR_DOWN_TEXT) && !INVENTORY_OPEN) {
+				MOVE_DIR = GC.DIR_DOWN;
+				if (COLLISION[GC.DIR_DOWN] == GC.COLLISION_NONE) {
+					y += GRIDSIZE;
+					STEP++;
+				}
 			}
 			// Dungeon.statusScreen.updateCombatText("Bonk! You run into a wall and lose 3,000 HP!");
-		}
-		
-		// all this does is populate all directions in which player is surrounded by entities
-		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
-			if (collide(collisionEntity, x, y + GRIDSIZE)) {
-				COLLISION[GC.DIR_UP] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}
-			if (collide(collisionEntity, x, y - GRIDSIZE)) {
-				COLLISION[GC.DIR_DOWN] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}
-			if (collide(collisionEntity, x + GRIDSIZE, y)) {
-				COLLISION[GC.DIR_LEFT] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}
-			if (collide(collisionEntity, x - GRIDSIZE, y)){
-				COLLISION[GC.DIR_RIGHT] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}			
 		}
 		
 		public function postMove():void {
@@ -300,7 +290,9 @@ package
 		
 		// this could be a fight, a position switch, a conversation ... etc.
 		public function processNPCCollision():void {
-			Dungeon.statusScreen.updateCombatText("Bonk! You hit the enemy for " + STATS[GC.STATUS_ATT] + " damage! (but not really)");
+			if (COLLISION[MOVE_DIR] == GC.COLLISION_NPC) {
+				Dungeon.statusScreen.updateCombatText("Bonk! You hit the enemy for " + STATS[GC.STATUS_ATT] + " damage! (but not really)");
+			}
 		}
 		
 		// TODO: nothing here yet, but NPC actions will take place within NPC class based on collision
@@ -352,9 +344,9 @@ package
 				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 
 				processMove();
-				// TODO: postMove();
-				// TODO: processNPCCollision();
-				// TODO: postNPCCollision();
+				postMove();
+				processNPCCollision();
+				postNPCCollision();
 
 			} else if (!directionInput && !INVENTORY_OPEN) {
 				// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here

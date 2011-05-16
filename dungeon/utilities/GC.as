@@ -38,7 +38,8 @@ package dungeon.utilities
 		public static const COLLISION_WALL:int = 1;
 		public static const COLLISION_NPC:int = 2;
 		public static const COLLISION_DOOR:int = 3;
-		
+		public static const COLLISION_PLAYER:int = 4;
+
 		// Layer types
 		public static const LAYER_NPC:int = 1;
 		public static const LAYER_LEVEL:int = 2;

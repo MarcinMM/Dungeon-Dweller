@@ -109,7 +109,7 @@ package dungeon.structure
                 
                 _roomsA.push(this);
             } else {
-                FP.log("room add fail");
+                trace("room add fail");
             }
             // pushed or not, the room array is returned to handler
             return _roomsA;

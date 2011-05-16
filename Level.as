@@ -161,7 +161,7 @@ package
 					_rooms++;
 					// means room was added successfully
 				} else {
-					FP.log('no room added');
+					trace('no room added');
 				}
 			}			
 		}
@@ -261,7 +261,7 @@ package
 			// synchronize updates with player turn
 			// handle things like open doors, triggered traps, dried up fountains, etc.
 			if (_step != Dungeon.player.STEP) {
-				FP.watch(_roomsA.length);
+				//FP.watch(_roomsA.length);
 				_nodemap.update();
 				_step = Dungeon.player.STEP;
 			}

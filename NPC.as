@@ -1,5 +1,6 @@
 package  
 {
+	import dungeon.Creature;
 	import dungeon.structure.Node;
 	import dungeon.structure.Point;
 	import net.flashpunk.Entity;
@@ -9,7 +10,7 @@ package
 	 * ...
 	 * @author MM
 	 */
-	public class NPC extends Entity
+	public class NPC extends Creature
 	{
 		[Embed(source = 'assets/npc1.png')] private const NPCGraphic:Class;
 		// some defaults and inits
@@ -41,6 +42,7 @@ package
 		
 		public function NPC() 
 		{
+			super();
 			graphic = new Image(NPCGraphic);
 			setHitbox(20, 20);
 			type = "npc";
@@ -141,7 +143,6 @@ package
 		// we might need this to be available for the player, when morphed
 		public function setNPCStats(npcType:String, npcLevel:uint):void {
 			// TODO: use Creature level class
-			// who knows, some massive
 			STATS[GC.STATUS_STR] = 14;
 			STATS[GC.STATUS_AGI] = 10;
 			STATS[GC.STATUS_INT] = 10;
@@ -158,6 +159,14 @@ package
 			STATS[GC.STATUS_HP] = 15;
 		}
 		
+		public function processCombat():void {
+			// TODO: detect if foes are in adjacent tile based on collision
+			// then pick one either randomly or based on previous picks
+			// or perhaps even some form of 'threat' management
+			// then smack!
+			Dungeon.statusScreen.updateCombatText("The enemy hits for " + STATS[GC.STATUS_ATT] + " damage! (but not really)");
+		}
+
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {
 				// Prototype basic NPC loop
@@ -172,6 +181,10 @@ package
 				// 5. After item/attack succesful resume idling
 				
 				idleMovement();
+				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
+				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
+				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
+
 				
 				// perform checks or check for events that would cause a path
 				// let's start with player location check
