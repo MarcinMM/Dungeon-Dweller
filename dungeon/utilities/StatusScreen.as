@@ -32,7 +32,10 @@ package dungeon.utilities
 		public var perDisplay:DisplayText;
 		public var penDisplay:DisplayText;
 		public var sppowerDisplay:DisplayText;
-		public var splevelDisplay:DisplayText;	
+		public var splevelDisplay:DisplayText;
+		
+		// combat text/stuff
+		public var textDisplay:DisplayText;
 
 		// only worried about this for now
 		public var gridDisplay:DisplayText;
@@ -76,6 +79,9 @@ package dungeon.utilities
 			sppowerDisplay = new DisplayText( "SPR: ", 300, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			splevelDisplay = new DisplayText( "SPL: ", 360, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			
+			// status combat text + debug text while in alpha/beta/LOLZ
+			textDisplay = new DisplayText( "TXT: ", 360, (Dungeon.MAP_HEIGHT - 60), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			
 			// we'll need a grid foreach here
 			var hGridAr:Array = new Array(45);
 			var vGridAr:Array = new Array(35);
@@ -118,6 +124,8 @@ package dungeon.utilities
 			displayTexts.push(penDisplay);
 			displayTexts.push(sppowerDisplay);
 			displayTexts.push(splevelDisplay);
+			
+			displayTexts.push(textDisplay);
 			
 			for each (var d:DisplayText in displayTexts)
 			{
@@ -194,6 +202,10 @@ package dungeon.utilities
 				}
 				i++;
 			}
+		}
+		
+		public function updateCombatText(text:String):void {
+			textDisplay.displayText.text = text;
 		}
 		
 		public function statUpdate(_stats:Array):void

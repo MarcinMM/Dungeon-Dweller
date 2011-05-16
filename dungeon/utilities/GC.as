@@ -23,6 +23,30 @@ package dungeon.utilities
 		
 		// Need to stick all the constants in here
 		
+		// Directions
+		public static const DIR_UP:int = 1;
+		public static const DIR_RIGHT:int = 2;
+		public static const DIR_DOWN:int = 3;
+		public static const DIR_LEFT:int = 4;
+		public static const DIR_UP_TEXT:String = "Up";
+		public static const DIR_RIGHT_TEXT:String = "Right";
+		public static const DIR_DOWN_TEXT:String = "Down";
+		public static const DIR_LEFT_TEXT:String = "Left";
+		
+		// Collisions
+		public static const COLLISION_NONE:int = 0;
+		public static const COLLISION_WALL:int = 1;
+		public static const COLLISION_NPC:int = 2;
+		public static const COLLISION_DOOR:int = 3;
+		
+		// Layer types
+		public static const LAYER_NPC:int = 1;
+		public static const LAYER_LEVEL:int = 2;
+		public static const LAYER_PLAYER:int = 3;
+		public static const LAYER_ITEM:int = 4;
+		public static const LAYER_NPC_TEXT:String = "npc";
+		public static const LAYER_LEVEL_TEXT:String = "level";
+		
 		// Stat constants for arrays
 		public static const STATUS_LEVEL:uint = 0;
 		public static const STATUS_XP:uint = 1;

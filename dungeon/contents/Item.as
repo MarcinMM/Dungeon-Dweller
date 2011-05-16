@@ -70,7 +70,7 @@ package dungeon.contents
 			setHitbox(Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			
 			type = "items";
-			layer = 15;
+			layer = 25;
 		}
 		
 		// common functions, what could they be?

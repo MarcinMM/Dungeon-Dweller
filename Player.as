@@ -33,18 +33,22 @@ package
 		public var INVENTORY_SIZE:uint = 0;
 		
 		public static var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-		public var invLeterrsAss:Array = [];
+		public var invLettersAss:Array = [];
 		
 		// Stat Array
 		public var STATS:Array = new Array();
 		
+		// Collision stats
+		public var COLLISION:Array = [0, 0, 0, 0];
+		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
+		
 		public function Player() 
 		{
 			graphic = new Image(PLAYER);
-			Input.define("Left", Key.LEFT);
-			Input.define("Right", Key.RIGHT);
-			Input.define("Up", Key.UP);
-			Input.define("Down", Key.DOWN);
+			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
+			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
+			Input.define(GC.DIR_UP_TEXT, Key.UP);
+			Input.define(GC.DIR_DOWN_TEXT, Key.DOWN);
 			Input.define("I", Key.I);
 			Input.define("a", Key.A);
 			Input.define("b", Key.B);
@@ -220,109 +224,77 @@ package
 			}
 		}
 		
-		public function 
-		
-		override public function update():void
-		{
-			// some pseudocode for movement and melee combat processing
-			/* // so this top part runs every frame
-			 * if (!inventory AND directionalInput) {
-			 *   setMoveFlag();
-			 * }
-			 * // but this runs only when move flag is set so that collision, combat, stat updates etc. are not checked/processed every time
-			 * if (moveFlag) {
-			 *   checkCollisionWall();
-			 *   checkCollisionNPC();
-			 *   if (!notWallCollision && !notNPCCollision) {
-			 *     processMove();
-			 *     postMove(); // item pickup, room lighting, monster awareness check
-			 *     STEP++;
-			 *   }
-			 *   else if (npcCollision) {
-			 *     processCombat(); // both player and NPC response
-			 *     postCombat(); // combat noise propagation, blood splatters ... other?
-			 *     STEP++;
-			 *   }
-			 * } else if (!inventory AND !directionalInput) {
-			 * 	 // TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
-			 * } else if (inventory) {
-			 *    processInventoryOps();
-			 * }
-			 * 
-			 * */
-			
-			// TODO: need to pull out collision check into a method
-			// currently we check collision and then monitor input AND collision
-			// this is expensive because it checks collision each frame - we really only need to check collision each keypress!
-			// so we need to only trigger collision checks on active keypresses and put this entire block below
-			// into one, cleaner function
-			if (Input.pressed("Left") && !rightImpact && !INVENTORY_OPEN) {
+		public function processMove():void {
+			if (Input.pressed(GC.DIR_LEFT_TEXT) && (COLLISION[GC.DIR_RIGHT] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
 				x -= GRIDSIZE;
 				STEP++;
-				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
-			if (Input.pressed("Right") && !leftImpact && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_RIGHT_TEXT) && (COLLISION[GC.DIR_LEFT] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
 				x += GRIDSIZE;
 				STEP++;
-				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
-			if (Input.pressed("Up") && !bottomImpact && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_UP_TEXT) && (COLLISION[GC.DIR_DOWN] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
 				y -= GRIDSIZE;
 				STEP++;
-				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
 			}
-			if (Input.pressed("Down") && !topImpact && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_DOWN_TEXT) && (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) && !INVENTORY_OPEN) {
 				y += GRIDSIZE;
 				STEP++;
-				trace("player at:" + (x/GRIDSIZE) + "-" + (y/GRIDSIZE));
+			}			
+		}
+		
+		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
+			if (collide(collisionEntity, x, y + GRIDSIZE)) {
+				COLLISION[GC.DIR_UP] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
 			}
-			
-			// now perform actions such as combat and item pickup checks and looking
-			// and other things dependent on STEP changing
-			
-			if (newStep) {}
-			
-			var leftImpact:Boolean = false, rightImpact:Boolean = false, topImpact:Boolean = false, bottomImpact:Boolean = false;
-			if (collide("npc", x, y + GRIDSIZE) || collide("level", x, y + GRIDSIZE)) {
-				topImpact = true;
+			if (collide(collisionEntity, x, y - GRIDSIZE)) {
+				COLLISION[GC.DIR_DOWN] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
 			}
-			if (collide("npc", x, y - GRIDSIZE) || collide("level", x, y - GRIDSIZE)) {
-				bottomImpact = true;
+			if (collide(collisionEntity, x + GRIDSIZE, y)) {
+				COLLISION[GC.DIR_LEFT] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
 			}
-			if (collide("npc", x + GRIDSIZE, y) || collide("level", x + GRIDSIZE, y)) {
-				leftImpact = true;
+			if (collide(collisionEntity, x - GRIDSIZE, y)){
+				COLLISION[GC.DIR_RIGHT] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
+			}			
+		}
+		
+		/*
+		public function checkCollisionWall():void {
+			if (collide("level", x, y + GRIDSIZE)) {
+				COLLISION[GC.DIR_UP] = GC.COLLISION_WALL;
 			}
-			if (collide("npc", x - GRIDSIZE, y) || collide("level", x - GRIDSIZE, y)){
-				rightImpact = true;
+			if (collide("level", x, y - GRIDSIZE)) {
+				COLLISION[GC.DIR_DOWN] = GC.COLLISION_WALL;
 			}
-			
-
-			// Inventory Management
-			if (INVENTORY_OPEN) {
-				if (Input.pressed("Up")) {
-					Dungeon.statusScreen.up();
-				}
-				if (Input.pressed("Down")) {
-					Dungeon.statusScreen.down();
-				} else {
-					// now test all keys for inventory
-					var lastKey:uint = Input.lastKey;
-					if ((lastKey != 73) && (lastKey >= 65) && (lastKey <= 90)) {
-						FP.log(GC.KEYS[lastKey]);
-						activateItemAt(GC.KEYS[lastKey]);
-					}
-				}
+			if (collide("level", x + GRIDSIZE, y)) {
+				COLLISION[GC.DIR_LEFT] = GC.COLLISION_WALL;
 			}
-			if (Input.pressed("I")) {
-				// this needs to suspend movement and turn directional keys to inventory traversal
-				if (Dungeon.statusScreen.visible == false) {
-					Dungeon.statusScreen.visible = true;
-					INVENTORY_OPEN = true;
-				} else {
-					Dungeon.statusScreen.visible = false;					
-					INVENTORY_OPEN = false;
-				}
+			if (collide("level", x - GRIDSIZE, y)){
+				COLLISION[GC.DIR_RIGHT] = GC.COLLISION_WALL;
 			}
+		}
+		
+		public function checkCollisionNPC():int {
+			if (collide("npc", x, y + GRIDSIZE)) {
+				COLLISION[GC.DIR_UP] = GC.COLLISION_NPC;
+			}
+			if (collide("npc", x, y - GRIDSIZE)) {
+				COLLISION[GC.DIR_DOWN] = GC.COLLISION_NPC;
+			}
+			if (collide("npc", x + GRIDSIZE, y)) {
+				COLLISION[GC.DIR_LEFT] = GC.COLLISION_NPC;
+			}
+			if (collide("npc", x - GRIDSIZE, y)){
+				COLLISION[GC.DIR_RIGHT] = GC.COLLISION_NPC;
+			}
+		}*/
+		
+		public function postMove():void {
+			// TODO: atm this is item pick-up code dumped in from update, needs a once over
 			if (collide("items", x, y)) {
 				var itemAr:Array = [];
 				collideInto("items", x, y, itemAr);
@@ -336,7 +308,7 @@ package
 				var newType:String = itemAr[0].ITEM_TYPE;
 				// find a new letter for this and assign it to this item
 				var newLetter:String = invLettersUnass.shift();
-				invLeterrsAss.push(newLetter);
+				invLettersAss.push(newLetter);
 				itemAr[0].invLetter = newLetter;
 				// now add item to local items
 				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
@@ -354,9 +326,78 @@ package
 				
 				// now update inventory object
 				Dungeon.statusScreen.updateInventory();	
+			}			
+		}
+		
+		// this could be a fight, a position switch, a conversation ... etc.
+		public function processNPCCollision():void {
+			Dungeon.statusScreen.updateCombatText("Bonk! You hit the enemy for " + STATS[GC.STATUS_ATT] + " damage! (but not really)");
+		}
+		
+		// TODO: nothing here yet, but NPC actions will take place within NPC class based on collision
+		public function postNPCCollision():void {}
+		
+		public function inventoryFunctions():void {
+			if (Input.pressed(GC.DIR_UP)) {
+				Dungeon.statusScreen.up();
 			}
-			//FP.log("Step: " + STEP);
-			//FP.watch("STEP");
+			if (Input.pressed(GC.DIR_DOWN)) {
+				Dungeon.statusScreen.down();
+			} else {
+				// now test all keys for inventory
+				var lastKey:uint = Input.lastKey;
+				if ((lastKey != 73) && (lastKey >= 65) && (lastKey <= 90)) {
+					FP.log(GC.KEYS[lastKey]);
+					activateItemAt(GC.KEYS[lastKey]);
+				}
+			}			
+		}
+		
+		override public function update():void
+		{
+			COLLISION_TYPE = GC.COLLISION_NONE;
+			var directionInput:Boolean = false;
+			var direction:int; // need to setup some GC directional constants for this
+			var wallCollision:int = 0;
+			var npcCollision:int = 0;
+			
+			// Set inventory flag as it overrides movement; also open status screen
+			if (Input.pressed("I")) {
+				if (Dungeon.statusScreen.visible == false) {
+					Dungeon.statusScreen.visible = true;
+					INVENTORY_OPEN = true;
+				} else {
+					Dungeon.statusScreen.visible = false;					
+					INVENTORY_OPEN = false;
+				}
+			}
+			
+			if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !INVENTORY_OPEN) {
+				directionInput = true;
+				direction = Input.lastKey;
+			}
+			
+			if (directionInput) {
+				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
+				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
+				
+				if (COLLISION_TYPE == GC.COLLISION_NONE) {
+					processMove();
+					postMove();
+					STEP++;
+				} else if (COLLISION_TYPE == GC.COLLISION_NPC) {
+					// may or may not be combat, so just call it collision
+					processNPCCollision();
+					postNPCCollision();
+					STEP++;
+				} else if (COLLISION_TYPE == GC.COLLISION_WALL) {
+					Dungeon.statusScreen.updateCombatText("Bonk! You run into a wall and lose 3,000 HP!");
+				}
+			} else if (!directionInput && !INVENTORY_OPEN) {
+				// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
+			} else if (INVENTORY_OPEN) {
+				inventoryFunctions();
+			}
 		}
 		
 	}
