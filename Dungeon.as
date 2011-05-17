@@ -12,13 +12,16 @@ package
 	public class Dungeon extends World
 	{
 		public static var player:Player;
+		// TODO: var dungeon:Dungeon = FP.world as Dungeon; - this should get us the instance of the world in any context (?)
+		// TODO: then we can refer to the player var without it being static (alternatively try var dungeon:Dungeon = world as Dungeon;)
+		
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
 		
 		public var items:Array = new Array();
 
-		public static const MAP_WIDTH:Number = 800;
-		public static const MAP_HEIGHT:Number = 600;
+		public static const MAP_WIDTH:Number = 1200;
+		public static const MAP_HEIGHT:Number = 800;
 		public static const TILE_WIDTH:Number = 20;
 		public static const TILE_HEIGHT:Number = 20;
 		public static const TILESX:Number = MAP_WIDTH/TILE_WIDTH;
@@ -32,7 +35,7 @@ package
 
 			statusScreen = new StatusScreen();
 			
-			Dungeon.player = new Player;
+			player = new Player;
 			Dungeon.level = new Level;
 			add(player);
 			add(level);

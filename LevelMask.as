@@ -20,7 +20,7 @@ package
 		
 		public function LevelMask() 
 		{
-			_levelmask = new Tilemap(TILEMAP, 800,600,20,20);
+			_levelmask = new Tilemap(TILEMAP, 1200,800,20,20);
 			//_levelmask.setRect(0,0,800/20,600/20,1); // black overlay
 			graphic = _levelmask;
 			layer = 5;

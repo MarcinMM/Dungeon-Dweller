@@ -3,6 +3,7 @@ package
 	import dungeon.Creature;
 	import dungeon.structure.Node;
 	import dungeon.structure.Point;
+	import net.flashpunk.FP;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
 	import dungeon.utilities.GC;
@@ -40,6 +41,8 @@ package
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
 		
+		// combat/action statuses
+		private var ACTION_TAKEN:Boolean = false;
 		public function NPC() 
 		{
 			super();
@@ -164,9 +167,56 @@ package
 			// then pick one either randomly or based on previous picks
 			// or perhaps even some form of 'threat' management
 			// then smack!
-			Dungeon.statusScreen.updateCombatText("The enemy hits for " + STATS[GC.STATUS_ATT] + " damage! (but not really)");
+			
+			if (COLLISION_TYPE == 3 && !ACTION_TAKEN) {
+				// we have NPC collision
+				// something like (if friendly, skip, if enemy, consider in hit calcs)
+				// we need to check all collision targets and pick one for attack - how? Don't want to do collide() again
+				// for now, just check all collision directions and pick a target
+				// one day this will need to consider number of attacks too
+				
+				var collAr:Array = [];
+				for each (var index:int in COLLISION) {
+					if (COLLISION[index] == 1) {
+						// index gives us the direction
+						collAr.push(index);
+					}
+				}
+				var pickRandomHit:int = Math.round(Math.random() * collAr.length);
+				var hitAr:Array = [];
+				collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr); // this should get us the collided entity based on our move dir
+				hitAr[0].processHit(STATS[GC.STATUS_ATT]);
+				Dungeon.statusScreen.updateCombatText("An NPC hits anoter NPC for " + STATS[GC.STATUS_ATT] + " damage!");
+			}
+			if (COLLISION_TYPE == 4 && !ACTION_TAKEN) {
+				// we have NPC collision
+				// check for friendlies vs. enemies status
+				// let's prioritize this for testing
+				// there is only one player so we don't have to perform any calculations, just call player's hit calc
+				// this is lazy if we ever do multiplayer, but that's just LOLS
+				// if (threatList check here) {
+				Dungeon.player.processHit(STATS[GC.STATUS_ATT]);
+				ACTION_TAKEN = true;
+				// end threat list check
+			}
+			
+			//var randomHitDirection:uint = Math.round(Math.random(
+			
 		}
-
+		
+		public function processHit(attackValue:int):Boolean {
+			// calculations to modify the attack based on player's defense stats
+			// return true if dead for text and player stat update (XP+)
+			STATS[GC.STATUS_HP] -= attackValue;
+			Dungeon.statusScreen.updateCombatText("The creature hits the other creature (?) for " + STATS[GC.STATUS_ATT] + " damage!");
+			if (STATS[GC.STATUS_HP] <= 0) {
+				FP.world.remove(this);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {
 				// Prototype basic NPC loop
@@ -184,6 +234,8 @@ package
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
 				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
+				
+				processCombat();
 
 				
 				// perform checks or check for events that would cause a path

@@ -33,11 +33,15 @@ package dungeon.utilities
 		public static const DIR_DOWN_TEXT:String = "Down";
 		public static const DIR_LEFT_TEXT:String = "Left";
 		
+		// Direction modifiers
+		public static const DIR_MOD_X:Array = [0, 0, 1, 0, -1];
+		public static const DIR_MOD_Y:Array = [0, -1, 0, 1, 0];
+		
 		// Collisions
 		public static const COLLISION_NONE:int = 0;
 		public static const COLLISION_WALL:int = 1;
-		public static const COLLISION_NPC:int = 2;
-		public static const COLLISION_DOOR:int = 3;
+		public static const COLLISION_DOOR:int = 2;
+		public static const COLLISION_NPC:int = 3;
 		public static const COLLISION_PLAYER:int = 4;
 
 		// Layer types

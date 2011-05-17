@@ -13,7 +13,7 @@ package
 				
 		public function Main() 
 		{
-			super(800, 600, 60, false);
+			super(1200, 800, 60, false);
 			FP.world = new Dungeon;
 		}
 		

@@ -15,11 +15,12 @@ package
 	 * ...
 	 * @author MM
 	 */
-	public class Player extends Creature
+	public class Player extends Entity
 	{
 		[Embed(source = 'assets/player.png')] private const PLAYER:Class;
 		public var STEP:int = 0;
 		public var LIGHT_RADIUS:int = 1;
+		public var GRIDSIZE:int = 20;
 			
 		public var ARMOR:Array = new Array();
 		public var WEAPONS:Array = new Array();
@@ -37,10 +38,15 @@ package
 		
 		// Stat Array
 		public var STATS:Array = new Array();
-		
+
+		// Collision stats
+		public var COLLISION:Array = [0, 0, 0, 0, 0];
+		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
+		public var MOVE_DIR:int = 0;
+		public var COLLISION_STORE:Array = [];
+
 		public function Player() 
 		{
-			super();
 			graphic = new Image(PLAYER);
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
@@ -221,6 +227,26 @@ package
 			}
 		}
 		
+		// all this does is populate all directions in which this creature is surrounded by entities
+		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
+			if (collide(collisionEntity, x, y + GRIDSIZE)) {
+				COLLISION[GC.DIR_DOWN] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
+			}
+			if (collide(collisionEntity, x, y - GRIDSIZE)) {
+				COLLISION[GC.DIR_UP] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
+			}
+			if (collide(collisionEntity, x + GRIDSIZE, y)) {
+				COLLISION[GC.DIR_RIGHT] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
+			}
+			if (collide(collisionEntity, x - GRIDSIZE, y)){
+				COLLISION[GC.DIR_LEFT] = collisionConstant;
+				COLLISION_TYPE = collisionConstant;
+			}			
+		}
+		
 		public function processMove():void {
 			MOVE_DIR = 0;
 			if (Input.pressed(GC.DIR_LEFT_TEXT) && !INVENTORY_OPEN) {
@@ -251,7 +277,6 @@ package
 					STEP++;
 				}
 			}
-			// Dungeon.statusScreen.updateCombatText("Bonk! You run into a wall and lose 3,000 HP!");
 		}
 		
 		public function postMove():void {
@@ -291,8 +316,22 @@ package
 		// this could be a fight, a position switch, a conversation ... etc.
 		public function processNPCCollision():void {
 			if (COLLISION[MOVE_DIR] == GC.COLLISION_NPC) {
-				Dungeon.statusScreen.updateCombatText("Bonk! You hit the enemy for " + STATS[GC.STATUS_ATT] + " damage! (but not really)");
+				var npcAr:Array = [];
+				collideInto("npc", x + (GC.DIR_MOD_X[MOVE_DIR] * GRIDSIZE), y + (GC.DIR_MOD_Y[MOVE_DIR] * GRIDSIZE), npcAr); // this should get us the collided entity based on our move dir
+				if (npcAr[0].processHit(STATS[GC.STATUS_ATT])) {
+					Dungeon.statusScreen.updateCombatText("Bonk! You hit the enemy for " + STATS[GC.STATUS_ATT] + " damage and kill it!");
+				} else {
+					Dungeon.statusScreen.updateCombatText("Bonk! You hit the enemy for " + STATS[GC.STATUS_ATT] + " damage!");
+				}
 			}
+		}
+		
+		public function processHit(attackValue:int):void {
+			// calculations to modify the attack based on player's defense stats
+			STATS[GC.STATUS_HP] -= attackValue;
+			if (STATS[GC.STATUS_HP] <= 0) {
+				Dungeon.statusScreen.updateCombatText("You die ... more? Y/N/A/Q (not implemented HAR!)");
+		}
 		}
 		
 		// TODO: nothing here yet, but NPC actions will take place within NPC class based on collision
