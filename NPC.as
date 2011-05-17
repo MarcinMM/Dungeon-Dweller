@@ -168,7 +168,8 @@ package
 			// or perhaps even some form of 'threat' management
 			// then smack!
 			
-			if (COLLISION_TYPE == 3 && !ACTION_TAKEN) {
+			//FP.log('coll:' + COLLISION_TYPE);
+			if (COLLISION_TYPE == GC.COLLISION_NPC && !ACTION_TAKEN) {
 				// we have NPC collision
 				// something like (if friendly, skip, if enemy, consider in hit calcs)
 				// we need to check all collision targets and pick one for attack - how? Don't want to do collide() again
@@ -176,19 +177,23 @@ package
 				// one day this will need to consider number of attacks too
 				
 				var collAr:Array = [];
-				for each (var index:int in COLLISION) {
-					if (COLLISION[index] == 1) {
+				for (var index:String in COLLISION) {
+					FP.log('COLLAR:' + index + '|' + COLLISION[index])
+					if (COLLISION[index] == GC.COLLISION_NPC) {
 						// index gives us the direction
 						collAr.push(index);
+						//FP.log("hit index: " + index);
 					}
 				}
-				var pickRandomHit:int = Math.round(Math.random() * collAr.length);
+				var pickRandomHit:int = Math.round(Math.random() * collAr.length-1);
 				var hitAr:Array = [];
+				//FP.log("random hit dir:" + pickRandomHit);
+				//FP.log("random hit coord mod X: " + GC.DIR_MOD_X[collAr[pickRandomHit]] + "|y: " + GC.DIR_MOD_Y[collAr[pickRandomHit]]);
 				collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr); // this should get us the collided entity based on our move dir
 				hitAr[0].processHit(STATS[GC.STATUS_ATT]);
 				Dungeon.statusScreen.updateCombatText("An NPC hits anoter NPC for " + STATS[GC.STATUS_ATT] + " damage!");
 			}
-			if (COLLISION_TYPE == 4 && !ACTION_TAKEN) {
+			if (COLLISION_TYPE == GC.COLLISION_PLAYER && !ACTION_TAKEN) {
 				// we have NPC collision
 				// check for friendlies vs. enemies status
 				// let's prioritize this for testing
@@ -219,6 +224,7 @@ package
 		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {
+			FP.log('step: ' + STEP + '|dng step: ' + Dungeon.player.STEP);
 				// Prototype basic NPC loop
 				// 1. Check if an action is already being performed
 				// 2. check NPC sight range if an enemy is within
@@ -229,13 +235,16 @@ package
 				// 4. If attacking, flee check.
 				// 4a. Flee.
 				// 5. After item/attack succesful resume idling
-				
-				idleMovement();
+
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
-				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
-				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
+				//checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
+				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				
 				processCombat();
+
+				if (!ACTION_TAKEN) {
+					idleMovement();	
+				}
 
 				
 				// perform checks or check for events that would cause a path

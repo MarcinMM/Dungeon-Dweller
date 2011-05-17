@@ -20,3 +20,4 @@ More documentation later. Project under *very* slow and infrequent development.
 * Consider using lastKey along with pressed(ANY) for figuring out what key was pressed?
 * Time-based regen.
 * *BIG BUG HERE*: Def numbers fluctuate with same gear. Also, just plain fluctuating.
+* Combat/action log. Status.update() alone just won't cut it.
