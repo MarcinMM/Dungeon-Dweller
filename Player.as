@@ -110,7 +110,12 @@ package
 		// or make it a Util function. I like 1st approach better, I think.
 		public function updatePlayerDerivedStats():void {
 			// this will vary by class and equipment type later
+			// we need code in here that deals with the fact that not all slot are filled
 			var weapon:Weapon = new Weapon();
+			// unarmed defaults
+			weapon.attack = 3;
+			weapon.defense = 3;
+			weapon.pen = 0.3;
 			var headSlot:Armor = new Armor();
 			var chestSlot:Armor = new Armor();
 			var legSlot:Armor = new Armor();
@@ -161,9 +166,9 @@ package
 			// New idea: everything that relies on stats for boosts should only do so above 10pts of said stat, as 10pts is the baseline
 			// New idea 2: strength and agility are %-based (of 10) multipliers on weapon attack and defence. Armor attack and defence is unaffected by stats.
 			// New idea 3: weapon attack modifier should max out at 70% if str is 20. So every pt should be an extra 7%
-			var attStatModifer:Number = 1 + ((STATS[GC.STATUS_STR] - 10) * 0.07) + (0.02 * (STATS[GC.STATUS_AGI] - 10));
+			var attStatModifier:Number = 1 + ((STATS[GC.STATUS_STR] - 10) * 0.07) + (0.02 * (STATS[GC.STATUS_AGI] - 10));
 			var defStatModifier:Number = 1 + ((STATS[GC.STATUS_AGI] - 10) * 0.7) + (0.02 * (STATS[GC.STATUS_STR] - 10));
-			STATS[GC.STATUS_ATT] = Math.floor((attStatModifer * weapon.attack) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			STATS[GC.STATUS_ATT] = Math.floor((attStatModifier * weapon.attack) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
 			//STATS[GC.STATUS_ATT] = Math.floor(((STATS[GC.STATUS_STR] - 10) + weapon.attack + (0.2 * (STATS[GC.STATUS_AGI] - 10))) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
 			STATS[GC.STATUS_ATT_MIN] = Math.ceil(STATS[GC.STATUS_ATT] / 2); // upper limit of half of calculated
 			STATS[GC.STATUS_DEF] = Math.floor((defStatModifier * weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
