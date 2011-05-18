@@ -192,13 +192,15 @@ package
 					if (hitAr[0].processHit(STATS[GC.STATUS_ATT])) {
 						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
 						Dungeon.statusScreen.updateCombatText(hitAr[0].NPCType + " dies.");
-						FP.log(hitAr[0].NPCType + " dies.");
+						FP.log(hitAr[0].NPCType + " is hit, dies.");
 					} else {
 						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						FP.log(hitAr[0].NPCType + " is hit.");
 					}
 					ACTION_TAKEN = true;
 				} else {
 					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);	
+					FP.log(NPCType + " swings wildly.");
 					ACTION_TAKEN = true;
 				}
 			}
