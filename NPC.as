@@ -185,13 +185,13 @@ package
 						//FP.log("hit index: " + index);
 					}
 				}
-				var pickRandomHit:int = Math.round(Math.random() * collAr.length-1);
+				var pickRandomHit:int = Math.round(Math.random() * (collAr.length-1));
 				var hitAr:Array = [];
 				//FP.log("random hit dir:" + pickRandomHit);
 				//FP.log("random hit coord mod X: " + GC.DIR_MOD_X[collAr[pickRandomHit]] + "|y: " + GC.DIR_MOD_Y[collAr[pickRandomHit]]);
 				collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr); // this should get us the collided entity based on our move dir
 				hitAr[0].processHit(STATS[GC.STATUS_ATT]);
-				Dungeon.statusScreen.updateCombatText("An NPC hits anoter NPC for " + STATS[GC.STATUS_ATT] + " damage!");
+				Dungeon.statusScreen.updateCombatText("An NPC hits another NPC for " + STATS[GC.STATUS_ATT] + " damage!");
 			}
 			if (COLLISION_TYPE == GC.COLLISION_PLAYER && !ACTION_TAKEN) {
 				// we have NPC collision
