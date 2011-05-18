@@ -40,7 +40,11 @@ package
 		public var ITEMS:Array = [];
 		public var NPCS:Array = [];
 
-		// more level entities
+		// Level game data
+		public var dungeonDepth:uint = 1;
+
+		// frequency array for levels; will probably need to be dynamic
+		// this rudimentary distribution array should work for now
 		public var ITEM_GEN:Object = {
 			0: generateWeapon,
 			1: generateWeapon,
@@ -81,13 +85,12 @@ package
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;
 
-		// temporary monster generation
-		public var MONSTARS:Array = ["paladin","rogue","warrior","monk","mage","fighter","sorcerer","wizard","shapeshifter","teleporter","ranger","vampire","archer"];
 		
 		public var _step:int = 0;
 		
-		// Level game data
-		public var dungeonDepth:uint = 1;
+		// temporary monster generation
+		public var MONSTARS:Array = ["paladin","rogue","warrior","monk","mage","fighter","sorcerer","wizard","shapeshifter","teleporter","ranger","vampire","archer"];
+
 		
 		public function Level() 
 		{
@@ -247,6 +250,7 @@ package
 			
 			for (var j:int = 0; j < 10; j++) {
 				var newNPC:NPC = new NPC();
+				newNPC.NPCType = MONSTARS.pop();
 				NPCS.push(newNPC);
 			}
 			

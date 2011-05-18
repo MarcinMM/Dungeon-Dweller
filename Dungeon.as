@@ -18,14 +18,13 @@ package
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
 		
-		public var items:Array = new Array();
-
 		public static const MAP_WIDTH:Number = 1200;
 		public static const MAP_HEIGHT:Number = 800;
 		public static const TILE_WIDTH:Number = 20;
 		public static const TILE_HEIGHT:Number = 20;
 		public static const TILESX:Number = MAP_WIDTH/TILE_WIDTH;
 		public static const TILESY:Number = MAP_HEIGHT/TILE_HEIGHT;
+
 
 		public static var dataloader:DataLoader = new DataLoader();
 		

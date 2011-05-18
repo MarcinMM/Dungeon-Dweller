@@ -140,7 +140,7 @@ package
 		// TODO: Monster Library
 		// This needs to pull from some library of monsters, just like items do. 
 		public function determineNPCType():void {
-			NPCType = Dungeon.level.MONSTARS.pop();
+			//NPCType = Dungeon.MONSTARS.pop();
 			NPCLevel = 1;
 		}
 		
@@ -189,11 +189,17 @@ package
 				//FP.log("random hit coord mod X: " + GC.DIR_MOD_X[collAr[pickRandomHit]] + "|y: " + GC.DIR_MOD_Y[collAr[pickRandomHit]]);
 				collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr); // this should get us the collided entity based on our move dir
 				if (hitAr.length > 0) {
-					hitAr[0].processHit(STATS[GC.STATUS_ATT]);
-					Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+					if (hitAr[0].processHit(STATS[GC.STATUS_ATT])) {
+						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						Dungeon.statusScreen.updateCombatText(hitAr[0].NPCType + " dies.");
+						FP.log(hitAr[0].NPCType + " dies.");
+					} else {
+						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+					}
 					ACTION_TAKEN = true;
 				} else {
-					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);					
+					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);	
+					ACTION_TAKEN = true;
 				}
 			}
 			if (COLLISION_TYPE == GC.COLLISION_PLAYER && !ACTION_TAKEN) {
