@@ -80,6 +80,9 @@ package
 		
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;
+
+		// temporary monster generation
+		public var MONSTARS:Array = ["paladin","rogue","warrior","monk","mage","fighter","sorcerer","wizard","shapeshifter","teleporter","ranger","vampire","archer"];
 		
 		public var _step:int = 0;
 		

@@ -43,6 +43,7 @@ package
 		
 		// combat/action statuses
 		private var ACTION_TAKEN:Boolean = false;
+
 		public function NPC() 
 		{
 			super();
@@ -139,7 +140,7 @@ package
 		// TODO: Monster Library
 		// This needs to pull from some library of monsters, just like items do. 
 		public function determineNPCType():void {
-			NPCType = "orc";
+			NPCType = Dungeon.level.MONSTARS.pop();
 			NPCLevel = 1;
 		}
 		
@@ -171,10 +172,7 @@ package
 			//FP.log('coll:' + COLLISION_TYPE);
 			if (COLLISION_TYPE == GC.COLLISION_NPC && !ACTION_TAKEN) {
 				// we have NPC collision
-				// something like (if friendly, skip, if enemy, consider in hit calcs)
-				// we need to check all collision targets and pick one for attack - how? Don't want to do collide() again
-				// for now, just check all collision directions and pick a target
-				// one day this will need to consider number of attacks too
+				// still needs threat list (which should include friendlies, maybe?)
 				
 				var collAr:Array = [];
 				for (var index:String in COLLISION) {
@@ -190,13 +188,15 @@ package
 				//FP.log("random hit dir:" + pickRandomHit);
 				//FP.log("random hit coord mod X: " + GC.DIR_MOD_X[collAr[pickRandomHit]] + "|y: " + GC.DIR_MOD_Y[collAr[pickRandomHit]]);
 				collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr); // this should get us the collided entity based on our move dir
-				hitAr[0].processHit(STATS[GC.STATUS_ATT]);
-				Dungeon.statusScreen.updateCombatText("An NPC hits another NPC for " + STATS[GC.STATUS_ATT] + " damage!");
+				if (hitAr.length > 0) {
+					hitAr[0].processHit(STATS[GC.STATUS_ATT]);
+					Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+					ACTION_TAKEN = true;
+				} else {
+					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);					
+				}
 			}
 			if (COLLISION_TYPE == GC.COLLISION_PLAYER && !ACTION_TAKEN) {
-				// we have NPC collision
-				// check for friendlies vs. enemies status
-				// let's prioritize this for testing
 				// there is only one player so we don't have to perform any calculations, just call player's hit calc
 				// this is lazy if we ever do multiplayer, but that's just LOLS
 				// if (threatList check here) {
@@ -213,7 +213,7 @@ package
 			// calculations to modify the attack based on player's defense stats
 			// return true if dead for text and player stat update (XP+)
 			STATS[GC.STATUS_HP] -= attackValue;
-			Dungeon.statusScreen.updateCombatText("The creature hits the other creature (?) for " + STATS[GC.STATUS_ATT] + " damage!");
+			// Dungeon.statusScreen.updateCombatText("The creature hits the other creature (?) for " + STATS[GC.STATUS_ATT] + " damage!");
 			if (STATS[GC.STATUS_HP] <= 0) {
 				FP.world.remove(this);
 				return true;

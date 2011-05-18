@@ -4,6 +4,7 @@ package dungeon.utilities
 	import dungeon.utilities.TextBox;
 	import flash.utils.IDataInput;
 	import net.flashpunk.Entity;
+	import net.flashpunk.FP;
 	
 	/**
 	 * ...
@@ -206,6 +207,8 @@ package dungeon.utilities
 		
 		public function updateCombatText(text:String):void {
 			textDisplay.displayText.text = text;
+			// TODO: Better multiline combat text
+			FP.log(text);
 		}
 		
 		public function statUpdate(_stats:Array):void
