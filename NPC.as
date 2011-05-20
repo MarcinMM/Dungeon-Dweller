@@ -231,6 +231,7 @@ package
 		}
 		
 		override public function update():void {
+			ACTION_TAKEN = false;
 			if (Dungeon.player.STEP != STEP) {
 			FP.log('step: ' + STEP + '|dng step: ' + Dungeon.player.STEP);
 				// Prototype basic NPC loop

@@ -26,6 +26,8 @@ package dungeon
 
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
+			COLLISION = [0, 0, 0, 0, 0];
+			COLLISION_TYPE = GC.COLLISION_NONE;
 			if (collide(collisionEntity, x, y + GRIDSIZE)) {
 				COLLISION[GC.DIR_DOWN] = collisionConstant;
 				COLLISION_TYPE = collisionConstant;
