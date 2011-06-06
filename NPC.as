@@ -18,22 +18,11 @@ package
 		private const GRIDSIZE:int = 20;
 		public var STEP:int = 0;
 		public var SIGHT_RANGE:int = 1;
-			
-		public var ARMOR:Array = new Array();
-		public var WEAPONS:Array = new Array();
-		public var SCROLLS:Array = new Array();
-		public var POTIONS:Array = new Array();
-		public var JEWELRY:Array = new Array();
-		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
-		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
 		
 		// What is this thing? And what type of descriptors do we need? Let's start simple.
 		public var NPCType:String;
 		public var NPCLevel:uint;
-		
-		// Stat Array
-		public var STATS:Array = new Array();
-		
+			
 		// pathing status
 		private var POSITION:Point;
 		private var PATHING:Boolean = false;
@@ -199,6 +188,7 @@ package
 					}
 					ACTION_TAKEN = true;
 				} else {
+					// this shouldn't ever happen since I don't batch collision checks
 					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);	
 					FP.log(NPCType + " swings wildly.");
 					ACTION_TAKEN = true;
@@ -246,7 +236,7 @@ package
 				// 5. After item/attack succesful resume idling
 
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
-				//checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
+				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				
 				processCombat();

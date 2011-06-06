@@ -32,6 +32,7 @@ package dungeon.utilities
 		public static const DIR_RIGHT_TEXT:String = "Right";
 		public static const DIR_DOWN_TEXT:String = "Down";
 		public static const DIR_LEFT_TEXT:String = "Left";
+		public static const NOOP:String = "Space";
 		
 		// Direction modifiers
 		public static const DIR_MOD_X:Array = [0, 0, 1, 0, -1];
@@ -51,6 +52,7 @@ package dungeon.utilities
 		public static const LAYER_ITEM:int = 4;
 		public static const LAYER_NPC_TEXT:String = "npc";
 		public static const LAYER_LEVEL_TEXT:String = "level";
+		public static const LAYER_PLAYER_TEXT:String = "player";
 		
 		// Stat constants for arrays
 		public static const STATUS_LEVEL:uint = 0;

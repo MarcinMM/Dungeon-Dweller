@@ -23,7 +23,19 @@ package dungeon
 		public var COLLISION:Array = [0, 0, 0, 0, 0];
 		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
 		public var MOVE_DIR:int = 0;
+		public var COLLISION_STORE:Array = [];
 
+		public var ARMOR:Array = new Array();
+		public var WEAPONS:Array = new Array();
+		public var SCROLLS:Array = new Array();
+		public var POTIONS:Array = new Array();
+		public var JEWELRY:Array = new Array();
+		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
+		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
+
+		// Stat Array
+		public var STATS:Array = new Array();
+		
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
 			COLLISION = [0, 0, 0, 0, 0];
@@ -45,5 +57,81 @@ package dungeon
 				COLLISION_TYPE = collisionConstant;
 			}			
 		}
+		
+		// stats are a combination of intrinsics, equipped items and special effects (potion with temporary boosts, being on fire, wet, hungry, etc)
+		// the first two are relatively easy to calculate, the last will require iterating through a stack of "effects" currently on creature
+		public function updateDerivedStats():void {
+			// this will vary by class and equipment type later
+			// we need code in here that deals with the fact that not all slot are filled
+			var weapon:Weapon = new Weapon();
+			// unarmed defaults
+			weapon.attack = 3;
+			weapon.defense = 3;
+			weapon.pen = 0.3;
+			var headSlot:Armor = new Armor();
+			var chestSlot:Armor = new Armor();
+			var legSlot:Armor = new Armor();
+			var handSlot:Armor = new Armor();
+			var feetSlot:Armor = new Armor();
+			
+			// also, this needs to pull in all current armor and weapons, not to mention enchantments etc.
+			for each (var itemAr:Array in ITEMS) {
+				for each (var item:* in itemAr) {
+					if (item.EQUIPPED) {
+						switch(item.ITEM_TYPE) {
+							case GC.C_ITEM_ARMOR:
+								switch(item.armorSlot) {
+									case "LEGS":
+										legSlot = item;
+									break;
+									case "HEAD":
+										headSlot = item;
+									break;
+									case "CHEST":
+										chestSlot = item;
+									break;
+									case "HANDS":
+										handSlot = item;
+									break;
+									case "FEET":
+										feetSlot = item;
+									break;
+								}
+							break;
+							case GC.C_ITEM_JEWELRY:
+							break;
+							case GC.C_ITEM_POTIONS:
+							break;
+							case GC.C_ITEM_SCROLLS:
+							break;
+							case GC.C_ITEM_WEAPON:
+								weapon = item;
+							break;
+						}
+					}
+				}
+			}
+
+			// weapon and stat for att and def are averaged, then armor is added
+			// I am not sure if that makes sense, but it comes out to a sword having def. about equal to a chain chestplate
+			// I guess natural stat max is 20
+			// New idea: everything that relies on stats for boosts should only do so above 10pts of said stat, as 10pts is the baseline
+			// New idea 2: strength and agility are %-based (of 10) multipliers on weapon attack and defence. Armor attack and defence is unaffected by stats.
+			// New idea 3: weapon attack modifier should max out at 70% if str is 20. So every pt should be an extra 7%
+			var attStatModifier:Number = 1 + ((STATS[GC.STATUS_STR] - 10) * 0.07) + (0.02 * (STATS[GC.STATUS_AGI] - 10));
+			var defStatModifier:Number = 1 + ((STATS[GC.STATUS_AGI] - 10) * 0.7) + (0.02 * (STATS[GC.STATUS_STR] - 10));
+			STATS[GC.STATUS_ATT] = Math.floor((attStatModifier * weapon.attack) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			//STATS[GC.STATUS_ATT] = Math.floor(((STATS[GC.STATUS_STR] - 10) + weapon.attack + (0.2 * (STATS[GC.STATUS_AGI] - 10))) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
+			STATS[GC.STATUS_ATT_MIN] = Math.ceil(STATS[GC.STATUS_ATT] / 2); // upper limit of half of calculated
+			STATS[GC.STATUS_DEF] = Math.floor((defStatModifier * weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
+			//STATS[GC.STATUS_DEF] = Math.floor(((STATS[GC.STATUS_AGI] - 10) + (0.2 * (STATS[GC.STATUS_STR] - 10)) + weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
+			STATS[GC.STATUS_CRITDEF] = Math.floor((STATS[GC.STATUS_AGI] * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
+			STATS[GC.STATUS_PEN] = weapon.pen + (0.02 * (STATS[GC.STATUS_STR] - 10));
+			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS] - 20));
+			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items
+			STATS[GC.STATUS_SPPOWER] = Math.floor(STATS[GC.STATUS_INT]/10); // straight dmg multiplier for spells, plus items; items should have % boosts, maybe lesser and greater spellpower being 5 and 10% boosts each?
+			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_LEVEL]; // plus items. should this be alterable?
+			STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
+		}		
 	}
 }

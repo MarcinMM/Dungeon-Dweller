@@ -15,36 +15,19 @@ package
 	 * ...
 	 * @author MM
 	 */
-	public class Player extends Entity
+	public class Player extends Creature
 	{
 		[Embed(source = 'assets/player.png')] private const PLAYER:Class;
 		public var STEP:int = 0;
 		public var LIGHT_RADIUS:int = 1;
 		public var GRIDSIZE:int = 20;
-			
-		public var ARMOR:Array = new Array();
-		public var WEAPONS:Array = new Array();
-		public var SCROLLS:Array = new Array();
-		public var POTIONS:Array = new Array();
-		public var JEWELRY:Array = new Array();
-		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
-		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
-		
+					
 		public var INVENTORY_OPEN:Boolean = false;
 		public var INVENTORY_SIZE:uint = 0;
 		
 		public static var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		public var invLettersAss:Array = [];
 		
-		// Stat Array
-		public var STATS:Array = new Array();
-
-		// Collision stats
-		public var COLLISION:Array = [0, 0, 0, 0, 0];
-		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
-		public var MOVE_DIR:int = 0;
-		public var COLLISION_STORE:Array = [];
-
 		public function Player() 
 		{
 			graphic = new Image(PLAYER);
@@ -58,6 +41,7 @@ package
 			Input.define("c", Key.C);
 			Input.define("d", Key.D);
 			Input.define("ENTER", Key.ENTER);
+			Input.define(GC.NOOP, Key.SPACE);
 
 			/*
 			 * for each (var letter:String in invLettersUnass) {
@@ -72,7 +56,7 @@ package
 			
 			// Initial player setup
 			setPlayerStats("bruiser");
-			updatePlayerDerivedStats();
+			updateDerivedStats();
 		}
 		
 		public function setPlayerStats(playerClass:String):void {
@@ -106,83 +90,7 @@ package
 			}
 		}
 		
-		// this also needs to work for monsters so we need to pull it out into either a higher tier class (say Creature? includes player and NPCs)
-		// or make it a Util function. I like 1st approach better, I think.
-		public function updatePlayerDerivedStats():void {
-			// this will vary by class and equipment type later
-			// we need code in here that deals with the fact that not all slot are filled
-			var weapon:Weapon = new Weapon();
-			// unarmed defaults
-			weapon.attack = 3;
-			weapon.defense = 3;
-			weapon.pen = 0.3;
-			var headSlot:Armor = new Armor();
-			var chestSlot:Armor = new Armor();
-			var legSlot:Armor = new Armor();
-			var handSlot:Armor = new Armor();
-			var feetSlot:Armor = new Armor();
-			
-			// also, this needs to pull in all current armor and weapons, not to mention enchantments etc.
-			for each (var itemAr:Array in ITEMS) {
-				for each (var item:* in itemAr) {
-					if (item.EQUIPPED) {
-						switch(item.ITEM_TYPE) {
-							case GC.C_ITEM_ARMOR:
-								switch(item.armorSlot) {
-									case "LEGS":
-										legSlot = item;
-									break;
-									case "HEAD":
-										headSlot = item;
-									break;
-									case "CHEST":
-										chestSlot = item;
-									break;
-									case "HANDS":
-										handSlot = item;
-									break;
-									case "FEET":
-										feetSlot = item;
-									break;
-								}
-							break;
-							case GC.C_ITEM_JEWELRY:
-							break;
-							case GC.C_ITEM_POTIONS:
-							break;
-							case GC.C_ITEM_SCROLLS:
-							break;
-							case GC.C_ITEM_WEAPON:
-								weapon = item;
-							break;
-						}
-					}
-				}
-			}
 
-			// weapon and stat for att and def are averaged, then armor is added
-			// I am not sure if that makes sense, but it comes out to a sword having def. about equal to a chain chestplate
-			// I guess natural stat max is 20
-			// New idea: everything that relies on stats for boosts should only do so above 10pts of said stat, as 10pts is the baseline
-			// New idea 2: strength and agility are %-based (of 10) multipliers on weapon attack and defence. Armor attack and defence is unaffected by stats.
-			// New idea 3: weapon attack modifier should max out at 70% if str is 20. So every pt should be an extra 7%
-			var attStatModifier:Number = 1 + ((STATS[GC.STATUS_STR] - 10) * 0.07) + (0.02 * (STATS[GC.STATUS_AGI] - 10));
-			var defStatModifier:Number = 1 + ((STATS[GC.STATUS_AGI] - 10) * 0.7) + (0.02 * (STATS[GC.STATUS_STR] - 10));
-			STATS[GC.STATUS_ATT] = Math.floor((attStatModifier * weapon.attack) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
-			//STATS[GC.STATUS_ATT] = Math.floor(((STATS[GC.STATUS_STR] - 10) + weapon.attack + (0.2 * (STATS[GC.STATUS_AGI] - 10))) + headSlot.attack + chestSlot.attack + legSlot.attack + handSlot.attack + feetSlot.attack); // plus items
-			STATS[GC.STATUS_ATT_MIN] = Math.ceil(STATS[GC.STATUS_ATT] / 2); // upper limit of half of calculated
-			STATS[GC.STATUS_DEF] = Math.floor((defStatModifier * weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
-			//STATS[GC.STATUS_DEF] = Math.floor(((STATS[GC.STATUS_AGI] - 10) + (0.2 * (STATS[GC.STATUS_STR] - 10)) + weapon.defense) + headSlot.defense + chestSlot.defense + legSlot.defense + handSlot.defense + feetSlot.defense); // plus items
-			STATS[GC.STATUS_CRITDEF] = Math.floor((STATS[GC.STATUS_AGI] * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
-			STATS[GC.STATUS_PEN] = weapon.pen + (0.02 * (STATS[GC.STATUS_STR] - 10));
-			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS] - 20));
-			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items
-			STATS[GC.STATUS_SPPOWER] = Math.floor(STATS[GC.STATUS_INT]/10); // straight dmg multiplier for spells, plus items; items should have % boosts, maybe lesser and greater spellpower being 5 and 10% boosts each?
-			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_LEVEL]; // plus items. should this be alterable?
-			STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
-			
-			Dungeon.statusScreen.statUpdate(STATS);
-		}
 		
 		public function setPlayerStartingPosition(setX:int, setY:int):void {
 			x = setX * GRIDSIZE;
@@ -227,29 +135,10 @@ package
 				// then toggle equipped status in the found location
 				foundItem.EQUIPPED = true;			
 				// regardless of item equipment, stats need to be recalculated 
-				updatePlayerDerivedStats();
+				updateDerivedStats();
+				Dungeon.statusScreen.statUpdate(STATS);
 				Dungeon.statusScreen.updateInventory();
 			}
-		}
-		
-		// all this does is populate all directions in which this creature is surrounded by entities
-		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
-			if (collide(collisionEntity, x, y + GRIDSIZE)) {
-				COLLISION[GC.DIR_DOWN] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}
-			if (collide(collisionEntity, x, y - GRIDSIZE)) {
-				COLLISION[GC.DIR_UP] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}
-			if (collide(collisionEntity, x + GRIDSIZE, y)) {
-				COLLISION[GC.DIR_RIGHT] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}
-			if (collide(collisionEntity, x - GRIDSIZE, y)){
-				COLLISION[GC.DIR_LEFT] = collisionConstant;
-				COLLISION_TYPE = collisionConstant;
-			}			
 		}
 		
 		public function processMove():void {
@@ -334,6 +223,7 @@ package
 		public function processHit(attackValue:int):void {
 			// calculations to modify the attack based on player's defense stats
 			STATS[GC.STATUS_HP] -= attackValue;
+			Dungeon.statusScreen.updateCombatText("Bonk! You get hit for " + attackValue + " damage!");
 			if (STATS[GC.STATUS_HP] <= 0) {
 				Dungeon.statusScreen.updateCombatText("You die ... more? Y/N/A/Q (not implemented HAR!)");
 		}
@@ -381,6 +271,10 @@ package
 			if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !INVENTORY_OPEN) {
 				directionInput = true;
 				direction = Input.lastKey;
+			}
+			
+			if (Input.pressed(GC.NOOP)) {
+				STEP++;
 			}
 			
 			if (directionInput) {
