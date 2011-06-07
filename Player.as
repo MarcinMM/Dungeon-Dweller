@@ -30,6 +30,7 @@ package
 		
 		public function Player() 
 		{
+			super();
 			graphic = new Image(PLAYER);
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
@@ -56,7 +57,12 @@ package
 			
 			// Initial player setup
 			setPlayerStats("bruiser");
-			updateDerivedStats();
+			updatePlayerStats(true);
+		}
+		
+		public function updatePlayerStats(init:Boolean=false):void {
+			updateDerivedStats(init);
+			Dungeon.statusScreen.statUpdate(STATS);			
 		}
 		
 		public function setPlayerStats(playerClass:String):void {
@@ -91,7 +97,7 @@ package
 		}
 		
 
-		
+		// Just a helper function for setting and updating stat visuals
 		public function setPlayerStartingPosition(setX:int, setY:int):void {
 			x = setX * GRIDSIZE;
 			y = setY * GRIDSIZE;
@@ -135,8 +141,7 @@ package
 				// then toggle equipped status in the found location
 				foundItem.EQUIPPED = true;			
 				// regardless of item equipment, stats need to be recalculated 
-				updateDerivedStats();
-				Dungeon.statusScreen.statUpdate(STATS);
+				updatePlayerStats();
 				Dungeon.statusScreen.updateInventory();
 			}
 		}
@@ -226,7 +231,8 @@ package
 			Dungeon.statusScreen.updateCombatText("Bonk! You get hit for " + attackValue + " damage!");
 			if (STATS[GC.STATUS_HP] <= 0) {
 				Dungeon.statusScreen.updateCombatText("You die ... more? Y/N/A/Q (not implemented HAR!)");
-		}
+			}
+			updatePlayerStats();			
 		}
 		
 		// TODO: nothing here yet, but NPC actions will take place within NPC class based on collision
@@ -278,6 +284,9 @@ package
 			}
 			
 			if (directionInput) {
+				COLLISION = [0, 0, 0, 0, 0];
+				COLLISION_TYPE = GC.COLLISION_NONE;
+
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 

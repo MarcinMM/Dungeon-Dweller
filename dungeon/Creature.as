@@ -20,6 +20,11 @@ package dungeon
 		private const GRIDSIZE:int = 20;
 
 		// Collision stats
+		// Both collision array and type need to be arrays so that collisions can stack.
+		// Currently whatever is checked for collision last overrides other values.
+		// Since nothing can really stack (creature on creature or creature on wall) that is ok for COLLISION
+		// but CCOLLISION_TYPE is a scalar so will only count for the most recent collision check
+		// Why am I using it again? Too sleepy to figure it out, but progress!
 		public var COLLISION:Array = [0, 0, 0, 0, 0];
 		public var COLLISION_TYPE:int = GC.COLLISION_NONE;
 		public var MOVE_DIR:int = 0;
@@ -38,8 +43,6 @@ package dungeon
 		
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
-			COLLISION = [0, 0, 0, 0, 0];
-			COLLISION_TYPE = GC.COLLISION_NONE;
 			if (collide(collisionEntity, x, y + GRIDSIZE)) {
 				COLLISION[GC.DIR_DOWN] = collisionConstant;
 				COLLISION_TYPE = collisionConstant;
@@ -60,7 +63,7 @@ package dungeon
 		
 		// stats are a combination of intrinsics, equipped items and special effects (potion with temporary boosts, being on fire, wet, hungry, etc)
 		// the first two are relatively easy to calculate, the last will require iterating through a stack of "effects" currently on creature
-		public function updateDerivedStats():void {
+		public function updateDerivedStats(init:Boolean=false):void {
 			// this will vary by class and equipment type later
 			// we need code in here that deals with the fact that not all slot are filled
 			var weapon:Weapon = new Weapon();
@@ -128,10 +131,12 @@ package dungeon
 			STATS[GC.STATUS_CRITDEF] = Math.floor((STATS[GC.STATUS_AGI] * 0.2) + headSlot.crit + chestSlot.crit + legSlot.crit + handSlot.crit + feetSlot.crit);
 			STATS[GC.STATUS_PEN] = weapon.pen + (0.02 * (STATS[GC.STATUS_STR] - 10));
 			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS] - 20));
-			STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items
 			STATS[GC.STATUS_SPPOWER] = Math.floor(STATS[GC.STATUS_INT]/10); // straight dmg multiplier for spells, plus items; items should have % boosts, maybe lesser and greater spellpower being 5 and 10% boosts each?
 			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_LEVEL]; // plus items. should this be alterable?
-			STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
+			if (init) {
+				STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
+				STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items
+			}
 		}		
 	}
 }

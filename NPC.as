@@ -49,6 +49,7 @@ package
 			// determineNPCEquipment();
 			
 			// and what kind of stats does it have?
+			// TODO: This needs to use the common stats
 			setNPCStats(NPCType, NPCLevel);
 			setNPCDerivedStats(NPCType, NPCLevel);
 			
@@ -234,9 +235,12 @@ package
 				// 4. If attacking, flee check.
 				// 4a. Flee.
 				// 5. After item/attack succesful resume idling
-
+				
+				COLLISION = [0, 0, 0, 0, 0];
+				COLLISION_TYPE = GC.COLLISION_NONE;
+				
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
-				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_PLAYER);
+				checkCollision(GC.LAYER_PLAYER_TEXT,GC.COLLISION_PLAYER);
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				
 				processCombat();
