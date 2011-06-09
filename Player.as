@@ -256,7 +256,7 @@ package
 		
 		override public function update():void
 		{
-			COLLISION_TYPE = GC.COLLISION_NONE;
+			COLLISION_TYPE = [];
 			COLLISION = [0, 0, 0, 0, 0];
 			var directionInput:Boolean = false;
 			var direction:int; // need to setup some GC directional constants for this
@@ -285,7 +285,7 @@ package
 			
 			if (directionInput) {
 				COLLISION = [0, 0, 0, 0, 0];
-				COLLISION_TYPE = GC.COLLISION_NONE;
+				COLLISION_TYPE = [];
 
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);

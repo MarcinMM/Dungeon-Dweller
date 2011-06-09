@@ -89,8 +89,8 @@ package dungeon.utilities
 			var itemAr:Array = new Array();
 			var i:uint = 0;
 
-			/* pathfinding grids
-			for (var i:uint = 0; i < 40; i++) {
+			// pathfinding grids
+			for (i = 0; i < 60; i++) {
 				hGridAr[i] = new DisplayText((i.toString()), (i * 20) + 2, 20-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 20);
 				displayTexts.push(hGridAr[i]);
 			}
@@ -99,7 +99,7 @@ package dungeon.utilities
 				vGridAr[i] = new DisplayText((i.toString()), 20 + 2, (i*20)-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 20);
 				displayTexts.push(vGridAr[i]);
 			}
-			*/
+			
 			// we need a line of text that spans the screen that can be updated later
 			for (i = 0; i < 36; i++) {
 				itemAr[i] = new DisplayText("", (Dungeon.MAP_WIDTH/2) + 5, ((i+1)*15), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, (Dungeon.MAP_WIDTH/2));

@@ -160,19 +160,21 @@ package
 			// then smack!
 			
 			//FP.log('coll:' + COLLISION_TYPE);
-			if (COLLISION_TYPE == GC.COLLISION_NPC && !ACTION_TAKEN) {
+			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_NPC) != -1) && !ACTION_TAKEN) {
 				// we have NPC collision
 				// still needs threat list (which should include friendlies, maybe?)
 				
 				var collAr:Array = [];
 				for (var index:String in COLLISION) {
-					FP.log('COLLAR:' + index + '|' + COLLISION[index])
+					FP.log('COLLAR:' + index + '|' + COLLISION[index]);
 					if (COLLISION[index] == GC.COLLISION_NPC) {
 						// index gives us the direction
 						collAr.push(index);
 						//FP.log("hit index: " + index);
 					}
 				}
+				// TODO: threat list implementation (or something)
+				// for now, pick a random direction from available things to hit to hit in
 				var pickRandomHit:int = Math.round(Math.random() * (collAr.length-1));
 				var hitAr:Array = [];
 				//FP.log("random hit dir:" + pickRandomHit);
@@ -189,13 +191,16 @@ package
 					}
 					ACTION_TAKEN = true;
 				} else {
-					// this shouldn't ever happen since I don't batch collision checks
+					// this shouldn't ever happen since I don't batch collision checks; and yet, it happens
+					// TODO: figure out why!
 					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);	
 					FP.log(NPCType + " swings wildly.");
 					ACTION_TAKEN = true;
 				}
 			}
-			if (COLLISION_TYPE == GC.COLLISION_PLAYER && !ACTION_TAKEN) {
+			// TODO: Player needs to be included in threat list
+			// right now the player gets 2nd priority after monster hits no matter what just because of where this is
+			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_PLAYER) != -1)  && !ACTION_TAKEN) {
 				// there is only one player so we don't have to perform any calculations, just call player's hit calc
 				// this is lazy if we ever do multiplayer, but that's just LOLS
 				// if (threatList check here) {
@@ -203,9 +208,6 @@ package
 				ACTION_TAKEN = true;
 				// end threat list check
 			}
-			
-			//var randomHitDirection:uint = Math.round(Math.random(
-			
 		}
 		
 		public function processHit(attackValue:int):Boolean {
@@ -224,7 +226,7 @@ package
 		override public function update():void {
 			ACTION_TAKEN = false;
 			if (Dungeon.player.STEP != STEP) {
-			FP.log('step: ' + STEP + '|dng step: ' + Dungeon.player.STEP);
+				FP.log('step: ' + STEP + '|dng step: ' + Dungeon.player.STEP);
 				// Prototype basic NPC loop
 				// 1. Check if an action is already being performed
 				// 2. check NPC sight range if an enemy is within
@@ -237,7 +239,7 @@ package
 				// 5. After item/attack succesful resume idling
 				
 				COLLISION = [0, 0, 0, 0, 0];
-				COLLISION_TYPE = GC.COLLISION_NONE;
+				COLLISION_TYPE = [];
 				
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_PLAYER_TEXT,GC.COLLISION_PLAYER);
@@ -246,9 +248,10 @@ package
 				processCombat();
 
 				if (!ACTION_TAKEN) {
+					// TODO: need a decision point here for scanning nearby area
+					// then paths to items of interest or enemies of interest
 					idleMovement();	
 				}
-
 				
 				// perform checks or check for events that would cause a path
 				// let's start with player location check
@@ -256,13 +259,10 @@ package
 				// unless a path length is already existing
 				// this means that only one path can be running at a time
 				// so we'll need another type of check
-				
 
 				// finally sync NPC with player
 				STEP = Dungeon.player.STEP;
 			}
 		}
-		
 	}
-
 }
