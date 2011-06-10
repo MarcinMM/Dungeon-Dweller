@@ -25,13 +25,15 @@ package
 			
 		// pathing status
 		private var POSITION:Point;
-		private var PATHING:Boolean = false;
-		private var ENGAGED:Boolean = false;
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
 		
 		// combat/action statuses
+		// 'self' will attack anything, 'player' will help player, 'race' will attack other races, 'alignment' will attack other alignments
+		// 'pacifist' will attack nothing and just run, 'defensive' will attack only when attacked ... what else?
+		// default is alignment
 		private var ACTION_TAKEN:Boolean = false;
+		public var FACTION:String = 'alignment'; 
 
 		public function NPC() 
 		{
@@ -54,6 +56,9 @@ package
 			setNPCDerivedStats(NPCType, NPCLevel);
 			
 			layer = 20;
+			
+			// assign random alignment to creature
+			ALIGNMENT = GC.ALIGNMENTS[Math.round(Math.random * (GC.ALIGNMENTS.length - 1)];
 		}
 		
 		// when no path request is being made, i.e. equivalent of idle animation
@@ -246,11 +251,40 @@ package
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				
 				processCombat();
-
+	
+				// currently the below means creature will seek nearest non-aligned NPC
+				// TODO: run away if low on HP
+				// TODO: seek nearest object vs. seek target vs. run away priorities
+				// TODO: seek player vs. seek NPC
+				// TODO: threat levels, permanent threat levels (history)
+				// TODO: use items
+				// TODO: break through current status if a new interesting event occurs 
+				//		 (i.e. creature is already pathing towards something but a more hated target enters the room, or loud noise is heard? or other?
 				if (!ACTION_TAKEN) {
-					// TODO: need a decision point here for scanning nearby area
-					// then paths to items of interest or enemies of interest
-					idleMovement();	
+					var measuredDistance:uint;
+					var interestingCreature:NPC;
+					var interestingCreatureDistance:uint = 10000;
+					for (var currentNPC:NPC in Dungeon.level.NPCS) {
+						// check distance if under threshold, then pick lowest
+						measuredDistance = Math.sqrt(Math.pow(x - NPC.x, 2) + Math.pow(y - NPC.y, 2));
+						if  (
+								(measuredDistance < (10 * GRIDSIZE)) && 
+								(measuredDistance < interestingCreatureDistance) &&
+								(currentNPC.ALIGNMENT != ALIGNMENT) &&
+								ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+							) 
+						{
+							interestingCreatureDistance = measuredDistance;
+							interestingCreature = currentNPC;
+						}
+					}
+					if (interestingCreatureDistance != 10000) {
+						// we have a creature closer than threshold (10 tiles away) of a different alignment, and this creature is idling: calculate path towards target
+						initPathedMovement(Point(x, y), Point(interestingCreature.x, interestingCreature.y));
+						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
+					} else {
+						idleMovement();	
+					}
 				}
 				
 				// perform checks or check for events that would cause a path

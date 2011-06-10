@@ -39,7 +39,8 @@ package dungeon
 		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
 
 		// Stat Array
-		public var STATS:Array = new Array();
+		public var STATS:Array = new Array();		
+		public var ALIGNMENT:String = 'neutral'; // hardcoding for now
 		
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {

@@ -80,13 +80,14 @@ package dungeon.utilities
 		
 		// NPC statuses
 		public static const NPC_STATUS_IDLE:uint = 0;
-		public static const NPC_STATUS_SEEKING_ITEM:uint = 1;
+		public static const NPC_STATUS_SEEKING_OBJECT:uint = 1;
 		public static const NPC_STATUS_EQUIPPING_ITEM:uint = 2;
 		public static const NPC_STATUS_USING_ITEM:uint = 3;
 		public static const NPC_STATUS_ATTACKING_NPC:uint = 4;
 		public static const NPC_STATUS_ATTACKING_PLAYER:uint = 5;
 		public static const NPC_STATUS_FLEEING:uint = 6;
 		
+		public static const ALIGNMENTS:Array = ['neutral', 'good', 'evil'];
 		
 		public function GC() {}
 	}
