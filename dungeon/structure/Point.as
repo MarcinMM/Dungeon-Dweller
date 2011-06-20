@@ -11,5 +11,17 @@ package dungeon.structure
 		
 		public var x:int;
 		public var y:int;
+		
+		public function foundInArray(pointArray:Array):Boolean {
+			var foundFlag:Boolean = false;
+			for each (var usedPoint:Point in pointArray) {
+				if ( (x == usedPoint.x) && (y == usedPoint.y) ) {
+					foundFlag = true;
+				}
+			}
+			return foundFlag;
+		}
     }
+	
+	
 }

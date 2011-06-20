@@ -36,7 +36,12 @@ package dungeon.utilities
 		public var splevelDisplay:DisplayText;
 		
 		// combat text/stuff
-		public var textDisplay:DisplayText;
+		public var textDisplay1:DisplayText;
+		public var textDisplay2:DisplayText;
+		public var textDisplay3:DisplayText;
+		public var textDisplay4:DisplayText;
+		public var textDisplaysArray:Array;
+		public var textDisplaysPointer:uint;
 
 		// only worried about this for now
 		public var gridDisplay:DisplayText;
@@ -81,7 +86,12 @@ package dungeon.utilities
 			splevelDisplay = new DisplayText( "SPL: ", 360, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			
 			// status combat text + debug text while in alpha/beta/LOLZ
-			textDisplay = new DisplayText( "TXT: ", 0, (Dungeon.MAP_HEIGHT - 60), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay1 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 120), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay2 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 110), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay3 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 100), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay4 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplaysArray = new Array(textDisplay1, textDisplay2, textDisplay3, textDisplay4);
+			textDisplaysPointer = 0;
 			
 			// we'll need a grid foreach here
 			var hGridAr:Array = new Array(45);
@@ -126,7 +136,10 @@ package dungeon.utilities
 			displayTexts.push(sppowerDisplay);
 			displayTexts.push(splevelDisplay);
 			
-			displayTexts.push(textDisplay);
+			displayTexts.push(textDisplay1);
+			displayTexts.push(textDisplay2);
+			displayTexts.push(textDisplay3);
+			displayTexts.push(textDisplay4);
 			
 			for each (var d:DisplayText in displayTexts)
 			{
@@ -206,9 +219,11 @@ package dungeon.utilities
 		}
 		
 		public function updateCombatText(text:String):void {
-			textDisplay.displayText.text = text;
-			// TODO: Better multiline combat text
-			FP.log(text);
+			textDisplaysArray[textDisplaysPointer].displayText.text = text;
+			textDisplaysPointer++;
+			if (textDisplaysPointer >= textDisplaysArray.length) {
+				textDisplaysPointer = 0;
+			}
 		}
 		
 		public function statUpdate(_stats:Array):void

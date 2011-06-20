@@ -89,8 +89,7 @@ package
 		public var _step:int = 0;
 		
 		// temporary monster generation
-		public var MONSTARS:Array = ["paladin","rogue","warrior","monk","mage","fighter","sorcerer","wizard","shapeshifter","teleporter","ranger","vampire","archer"];
-
+		public static var MONSTARS:Array = ["paladin","rogue","warrior","monk","mage","fighter","sorcerer","wizard","shapeshifter","teleporter","ranger","vampire","archer"];
 		
 		public function Level() 
 		{
@@ -230,7 +229,7 @@ package
 			while ((_nodemap._nodes[(startingY * Dungeon.TILESX) + startingX].solid) && (i < 10)) {
 				startingX = (Math.round(Math.random() * _roomsA[0].width)) + _roomsA[0].x;
 				startingY = (Math.round(Math.random() * _roomsA[0].height)) + _roomsA[0].y;
-				trace("plr plc:" + startingX + "-" + startingY);
+				//trace("plr plc:" + startingX + "-" + startingY);
 				i++;
 			}
 			// TODO: now we have a non-wall (pillar, statue) location in room, check for
@@ -248,6 +247,12 @@ package
 			var y:uint = 0;
 			var roomIndex:uint = 0;
 			
+			// we need a way to keep track of used points on the grid for placement
+			// but we don't really want to iterate through the NPC array for each new placement
+			// so let's just use a new local array here and store points in it
+			var usedPoints:Array = [];
+			var pickedPoint:Point;
+			
 			for (var j:int = 0; j < 10; j++) {
 				var newNPC:NPC = new NPC();
 				newNPC.NPCType = MONSTARS.pop();
@@ -258,9 +263,15 @@ package
 				roomIndex = Math.max(0, (Math.round(Math.random() * _roomsA.length) - 1));
 				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
 				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+				pickedPoint = new Point(x, y);
+				while (pickedPoint.foundInArray(usedPoints) == true) {
+					x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
+					y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+					pickedPoint = new Point(x, y);
+					usedPoints.push(pickedPoint);
+				}
 				npc.x = x;
 				npc.y = y;
-				
 			}			
 		}
 		

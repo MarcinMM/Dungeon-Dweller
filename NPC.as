@@ -27,6 +27,9 @@ package
 		private var POSITION:Point;
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
+		public var newActionOverride:Boolean = false; 
+		// TODO: this gets set true if something drastic occurs
+		// loud noise from player or HP low alert, or something else?
 		
 		// combat/action statuses
 		// 'self' will attack anything, 'player' will help player, 'race' will attack other races, 'alignment' will attack other alignments
@@ -58,10 +61,11 @@ package
 			layer = 20;
 			
 			// assign random alignment to creature
-			ALIGNMENT = GC.ALIGNMENTS[Math.round(Math.random * (GC.ALIGNMENTS.length - 1)];
+			ALIGNMENT = GC.ALIGNMENTS[Math.round(Math.random() * (GC.ALIGNMENTS.length - 1))];
 		}
 		
 		// when no path request is being made, i.e. equivalent of idle animation
+		// TODO: use array constants here instead of the clumsy string assign
 		public function idleMovement():void {
 			var impactsAllowed:Array = ["up","down","left","right"];
 			// NPC considering a step, see what's allowed
@@ -78,9 +82,7 @@ package
 				impactsAllowed.splice(impactsAllowed.indexOf("left"),1);
 			}
 
-			// NPC movement
 			// select random index then perform movement
-			// TODO: use array constants here instead of the clumsy assign
 			var rndMove:uint = Math.round(Math.random() * (impactsAllowed.length - 1));
 			var rndMoveString:String = impactsAllowed[rndMove];
 			switch (rndMoveString) {
@@ -104,25 +106,41 @@ package
 		}
 		
 		// this can be used to achieve goals such as pickup item or attack another entity, or seek escape route
-		public function initPathedMovement(pointA:Point, pointB:Point):void {
+		public function initPathedMovement(pointA:Point, pointB:Point):Boolean {
 			var source:Node = new Node(pointA.x, pointA.y, -1);
 			var destNode:Node = new Node(pointB.x, pointB.y, -1);
 			PATH = source.findPath(destNode, 'creature');
-			PATH.reverse();
-			trace("path size:" + PATH.length);
+			trace("Path size: " + PATH.length);
+			// need to take a step now
+			return pathedMovementStep();
 		}
 		
 		// get next point in the path
 		// continue until depleted
 		public function pathedMovementStep():Boolean {
-			if (PATH.length != 0) {
-				var newLoc:Node = PATH.pop();
-				x = newLoc.x;
-				y = newLoc.y;
-				return true;
+			if ((PATH.length != 0) && !ACTION_TAKEN) {
+				// TODO: if I use shift() here instead of pop(), this is a cheap teleport implementation ^_^
+				var newLoc:Node = PATH.shift();
+				// since this is more or less a teleport
+				// except that it should be a teleport to the next tile over (if my path algorithm works correctly)
+				// so nothing *really* broken
+				// we need to check that the new node really IS just one tile away
+				// and we need to ensure there's no collision happening
+				var collisionTargets:Array = new Array("player", "npc");
+				if (collideTypes(collisionTargets, newLoc.x, newLoc.y) != null) {
+					trace(NPCType + " blocked!" );
+					newActionOverride = true;
+					return false;
+				} else {
+					x = newLoc.x;
+					y = newLoc.y;
+					ACTION_TAKEN = true;
+					return true;
+				}
 			} else {
 				// path ended, now what?
 				// something must be able to read the return here and act appropriately
+				ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 				return false;
 			}
 		}
@@ -135,7 +153,6 @@ package
 		// TODO: Monster Library
 		// This needs to pull from some library of monsters, just like items do. 
 		public function determineNPCType():void {
-			//NPCType = Dungeon.MONSTARS.pop();
 			NPCLevel = 1;
 		}
 		
@@ -168,10 +185,10 @@ package
 			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_NPC) != -1) && !ACTION_TAKEN) {
 				// we have NPC collision
 				// still needs threat list (which should include friendlies, maybe?)
+				ENGAGE_STATUS = GC.NPC_STATUS_ATTACKING_NPC;
 				
 				var collAr:Array = [];
 				for (var index:String in COLLISION) {
-					FP.log('COLLAR:' + index + '|' + COLLISION[index]);
 					if (COLLISION[index] == GC.COLLISION_NPC) {
 						// index gives us the direction
 						collAr.push(index);
@@ -179,33 +196,48 @@ package
 					}
 				}
 				// TODO: threat list implementation (or something)
-				// for now, pick a random direction from available things to hit to hit in
+				// for now, pick a random direction from available hittable things to hit in
 				var pickRandomHit:int = Math.round(Math.random() * (collAr.length-1));
 				var hitAr:Array = [];
-				//FP.log("random hit dir:" + pickRandomHit);
-				//FP.log("random hit coord mod X: " + GC.DIR_MOD_X[collAr[pickRandomHit]] + "|y: " + GC.DIR_MOD_Y[collAr[pickRandomHit]]);
 				collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr); // this should get us the collided entity based on our move dir
+				// now ensure that the random thing hit is not of the same alignment
+				// and that there's nothing else to hit
+				// there may be other checks here
+				while ((collAr.length > 0) && (hitAr[0].ALIGNMENT == ALIGNMENT)) {
+					hitAr = [];
+					collAr.splice(collAr.indexOf(pickRandomHit), 1);
+					if (collAr.length > 0) {
+						pickRandomHit = Math.round(Math.random() * (collAr.length-1));
+						collideInto("npc", x + (GC.DIR_MOD_X[collAr[pickRandomHit]] * GRIDSIZE), y + (GC.DIR_MOD_Y[collAr[pickRandomHit]] * GRIDSIZE), hitAr);
+						trace("Attempting to attack " + hitAr[0].ALIGNMENT + " with own alignment of " + ALIGNMENT);
+					}
+				}
+
+				// now process combats
 				if (hitAr.length > 0) {
+					// processHit returns true on opponent death, record status as disengaged for new pathfinding
 					if (hitAr[0].processHit(STATS[GC.STATUS_ATT])) {
 						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
 						Dungeon.statusScreen.updateCombatText(hitAr[0].NPCType + " dies.");
-						FP.log(hitAr[0].NPCType + " is hit, dies.");
+						trace(hitAr[0].NPCType + " is hit, dies.");
+						ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
+						trace(NPCType + " idle after kill.");
 					} else {
 						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
-						FP.log(hitAr[0].NPCType + " is hit.");
+						trace(NPCType + "," + ALIGNMENT + " hits " + hitAr[0].NPCType + "," + hitAr[0].ALIGNMENT + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						trace(hitAr[0].NPCType + " is hit.");
 					}
 					ACTION_TAKEN = true;
 				} else {
-					// this shouldn't ever happen since I don't batch collision checks; and yet, it happens
-					// TODO: figure out why!
-					Dungeon.statusScreen.updateCombatText(NPCType + " swings wildly at an empty space! DIR: " + pickRandomHit);	
-					FP.log(NPCType + " swings wildly.");
-					ACTION_TAKEN = true;
+					// same alignment spliced the collision out of the hit Array
+					Dungeon.statusScreen.updateCombatText(NPCType + " checks its swing! 'sup buddy?");	
+					trace(NPCType + " same alignment.");
 				}
 			}
 			// TODO: Player needs to be included in threat list
 			// right now the player gets 2nd priority after monster hits no matter what just because of where this is
 			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_PLAYER) != -1)  && !ACTION_TAKEN) {
+				ENGAGE_STATUS = GC.NPC_STATUS_ATTACKING_PLAYER;
 				// there is only one player so we don't have to perform any calculations, just call player's hit calc
 				// this is lazy if we ever do multiplayer, but that's just LOLS
 				// if (threatList check here) {
@@ -219,8 +251,14 @@ package
 			// calculations to modify the attack based on player's defense stats
 			// return true if dead for text and player stat update (XP+)
 			STATS[GC.STATUS_HP] -= attackValue;
-			// Dungeon.statusScreen.updateCombatText("The creature hits the other creature (?) for " + STATS[GC.STATUS_ATT] + " damage!");
 			if (STATS[GC.STATUS_HP] <= 0) {
+				// TODO: drop loot/corpse when dead
+				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.
+				for each (var currentNPC:NPC in Dungeon.level.NPCS) {
+					if (currentNPC == this) {
+						Dungeon.level.NPCS.splice(Dungeon.level.NPCS.indexOf(currentNPC),1);
+					}
+				}
 				FP.world.remove(this);
 				return true;
 			} else {
@@ -229,9 +267,8 @@ package
 		}
 		
 		override public function update():void {
-			ACTION_TAKEN = false;
 			if (Dungeon.player.STEP != STEP) {
-				FP.log('step: ' + STEP + '|dng step: ' + Dungeon.player.STEP);
+				ACTION_TAKEN = false;
 				// Prototype basic NPC loop
 				// 1. Check if an action is already being performed
 				// 2. check NPC sight range if an enemy is within
@@ -251,6 +288,7 @@ package
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				
 				processCombat();
+				pathedMovementStep();
 	
 				// currently the below means creature will seek nearest non-aligned NPC
 				// TODO: run away if low on HP
@@ -260,31 +298,71 @@ package
 				// TODO: use items
 				// TODO: break through current status if a new interesting event occurs 
 				//		 (i.e. creature is already pathing towards something but a more hated target enters the room, or loud noise is heard? or other?
-				if (!ACTION_TAKEN) {
+				
+				var NPCStart:Point;
+				var NPCDest:Point;
+				
+				// TODO: fix this, weird shit starts to happen when this is enabled, mostly critters teleporting to player
+				/*
+				if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
+					measuredDistance = Math.sqrt(Math.pow(x - Dungeon.player.x, 2) + Math.pow(y - Dungeon.player.x, 2));
+					if ((measuredDistance < 1000) &&
+					     (FACTION != "player") &&
+						 (ENGAGE_STATUS == GC.NPC_STATUS_IDLE)
+					   )
+					{
+						NPCStart = new Point(x, y);
+						NPCDest = new Point(Dungeon.player.x, Dungeon.player.y);
+						initPathedMovement(NPCStart, NPCDest);
+						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
+						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
+							+ " player at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE 
+							+ "| dist: " + measuredDistance);
+					}
+				} */ 
+				
+				
+				// TODO: this needs to be in a function for clarity, methinks
+				if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
 					var measuredDistance:uint;
 					var interestingCreature:NPC;
-					var interestingCreatureDistance:uint = 10000;
-					for (var currentNPC:NPC in Dungeon.level.NPCS) {
+					var interestingCreatureDistance:uint = 1000;
+					for each (var currentNPC:NPC in Dungeon.level.NPCS) {
 						// check distance if under threshold, then pick lowest
-						measuredDistance = Math.sqrt(Math.pow(x - NPC.x, 2) + Math.pow(y - NPC.y, 2));
+						measuredDistance = Math.sqrt(Math.pow(x - currentNPC.x, 2) + Math.pow(y - currentNPC.y, 2));
 						if  (
+								(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
 								(measuredDistance < (10 * GRIDSIZE)) && 
 								(measuredDistance < interestingCreatureDistance) &&
-								(currentNPC.ALIGNMENT != ALIGNMENT) &&
+								(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
 								ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
 							) 
 						{
+							trace(NPCType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingCreatureDistance);
 							interestingCreatureDistance = measuredDistance;
 							interestingCreature = currentNPC;
 						}
 					}
-					if (interestingCreatureDistance != 10000) {
-						// we have a creature closer than threshold (10 tiles away) of a different alignment, and this creature is idling: calculate path towards target
-						initPathedMovement(Point(x, y), Point(interestingCreature.x, interestingCreature.y));
+					if (interestingCreatureDistance != 1000) {
+						// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
+						NPCStart = new Point(x, y);
+						NPCDest = new Point(interestingCreature.x, interestingCreature.y);
+						if (initPathedMovement(NPCStart, NPCDest)) {
 						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
-					} else {
-						idleMovement();	
+						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
+							+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
+							+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));
+						} else {
+							trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
+							+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
+							+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));							
+						}
 					}
+				}
+				
+				if (!ACTION_TAKEN) {
+					trace(NPCType + " idling.");
+					idleMovement();
 				}
 				
 				// perform checks or check for events that would cause a path
