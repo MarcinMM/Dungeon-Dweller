@@ -40,6 +40,10 @@ package dungeon.utilities
 		public var textDisplay2:DisplayText;
 		public var textDisplay3:DisplayText;
 		public var textDisplay4:DisplayText;
+		public var textDisplay5:DisplayText;
+		public var textDisplay6:DisplayText;
+		public var textDisplay7:DisplayText;
+		public var textDisplay8:DisplayText;
 		public var textDisplaysArray:Array;
 		public var textDisplaysPointer:uint;
 
@@ -86,12 +90,15 @@ package dungeon.utilities
 			splevelDisplay = new DisplayText( "SPL: ", 360, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			
 			// status combat text + debug text while in alpha/beta/LOLZ
-			textDisplay1 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 120), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay2 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 110), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay3 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 100), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay4 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplaysArray = new Array(textDisplay1, textDisplay2, textDisplay3, textDisplay4);
-			textDisplaysPointer = 0;
+			textDisplay1 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 160), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay2 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 150), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay3 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 140), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay4 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 130), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay5 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 120), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay6 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 110), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay7 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 100), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay8 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplaysArray = new Array(textDisplay1, textDisplay2, textDisplay3, textDisplay4, textDisplay5, textDisplay6, textDisplay7, textDisplay8);
 			
 			// we'll need a grid foreach here
 			var hGridAr:Array = new Array(45);
@@ -140,6 +147,10 @@ package dungeon.utilities
 			displayTexts.push(textDisplay2);
 			displayTexts.push(textDisplay3);
 			displayTexts.push(textDisplay4);
+			displayTexts.push(textDisplay5);
+			displayTexts.push(textDisplay6);
+			displayTexts.push(textDisplay7);
+			displayTexts.push(textDisplay8);
 			
 			for each (var d:DisplayText in displayTexts)
 			{
@@ -219,11 +230,10 @@ package dungeon.utilities
 		}
 		
 		public function updateCombatText(text:String):void {
-			textDisplaysArray[textDisplaysPointer].displayText.text = text;
-			textDisplaysPointer++;
-			if (textDisplaysPointer >= textDisplaysArray.length) {
-				textDisplaysPointer = 0;
+			for (var i:uint = (textDisplaysArray.length-1); i >= 1; i--) {
+			  textDisplaysArray[i].displayText.text = textDisplaysArray[i-1].displayText.text;
 			}
+			textDisplaysArray[0].displayText.text = text;
 		}
 		
 		public function statUpdate(_stats:Array):void

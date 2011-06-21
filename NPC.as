@@ -230,8 +230,7 @@ package
 					ACTION_TAKEN = true;
 				} else {
 					// same alignment spliced the collision out of the hit Array
-					Dungeon.statusScreen.updateCombatText(NPCType + " checks its swing! 'sup buddy?");	
-					trace(NPCType + " same alignment.");
+					trace(NPCType + " checks its swing! 'sup buddy?");	
 				}
 			}
 			// TODO: Player needs to be included in threat list
