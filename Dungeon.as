@@ -41,10 +41,9 @@ package
 			add(player);
 			add(level);
 			
-			// setup camera
-			//cam = new Camera(20, 20);
-			//cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);
-			//cam.adjustToPlayer(MAP_HEIGHT, MAP_WIDTH);			
+			// set up cam
+			cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);
+			cam.adjustToPlayer(MAP_HEIGHT, MAP_WIDTH, player);
 
 			// now add all the items as entities; items were generated in level creation
 			// we will need an UNloader or perhaps REloader as well
@@ -70,11 +69,11 @@ package
 			add(npc);
 		}
 
-		/*
-		override public function update():void {
-			cam.followPlayer(MAP_HEIGHT, MAP_WIDTH);
-		}*/
 		
+		override public function update():void {
+			// Camera moves if player reaches cam offset
+			super.update();
+			cam.followPlayer(MAP_HEIGHT, MAP_WIDTH, player);
+		}
 	}
-
 }

@@ -14,6 +14,8 @@ package dungeon.utilities
 		
 		// World constants
 		public static const GRIDSIZE:uint = 32;
+		public static const CAMERA_OFFSET:uint = 8 * GRIDSIZE;
+		public static const PLAYER_MOVEMENT_SPEED:uint = 32;
 		
 		
 		// Status Screen constants
