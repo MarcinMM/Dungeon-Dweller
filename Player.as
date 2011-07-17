@@ -20,7 +20,7 @@ package
 		[Embed(source = 'assets/player.png')] private const PLAYER:Class;
 		public var STEP:int = 0;
 		public var LIGHT_RADIUS:int = 1;
-		public var GRIDSIZE:int = 20;
+		public var GRIDSIZE:int = GC.GRIDSIZE;
 					
 		public var INVENTORY_OPEN:Boolean = false;
 		public var INVENTORY_SIZE:uint = 0;
@@ -49,7 +49,7 @@ package
 				Input.define(letter, letter.charCodeAt);
 			}*/
 			
-			setHitbox(20, 20);
+			setHitbox(GRIDSIZE, GRIDSIZE);
 			x = 140;
 			y = 140;
 			type = "player";

@@ -17,7 +17,7 @@ package dungeon
 	public class Creature extends Entity
 	{
 		// creature size, used for collision
-		private const GRIDSIZE:int = 20;
+		private const GRIDSIZE:int = GC.GRIDSIZE;
 
 		// Collision stats
 		// Both collision array and type need to be arrays so that collisions can stack.
@@ -62,6 +62,7 @@ package dungeon
 			}			
 		}
 		
+		// TODO: armor doesn't seem to be working for PLAYER
 		// stats are a combination of intrinsics, equipped items and special effects (potion with temporary boosts, being on fire, wet, hungry, etc)
 		// the first two are relatively easy to calculate, the last will require iterating through a stack of "effects" currently on creature
 		public function updateDerivedStats(init:Boolean=false):void {

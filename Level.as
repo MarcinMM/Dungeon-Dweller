@@ -16,6 +16,7 @@ package
 	import dungeon.structure.Utils;
 	import dungeon.structure.Node;
 	import dungeon.structure.Nodemap;
+	import dungeon.utilities.GC;
 
 	/**
 	 * ...
@@ -183,8 +184,8 @@ package
 
 			for each (var item:* in ITEMS) {
 				roomIndex = Math.max(0, (Math.round(Math.random() * _roomsA.length) - 1));
-				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
-				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * GC.GRIDSIZE;
+				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * GC.GRIDSIZE;
 				item.x = x;
 				item.y = y;
 			}
@@ -261,12 +262,12 @@ package
 			
 			for each (var npc:* in NPCS) {
 				roomIndex = Math.max(0, (Math.round(Math.random() * _roomsA.length) - 1));
-				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
-				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * GC.GRIDSIZE;
+				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * GC.GRIDSIZE;
 				pickedPoint = new Point(x, y);
 				while (pickedPoint.foundInArray(usedPoints) == true) {
-					x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * 20;
-					y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * 20;
+					x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * GC.GRIDSIZE;
+					y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * GC.GRIDSIZE;
 					pickedPoint = new Point(x, y);
 					usedPoints.push(pickedPoint);
 				}

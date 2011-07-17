@@ -15,7 +15,7 @@ package
 	{
 		[Embed(source = 'assets/npc1.png')] private const NPCGraphic:Class;
 		// some defaults and inits
-		private const GRIDSIZE:int = 20;
+		private const GRIDSIZE:int = GC.GRIDSIZE;
 		public var STEP:int = 0;
 		public var SIGHT_RANGE:int = 1;
 		
@@ -42,7 +42,7 @@ package
 		{
 			super();
 			graphic = new Image(NPCGraphic);
-			setHitbox(20, 20);
+			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
 			STEP = Dungeon.player.STEP;
 			POSITION = new Point(x, y);
@@ -196,6 +196,7 @@ package
 					}
 				}
 				// TODO: threat list implementation (or something)
+				// TODO: combat text needs to only show up for creatures within PLAYER's line of sight
 				// for now, pick a random direction from available hittable things to hit in
 				var pickRandomHit:int = Math.round(Math.random() * (collAr.length-1));
 				var hitAr:Array = [];

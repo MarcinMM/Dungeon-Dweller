@@ -4,6 +4,7 @@ package
 	import dungeon.utilities.StatusScreen;
 	import dungeon.utilities.GC;
 	import dungeon.utilities.DataLoader;
+	import dungeon.utilities.Camera;
 	
 	/**
 	 * ...
@@ -18,15 +19,16 @@ package
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
 		
-		public static const MAP_WIDTH:Number = 1200;
+		public static const MAP_WIDTH:Number = 1216;
 		public static const MAP_HEIGHT:Number = 800;
-		public static const TILE_WIDTH:Number = 20;
-		public static const TILE_HEIGHT:Number = 20;
+		public static const TILE_WIDTH:Number = GC.GRIDSIZE;
+		public static const TILE_HEIGHT:Number = GC.GRIDSIZE;
 		public static const TILESX:Number = MAP_WIDTH/TILE_WIDTH;
 		public static const TILESY:Number = MAP_HEIGHT/TILE_HEIGHT;
 
 
 		public static var dataloader:DataLoader = new DataLoader();
+		public var cam:Camera;
 		
 		public function Dungeon() 
 		{
@@ -39,6 +41,11 @@ package
 			add(player);
 			add(level);
 			
+			// setup camera
+			//cam = new Camera(20, 20);
+			//cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);
+			//cam.adjustToPlayer(MAP_HEIGHT, MAP_WIDTH);			
+
 			// now add all the items as entities; items were generated in level creation
 			// we will need an UNloader or perhaps REloader as well
 			// but this is the init
@@ -63,6 +70,11 @@ package
 			add(npc);
 		}
 
+		/*
+		override public function update():void {
+			cam.followPlayer(MAP_HEIGHT, MAP_WIDTH);
+		}*/
+		
 	}
 
 }

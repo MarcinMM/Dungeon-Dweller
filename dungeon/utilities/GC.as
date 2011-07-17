@@ -12,6 +12,10 @@ package dungeon.utilities
 		 *  Game Constants 
 		 */
 		
+		// World constants
+		public static const GRIDSIZE:uint = 32;
+		
+		
 		// Status Screen constants
 		public static const STATUS_SCREEN_DEFAULT_FONT_SIZE:int = 12;
 		// item types
