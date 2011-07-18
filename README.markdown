@@ -29,6 +29,7 @@ More documentation later. Project under *very* slow development.
 * Item modifiers to go with item balance.
 * NPC design. Stats, XP, communication (combat msgs about what creatures are doing, maybe random barks like Dredmor).
 * NPC interaction (i.e. being able to recruit creatures or give them tasks such as "guard" or "follow").
+
 * Player/friend swap code needed for tight quarters.
 * Combat animations.
 * Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
