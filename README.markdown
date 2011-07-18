@@ -4,8 +4,29 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 More documentation later. Project under *very* slow development.
 
-# TODO
+# UPDATES 7/18
 
-* Fix hallways.
-* Player spawns in walls.
-* Clean up pathway collisions with solids for hallway generation.
+* Scrolling movement is in.
+* Resize to 32x32 tiles is in. 
+
+# TODO MVP 7/18
+
+* Status screen fixes post-scrolling movement.
+* NPC pathfinding for goals.
+* Diagonal movement.
+* Vertical dungeon structure (saving/loading levels for going up/down).
+* Item use, rest of item creation.
+
+# TODO FUTURE
+
+* Item equip overlays.
+* Line of Sight NPC awareness and detection, with Player's light radius in account
+* Shift + direction => move until interrupted
+* Combat balance. NPCs hit way too hard now.
+* Item balance. Still finding silver stuff on lvl 1. 
+* Item modifiers to go with item balance.
+* NPC design. Stats, XP, communication (combat msgs about what creatures are doing, maybe random barks like Dredmor).
+* NPC interaction (i.e. being able to recruit creatures or give them tasks such as "guard" or "follow").
+* Combat animations.
+* Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
+* Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
