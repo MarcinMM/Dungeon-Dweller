@@ -17,6 +17,7 @@ More documentation later. Project under *very* slow development.
 * Vertical dungeon structure (saving/loading levels for going up/down).
 * Item use, rest of item creation.
 * Time-based regen.
+* Corridor walls for hallways. Pretty big aesthetic plus, I think.
 
 # TODO FUTURE
 
