@@ -21,8 +21,8 @@ package
 		
 		public function LevelMask() 
 		{
-			_levelmask = new Tilemap(TILEMAP, 1216, 800, GC.GRIDSIZE, GC.GRIDSIZE);
-			//_levelmask.setRect(0,0,800/GC.GRIDSIZE,600/GC.GRIDSIZE,1); // black overlay
+			_levelmask = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.GRIDSIZE, Dungeon.GRIDSIZE);
+			//_levelmask.setRect(0,0,GC.MAP_WIDTH/GC.GRIDSIZE,GC.MAP_HEIGHT/GC.GRIDSIZE,1); // black overlay
 			graphic = _levelmask;
 			layer = 5;
 
@@ -40,16 +40,16 @@ package
 			// synchronize updates with player turn
 			// draw a tile under the player
 			if (_step != Dungeon.player.STEP) {
-				FP.log("Preclear at player: " + _levelmask.getTile(Dungeon.player.x/GC.GRIDSIZE,Dungeon.player.y/GC.GRIDSIZE) + "|step:" + _step);
-				_levelmask.setTile(Dungeon.player.x/GC.GRIDSIZE, Dungeon.player.y/GC.GRIDSIZE,0);
+				FP.log("Preclear at player: " + _levelmask.getTile(Dungeon.player.x/Dungeon.GRIDSIZE,Dungeon.player.y/Dungeon.GRIDSIZE) + "|step:" + _step);
+				_levelmask.setTile(Dungeon.player.x/Dungeon.GRIDSIZE, Dungeon.player.y/Dungeon.GRIDSIZE,0);
 				for (var i:int = 0; i <= Dungeon.player.LIGHT_RADIUS; i++) {
-					_levelmask.clearTile(Dungeon.player.x/GC.GRIDSIZE + i, Dungeon.player.y/GC.GRIDSIZE);
-					_levelmask.clearTile(Dungeon.player.x/GC.GRIDSIZE - i, Dungeon.player.y/GC.GRIDSIZE);
-					_levelmask.clearTile(Dungeon.player.x/GC.GRIDSIZE, Dungeon.player.y/GC.GRIDSIZE + i);
-					_levelmask.clearTile(Dungeon.player.x/GC.GRIDSIZE, Dungeon.player.y/GC.GRIDSIZE - i);
+					_levelmask.clearTile(Dungeon.player.x/Dungeon.GRIDSIZE + i, Dungeon.player.y/Dungeon.GRIDSIZE);
+					_levelmask.clearTile(Dungeon.player.x/Dungeon.GRIDSIZE - i, Dungeon.player.y/Dungeon.GRIDSIZE);
+					_levelmask.clearTile(Dungeon.player.x/Dungeon.GRIDSIZE, Dungeon.player.y/Dungeon.GRIDSIZE + i);
+					_levelmask.clearTile(Dungeon.player.x/Dungeon.GRIDSIZE, Dungeon.player.y/Dungeon.GRIDSIZE - i);
 				}
 				_step = Dungeon.player.STEP;
-				FP.log("Tile at player: " + _levelmask.getTile(Dungeon.player.x/GC.GRIDSIZE,Dungeon.player.y/GC.GRIDSIZE) + "|step:" + _step);
+				FP.log("Tile at player: " + _levelmask.getTile(Dungeon.player.x/Dungeon.GRIDSIZE,Dungeon.player.y/Dungeon.GRIDSIZE) + "|step:" + _step);
 			}
 		}
 	}

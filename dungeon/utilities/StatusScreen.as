@@ -66,38 +66,38 @@ package dungeon.utilities
 		
 		public function StatusScreen() 
 		{
-			background = new TextBox((Dungeon.MAP_WIDTH/2), 20, (Dungeon.TILESX/2), Dungeon.TILESY);
+			background = new TextBox((GC.VIEW_WIDTH/2), 20, (Dungeon.TILESX/2), Dungeon.TILESY);
 			background.visible = false;
 			
-			levelDisplay = new DisplayText("Lvl: ", 0, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			xpDisplay = new DisplayText("XP: ", 60, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			hpDisplay = new DisplayText( "HP: ", 120, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			manaDisplay = new DisplayText( "MAN: ", 180, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			strDisplay = new DisplayText( "STR: ", 240, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			agiDisplay = new DisplayText( "AGI: ", 300, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			intDisplay = new DisplayText( "INT: ", 360, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			wisDisplay = new DisplayText( "WIS: ", 420, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			chaDisplay = new DisplayText( "CHA: ", 480, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			conDisplay = new DisplayText( "CON: ", 540, (Dungeon.MAP_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			levelDisplay = new DisplayText("Lvl: ", 0, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			xpDisplay = new DisplayText("XP: ", 60, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			hpDisplay = new DisplayText( "HP: ", 120, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			manaDisplay = new DisplayText( "MAN: ", 180, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			strDisplay = new DisplayText( "STR: ", 240, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			agiDisplay = new DisplayText( "AGI: ", 300, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			intDisplay = new DisplayText( "INT: ", 360, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			wisDisplay = new DisplayText( "WIS: ", 420, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			chaDisplay = new DisplayText( "CHA: ", 480, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			conDisplay = new DisplayText( "CON: ", 540, (GC.VIEW_HEIGHT - 70), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 
 			// derived
-			attDisplay = new DisplayText( "ATT: ", 0, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			defDisplay = new DisplayText( "DEF: ", 60, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			critdefDisplay = new DisplayText( "CRD: ", 120, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			perDisplay = new DisplayText( "PER: ", 180, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			penDisplay = new DisplayText( "PEN: ", 240, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			sppowerDisplay = new DisplayText( "SPR: ", 300, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			splevelDisplay = new DisplayText( "SPL: ", 360, (Dungeon.MAP_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			attDisplay = new DisplayText( "ATT: ", 0, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			defDisplay = new DisplayText( "DEF: ", 60, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			critdefDisplay = new DisplayText( "CRD: ", 120, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			perDisplay = new DisplayText( "PER: ", 180, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			penDisplay = new DisplayText( "PEN: ", 240, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			sppowerDisplay = new DisplayText( "SPR: ", 300, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			splevelDisplay = new DisplayText( "SPL: ", 360, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			
 			// status combat text + debug text while in alpha/beta/LOLZ
-			textDisplay1 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 160), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay2 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 150), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay3 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 140), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay4 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 130), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay5 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 120), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay6 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 110), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay7 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 100), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			textDisplay8 = new DisplayText( "TXT: ", 10, (Dungeon.MAP_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay1 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 160), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay2 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 150), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay3 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 140), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay4 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 130), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay5 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 120), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay6 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 110), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay7 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 100), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
+			textDisplay8 = new DisplayText( "TXT: ", 10, (GC.VIEW_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
 			textDisplaysArray = new Array(textDisplay1, textDisplay2, textDisplay3, textDisplay4, textDisplay5, textDisplay6, textDisplay7, textDisplay8);
 			
 			// we'll need a grid foreach here
@@ -119,7 +119,7 @@ package dungeon.utilities
 			
 			// we need a line of text that spans the screen that can be updated later
 			for (i = 0; i < 36; i++) {
-				itemAr[i] = new DisplayText("", (Dungeon.MAP_WIDTH/2) + 5, ((i+1)*15), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, (Dungeon.MAP_WIDTH/2));
+				itemAr[i] = new DisplayText("", (GC.VIEW_WIDTH/2) + 5, ((i+1)*15), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, (GC.VIEW_WIDTH/2));
 				inventoryTexts.push(itemAr[i]);
 			}
 

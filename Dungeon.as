@@ -18,20 +18,24 @@ package
 		
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
-		
-		public static const MAP_WIDTH:Number = 1216;
-		public static const MAP_HEIGHT:Number = 800;
-		public static const TILE_WIDTH:Number = GC.GRIDSIZE;
-		public static const TILE_HEIGHT:Number = GC.GRIDSIZE;
-		public static const TILESX:Number = MAP_WIDTH/TILE_WIDTH;
-		public static const TILESY:Number = MAP_HEIGHT/TILE_HEIGHT;
 
+		// these are redefined here for use in future map generation
+		// it is possible that the dungeon will contain varied-size levels
+		// so we will be generating map sizes that differ from the global constants for those
+		public static var MAP_WIDTH:Number;
+		public static var MAP_HEIGHT:Number;
+		public static var TILE_WIDTH:Number;
+		public static var TILE_HEIGHT:Number;
+		public static var GRIDSIZE:Number;
+		public static var TILESX:Number;
+		public static var TILESY:Number;
 
 		public static var dataloader:DataLoader = new DataLoader();
 		public var cam:Camera;
 		
-		public function Dungeon() 
-		{
+		public function Dungeon() {
+			initMapSizes();
+
 			dataloader.setupItems();
 
 			statusScreen = new StatusScreen();
@@ -57,6 +61,18 @@ package
 			add(statusScreen.background);
 			addList(statusScreen.displayTexts);
 			addList(statusScreen.inventoryTexts);
+		}
+
+		// this will be where a possible future dataloader will determine level size for customized levels
+		// currently, just load from globals
+		public function initMapSizes():void {
+			MAP_WIDTH: = GC.MAP_WIDTH; 
+			MAP_HEIGHT = GC.MAP_HEIGHT;
+			TILE_WIDTH = GC.GRIDSIZE;
+			TILE_HEIGHT = GC.GRIDSIZE;
+			GRIDSIZE = GC.GRIDSIZE;
+			TILESX = MAP_WIDTH/TILE_WIDTH;
+			TILESY = MAP_HEIGHT/TILE_HEIGHT;
 		}
 		
 		private function addItem(item:*, index:int, array:Array):void {

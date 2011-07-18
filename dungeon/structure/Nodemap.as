@@ -4,6 +4,7 @@ package dungeon.structure
 	import dungeon.structure.Node;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.FP;
+	import dungeon.utilities.GC;
 	
     public class Nodemap {
 
@@ -210,7 +211,7 @@ package dungeon.structure
 			// synchronize updates with player turn
 			// report on player tile solidity
 			if (_step != Dungeon.player.STEP) {
-				var node:Node = getNode(Dungeon.player.x/20, Dungeon.player.y/20);
+				var node:Node = getNode(Dungeon.player.x/GC.GRIDSIZE, Dungeon.player.y/GC.GRIDSIZE);
 				_step = Dungeon.player.STEP;
 			}
 		}

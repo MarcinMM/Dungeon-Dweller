@@ -12,10 +12,14 @@ package dungeon.utilities
 		 *  Game Constants 
 		 */
 		
-		// World constants
+		// World constants like map (dungeon) size, view width, gridsize, gravity, speed of light ... etc.
 		public static const GRIDSIZE:uint = 32;
 		public static const CAMERA_OFFSET:uint = 8 * GRIDSIZE;
 		public static const PLAYER_MOVEMENT_SPEED:uint = 32;
+		public static const MAP_WIDTH = 1216; // actual map size
+		public static const MAP_HEIGHT = 800;
+		public static const VIEW_WIDTH = 808;
+		public static const VIEW_HEIGHT = 600;
 		
 		
 		// Status Screen constants
