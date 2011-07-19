@@ -66,7 +66,7 @@ package
 		// this will be where a possible future dataloader will determine level size for customized levels
 		// currently, just load from globals
 		public function initMapSizes():void {
-			MAP_WIDTH: = GC.MAP_WIDTH; 
+			MAP_WIDTH = GC.MAP_WIDTH; 
 			MAP_HEIGHT = GC.MAP_HEIGHT;
 			TILE_WIDTH = GC.GRIDSIZE;
 			TILE_HEIGHT = GC.GRIDSIZE;
