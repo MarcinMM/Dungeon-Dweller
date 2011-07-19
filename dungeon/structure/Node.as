@@ -101,7 +101,7 @@ package dungeon.structure
 			
 			var neighborList:Vector.<Node>;
 			
-			//trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
+			trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
 			
 			// costs for traversing nodes vert/horizontally or diagonally
 			// may play with diagonal value to increase chance of straight lines
@@ -136,14 +136,14 @@ package dungeon.structure
 				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
 				for each (var node:Node in neighborList) {
 					thisOpenIndex = -1;
-					//trace("neighbor: " + node.x + "-" + node.y);
+					trace("neighbor: " + node.x + "-" + node.y);
 					// if node is not on closed list
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
 							node.findG(currentNode);
 							node.findH(endNode);
 							node.updateF();
-							//trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost:" + node.fCost);
+							trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost:" + node.fCost);
 						if (openList.indexOf(node) == -1) {
 							//trace("adding node to OL at:" + node.x + "-" + node.y);
 							openList.push(node);

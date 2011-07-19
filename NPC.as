@@ -106,9 +106,12 @@ package
 		}
 		
 		// this can be used to achieve goals such as pickup item or attack another entity, or seek escape route
+		// before starting path, we need to obtain actual nodes from nodemap (nodemap stores collision data for entire level)
 		public function initPathedMovement(pointA:Point, pointB:Point):Boolean {
-			var source:Node = new Node(pointA.x, pointA.y, -1);
-			var destNode:Node = new Node(pointB.x, pointB.y, -1);
+			var source:Node = Dungeon.level._nodemap.getNode(pointA.x, pointA.y);
+			var destNode:Node = Dungeon.level._nodemap.getNode(pointB.x, pointB.y);
+			//var source:Node = new Node(pointA.x, pointA.y, -1);
+			//var destNode:Node = new Node(pointB.x, pointB.y, -1);
 			PATH = source.findPath(destNode, 'creature');
 			trace("Path size: " + PATH.length);
 			// need to take a step now
@@ -287,7 +290,7 @@ package
 				checkCollision(GC.LAYER_PLAYER_TEXT,GC.COLLISION_PLAYER);
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				
-				processCombat();
+				//processCombat();
 				pathedMovementStep();
 	
 				// currently the below means creature will seek nearest non-aligned NPC
@@ -319,7 +322,7 @@ package
 							+ " player at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE 
 							+ "| dist: " + measuredDistance);
 					}
-				} */ 
+				}*/ 
 				
 				
 				// TODO: this needs to be in a function for clarity, methinks
@@ -334,7 +337,7 @@ package
 								(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
 								(measuredDistance < (10 * GRIDSIZE)) && 
 								(measuredDistance < interestingCreatureDistance) &&
-								(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
+							//	(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
 								ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
 							) 
 						{

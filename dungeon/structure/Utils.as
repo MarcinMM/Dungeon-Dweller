@@ -33,6 +33,7 @@ package dungeon.structure
 					break;
 				case "creature":
 					if ((index == Level.FLOOR) ||
+						(index == Level.HALL) ||
 						(index == Level.DOORS['left']) ||
 						(index == Level.DOORS['right']) ||
 						(index == Level.DOORS['top']) ||

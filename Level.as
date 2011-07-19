@@ -254,7 +254,7 @@ package
 			var usedPoints:Array = [];
 			var pickedPoint:Point;
 			
-			for (var j:int = 0; j < 10; j++) {
+			for (var j:int = 0; j < 2; j++) {
 				var newNPC:NPC = new NPC();
 				newNPC.NPCType = MONSTARS.pop();
 				NPCS.push(newNPC);

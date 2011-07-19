@@ -30,6 +30,7 @@ package dungeon.structure
 			
 			for each (node in _nodes) {
 				createSolidNeighbors(node);
+				createWalkingNeighbors(node);
 			}
 			_map = _dungeonmap;
 			roomsA = _roomsA;
@@ -50,19 +51,19 @@ package dungeon.structure
 		// we need another set of neighbours for monsters who use hallways, floors and doors
 		public function createSolidNeighbors(node:Node):void {
 			var n:Node;
-			n = getNode((node.x)+1, node.y);
+			n = getNodeTile((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
 				node.addSolidNeighbor(n);
 			}
-			n = getNode((node.x)-1, node.y);
+			n = getNodeTile((node.x)-1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
 				node.addSolidNeighbor(n);
 			}
-			n = getNode(node.x, (node.y)+1);
+			n = getNodeTile(node.x, (node.y)+1);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
 				node.addSolidNeighbor(n);
 			}
-			n = getNode(node.x, (node.y)-1);
+			n = getNodeTile(node.x, (node.y)-1);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'corridor')) {
 				node.addSolidNeighbor(n);
 			}
@@ -70,19 +71,19 @@ package dungeon.structure
 		
 		public function createWalkingNeighbors(node:Node):void {
 			var n:Node;
-			n = getNode((node.x)+1, node.y);
+			n = getNodeTile((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
 				node.addWalkingNeighbor(n);
 			}
-			n = getNode((node.x)-1, node.y);
+			n = getNodeTile((node.x)-1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
 				node.addWalkingNeighbor(n);
 			}
-			n = getNode(node.x, (node.y)+1);
+			n = getNodeTile(node.x, (node.y)+1);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
 				node.addWalkingNeighbor(n);
 			}
-			n = getNode(node.x, (node.y)-1);
+			n = getNodeTile(node.x, (node.y)-1);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
 				node.addWalkingNeighbor(n);
 			}
@@ -185,8 +186,8 @@ package dungeon.structure
 			var path:Array = new Array();
 
 			// A* time
-			var source:Node = getNode(sourceDoor.x, sourceDoor.y);
-			var destNode:Node = getNode(destDoor.x, destDoor.y);
+			var source:Node = getNodeTile(sourceDoor.x, sourceDoor.y);
+			var destNode:Node = getNodeTile(destDoor.x, destDoor.y);
 			path = source.findPath(destNode, 'corridor');
 			trace("path size:" + path.length);
 			// do not paint over any tile that's a door already
@@ -201,17 +202,26 @@ package dungeon.structure
 			}
 		}
 		
+		// retrieve _nodes (premapped, pre-neighboured) node at given TILE x,y location
 		public function getNode(x:int, y:int):Node {
+			x = x / GC.GRIDSIZE;
+			y = y / GC.GRIDSIZE;
 			if ((x >= 0) && (y >= 0) && (x < Dungeon.TILESX) && (y < Dungeon.TILESY)) {
 				return _nodes[(y * Dungeon.TILESX) + x];
 			} else return null;
 		}
+
+		public function getNodeTile(x:int, y:int):Node {
+			if ((x >= 0) && (y >= 0) && (x < Dungeon.TILESX) && (y < Dungeon.TILESY)) {
+				return _nodes[(y * Dungeon.TILESX) + x];
+			} else return null;
+		}		
 		
 		public function update():void {
 			// synchronize updates with player turn
 			// report on player tile solidity
 			if (_step != Dungeon.player.STEP) {
-				var node:Node = getNode(Dungeon.player.x/GC.GRIDSIZE, Dungeon.player.y/GC.GRIDSIZE);
+				var node:Node = getNode(Dungeon.player.x, Dungeon.player.y);
 				_step = Dungeon.player.STEP;
 			}
 		}
