@@ -1,5 +1,6 @@
 package  
 {
+	import dungeon.contents.Item;
 	import dungeon.Creature;
 	import dungeon.structure.Node;
 	import dungeon.structure.Point;
@@ -27,6 +28,9 @@ package
 		private var POSITION:Point;
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
+		
+		// we need some way to decide what to DO once we get to where we were going!
+		private var PATH_PURPOSE:String;
 		public var newActionOverride:Boolean = false; 
 		// TODO: this gets set true if something drastic occurs
 		// loud noise from player or HP low alert, or something else?
@@ -135,14 +139,27 @@ package
 					newActionOverride = true;
 					return false;
 				} else {
-					x = newLoc.x;
-					y = newLoc.y;
+					trace("Moving to " + newLoc.x + "," + newLoc.y);
+					x = newLoc.x * GC.GRIDSIZE;
+					y = newLoc.y * GC.GRIDSIZE;
 					ACTION_TAKEN = true;
 					return true;
 				}
 			} else {
 				// path ended, now what?
 				// something must be able to read the return here and act appropriately
+				switch(PATH_PURPOSE) {
+					case "ITEM":
+						// pickup if item VALUE (yet to be defined) is greater than current
+						break;
+					case "ENEMY":
+						// ATTACK! (hee)
+						break;
+					case "PLAYER":
+						// ... not sure. alignment-based stuff?
+						break;
+				}
+				// action complete, reset status
 				ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 				return false;
 			}
@@ -269,6 +286,110 @@ package
 			}
 		}
 		
+		public function findNPC():void {
+			var NPCStart:Point;
+			var NPCDest:Point;
+			// other NPC seek
+			var measuredDistance:uint;
+			var interestingCreature:NPC;
+			var interestingCreatureDistance:uint = 1000;
+			for each (var currentNPC:NPC in Dungeon.level.NPCS) {
+				// check distance if under threshold, then pick lowest
+				measuredDistance = Math.sqrt(Math.pow(x - currentNPC.x, 2) + Math.pow(y - currentNPC.y, 2));
+				if  (
+						(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
+						(measuredDistance < (10 * GRIDSIZE)) && 
+						(measuredDistance < interestingCreatureDistance) &&
+					//	(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
+						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+					) 
+				{
+					trace(NPCType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingCreatureDistance);
+					interestingCreatureDistance = measuredDistance;
+					interestingCreature = currentNPC;
+				}
+			}
+			
+			if (interestingCreatureDistance != 1000) {
+				// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
+				NPCStart = new Point(x, y);
+				NPCDest = new Point(interestingCreature.x, interestingCreature.y);
+				if (initPathedMovement(NPCStart, NPCDest)) {
+					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
+					PATH_PURPOSE = 'ENEMY';	
+					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
+						+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
+						+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));
+				} else {
+					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
+					+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
+					+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));							
+				}
+			}
+		}
+		
+		public function findPlayer():void {
+			var NPCStart:Point;
+			var NPCDest:Point;
+			// alternately, player seek
+			// for now, we'll just run the check regardless
+			if (true) {
+				NPCStart = new Point(x, y);
+				NPCDest = new Point(Dungeon.player.x, Dungeon.player.y);
+				if (initPathedMovement(NPCStart, NPCDest)) {
+					// we don't want to start a path if it's farther than some X (60 for now, why not?)
+					if (PATH.length > 60) {
+						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
+						PATH_PURPOSE = 'PLAYER';
+						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking player " 
+							+ " at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE); 
+					}
+				}
+			}
+		}
+		
+		public function findItem():void {
+			var NPCStart:Point;
+			var NPCDest:Point;
+			// other NPC seek
+			var measuredDistance:uint;
+			var interestingItem:Item;
+			var interestingItemDistance:uint = 1000;
+			for each (var currentItem:Item in Dungeon.level.ITEMS) {
+				// check distance if under threshold, then pick lowest
+				measuredDistance = Math.sqrt(Math.pow(x - currentItem.x, 2) + Math.pow(y - currentItem.y, 2));
+				if  (
+						(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
+						(measuredDistance < (10 * GRIDSIZE)) && 
+						(measuredDistance < interestingItemDistance) &&
+					//	(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
+						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+					) 
+				{
+					trace(NPCType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingItemDistance);
+					interestingItemDistance = measuredDistance;
+					interestingItem = currentItem;
+				}
+			}
+								
+			if (interestingItemDistance != 1000) {
+				// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
+				NPCStart = new Point(x, y);
+				NPCDest = new Point(interestingItem.x, interestingItem.y);
+				if (initPathedMovement(NPCStart, NPCDest)) {
+					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
+					PATH_PURPOSE = 'ITEM';							
+					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
+						+ interestingItem.ITEM_TYPE + " at " + interestingItem.x / GRIDSIZE + "," + interestingItem.y / GRIDSIZE 
+						+ "| dist: " + Math.round(interestingItemDistance / GRIDSIZE));
+				} else {
+					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
+					+ interestingItem.ITEM_TYPE + " at " + interestingItem.x / GRIDSIZE + "," + interestingItem.y / GRIDSIZE 
+					+ "| dist: " + Math.round(interestingItemDistance / GRIDSIZE));							
+				}
+			}			
+		}
+		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {
 				ACTION_TAKEN = false;
@@ -302,78 +423,26 @@ package
 				// TODO: break through current status if a new interesting event occurs 
 				//		 (i.e. creature is already pathing towards something but a more hated target enters the room, or loud noise is heard? or other?
 				
-				var NPCStart:Point;
-				var NPCDest:Point;
-				
-				// TODO: fix this, weird shit starts to happen when this is enabled, mostly critters teleporting to player
-				/*
-				if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
-					measuredDistance = Math.sqrt(Math.pow(x - Dungeon.player.x, 2) + Math.pow(y - Dungeon.player.x, 2));
-					if ((measuredDistance < 1000) &&
-					     (FACTION != "player") &&
-						 (ENGAGE_STATUS == GC.NPC_STATUS_IDLE)
-					   )
-					{
-						NPCStart = new Point(x, y);
-						NPCDest = new Point(Dungeon.player.x, Dungeon.player.y);
-						initPathedMovement(NPCStart, NPCDest);
-						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
-						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
-							+ " player at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE 
-							+ "| dist: " + measuredDistance);
-					}
-				}*/ 
-				
-				
 				// TODO: this needs to be in a function for clarity, methinks
 				if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
-					var measuredDistance:uint;
-					var interestingCreature:NPC;
-					var interestingCreatureDistance:uint = 1000;
-					for each (var currentNPC:NPC in Dungeon.level.NPCS) {
-						// check distance if under threshold, then pick lowest
-						measuredDistance = Math.sqrt(Math.pow(x - currentNPC.x, 2) + Math.pow(y - currentNPC.y, 2));
-						if  (
-								(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
-								(measuredDistance < (10 * GRIDSIZE)) && 
-								(measuredDistance < interestingCreatureDistance) &&
-							//	(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
-								ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
-							) 
-						{
-							trace(NPCType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingCreatureDistance);
-							interestingCreatureDistance = measuredDistance;
-							interestingCreature = currentNPC;
-						}
-					}
-					if (interestingCreatureDistance != 1000) {
-						// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
-						NPCStart = new Point(x, y);
-						NPCDest = new Point(interestingCreature.x, interestingCreature.y);
-						if (initPathedMovement(NPCStart, NPCDest)) {
-						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
-						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
-							+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
-							+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));
-						} else {
-							trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
-							+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
-							+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));							
-						}
-					}
+					// we need a decision tree for seeking items, npcs and player
+					// priorities could be assigned based on equipment level
+					// no equipment -> seek item
+					// then whatever's closer based on alignment?
+
+					// we might have something to do with comparative levels too?
+					// or, we can setup a few native "hate" rules that override other concerns
+					findNPC();
+
+					findPlayer();
+					
+					findItem();
 				}
 				
 				if (!ACTION_TAKEN) {
 					trace(NPCType + " idling.");
 					idleMovement();
 				}
-				
-				// perform checks or check for events that would cause a path
-				// let's start with player location check
-				// perhaps if less than 10 in combined x+y direction, we make a path
-				// unless a path length is already existing
-				// this means that only one path can be running at a time
-				// so we'll need another type of check
 
 				// finally sync NPC with player
 				STEP = Dungeon.player.STEP;

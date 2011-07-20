@@ -108,12 +108,12 @@ package dungeon.utilities
 
 			// pathfinding grids
 			for (i = 0; i < 60; i++) {
-				hGridAr[i] = new DisplayText((i.toString()), (i * 20) + 2, 20-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 20);
+				hGridAr[i] = new DisplayText((i.toString()), (i * GC.GRIDSIZE) + 2, GC.GRIDSIZE - 8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, GC.GRIDSIZE);
 				displayTexts.push(hGridAr[i]);
 			}
 
 			for (i = 0; i < 40; i++) {
-				vGridAr[i] = new DisplayText((i.toString()), 20 + 2, (i*20)-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 20);
+				vGridAr[i] = new DisplayText((i.toString()), GC.GRIDSIZE + 2, (i * GC.GRIDSIZE)-8, "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, GC.GRIDSIZE);
 				displayTexts.push(vGridAr[i]);
 			}
 			
