@@ -127,14 +127,14 @@ package
 		public function pathedMovementStep():Boolean {
 			if ((PATH.length != 0) && !ACTION_TAKEN) {
 				// TODO: if I use shift() here instead of pop(), this is a cheap teleport implementation ^_^
-				var newLoc:Node = PATH.shift();
+				var newLoc:Node = PATH.pop();
 				// since this is more or less a teleport
 				// except that it should be a teleport to the next tile over (if my path algorithm works correctly)
 				// so nothing *really* broken
 				// we need to check that the new node really IS just one tile away
 				// and we need to ensure there's no collision happening
 				var collisionTargets:Array = new Array("player", "npc");
-				if (collideTypes(collisionTargets, newLoc.x, newLoc.y) != null) {
+				if (collideTypes(collisionTargets, newLoc.x * GC.GRIDSIZE, newLoc.y * GC.GRIDSIZE) != null) {
 					trace(NPCType + " blocked!" );
 					newActionOverride = true;
 					return false;

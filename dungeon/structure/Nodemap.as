@@ -182,7 +182,7 @@ package dungeon.structure
 		
 		private function createConnectingHallway(sourceDoor:Point, destDoor:Point):void {
 			//FP.log(sourceDoor.x + "-" + sourceDoor.y + "-" + destDoor.x + "-" + destDoor.y);
-			trace(sourceDoor.x + "-" + sourceDoor.y + " to " + destDoor.x + "-" + destDoor.y);
+			//trace(sourceDoor.x + "-" + sourceDoor.y + " to " + destDoor.x + "-" + destDoor.y);
 			var path:Array = new Array();
 
 			// A* time
