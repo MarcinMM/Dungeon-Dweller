@@ -124,6 +124,7 @@ package dungeon.structure
 			while ((i < 1000) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
 				// Look for lowest F cost node
 				//trace("open: " + openList.length + "|closed: " + closedList.length);
+// perf hit here, needs to turn openList into a priorityQueue from http://www.polygonal.de/doc/ds/
 				openList.sortOn("fCost");
 				// Switch it to the closed list
 				currentNode = openList.shift();
@@ -138,6 +139,9 @@ package dungeon.structure
 					thisOpenIndex = -1;
 					//trace("neighbor: " + node.x + "-" + node.y);
 					// if node is not on closed list
+// perf hit here, need to turn closedList into a hashtable from flash.utils.Dictionary 
+// so we can just do a check on (array[node] == true) rather than searching every time
+// also
 					if (closedList.indexOf(node) == -1) {
 						// if node is not in open list
 							node.findG(currentNode);
@@ -184,9 +188,9 @@ package dungeon.structure
 			2) Repeat the following:
 			a) Look for the lowest F cost square on the open list. We refer to this as the current square.
 			b) Switch it to the closed list.
-			c) For each of the 8 squares adjacent to this current square É
+			c) For each of the 8 squares adjacent to this current square ï¿½
 				* If it is not walkable or if it is on the closed list, ignore it. Otherwise do the following.           
-				* If it isnÕt on the open list, add it to the open list. Make the current square the parent of this square. Record the F, G, and H costs of the square. 
+				* If it isnï¿½t on the open list, add it to the open list. Make the current square the parent of this square. Record the F, G, and H costs of the square. 
 				* If it is on the open list already, check to see if this path to that square is better, using G cost as the measure. A lower G cost means that
 				* this is a better path. If so, change the parent of the square to the current square, and recalculate the G and F scores of the square. If you are
 				* keeping your open list sorted by F score, you may need to resort the list to account for the change.
