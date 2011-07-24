@@ -102,11 +102,7 @@ package dungeon.structure
 			var neighborList:Vector.<Node>;
 			
 			trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
-			
-			// costs for traversing nodes vert/horizontally or diagonally
-			// may play with diagonal value to increase chance of straight lines
-			// but all that might result in is repeated L shaped diagonals instead of long hallways, hmm
-			
+						
 			var currentNode:Node = this;
 			openList.push(this);
 			
@@ -136,6 +132,7 @@ package dungeon.structure
 				} else if (type == "creature") {
 					neighborList = currentNode.walkingNeighbors;
 				}
+
 				for each (var neighbor:Node in neighborList) {
 // perf hit here, need to turn closedList into a hashtable from flash.utils.Dictionary
 // so we can just do a check on (array[node] == true) rather than searching every time
@@ -152,6 +149,7 @@ package dungeon.structure
 						if (closedIndex !== -1) {
 							closedList.splice(closedIndex, 1);
 							closedIndex = -1;
+
 						}
 					}
 					if (openIndex === -1 && closedIndex === -1) {
@@ -174,6 +172,7 @@ package dungeon.structure
 				pathedNode = pathedNode.parent;
 				i++;
 			}
+
 			return path;
 		}
     }
