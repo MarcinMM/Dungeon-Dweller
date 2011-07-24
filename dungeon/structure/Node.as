@@ -118,52 +118,49 @@ package dungeon.structure
 			} else if (type == "creature") {
 				neighborList = currentNode.walkingNeighbors;
 			}
-
 			
 			// SAFTY OFF! [sic]
-			while ((i < 1000) && ((currentNode != endNode) && (!currentNode.sameLoc(endNode))) && (openList.length != 0)) {
-				// Look for lowest F cost node
-				//trace("open: " + openList.length + "|closed: " + closedList.length);
+			
+			var openIndex:int;
+			var closedIndex:int;
+			var gCost2:int = 0;
+			
+			while (i < 1000 && openList.length > 0 && currentNode != endNode && (!currentNode.sameLoc(endNode))) {
+				//i++;
 				openList.sortOn("fCost");
-				// Switch it to the closed list
+// perf hit here, needs to turn openList into a priorityQueue from http://www.polygonal.de/doc/ds/
 				currentNode = openList.shift();
+				closedList.push(currentNode);
 				if (type == "corridor") {
 					neighborList = currentNode.solidNeighbors;
 				} else if (type == "creature") {
 					neighborList = currentNode.walkingNeighbors;
 				}
-				closedList.push(currentNode);
-				//trace("****** starting with node at: " + currentNode.x + "-" + currentNode.y);
-				for each (var node:Node in neighborList) {
-					thisOpenIndex = -1;
-					//trace("neighbor: " + node.x + "-" + node.y);
-					// if node is not on closed list
-					if (closedList.indexOf(node) == -1) {
-						// if node is not in open list
-							node.findG(currentNode);
-							node.findH(endNode);
-							node.updateF();
-							//trace("g: " + node.gCost + "|hCost: " + node.hCost + "|fCost:" + node.fCost);
-						if (openList.indexOf(node) == -1) {
-							//trace("adding node to OL at:" + node.x + "-" + node.y);
-							openList.push(node);
-							node.setParent(currentNode);
-							//trace(currentNode.x + "-" + currentNode.y + " became parent of " + node.x + "-" + node.y);
-						} else {
-							// this means this node is already on the list, which in turn means
-							// a different G path was found to it
-							// check that path distance vs. previous path
-							thisOpenIndex = openList.indexOf(node);
-							//trace("new path found for node at: " + openList[thisOpenIndex].x + "-" + openList[thisOpenIndex].y);
-							if (node.getGCost() < openList[thisOpenIndex].getGCost()) {
-								
-								node.setParent(currentNode);
-								openList[thisOpenIndex] = node;
-								//trace("replacing node at index:" + thisOpenIndex + "-xy: " + node.x + "-" + node.y + "-gcost:" + node.getGCost());
-							}
+				for each (var neighbor:Node in neighborList) {
+// perf hit here, need to turn closedList into a hashtable from flash.utils.Dictionary
+// so we can just do a check on (array[node] == true) rather than searching every time
+// also
+					openIndex = openList.indexOf(neighbor);
+					closedIndex = closedList.indexOf(neighbor);
+					//currentNode.findG(neighbor); 
+					gCost2 = currentNode.gCost + 10; // this needs an actual calculation
+					if (gCost2 < neighbor.gCost) {
+						if (openIndex !== -1) {
+							openList.splice(openIndex, 1);
+							openIndex = -1;
+						}
+						if (closedIndex !== -1) {
+							closedList.splice(closedIndex, 1);
+							closedIndex = -1;
 						}
 					}
-					i++;
+					if (openIndex === -1 && closedIndex === -1) {
+						neighbor.gCost = gCost2;
+						neighbor.findH(endNode);
+						neighbor.updateF();
+						neighbor.setParent(currentNode);
+						openList.push(neighbor);
+					}
 				}
 			}
 			i = 0;
@@ -177,25 +174,6 @@ package dungeon.structure
 				pathedNode = pathedNode.parent;
 				i++;
 			}
-			
-			/*
-			 * http://www.policyalmanac.org/games/aStarTutorial.htm
-			1) Add the starting square (or node) to the open list.
-			2) Repeat the following:
-			a) Look for the lowest F cost square on the open list. We refer to this as the current square.
-			b) Switch it to the closed list.
-			c) For each of the 8 squares adjacent to this current square É
-				* If it is not walkable or if it is on the closed list, ignore it. Otherwise do the following.           
-				* If it isnÕt on the open list, add it to the open list. Make the current square the parent of this square. Record the F, G, and H costs of the square. 
-				* If it is on the open list already, check to see if this path to that square is better, using G cost as the measure. A lower G cost means that
-				* this is a better path. If so, change the parent of the square to the current square, and recalculate the G and F scores of the square. If you are
-				* keeping your open list sorted by F score, you may need to resort the list to account for the change.
-			d) Stop when you:
-				* Add the target square to the closed list, in which case the path has been found (see note below), or
-				* Fail to find the target square, and the open list is empty. In this case, there is no path.   
-			3) Save the path. Working backwards from the target square, go from each square to its parent square until you reach the starting square.
-			That is your path.
-			*/
 			return path;
 		}
     }
