@@ -42,6 +42,10 @@ package dungeon
 		public var STATS:Array = new Array();		
 		public var ALIGNMENT:String = 'neutral'; // hardcoding for now
 		
+		// # of Actions a creature can take per turn  and their counter
+		public var ACTIONS:uint;
+		public var ACTION_COUNTER:uint;
+		
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
 			if (collide(collisionEntity, x, y + GRIDSIZE)) {
