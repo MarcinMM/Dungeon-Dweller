@@ -2,17 +2,9 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-More documentation later. Project under *very* slow development.
+# TODO MVP 7/25
 
-# UPDATES 7/18
-
-* Scrolling movement is in.
-* Resize to 32x32 tiles is in. 
-
-# TODO MVP 7/18
-
-* Status screen fixes post-scrolling movement.
-* NPC pathfinding for goals.
+* NPC goal management (IN PROGRESS)
 * Diagonal movement.
 * Vertical dungeon structure (saving/loading levels for going up/down).
 * Item use, rest of item creation.
@@ -39,3 +31,13 @@ More documentation later. Project under *very* slow development.
 
 * Def numbers fluctuate with same gear. Also, just plain fluctuating.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
+
+# UPDATES 7/18
+
+* Scrolling movement is in.
+* Resize to 32x32 tiles is in. 
+
+# UPDATES 7/24
+
+* Status screen fixes post-scrolling movement.
+* NPC pathfinding for goals.
