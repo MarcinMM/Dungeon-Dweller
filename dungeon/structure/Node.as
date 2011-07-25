@@ -1,6 +1,8 @@
 package dungeon.structure
 {
 	import dungeon.structure.Point;
+	import flash.utils.Dictionary;
+	import Dungeon;
 	
 	/**
 	  * Like a point, but with weights depending on its position within a pathfinding call
@@ -98,6 +100,7 @@ package dungeon.structure
 			var path:Array = new Array();
 			var openList:Array = new Array();
 			var closedList:Array = new Array();
+			var closedListD:Dictionary = new Dictionary();
 			
 			var neighborList:Vector.<Node>;
 			
@@ -127,6 +130,8 @@ package dungeon.structure
 // perf hit here, needs to turn openList into a priorityQueue from http://www.polygonal.de/doc/ds/
 				currentNode = openList.shift();
 				closedList.push(currentNode);
+				closedListD[currentNode] = true;
+				//if (closedListD[currentNode] == true) trace ('blibli');
 				if (type == "corridor") {
 					neighborList = currentNode.solidNeighbors;
 				} else if (type == "creature") {
@@ -146,12 +151,16 @@ package dungeon.structure
 							openList.splice(openIndex, 1);
 							openIndex = -1;
 						}
+						/*if (closedListD[neighbor] == true) {
+							closedListD[neighbor] = false;
+						}*/
 						if (closedIndex !== -1) {
+							trace(closedListD[neighbor]);
 							closedList.splice(closedIndex, 1);
 							closedIndex = -1;
-
 						}
-					}
+					}					
+					//if (openIndex === -1 && closedListD[neighbor] !== true) {
 					if (openIndex === -1 && closedIndex === -1) {
 						neighbor.gCost = gCost2;
 						neighbor.findH(endNode);
@@ -167,7 +176,9 @@ package dungeon.structure
 			//trace('start: ' + this.x + '-' + this.y);
 			//trace('end: ' + endNode.x + '-' + endNode.y);
 			while ((pathedNode != null && pathedNode != this) && (i < 100)) {
-				//trace("path:" + pathedNode.x + "-" + pathedNode.y);
+				trace("path:" + pathedNode.x + "-" + pathedNode.y);
+				
+				//Dungeon.level._dungeonmap.setRect(pathedNode.x,pathedNode.y,Dungeon.TILESX, Dungeon.TILESY, 6);
 				path.push(pathedNode);
 				pathedNode = pathedNode.parent;
 				i++;

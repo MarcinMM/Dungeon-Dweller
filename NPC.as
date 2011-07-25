@@ -161,6 +161,7 @@ package
 				}
 				// action complete, reset status
 				ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
+				newActionOverride = false;
 				return false;
 			}
 		}
@@ -433,10 +434,17 @@ package
 					// we might have something to do with comparative levels too?
 					// or, we can setup a few native "hate" rules that override other concerns
 					findNPC();
+					if (ACTION_TAKEN) trace(NPCType + " taking action on other NPC");
 
-					findPlayer();
-					
-					findItem();
+					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
+						findPlayer();
+						if (ACTION_TAKEN) trace(NPCType + " taking action on Player");						
+					}
+
+					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
+						//findItem();
+						if (ACTION_TAKEN) trace(NPCType + " taking action on Item");
+					}
 				}
 				
 				if (!ACTION_TAKEN) {
