@@ -180,12 +180,12 @@ package
 		// we might need this to be available for the player, when morphed
 		public function setNPCStats(npcType:String, npcLevel:uint):void {
 			// TODO: use Creature level class
-			STATS[GC.STATUS_STR] = 14;
+			STATS[GC.STATUS_STR] = 10;
 			STATS[GC.STATUS_AGI] = 10;
 			STATS[GC.STATUS_INT] = 10;
 			STATS[GC.STATUS_WIS] = 10;
 			STATS[GC.STATUS_CHA] = 10;
-			STATS[GC.STATUS_CON] = 14;			
+			STATS[GC.STATUS_CON] = 14;	
 		}
 		
 		

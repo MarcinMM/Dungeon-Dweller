@@ -47,8 +47,8 @@ package dungeon.structure
 			}
 		}
 		
-		// this is neighbour creation for hallways, which go through solid rock
-		// we need another set of neighbours for monsters who use hallways, floors and doors
+		// this is neighbour creation for hallways
+		// tiles available are: solid rock, door, hallway, floor
 		public function createSolidNeighbors(node:Node):void {
 			var n:Node;
 			n = getNodeTile((node.x)+1, node.y);
@@ -69,6 +69,8 @@ package dungeon.structure
 			}
 		}
 		
+		// this is neighbour creation for things that need walking space
+		// tiles available are: floors, hallways, doors
 		public function createWalkingNeighbors(node:Node):void {
 			var n:Node;
 			n = getNodeTile((node.x)+1, node.y);
@@ -202,7 +204,7 @@ package dungeon.structure
 			}
 		}
 		
-		// retrieve _nodes (premapped, pre-neighboured) node at given TILE x,y location
+		// retrieve _nodes (premapped, pre-neighboured) node at given COORDINATE x,y location
 		public function getNode(x:int, y:int):Node {
 			x = x / GC.GRIDSIZE;
 			y = y / GC.GRIDSIZE;
@@ -211,6 +213,7 @@ package dungeon.structure
 			} else return null;
 		}
 
+		// retrieve _nodes (premapped, pre-neighboured) node at given TILE x,y location
 		public function getNodeTile(x:int, y:int):Node {
 			if ((x >= 0) && (y >= 0) && (x < Dungeon.TILESX) && (y < Dungeon.TILESY)) {
 				return _nodes[(y * Dungeon.TILESX) + x];

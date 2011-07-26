@@ -233,6 +233,149 @@
 			<strengthReq>13</strengthReq>
 			<type>BLUNT</type>
 		</weapon>
+		<weapon name="Staff">
+			<attack>7</attack>
+			<defense>6</defense>
+			<pen>.10</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>10</strengthReq>
+			<type>BLUNT</type>
+		</weapon>		
+		<weapon name="Stiletto">
+			<attack>3</attack>
+			<defense>6</defense>
+			<pen>.90</pen>
+			<hands>1</hands>
+			<offhand>TRUE</offhand>
+			<offhandRating>.23</offhandRating>
+			<crit>.2</crit>
+			<strengthReq>7</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Kris">
+			<attack>3</attack>
+			<defense>7</defense>
+			<pen>.60</pen>
+			<hands>1</hands>
+			<offhand>TRUE</offhand>
+			<offhandRating>.22</offhandRating>
+			<crit>.14</crit>
+			<strengthReq>7</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Dagger">
+			<attack>3</attack>
+			<defense>7</defense>
+			<pen>.65</pen>
+			<hands>1</hands>
+			<offhand>TRUE</offhand>
+			<offhandRating>.2</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>7</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Misericorde">
+			<attack>3</attack>
+			<defense>6</defense>
+			<pen>.90</pen>
+			<hands>1</hands>
+			<offhand>TRUE</offhand>
+			<offhandRating>.23</offhandRating>
+			<crit>.20</crit>
+			<strengthReq>7</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Katars">
+			<attack>4</attack>
+			<defense>7</defense>
+			<pen>1.00</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.13</crit>
+			<strengthReq>11</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Kukri">
+			<attack>4</attack>
+			<defense>6</defense>
+			<pen>0.50</pen>
+			<hands>1</hands>
+			<offhand>TRUE</offhand>
+			<offhandRating>.17</offhandRating>
+			<crit>.13</crit>
+			<strengthReq>7</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Main-gauche">
+			<attack>3</attack>
+			<defense>7</defense>
+			<pen>0.65</pen>
+			<hands>2</hands>
+			<offhand>TRUE</offhand>
+			<offhandRating>.20</offhandRating>
+			<crit>.15</crit>
+			<strengthReq>7</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Spear">
+			<attack>3</attack>
+			<defense>8</defense>
+			<pen>0.90</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.18</crit>
+			<strengthReq>12</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Halberd">
+			<attack>4</attack>
+			<defense>8</defense>
+			<pen>0.60</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.08</crit>
+			<strengthReq>13</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Glaive">
+			<attack>4</attack>
+			<defense>7</defense>
+			<pen>0.40</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.08</crit>
+			<strengthReq>12</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Naginata">
+			<attack>4</attack>
+			<defense>7</defense>
+			<pen>0.40</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.08</crit>
+			<strengthReq>12</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
+		<weapon name="Bardiche">
+			<attack>6</attack>
+			<defense>6</defense>
+			<pen>0.30</pen>
+			<hands>2</hands>
+			<offhand>FALSE</offhand>
+			<offhandRating>0</offhandRating>
+			<crit>.05</crit>
+			<strengthReq>12</strengthReq>
+			<type>PIERCING</type>
+		</weapon>
 	</weapons>
 	<armors>
 		<armor name="Leather Vest">
@@ -379,5 +522,34 @@
 			<specialModifier>0</specialModifier>			
 		</material>
 	</materials>
+	<potions>
+		<potion name="Minor Healing">
+			<effect>HEAL</effect>
+			<modifier>0.2</modifier>
+			<instant>10</instant>
+			<lasting>0</lasting>
+			<duration>0</duration>
+			<value>20</value>
+			<defaultColor>FALSE</defaultColor>
+		</potion>
+		<potion name="Healing">
+			<effect>HEAL</effect>
+			<modifier>0.5</modifier>
+			<instant>10</instant>
+			<lasting>0</lasting>
+			<duration>0</duration>
+			<value>20</value>
+			<defaultColor>FALSE</defaultColor>
+		</potion>
+		<potion name="Invisibility">
+			<effect>INVISIBLE</effect>
+			<modifier>0</modifier>
+			<instant>1</instant>
+			<lasting>1</lasting>
+			<duration>40</duration>
+			<value>20</value>
+			<defaultColor>FALSE</defaultColor>
+		</potion>
+	</potions>
 </items>
 </data>
