@@ -529,6 +529,7 @@
 			<instant>10</instant>
 			<lasting>0</lasting>
 			<duration>0</duration>
+			<fumeDuration>0</fumeDuration>
 			<value>20</value>
 			<defaultColor>FALSE</defaultColor>
 		</potion>
@@ -538,6 +539,7 @@
 			<instant>10</instant>
 			<lasting>0</lasting>
 			<duration>0</duration>
+			<fumeDuration>0</fumeDuration>
 			<value>20</value>
 			<defaultColor>FALSE</defaultColor>
 		</potion>
@@ -547,6 +549,7 @@
 			<instant>1</instant>
 			<lasting>1</lasting>
 			<duration>40</duration>
+			<fumeDuration>0</fumeDuration>
 			<value>20</value>
 			<defaultColor>FALSE</defaultColor>
 		</potion>

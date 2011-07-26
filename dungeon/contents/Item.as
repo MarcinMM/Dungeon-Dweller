@@ -10,6 +10,9 @@ package dungeon.contents
 	 */
 	public class Item extends Entity
 	{
+		// uniqid, for target ec.
+		public var UNIQID:uint = 0;
+		
 		// local step, to be synced with global PLAYER step
 		private var _step:uint = 0;
 		
@@ -41,11 +44,13 @@ package dungeon.contents
 		
 		// items get generated on level creation at random
 		// we need an item quota perhaps based on dungeon level depth
-		// 
 
 		public function Item() 
 		{
 			// initialise various bits
+			var uniqidSeed:Number = Math.random() * 10000000000;
+			UNIQID = uint (uniqidSeed);
+			
 			// we can set a chance of cursed or blessed universally
 			// just about everything else? probably should be init'd in subclasses
 			// cursed/blessed chance is hardcoded at 5%

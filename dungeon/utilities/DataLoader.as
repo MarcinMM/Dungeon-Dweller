@@ -14,6 +14,7 @@ package dungeon.utilities
 		
 		public var weapons:Array = new Array();
 		public var materials:Array = new Array();
+		public var potions:Array = new Array();
 		
 		public function DataLoader() 
 		{
@@ -27,6 +28,7 @@ package dungeon.utilities
 			var i:XML;
 			var items:Array = new Array();
 			var armors:Array = new Array();
+			var potions:Array = new Array();
 
 			for each (i in itemDataXML.items.weapons.weapon)
 			{
@@ -63,8 +65,24 @@ package dungeon.utilities
 				materials.push(material);
 			}
 			
+			for each (i in itemDataXML.items.potions.potion)
+			{
+				var potion:PotionPrototype = new PotionPrototype();
+				potion.name = i.@name;
+				potion.effect = i.effect;
+				potion.modifier = i.modifier;
+				potion.instant = i.instant;
+				potion.lasting = i.lasting;
+				potion.duration = i.duration;
+				potion.value = i.value;
+				potion.defaultColor = i.defaultColor;
+
+				potions.push(potion);
+			}
+			
 			items.push(weapons);
 			items.push(materials);
+			items.push(potions);
 		}
 	}
 }

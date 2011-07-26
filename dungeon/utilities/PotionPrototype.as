@@ -11,9 +11,12 @@ package dungeon.utilities
     {
         
         public var name:String;
-        public var instant:String;
-        public var lasting:String;
+		public var modifier:Number;
+		public var effect:String;
+        public var instant:uint;
+        public var lasting:uint;
         public var duration:uint;
+		public var fumeDuration:uint;
         public var value:uint;
         public var defaultColor:String;
                 

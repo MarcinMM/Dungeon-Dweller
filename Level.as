@@ -2,6 +2,7 @@ package
 {
 	import dungeon.contents.Armor;
 	import dungeon.contents.Weapon;
+	import dungeon.contents.Potion;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.graphics.Tilemap;
@@ -50,14 +51,14 @@ package
 			0: generateWeapon,
 			1: generateWeapon,
 			2: generateArmor,
-			3: generateArmor
+			3: generateArmor,
+			4: generatePotion,
+			5: generatePotion,
+			6: generatePotion
 			/*
-			4: generateScroll,
-			5: generateScroll,
-			6: generateScroll,
-			7: generatePotion,
-			8: generatePotion,
-			9: generatePotion,
+			7: generateScroll,
+			8: generateScroll,
+			9: generateScroll,
 			10: generateJewelry,
 			11: generateWand,
 			12: generateGem,
@@ -213,6 +214,11 @@ package
 			ITEMS.push(armor);
 		}		
 		
+		private function generatePotion():void {
+			var potion:Potion = new Potion();
+			ITEMS.push(potion);
+		}		
+
 		// create collision grid from nodemap objects
 		private function drawGrid():void {
 			//trace("nodemap size: " + _nodemap.length);

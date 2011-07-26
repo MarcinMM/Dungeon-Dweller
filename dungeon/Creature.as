@@ -18,6 +18,9 @@ package dungeon
 	{
 		// creature size, used for collision
 		private const GRIDSIZE:int = GC.GRIDSIZE;
+		
+		// unique ID, used for path targets? and who knows what else
+		public var UNIQID:uint = 0;
 
 		// Collision stats
 		// Both collision array and type need to be arrays so that collisions can stack.
@@ -45,6 +48,12 @@ package dungeon
 		// # of Actions a creature can take per turn  and their counter
 		public var ACTIONS:uint;
 		public var ACTION_COUNTER:uint;
+		
+		// very basic constructor here ... 
+		public function Creature() {
+			var uniqidSeed:Number = Math.random() * 10000000000;
+			UNIQID = uint (uniqidSeed);			
+		}
 		
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {

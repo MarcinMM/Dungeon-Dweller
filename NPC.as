@@ -28,6 +28,7 @@ package
 		private var POSITION:Point;
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
+		private var PATH_TARGET_ID:uint = 0;
 		
 		// we need some way to decide what to DO once we get to where we were going!
 		private var PATH_PURPOSE:String;
@@ -140,9 +141,15 @@ package
 					return false;
 				} else {
 					trace("Moving to " + newLoc.x + "," + newLoc.y);
-					x = newLoc.x * GC.GRIDSIZE;
-					y = newLoc.y * GC.GRIDSIZE;
-					ACTION_TAKEN = true;
+					// Sanity check; if movement is more than 1 off from current, do not process
+					// also trace this, 'cuz it happens quite a lot
+					if (Math.abs(newLoc.x - (x * GC.GRIDSIZE)) > GC.GRIDSIZE || Math.abs(newLoc.y - (y * GC.GRIDSIZE)) > GC.GRIDSIZE) {
+						trace("blah teleport alert");
+					} else {
+						x = newLoc.x * GC.GRIDSIZE;
+						y = newLoc.y * GC.GRIDSIZE;
+						ACTION_TAKEN = true;
+					}
 					return true;
 				}
 			} else {
@@ -318,6 +325,7 @@ package
 				if (initPathedMovement(NPCStart, NPCDest)) {
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 					PATH_PURPOSE = 'ENEMY';	
+					PATH_TARGET_ID = interestingCreature.UNIQID;
 					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
 						+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
 						+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));
@@ -379,7 +387,8 @@ package
 				NPCDest = new Point(interestingItem.x, interestingItem.y);
 				if (initPathedMovement(NPCStart, NPCDest)) {
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
-					PATH_PURPOSE = 'ITEM';							
+					PATH_PURPOSE = 'ITEM';
+					PATH_TARGET_ID = interestingItem.UNIQID;
 					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
 						+ interestingItem.ITEM_TYPE + " at " + interestingItem.x / GRIDSIZE + "," + interestingItem.y / GRIDSIZE 
 						+ "| dist: " + Math.round(interestingItemDistance / GRIDSIZE));

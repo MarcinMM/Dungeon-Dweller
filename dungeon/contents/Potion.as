@@ -1,9 +1,10 @@
-apackage dungeon.contents 
+package dungeon.contents 
 {
     import dungeon.structure.Point;
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.*;
     import dungeon.utilities.GC;
+	import dungeon.utilities.PotionPrototype;
 
     /**
      * ...
@@ -16,12 +17,14 @@ apackage dungeon.contents
         public const TILE_INDEX:uint = 0;
 
         // now vars
-        public var instant:String;
-        public var lasting:String;
-        public var fumeDuration:uint;
+        public var name:String;
+		public var modifier:Number;
+		public var effect:String;
+        public var instant:uint;
+        public var lasting:uint;
         public var duration:uint;
+		public var fumeDuration:uint;
         public var value:uint;
-
         
         private var potionColors:Array = 
             [
@@ -60,7 +63,7 @@ apackage dungeon.contents
             fumeDuration = Math.round(duration / 5);
             value = potionPrototype.value;
 
-            if (potionPrototype.defaultColor != FALSE) {
+            if (potionPrototype.defaultColor != "FALSE") {
                 randColor = potionPrototype.defaultColor;
             } else {
                 randColor = potionColors[Math.round(Math.random() * potionColors.length)];
@@ -73,7 +76,7 @@ apackage dungeon.contents
             // at the moment defaulting to 0
             tileIndex = TILE_INDEX;
             DESCRIPTION = randFX + " " + randColor + " potion";
-            ITEM_TYPE = GC.C_ITEM_POTION;
+            ITEM_TYPE = GC.C_ITEM_POTIONS;
 
             graphic = new Image(POTION);
         }
