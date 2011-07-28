@@ -188,7 +188,7 @@ package
 				// so we'll have to iterate
 				FP.log("You see here an item :" + itemAr[0].DESCRIPTION);
 
-				// here's the code to give item to player, I guess we'll check for pickup at some point
+				// TODO here's the code to give item to player, I guess we'll check for pickup at some point
 				// for testing assume autopickup
 				var newType:String = itemAr[0].ITEM_TYPE;
 				// find a new letter for this and assign it to this item

@@ -400,6 +400,33 @@ package
 			}			
 		}
 		
+		// TODO: this needs more work, but should remove item from floor and give it to NPC inventory
+		// still needs equipping and checking against current weapon rating
+		public function checkItem():void {
+			if (collide("items", x, y)) {
+				var itemAr:Array = [];
+				collideInto("items", x, y, itemAr);
+				// potentially could collide with all objects on the ground here
+				// so we'll have to iterate
+
+				// TODO here's the code to give item to NPC, I guess we'll check for pickup at some point
+				// for testing assume autopickup
+				var newType:String = itemAr[0].ITEM_TYPE;
+				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
+
+				// now remove it from level array
+				Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[0]), 1);
+				
+				// entities can't be "removed" - they have to be relocated off screen instead
+				// calculate a position 10/10 tiles (not pixels) off the current resolution
+				itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
+				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+				
+				// now update inventory object
+				// Dungeon.statusScreen.updateInventory();	
+			}
+		}
+		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {
 				ACTION_TAKEN = false;
@@ -418,8 +445,9 @@ package
 				COLLISION_TYPE = [];
 				
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
-				checkCollision(GC.LAYER_PLAYER_TEXT,GC.COLLISION_PLAYER);
+				checkCollision(GC.LAYER_PLAYER_TEXT, GC.COLLISION_PLAYER);
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
+				checkItem();
 				
 				//processCombat();
 				pathedMovementStep();
