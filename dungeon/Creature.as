@@ -74,7 +74,20 @@ package dungeon
 				COLLISION_TYPE.push(collisionConstant);
 			}			
 		}
-		
+
+		// utility functions for quick equipment retrieval
+		// should this return an array for multi-weapons
+		public function getEquippedItemByItem(newItem:*):resultItem {
+			var returnVal:resultItem = new resultItem(false);
+			foreach (var item:* in ITEMS[newItem.ITEM_TYPE]) {
+				if (item.EQUIPPED == true && item.slot == newItem.slot) {
+					returnVal.item = item;
+					returnVal.found = true;
+				}
+			}			
+			return returnVal;
+		}
+
 		// TODO: armor doesn't seem to be working for PLAYER
 		// stats are a combination of intrinsics, equipped items and special effects (potion with temporary boosts, being on fire, wet, hungry, etc)
 		// the first two are relatively easy to calculate, the last will require iterating through a stack of "effects" currently on creature

@@ -41,6 +41,7 @@ package dungeon.contents
 		
 		// Inventory Management
 		public var invLetter:String = "";
+		public var slot:String;
 		
 		// items get generated on level creation at random
 		// we need an item quota perhaps based on dungeon level depth

@@ -22,7 +22,6 @@ package dungeon.contents
 		
 		public var armorMaterial:String;
 		public var armorType:String;
-		public var armorSlot:String;
 		
 		// combat vars
 		public var defense:uint = 0;

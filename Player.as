@@ -103,8 +103,7 @@ package
 			y = setY * GRIDSIZE;
 		}
 		
-		// Equip, wield, wear or whatever? This needs to do hand-detection, applying effects, modifying attack, defense and resistances
-		// and everything else that happens when you uh "activate" an item. :D
+		// now neatly sidesteps the issue of what the item is and just lets you unequip/equip it based on type and slot, anonymously
 		public function activateItemAt(letter:String):void {
 			// first we need to find which item this is by its identifying letter
 			for each (var itemAr:Array in ITEMS) {
@@ -117,27 +116,13 @@ package
 			
 			// if not found, we need to skip the entire equip/unequip thing
 			if (foundItem != null) {
-				// then unequip the currently equipped item in that location
-				switch(foundItem.ITEM_TYPE) {
-					case GC.C_ITEM_ARMOR:
-						// this needs to unequip based on slot, atm it unequips all
-						var armorItem:Armor = foundItem as Armor;
-						for each (var armor:Armor in ITEMS[GC.C_ITEM_ARMOR]) {
-							if (armor.EQUIPPED && (armor.armorSlot == armorItem.armorSlot)) {
-								armor.EQUIPPED = false;
-							}
-						}
-					break;
-					case GC.C_ITEM_WEAPON:
-						var weaponItem:Weapon = foundItem as Weapon;
-						// this needs to unequip based on handedness, atm it unequips all
-						for each (var weapon:Weapon in ITEMS[GC.C_ITEM_WEAPON]) {
-							if (weapon.EQUIPPED) {
-								weapon.EQUIPPED = false;
-							}
-						}
-					break;
+				// then unequip the currently equipped item in that location and slot
+				for each (var item:* in ITEMS[foundItem.ITEM_TYPE]) {
+					if (item.EQUIPPED && (item.slot == foundItem.slot)) {
+						item.EQUIPPED = false;
+					}
 				}
+
 				// then toggle equipped status in the found location
 				foundItem.EQUIPPED = true;			
 				// regardless of item equipment, stats need to be recalculated 

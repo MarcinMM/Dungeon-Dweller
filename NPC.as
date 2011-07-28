@@ -198,8 +198,8 @@ package
 		
 		public function setNPCDerivedStats(npcType:String, npcLevel:uint):void {
 			// TODO: use Creature level class
-			STATS[GC.STATUS_ATT] = 7;
-			STATS[GC.STATUS_DEF] = 7;
+			STATS[GC.STATUS_ATT] = 3;
+			STATS[GC.STATUS_DEF] = 3;
 			STATS[GC.STATUS_HP] = 15;
 		}
 		
@@ -401,7 +401,6 @@ package
 		}
 		
 		// TODO: this needs more work, but should remove item from floor and give it to NPC inventory
-		// still needs equipping and checking against current weapon rating
 		public function checkItem():void {
 			if (collide("items", x, y)) {
 				var itemAr:Array = [];
@@ -411,19 +410,36 @@ package
 
 				// TODO here's the code to give item to NPC, I guess we'll check for pickup at some point
 				// for testing assume autopickup
-				var newType:String = itemAr[0].ITEM_TYPE;
-				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
+				// we have some assumption for NPC equipment. 
+				// 1. They should only be carrying one weapon
+				// 2. They should only be carrying a chestpiece+headpiece at most
+				// 3. Any weapon/armor carried will be immediately equipped. 
+				// 4. Any better weapon/armor will be equipped and prior dropped.
+				// 5. They should only be carrying one extra item, whatever is found first.
 
-				// now remove it from level array
-				Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[0]), 1);
-				
-				// entities can't be "removed" - they have to be relocated off screen instead
-				// calculate a position 10/10 tiles (not pixels) off the current resolution
-				itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
-				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
-				
-				// now update inventory object
-				// Dungeon.statusScreen.updateInventory();	
+				for (var itemOnFloor:* in itemAr) {
+					var equippedItem:* = getEquippedItemByItem(itemOnFloor);
+					if (equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) {
+						// found item is better than carried/equipped, pick up
+						ITEMS[itemOnFloor.ITEM_TYPE].push(itemOnFloor);
+
+						// now remove it from level array
+						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemOnFloor), 1);
+						
+						// move offscreen
+						itemOnFloor.x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
+						itemOnFloor.y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+
+						// unequip current and drop it
+						equippedItem.EQUIPPED = false;
+						equippedItem.x = x;
+						equippedItem.y = y;
+						Dungeon.level.ITEMS.push(equippedItem);
+
+						// TODO: item pickup text
+					} 
+				}
+				updateDerivedStats();
 			}
 		}
 		
