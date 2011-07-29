@@ -81,7 +81,7 @@ package
 		public static const HALLWAYTILES:Array = [2]; // rock and floor is available for hallway making
 		
 		// nonsolids
-		public static const NONSOLIDS:Array = [7,12,13,14,15]; // doors and floor
+		public static const NONSOLIDS:Array = [7,3,12,13,14,15]; // doors and floor
 		public static const DOORSA:Array = [12,13,14,15];
 		
 		public static const DEBUGR:int = 5;

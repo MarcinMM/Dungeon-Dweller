@@ -32,6 +32,9 @@ package dungeon.structure
 					}
 					break;
 				case "creature":
+					if (index != Level.FLOOR) {
+						trace('blibli');
+					}
 					if ((index == Level.FLOOR) ||
 						(index == Level.HALL) ||
 						(index == Level.DOORS['left']) ||

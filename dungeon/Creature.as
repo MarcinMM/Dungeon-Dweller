@@ -79,7 +79,7 @@ package dungeon
 		// should this return an array for multi-weapons
 		public function getEquippedItemByItem(newItem:*):resultItem {
 			var returnVal:resultItem = new resultItem(false);
-			foreach (var item:* in ITEMS[newItem.ITEM_TYPE]) {
+			for (var item:* in ITEMS[newItem.ITEM_TYPE]) {
 				if (item.EQUIPPED == true && item.slot == newItem.slot) {
 					returnVal.item = item;
 					returnVal.found = true;
@@ -111,7 +111,7 @@ package dungeon
 					if (item.EQUIPPED) {
 						switch(item.ITEM_TYPE) {
 							case GC.C_ITEM_ARMOR:
-								switch(item.armorSlot) {
+								switch(item.slot) {
 									case "LEGS":
 										legSlot = item;
 									break;

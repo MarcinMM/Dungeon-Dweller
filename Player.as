@@ -117,7 +117,7 @@ package
 			// if not found, we need to skip the entire equip/unequip thing
 			if (foundItem != null) {
 				// then unequip the currently equipped item in that location and slot
-				for each (var item:* in ITEMS[foundItem.ITEM_TYPE]) {
+				for each (item in ITEMS[foundItem.ITEM_TYPE]) {
 					if (item.EQUIPPED && (item.slot == foundItem.slot)) {
 						item.EQUIPPED = false;
 					}

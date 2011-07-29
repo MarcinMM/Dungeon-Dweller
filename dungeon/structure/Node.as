@@ -124,8 +124,8 @@ package dungeon.structure
 			var closedIndex:int;
 			var gCost2:int = 0;
 			
-			while (i < 1000 && openList.length > 0 && currentNode != endNode && (!currentNode.sameLoc(endNode))) {
-				//i++;
+			while (i < 500 && openList.length > 0 && currentNode != endNode && (!currentNode.sameLoc(endNode))) {
+				i++;
 				openList.sortOn("fCost");
 // perf hit here, needs to turn openList into a priorityQueue from http://www.polygonal.de/doc/ds/
 				currentNode = openList.shift();
@@ -175,7 +175,7 @@ package dungeon.structure
 			var pathedNode:Node = endNode;
 			//trace('start: ' + this.x + '-' + this.y);
 			//trace('end: ' + endNode.x + '-' + endNode.y);
-			while ((pathedNode != null && pathedNode != this) && (i < 1000)) {
+			while ((pathedNode != null && pathedNode != this) && (i < 200)) {
 				trace("path:" + pathedNode.x + "-" + pathedNode.y);
 				
 				//Dungeon.level._dungeonmap.setRect(pathedNode.x,pathedNode.y,Dungeon.TILESX, Dungeon.TILESY, 6);

@@ -8,6 +8,7 @@ package
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
 	import dungeon.utilities.GC;
+	import dungeon.utilities.resultItem;
 	/**
 	 * ...
 	 * @author MM
@@ -347,11 +348,14 @@ package
 				NPCDest = new Point(Dungeon.player.x, Dungeon.player.y);
 				if (initPathedMovement(NPCStart, NPCDest)) {
 					// we don't want to start a path if it's farther than some X (60 for now, why not?)
-					if (PATH.length > 60) {
+					if (PATH.length < 60) {
 						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 						PATH_PURPOSE = 'PLAYER';
 						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking player " 
 							+ " at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE); 
+					} else {
+						// nothing, we're not using this path
+						ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 					}
 				}
 			}
@@ -405,12 +409,8 @@ package
 			if (collide("items", x, y)) {
 				var itemAr:Array = [];
 				collideInto("items", x, y, itemAr);
-				// potentially could collide with all objects on the ground here
-				// so we'll have to iterate
 
-				// TODO here's the code to give item to NPC, I guess we'll check for pickup at some point
-				// for testing assume autopickup
-				// we have some assumption for NPC equipment. 
+				// we have some assumptions for NPC equipment. 
 				// 1. They should only be carrying one weapon
 				// 2. They should only be carrying a chestpiece+headpiece at most
 				// 3. Any weapon/armor carried will be immediately equipped. 
@@ -418,29 +418,35 @@ package
 				// 5. They should only be carrying one extra item, whatever is found first.
 
 				for (var itemOnFloor:* in itemAr) {
-					var equippedItem:* = getEquippedItemByItem(itemOnFloor);
-					if (equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) {
-						// found item is better than carried/equipped, pick up
-						ITEMS[itemOnFloor.ITEM_TYPE].push(itemOnFloor);
+					var equippedItem:resultItem = getEquippedItemByItem(itemAr[itemOnFloor]);
+					if ((equippedItem.found && equippedItem.item.rating < itemAr[itemOnFloor].rating) || !equippedItem.found) {
+						// found item is better than carried/equipped, pick up and mark as equipped
+						itemAr[itemOnFloor].EQUIPPED = true;
+						Dungeon.statusScreen.updateCombatText(NPCType + " equips " + itemAr[itemOnFloor].DESCRIPTION);
+						
+						ITEMS[itemAr[itemOnFloor].ITEM_TYPE].push(itemAr[itemOnFloor]);
 
 						// now remove it from level array
-						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemOnFloor), 1);
+						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[itemOnFloor]), 1);
 						
 						// move offscreen
-						itemOnFloor.x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
-						itemOnFloor.y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
-
-						// unequip current and drop it
-						equippedItem.EQUIPPED = false;
-						equippedItem.x = x;
-						equippedItem.y = y;
-						Dungeon.level.ITEMS.push(equippedItem);
-
-						// TODO: item pickup text
+						itemAr[itemOnFloor].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
+						itemAr[itemOnFloor].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+						
+						// unequip current (if exists) and drop it
+						if (equippedItem.found) {
+							equippedItem.item.EQUIPPED = false;
+							equippedItem.item.x = x;
+							equippedItem.item.y = y;
+							Dungeon.level.ITEMS.push(equippedItem);
+							ITEMS.splice(ITEMS.indexOf(equippedItem), 1);
+							Dungeon.statusScreen.updateCombatText(NPCType + " drops " + equippedItem.item.DESCRIPTION);
+						}
 					} 
 				}
 				updateDerivedStats();
 			}
+			ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 		}
 		
 		override public function update():void {
@@ -495,7 +501,7 @@ package
 					}
 
 					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
-						//findItem();
+						findItem();
 						if (ACTION_TAKEN) trace(NPCType + " taking action on Item");
 					}
 				}

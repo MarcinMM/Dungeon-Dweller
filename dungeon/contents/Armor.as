@@ -36,13 +36,13 @@ package dungeon.contents
 			var randType:uint = Math.round(Math.random() * (TYPE.length-1));
 			var randSpecial:uint = Math.round(Math.random() * (SPECIALS.length-1));
 
-			armorSlot = SLOTS[randSlot] + " ";
+			slot = SLOTS[randSlot] + " ";
 			
 			// armor post processing to remove silliness
 			// if it's cloth or leather it shouldn't have a type
 			// cloaks and shields are special types to be more fleshed out later
-			if (armorSlot == "Special ") {
-				armorSlot = SPECIALS[randSpecial];
+			if (slot == "Special ") {
+				slot = SPECIALS[randSpecial];
 				armorMaterial = "";
 				armorType = "";
 			} else {
@@ -60,7 +60,7 @@ package dungeon.contents
 			// this will be used for overlaying the player character to show equipment
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
-			DESCRIPTION = armorMaterial + " " + armorType + " " + armorSlot;
+			DESCRIPTION = armorMaterial + " " + armorType + " " + slot;
 			ITEM_TYPE = GC.C_ITEM_ARMOR;
 			
 			graphic = new Image(ARMOR);

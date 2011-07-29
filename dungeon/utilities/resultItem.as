@@ -1,5 +1,6 @@
 package dungeon.utilities 
 {
+	import dungeon.contents.Item;
     /**
      * Function result 
      * @author MM
@@ -10,7 +11,7 @@ package dungeon.utilities
         public var found:Boolean;
         public var item:Item;
                 
-        public function resultItem(initFound:Boolean, initItem:Item) 
+        public function resultItem(initFound:Boolean, initItem:Item=null) 
         {
             found = initFound;
 

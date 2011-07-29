@@ -30,7 +30,7 @@ package dungeon.contents
 		
 		// ownership
 		public var OWNED:Boolean;
-		public var EQUIPPED:Boolean;
+		public var EQUIPPED:Boolean = false;
 		public var IN_STORE:Boolean;
 		public var STOLEN:Boolean;
 		
@@ -38,6 +38,7 @@ package dungeon.contents
 		public const DESC_MODIFIER:Array = ["orcish", "elven", "dwarven", "draconic"];
 		public var DESCRIPTION:String; // stores un-identified text
 		public var TRUE_DESCRIPTION:String; // stores fully identified text
+		public var rating:Number;
 		
 		// Inventory Management
 		public var invLetter:String = "";
