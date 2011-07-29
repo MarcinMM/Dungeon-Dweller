@@ -4,16 +4,16 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 7/25
 
-* NPC goal management (IN PROGRESS)
+* NPC goal management (IN PROGRESS - 50%)
 
 # TODO MVP 7/25
 
-* Diagonal movement.
 * Vertical dungeon structure (saving/loading levels for going up/down).
 * Item use, rest of item creation.
 * Time-based regen.
 * Corridor walls for hallways. Pretty big aesthetic plus, I think.
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
+* Diagonal movement. Do we really need this?
 
 # TODO FUTURE
 
@@ -43,6 +43,10 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 * Def numbers fluctuate with same gear. Also, just plain fluctuating.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
+
+# UPDATES 7/28
+
+* NPCs can equip weapon and armor and judge based on rating whether an item is better than current. Sadly, the pathing is still borked, resulting in infinite paths all the time. Possibly something to do with neighbours not populating properly? Was able to see that once in the debugger on creature path.
 
 # UPDATES 7/24
 
