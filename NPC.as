@@ -417,21 +417,21 @@ package
 				// 4. Any better weapon/armor will be equipped and prior dropped.
 				// 5. They should only be carrying one extra item, whatever is found first.
 
-				for (var itemOnFloor:* in itemAr) {
-					var equippedItem:resultItem = getEquippedItemByItem(itemAr[itemOnFloor]);
-					if ((equippedItem.found && equippedItem.item.rating < itemAr[itemOnFloor].rating) || !equippedItem.found) {
+				for each (var itemOnFloor:* in itemAr) {
+					var equippedItem:resultItem = getEquippedItemByItem(itemOnFloor);
+					if ((equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) || !equippedItem.found) {
 						// found item is better than carried/equipped, pick up and mark as equipped
-						itemAr[itemOnFloor].EQUIPPED = true;
-						Dungeon.statusScreen.updateCombatText(NPCType + " equips " + itemAr[itemOnFloor].DESCRIPTION);
+						itemOnFloor.EQUIPPED = true;
+						Dungeon.statusScreen.updateCombatText(NPCType + " equips " + itemOnFloor.DESCRIPTION);
 						
-						ITEMS[itemAr[itemOnFloor].ITEM_TYPE].push(itemAr[itemOnFloor]);
+						ITEMS[itemOnFloor.ITEM_TYPE].push(itemOnFloor);
 
 						// now remove it from level array
-						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[itemOnFloor]), 1);
+						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemOnFloor), 1);
 						
 						// move offscreen
-						itemAr[itemOnFloor].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
-						itemAr[itemOnFloor].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+						itemOnFloor.x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
+						itemOnFloor.y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
 						
 						// unequip current (if exists) and drop it
 						if (equippedItem.found) {
