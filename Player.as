@@ -4,6 +4,7 @@ package
 	import dungeon.contents.Armor;
 	import dungeon.contents.Item;
 	import dungeon.contents.Weapon;
+	import dungeon.structure.Node;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
