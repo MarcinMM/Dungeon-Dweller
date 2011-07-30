@@ -37,6 +37,7 @@ package dungeon.utilities
 				
 				_overlay.setRect(tileX, tileY, 1, 1, 5);
 				var nodeAt:Node = Dungeon.level._nodemap.getNodeTile(tileX, tileY);
+				Dungeon.statusScreen.updateCombatText("note index: " + nodeAt.tileIndex);
 				for each (var neighbor:Node in nodeAt.walkingNeighbors) {
 					_overlay.setRect(neighbor.x, neighbor.y, 1, 1, 6);	
 				}

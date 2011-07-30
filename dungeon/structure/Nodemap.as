@@ -14,28 +14,42 @@ package dungeon.structure
 		private var _step:uint;
 		
         public function Nodemap(_dungeonmap:Tilemap, _roomsA:Array) {
+			_map = _dungeonmap;
+			roomsA = _roomsA;
+
 			_nodes = new Vector.<Node>(Dungeon.TILESX * Dungeon.TILESY, true);
-			// initialize nodemap for pathing
+
+			refreshpathingNodeList();
+			collectNeighbors();	
+			
+			// now that we have a collision matrix, draw hallways
+			drawHallways();
+			// now that we have hallways we need to re-init node list and neighbors
+			refreshpathingNodeList();
+			collectNeighbors();
+			
+			// init room solidity
+			initSolidity();			
+		}
+		
+		public function refreshpathingNodeList():void {
 			var node:Node;
 			for (var row:uint = 0; row < Dungeon.TILESY; row++) {
 				for (var column:uint = 0; column < Dungeon.TILESX; column++) {
-					node = new Node(column, row, _dungeonmap.getTile(column, row));
-					//trace("node at:" + column + "-" + row + ":" + node.x + "-" + node.y + "|with index of: " + _dungeonmap.getTile(column, row) + " and id: " + node._id);
+					node = new Node(column, row, _map.getTile(column, row));
 					_nodes[node._id] = node;
 				}
-			}
-
-			// now that the nodemap is populated
-			// go through and set up neighbours for all nodes
-			
+			}			
+		}
+		
+		// this needs to be its own function since we might need to reinit this based on level changes
+		// such as digging or rock/wall creating (why not?)
+		public function collectNeighbors():void {
+			var node:Node;
 			for each (node in _nodes) {
 				createSolidNeighbors(node);
 				createWalkingNeighbors(node);
 			}
-			_map = _dungeonmap;
-			roomsA = _roomsA;
-			// init room solidity
-			initSolidity();			
 		}
 		
 		// iterate through map and set not solid where FLOOR, DOORS
@@ -73,6 +87,9 @@ package dungeon.structure
 		// tiles available are: floors, hallways, doors
 		public function createWalkingNeighbors(node:Node):void {
 			var n:Node;
+			if (node.tileIndex == Level.HALL) {
+				trace('blibli');
+			}
 			n = getNodeTile((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
 				node.addWalkingNeighbor(n);

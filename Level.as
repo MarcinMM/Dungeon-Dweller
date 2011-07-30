@@ -78,7 +78,6 @@ package
 		public static const WALLS:Object = {left:11, right:9, top:8, bottom:10};
 		public static const DOORS:Object = {left:15, right:13, top:12, bottom:14};
 		public static const CORNERS:Object = {TL:19, TR:16, BL:18, BR:17};
-		public static const HALLWAYTILES:Array = [2]; // rock and floor is available for hallway making
 		
 		// nonsolids
 		public static const NONSOLIDS:Array = [7,3,12,13,14,15]; // doors and floor
@@ -129,8 +128,9 @@ package
 			
 			drawRooms();
 			_nodemap = new Nodemap(_dungeonmap, _roomsA);
-			_nodemap.drawHallways();
-
+			
+			// if we are drawing solid clutter here, we'll need to re-init the _nodemap
+			
 			drawGrid();
 
 			createItems();
