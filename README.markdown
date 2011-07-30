@@ -4,7 +4,9 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 7/25
 
-* NPC goal management (IN PROGRESS - 50%)
+* NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
+* Fix pathing
+* Mouseover neighbor display. While I'm at it, mouseover (maybe mouseover + click) mob info (name, alignment, maybe current weapon) to display.combattext.
 
 # TODO MVP 7/25
 
