@@ -20,27 +20,44 @@ package dungeon.utilities
 		public function Overlay() 
 		{
 			_overlay = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
-			//_overlay.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, DEBUG); 
 			
 			graphic = _overlay;
 			
 			layer = 30;
 		}
 		
+		private function getTileNeighbors(x:uint, y:uint) {
+			var tileX = x/GC.GRIDSIZE;
+			var tileY = y/GC.GRIDSIZE;
+			_overlay.setRect(tileX, tileY, 1, 1, GC.DEBUGRED);
+			var nodeAt:Node = Dungeon.level._nodemap.getNodeTile(tileX, tileY);
+			for each (var neighbor:Node in nodeAt.walkingNeighbors) {
+				_overlay.setRect(neighbor.x, neighbor.y, 1, 1, GC.DEBUGGREEN);	
+			}		
+		}
+
+		// this is totally untested
+		private function getTileNPCInfo(x:uint, y:uint) {
+			var tileX = x/GC.GRIDSIZE;
+			var tileY = y/GC.GRIDSIZE;
+			for each (var NPC:NPC in Dungeon.level.NPCS) {
+				if (NPC.x == x && NPC.y == y) {
+					Dungeon.statusScreen.updateCombatText(NPC.NPCType ", wielding a " + NPC.getEquippedItemBySlot('PRIMARY_WEAPON'));
+				}
+			}
+			
+		}
+
+
 		override public function update():void
 		{
 			// mouse monitoring
 			if (Input.mousePressed) {
-				var tileX:uint = Math.floor(Input.mouseFlashX / GC.GRIDSIZE);
-				var tileY:uint = Math.floor(Input.mouseFlashY / GC.GRIDSIZE);
-				Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + tileX + "|" + tileY);
-				
-				_overlay.setRect(tileX, tileY, 1, 1, 5);
-				var nodeAt:Node = Dungeon.level._nodemap.getNodeTile(tileX, tileY);
-				Dungeon.statusScreen.updateCombatText("note index: " + nodeAt.tileIndex);
-				for each (var neighbor:Node in nodeAt.walkingNeighbors) {
-					_overlay.setRect(neighbor.x, neighbor.y, 1, 1, 6);	
-				}
+				var mouseX = Input.mouseFlashX;
+				var mouseY = Input.mouseFlashY;
+				Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + (mouseX/GC.GRIDSIZE) + "|" + (mouseY/GC.GRIDSIZE));
+				this.getTileNeighbors(mouseX, mouseY);
+				this.getTileNPCInfo(mouseX, mouseY);
 			}
 		}
 		

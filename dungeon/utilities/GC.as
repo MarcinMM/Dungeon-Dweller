@@ -21,6 +21,35 @@ package dungeon.utilities
 		public static const VIEW_WIDTH:uint = 1216;
 		public static const VIEW_HEIGHT:uint = 800;
 		
+		// Tilemap tile location constants
+        public static const FLOOR:uint = 7;
+		public static const HALL:uint = 3;
+        public static const NWALL:uint = 8;
+        public static const SWALL:uint = 10;
+        public static const WWALL:uint = 11;
+        public static const EWALL:uint = 9;
+
+		// Walls
+		public static const LEFTWALL:uint = 11;
+		public static const RIGHTWALL:uint = 9;
+		public static const TOPWALL:uint = 8;
+		public static const BOTTOMWALL:uint = 10;
+
+		// Doors
+		public static const LEFTDOOR:uint = 15;
+		public static const RIGHTDOOR:uint = 13;
+		public static const TOPDOOR:uint = 12;
+		public static const BOTTOMDOOR:uint = 14;
+
+		//  Corners
+		public static const TOPLEFTCORNER:uint = 19;
+		public static const TOPRIGHTCORNER:uint = 16;
+		public static const BOTTOMLEFT:uint = 18;
+		public static const BOTTOMRIGHT:uint = 17;
+				
+		public static const DEBUG:uint = 2;
+		public static const DEBUGRED:uint = 5;
+		public static const DEBUGGREEN:uint = 6;		
 		
 		// Status Screen constants
 		public static const STATUS_SCREEN_DEFAULT_FONT_SIZE:int = 12;
