@@ -53,14 +53,24 @@ package dungeon.utilities
 		
 		// Status Screen constants
 		public static const STATUS_SCREEN_DEFAULT_FONT_SIZE:int = 12;
+
 		// item types
 		public static const C_ITEM_ARMOR:uint = 0;
 		public static const C_ITEM_WEAPON:uint = 1;
 		public static const C_ITEM_JEWELRY:uint = 2;
 		public static const C_ITEM_SCROLLS:uint = 3;	
 		public static const C_ITEM_POTIONS:uint = 4;
-		
-		// Need to stick all the constants in here
+
+		// item slots
+		public static const PRIMARY_WEAPON:uint = 1;
+		public static const SECONDARY_WEAPON:uint = 2;
+		public static const HEAD:uint = 3;
+		public static const CHEST:uint = 4;
+		public static const LEGS:uint = 5;
+		public static const HANDS:uint = 6;
+		public static const WAIST:uint = 7;
+		public static const FEET:uint = 8;
+		public static const SHOULDERS:uint = 9;
 		
 		// Directions
 		public static const DIR_UP:int = 1;

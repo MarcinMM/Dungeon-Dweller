@@ -42,7 +42,7 @@ package dungeon.utilities
 			var tileY = y/GC.GRIDSIZE;
 			for each (var NPC:NPC in Dungeon.level.NPCS) {
 				if (NPC.x == x && NPC.y == y) {
-					Dungeon.statusScreen.updateCombatText(NPC.NPCType ", wielding a " + NPC.getEquippedItemBySlot('PRIMARY_WEAPON'));
+					Dungeon.statusScreen.updateCombatText(NPC.NPCType ", wielding a " + NPC.getEquippedItem(GC.C_ITEM_WEAPON, GC.PRIMARY_WEAPON));
 				}
 			}
 			

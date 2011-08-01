@@ -88,10 +88,10 @@ package dungeon
 			return returnVal;
 		}
 
-		public function getEquippedItemBySlot(slot:String):resultItem {
+		public function getEquippedItem(itemType:String, itemSlot:String):resultItem {
 			var returnVal:resultItem = new resultItem(false);
-			for (var item:* in ITEMS[newItem.ITEM_TYPE]) {
-				if (item.EQUIPPED == true && item.slot == slot) {
+			for (var item:* in ITEMS[itemType]) {
+				if (item.EQUIPPED == true && item.slot == itemSlot) {
 					returnVal.item = item;
 					returnVal.found = true;
 				}
