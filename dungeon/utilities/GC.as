@@ -62,15 +62,30 @@ package dungeon.utilities
 		public static const C_ITEM_POTIONS:uint = 4;
 
 		// item slots
-		public static const PRIMARY_WEAPON:uint = 1;
-		public static const SECONDARY_WEAPON:uint = 2;
-		public static const HEAD:uint = 3;
-		public static const CHEST:uint = 4;
-		public static const LEGS:uint = 5;
-		public static const HANDS:uint = 6;
-		public static const WAIST:uint = 7;
-		public static const FEET:uint = 8;
-		public static const SHOULDERS:uint = 9;
+		public static const SLOT_PRIMARY_WEAPON:uint = 1;
+		public static const SLOT_SECONDARY_WEAPON:uint = 2;
+		public static const SLOT_HEAD:uint = 3;
+		public static const SLOT_CHEST:uint = 4;
+		public static const SLOT_LEGS:uint = 5;
+		public static const SLOT_HANDS:uint = 6;
+		public static const SLOT_WAIST:uint = 7;
+		public static const SLOT_FEET:uint = 8;
+		public static const SLOT_SHOULDERS:uint = 9;
+		public static const SLOT_SPECIAL:uint = 10;
+		
+		public static const SLOT_DESCRIPTIONS:Object = 
+		{
+			SLOT_PRIMARY_WEAPON: "Primary Weapon",
+			SLOT_SECONDARY_WEAPON: "Secondary Weapon",
+			SLOT_HEAD: "Helmet",
+			SLOT_CHEST: "Chestpiece",
+			SLOT_LEGS: "Greaves",
+			SLOT_HANDS: "Gloves",
+			SLOT_WAIST: "Belt",
+			SLOT_FEET: "Boots",
+			SLOT_SHOULDERS: "Shoulders",
+			SLOT_SPECIAL: "Special"
+		};
 		
 		// Directions
 		public static const DIR_UP:int = 1;

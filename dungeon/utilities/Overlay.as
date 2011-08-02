@@ -5,6 +5,7 @@ package dungeon.utilities
 	import dungeon.structure.Nodemap;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.utils.Input;
+	import NPC;
 
 	/**
 	 * ...
@@ -26,9 +27,9 @@ package dungeon.utilities
 			layer = 30;
 		}
 		
-		private function getTileNeighbors(x:uint, y:uint) {
-			var tileX = x/GC.GRIDSIZE;
-			var tileY = y/GC.GRIDSIZE;
+		private function getTileNeighbors(x:uint, y:uint):void {
+			var tileX:uint = Math.floor(x/GC.GRIDSIZE);
+			var tileY:uint = Math.floor(y/GC.GRIDSIZE);
 			_overlay.setRect(tileX, tileY, 1, 1, GC.DEBUGRED);
 			var nodeAt:Node = Dungeon.level._nodemap.getNodeTile(tileX, tileY);
 			for each (var neighbor:Node in nodeAt.walkingNeighbors) {
@@ -37,12 +38,18 @@ package dungeon.utilities
 		}
 
 		// this is totally untested
-		private function getTileNPCInfo(x:uint, y:uint) {
-			var tileX = x/GC.GRIDSIZE;
-			var tileY = y/GC.GRIDSIZE;
-			for each (var NPC:NPC in Dungeon.level.NPCS) {
-				if (NPC.x == x && NPC.y == y) {
-					Dungeon.statusScreen.updateCombatText(NPC.NPCType ", wielding a " + NPC.getEquippedItem(GC.C_ITEM_WEAPON, GC.PRIMARY_WEAPON));
+		private function getTileNPCInfo(x:uint, y:uint):void {
+			var tileX:uint = Math.floor(x/GC.GRIDSIZE);
+			var tileY:uint = Math.floor(y/GC.GRIDSIZE);
+			for each (var critter:NPC in Dungeon.level.NPCS) {
+				if (Math.floor(critter.x / GC.GRIDSIZE) == tileX && Math.floor(critter.y / GC.GRIDSIZE) == tileY) {
+					var equipment:resultItem = critter.getEquippedItem(GC.C_ITEM_WEAPON, GC.SLOT_PRIMARY_WEAPON);
+					if (equipment.found) {
+						Dungeon.statusScreen.updateCombatText(critter.NPCType + ", wielding a " + equipment.item.DESCRIPTION);
+					} else {
+						Dungeon.statusScreen.updateCombatText(critter.NPCType + ". It is unarmed.");
+					}
+					
 				}
 			}
 			
@@ -53,8 +60,8 @@ package dungeon.utilities
 		{
 			// mouse monitoring
 			if (Input.mousePressed) {
-				var mouseX = Input.mouseFlashX;
-				var mouseY = Input.mouseFlashY;
+				var mouseX:int = Input.mouseFlashX;
+				var mouseY:int = Input.mouseFlashY;
 				Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + (mouseX/GC.GRIDSIZE) + "|" + (mouseY/GC.GRIDSIZE));
 				this.getTileNeighbors(mouseX, mouseY);
 				this.getTileNPCInfo(mouseX, mouseY);

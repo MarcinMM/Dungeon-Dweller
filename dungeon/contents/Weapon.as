@@ -33,7 +33,7 @@ package dungeon.contents
 		
 		public function Weapon() 
 		{
-			slot = 'PRIMARY_WEAPON'; // default slot for weapons
+			slot = GC.SLOT_PRIMARY_WEAPON; // default slot for weapons
 			var randWeapon:uint = Math.round(Math.random() * (Dungeon.dataloader.weapons.length - 1));
 			var weaponPrototype:WeaponPrototype = Dungeon.dataloader.weapons[randWeapon];
 			var materialPrototype:MaterialPrototype = new MaterialPrototype;

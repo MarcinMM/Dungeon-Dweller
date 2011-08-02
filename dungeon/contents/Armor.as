@@ -14,7 +14,7 @@ package dungeon.contents
 		public var CLASS:uint;
 		public const MATERIALS:Array = ["Cloth", "Leather", "Bone", "Iron", "Copper", "Steel"];
 		public const TYPE:Array = ["Leather", "Studded Leather", "Chain", "Scale", "Banded", "Splint", "Plate"];
-		public const SLOTS:Array = ["Greaves", "Helm", "Chestpiece", "Gloves", "Boots", "Special"];
+		public const SLOTS:Array = [GC.SLOT_SHOULDERS, GC.SLOT_HEAD, GC.SLOT_CHEST, GC.SLOT_HANDS, GC.SLOT_LEGS, GC.SLOT_FEET, GC.SLOT_WAIST];
 		// not sure how to determine if a "special" is selected
 		public const SPECIALS:Array = ["Cloak", "Shield"];
 		
@@ -36,12 +36,12 @@ package dungeon.contents
 			var randType:uint = Math.round(Math.random() * (TYPE.length-1));
 			var randSpecial:uint = Math.round(Math.random() * (SPECIALS.length-1));
 
-			slot = SLOTS[randSlot] + " ";
+			slot = SLOTS[randSlot];
 			
 			// armor post processing to remove silliness
 			// if it's cloth or leather it shouldn't have a type
 			// cloaks and shields are special types to be more fleshed out later
-			if (slot == "Special ") {
+			if (slot == GC.SLOT_SPECIAL) {
 				slot = SPECIALS[randSpecial];
 				armorMaterial = "";
 				armorType = "";
@@ -60,7 +60,7 @@ package dungeon.contents
 			// this will be used for overlaying the player character to show equipment
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
-			DESCRIPTION = armorMaterial + " " + armorType + " " + slot;
+			DESCRIPTION = armorMaterial + " " + armorType + " " + GC.SLOT_DESCRIPTIONS[slot];
 			ITEM_TYPE = GC.C_ITEM_ARMOR;
 			
 			graphic = new Image(ARMOR);
