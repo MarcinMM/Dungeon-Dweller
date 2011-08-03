@@ -144,7 +144,10 @@ package
 					trace("Moving to " + newLoc.x + "," + newLoc.y);
 					// Sanity check; if movement is more than 1 off from current, do not process
 					// also trace this, 'cuz it happens quite a lot
-					if (Math.abs(newLoc.x - (x * GC.GRIDSIZE)) > GC.GRIDSIZE || Math.abs(newLoc.y - (y * GC.GRIDSIZE)) > GC.GRIDSIZE) {
+					var diffX:int = Math.abs(newLoc.x - (x / GC.GRIDSIZE));
+					var diffY:int = Math.abs(newLoc.y - (y / GC.GRIDSIZE));
+					trace('diffx:' + diffX + '|diffY:' + diffY);
+					if (diffX > GC.GRIDSIZE || diffY > GC.GRIDSIZE) {
 						trace("blah teleport alert");
 					} else {
 						x = newLoc.x * GC.GRIDSIZE;
@@ -302,6 +305,7 @@ package
 			var measuredDistance:uint;
 			var interestingCreature:NPC;
 			var interestingCreatureDistance:uint = 1000;
+			trace(Dungeon.level.NPCS.length);
 			for each (var currentNPC:NPC in Dungeon.level.NPCS) {
 				// check distance if under threshold, then pick lowest
 				measuredDistance = Math.sqrt(Math.pow(x - currentNPC.x, 2) + Math.pow(y - currentNPC.y, 2));
@@ -319,11 +323,12 @@ package
 				}
 			}
 			
-			if (interestingCreatureDistance != 1000) {
+			if (interestingCreatureDistance < 1000) {
 				// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
 				NPCStart = new Point(x, y);
 				NPCDest = new Point(interestingCreature.x, interestingCreature.y);
 				if (initPathedMovement(NPCStart, NPCDest)) {
+					trace(PATH.length);
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 					PATH_PURPOSE = 'ENEMY';	
 					PATH_TARGET_ID = interestingCreature.UNIQID;

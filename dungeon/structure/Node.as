@@ -125,7 +125,7 @@ package dungeon.structure
 			var gCost2:int = 0;
 			
 			while (i < 500 && openList.length > 0 && currentNode != endNode && (!currentNode.sameLoc(endNode))) {
-				i++;
+				//i++;
 				openList.sortOn("fCost");
 // perf hit here, needs to turn openList into a priorityQueue from http://www.polygonal.de/doc/ds/
 				currentNode = openList.shift();
