@@ -55,6 +55,16 @@ package dungeon
 			UNIQID = uint (uniqidSeed);			
 		}
 		
+		// regen health if appropriate timestep and health < max
+		public function processRegen():void {
+			STATS[GC.STATUS_HEALSTEP]++;
+			if ((STATS[GC.STATUS_HEALSTEP] >= STATS[GC.STATUS_HEALRATE]) &&
+			   (STATS[GC.STATUS_HP] < STATS[GC.STATUS_HPMAX])) {
+				STATS[GC.STATUS_HP]++;
+				STATS[GC.STATUS_HEALSTEP] = 0;
+			}
+		}
+		
 		// all this does is populate all directions in which this creature is surrounded by entities
 		public function checkCollision(collisionEntity:String, collisionConstant:int):void {
 			if (collide(collisionEntity, x, y + GRIDSIZE)) {

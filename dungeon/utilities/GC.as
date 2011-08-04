@@ -129,6 +129,8 @@ package dungeon.utilities
 		public static const STATUS_CHA:uint = 7; // persuasion success chance modifier
 		public static const STATUS_CON:uint = 8; // HP
 		public static const STATUS_MANA:uint = 9;
+		public static const STATUS_HEALRATE:uint = 17;
+		public static const STATUS_HEALSTEP:uint = 18;
 
 		// derived constants for arrays
 		public static const STATUS_ATT:uint = 10; // mostly strength + bit of agi + item stat attack

@@ -20,6 +20,7 @@ package
 	{
 		[Embed(source = 'assets/player.png')] private const PLAYER:Class;
 		public var STEP:int = 0;
+		private var syncStep:int = 0;
 		public var LIGHT_RADIUS:int = 1;
 		public var GRIDSIZE:int = GC.GRIDSIZE;
 					
@@ -77,6 +78,8 @@ package
 					STATS[GC.STATUS_WIS] = 10;
 					STATS[GC.STATUS_CHA] = 10;
 					STATS[GC.STATUS_CON] = 14;
+					STATS[GC.STATUS_HEALRATE] = 15;
+					STATS[GC.STATUS_HEALSTEP] = 0;
 					break;
 				case "shaman":
 					STATS[GC.STATUS_STR] = 10;
@@ -85,6 +88,8 @@ package
 					STATS[GC.STATUS_WIS] = 13;
 					STATS[GC.STATUS_CHA] = 12;
 					STATS[GC.STATUS_CON] = 10;
+					STATS[GC.STATUS_HEALRATE] = 15;
+					STATS[GC.STATUS_HEALSTEP] = 0;
 					break;
 				case "scout":
 					STATS[GC.STATUS_STR] = 11;
@@ -93,6 +98,8 @@ package
 					STATS[GC.STATUS_WIS] = 11;
 					STATS[GC.STATUS_CHA] = 11;
 					STATS[GC.STATUS_CON] = 12;
+					STATS[GC.STATUS_HEALRATE] = 15;
+					STATS[GC.STATUS_HEALSTEP] = 0;
 					break;
 			}
 		}
@@ -287,6 +294,14 @@ package
 				// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
 			} else if (INVENTORY_OPEN) {
 				inventoryFunctions();
+			}
+			
+			// process for things that only happen once per step
+			if (STEP != syncStep) {
+				// process regeneration
+				processRegen();
+				// process any cumulative equipment/enchantment effects
+				syncStep = STEP;
 			}
 		}
 		
