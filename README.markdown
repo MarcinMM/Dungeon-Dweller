@@ -4,11 +4,12 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 8/2
 
+* BLOOD SPLATS NOW!
+* Time-based regen NOW!
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * Vertical dungeon structure (saving/loading levels for going up/down).
 * Item use, rest of item creation.
-* Time-based regen.
 * Corridor walls for hallways. Pretty big aesthetic plus, I think.
 * Pathing optimizations.
 * Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
@@ -42,6 +43,10 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Def numbers fluctuate with same gear. Also, just plain fluctuating.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/3
+
+* Time-based regen - start of work.
 
 # UPDATES 8/2
 
