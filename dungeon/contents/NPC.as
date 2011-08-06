@@ -1,7 +1,7 @@
-package  
+package dungeon.contents
 {
 	import dungeon.contents.Item;
-	import dungeon.Creature;
+	import dungeon.contents.Creature;
 	import dungeon.structure.Node;
 	import dungeon.structure.Point;
 	import net.flashpunk.FP;
@@ -15,7 +15,7 @@ package
 	 */
 	public class NPC extends Creature
 	{
-		[Embed(source = 'assets/npc1.png')] private const NPCGraphic:Class;
+		[Embed(source = '../../assets/npc1.png')] private const NPCGraphic:Class;
 		// some defaults and inits
 		private const GRIDSIZE:int = GC.GRIDSIZE;
 		public var STEP:int = 0;
@@ -64,7 +64,7 @@ package
 			setNPCStats(NPCType, NPCLevel);
 			setNPCDerivedStats(NPCType, NPCLevel);
 			
-			layer = 20;
+			layer = GC.NPC_LAYER;
 			
 			// assign random alignment to creature
 			ALIGNMENT = GC.ALIGNMENTS[Math.round(Math.random() * (GC.ALIGNMENTS.length - 1))];
@@ -196,7 +196,9 @@ package
 			STATS[GC.STATUS_INT] = 10;
 			STATS[GC.STATUS_WIS] = 10;
 			STATS[GC.STATUS_CHA] = 10;
-			STATS[GC.STATUS_CON] = 14;	
+			STATS[GC.STATUS_CON] = 14;
+			STATS[GC.STATUS_HEALRATE] = 15;
+			STATS[GC.STATUS_HEALSTEP] = 0;
 		}
 		
 		

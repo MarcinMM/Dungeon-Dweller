@@ -1,5 +1,6 @@
 package  
 {
+	import dungeon.structure.Decor;
 	import dungeon.structure.Nodemap;
 	import dungeon.utilities.Overlay;
 	import net.flashpunk.graphics.TiledImage;
@@ -9,6 +10,8 @@ package
 	import dungeon.utilities.GC;
 	import dungeon.utilities.DataLoader;
 	import dungeon.utilities.Camera;
+	import dungeon.contents.Player;
+	import dungeon.structure.Level;
 	
 	/**
 	 * ...
@@ -24,6 +27,7 @@ package
 		public static var statusScreen:StatusScreen;
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
 		public static var overlay:Overlay;
+		public static var decor:Decor;
 
 		// these are redefined here for use in future map generation
 		// it is possible that the dungeon will contain varied-size levels
@@ -70,6 +74,9 @@ package
 
 			overlay = new Overlay;
 			add(overlay);
+			
+			decor = new Decor;
+			add(decor);
 		}
 
 		// this will be where a possible future dataloader will determine level size for customized levels

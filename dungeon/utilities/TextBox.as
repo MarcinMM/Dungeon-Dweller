@@ -26,7 +26,7 @@ package dungeon.utilities
 			x = _xOffset;
 			y = _yOffset;
 			
-			layer = 15;
+			layer = GC.TEXTBOXES_LAYER;
 			visible = false;
 		}
 		

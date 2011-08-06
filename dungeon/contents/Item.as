@@ -4,6 +4,7 @@ package dungeon.contents
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.*;
 	import net.flashpunk.FP;
+	import dungeon.utilities.GC;
 	/**
 	 * ...
 	 * @author MM
@@ -77,7 +78,7 @@ package dungeon.contents
 			setHitbox(Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			
 			type = "items";
-			layer = 25;
+			layer = GC.ITEM_LAYER;
 		}
 		
 		// common functions, what could they be?

@@ -1,4 +1,4 @@
-package  
+package dungeon.structure
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Tilemap;
@@ -24,7 +24,7 @@ package
 			_levelmask = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.GRIDSIZE, Dungeon.GRIDSIZE);
 			//_levelmask.setRect(0,0,GC.MAP_WIDTH/GC.GRIDSIZE,GC.MAP_HEIGHT/GC.GRIDSIZE,1); // black overlay
 			graphic = _levelmask;
-			layer = 5;
+			layer = GC.FOGOFWAR_LAYER;
 
 			type = "level";
 		}

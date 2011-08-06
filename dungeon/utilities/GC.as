@@ -12,6 +12,15 @@ package dungeon.utilities
 		 *  Game Constants 
 		 */
 		
+		public static const FOGOFWAR_LAYER:uint = 5;
+		public static const TEXTBOXES_LAYER:uint = 15;
+		public static const OVERlAY_LAYER:uint = 17;
+		public static const NPC_LAYER:uint = 20;
+		public static const PLAYER_LAYER:uint = 20;
+		public static const ITEM_LAYER:uint = 25;
+		public static const DECOR_LAYER:uint = 27;
+		public static const LEVEL_LAYER:uint = 50;
+
 		// World constants like map (dungeon) size, view width, gridsize, gravity, speed of light ... etc.
 		public static const GRIDSIZE:uint = 32;
 		public static const CAMERA_OFFSET:uint = 8 * GRIDSIZE;

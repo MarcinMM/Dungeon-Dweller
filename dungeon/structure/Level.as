@@ -1,8 +1,9 @@
-package  
+package dungeon.structure
 {
 	import dungeon.contents.Armor;
 	import dungeon.contents.Weapon;
 	import dungeon.contents.Potion;
+	import dungeon.contents.NPC;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.graphics.Tilemap;
@@ -25,7 +26,7 @@ package
 	 */
 	public class Level extends Entity
 	{
-		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
+		[Embed(source = '../../assets/tilemap.png')] private const TILEMAP:Class;
 		public var _dungeonmap:Tilemap;
 		public var _nodemap:Nodemap;
 		public var _grid:Grid;
@@ -120,7 +121,7 @@ package
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, DEBUG); 
 			graphic = _dungeonmap;
-			layer = 50;
+			layer = GC.LEVEL_LAYER;
 			
 			_grid = new Grid(Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT,0,0);
 			mask = _grid;

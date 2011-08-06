@@ -1,7 +1,7 @@
 package dungeon.utilities
 {
 	import net.flashpunk.FP;
-	import Player;
+	import dungeon.contents.Player;
 	
 	/**
 	 * ...
