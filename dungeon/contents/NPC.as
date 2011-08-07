@@ -34,6 +34,7 @@ package dungeon.contents
 		// we need some way to decide what to DO once we get to where we were going!
 		private var PATH_PURPOSE:String;
 		public var newActionOverride:Boolean = false; 
+		private var BLOCKCOUNT:uint = 0; // keeps track of how many times pathing's been blocked; when reaches 2, path reset to new
 		// TODO: this gets set true if something drastic occurs
 		// loud noise from player or HP low alert, or something else?
 		
@@ -138,6 +139,15 @@ package dungeon.contents
 				var collisionTargets:Array = new Array("player", "npc");
 				if (collideTypes(collisionTargets, newLoc.x * GC.GRIDSIZE, newLoc.y * GC.GRIDSIZE) != null) {
 					trace(NPCType + " blocked!" );
+					// if blocked, we can either reset path entirely or wait a turn, then try again - if 2 failures, clear and seek new obj.
+					if (BLOCKCOUNT >= 2) {
+						PATH = [];
+						BLOCKCOUNT = 0;
+						PATH.push(newLoc);
+					} else {
+						BLOCKCOUNT++;
+					}
+					// this is so that we can see if we're adjacent to enemy
 					newActionOverride = true;
 					return false;
 				} else {
@@ -147,7 +157,7 @@ package dungeon.contents
 					var diffX:int = Math.abs(newLoc.x - (x / GC.GRIDSIZE));
 					var diffY:int = Math.abs(newLoc.y - (y / GC.GRIDSIZE));
 					trace('diffx:' + diffX + '|diffY:' + diffY);
-					if (diffX > GC.GRIDSIZE || diffY > GC.GRIDSIZE) {
+					if (diffX > 1 || diffY > 1) {
 						trace("blah teleport alert");
 					} else {
 						x = newLoc.x * GC.GRIDSIZE;
@@ -285,6 +295,7 @@ package dungeon.contents
 			// calculations to modify the attack based on player's defense stats
 			// return true if dead for text and player stat update (XP+)
 			STATS[GC.STATUS_HP] -= attackValue;
+			Dungeon.decor.splatter(x, y, false);			
 			if (STATS[GC.STATUS_HP] <= 0) {
 				// TODO: drop loot/corpse when dead
 				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.
@@ -382,7 +393,6 @@ package dungeon.contents
 						(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
 						(measuredDistance < (10 * GRIDSIZE)) && 
 						(measuredDistance < interestingItemDistance) &&
-					//	(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
 						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
 					) 
 				{
@@ -393,7 +403,7 @@ package dungeon.contents
 			}
 								
 			if (interestingItemDistance != 1000) {
-				// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
+				// we have an item closer than threshold (10 tiles away): calculate path towards target
 				NPCStart = new Point(x, y);
 				NPCDest = new Point(interestingItem.x, interestingItem.y);
 				if (initPathedMovement(NPCStart, NPCDest)) {
@@ -490,7 +500,6 @@ package dungeon.contents
 				// TODO: break through current status if a new interesting event occurs 
 				//		 (i.e. creature is already pathing towards something but a more hated target enters the room, or loud noise is heard? or other?
 				
-				// TODO: this needs to be in a function for clarity, methinks
 				if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
 					// we need a decision tree for seeking items, npcs and player
 					// priorities could be assigned based on equipment level

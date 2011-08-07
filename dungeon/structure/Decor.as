@@ -33,9 +33,11 @@ package dungeon.structure
 		 * @param	splatterPoint splatter coordinate
 		 * @param	crit true = large splatter, false = small splatter
 		 */
-		public function splatter(splatterPoint:Point, crit:Boolean):void {
+		public function splatter(x:uint, y:uint, crit:Boolean):void {
 			if (crit) {
-				_decor.setRect(splatterPoint.x, splatterPoint.y, 1, 1, 0);
+				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, 0);
+			} else {
+				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, 0);
 			}
 			// add "else" when we get real art for these
 		}

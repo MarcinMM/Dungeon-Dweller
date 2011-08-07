@@ -87,9 +87,6 @@ package dungeon.structure
 		// tiles available are: floors, hallways, doors
 		public function createWalkingNeighbors(node:Node):void {
 			var n:Node;
-			if (node.tileIndex == Level.HALL) {
-				trace('blibli');
-			}
 			n = getNodeTile((node.x)+1, node.y);
 			if (n != null && Utils.isAvailable(n.tileIndex, 'creature')) {
 				node.addWalkingNeighbor(n);

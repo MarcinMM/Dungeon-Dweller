@@ -176,7 +176,7 @@ package dungeon.structure
 			//trace('start: ' + this.x + '-' + this.y);
 			//trace('end: ' + endNode.x + '-' + endNode.y);
 			while ((pathedNode != null && pathedNode != this) && (i < 200)) {
-				trace("path:" + pathedNode.x + "-" + pathedNode.y);
+				//trace("path:" + pathedNode.x + "-" + pathedNode.y);
 				
 				//Dungeon.level._dungeonmap.setRect(pathedNode.x,pathedNode.y,Dungeon.TILESX, Dungeon.TILESY, 6);
 				path.push(pathedNode);
