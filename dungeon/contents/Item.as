@@ -43,10 +43,14 @@ package dungeon.contents
 		
 		// Inventory Management
 		public var invLetter:String = "";
-		public var slot:uint;
+		public var slot:String;
 		
 		// items get generated on level creation at random
 		// we need an item quota perhaps based on dungeon level depth
+		
+		// graphics
+		[Embed(source = '../../assets/weapons_and_armor.png')] private const ASSETS:Class;
+		public var _assets:Spritemap = new Spritemap(ASSETS, 32, 32);
 
 		public function Item() 
 		{

@@ -15,6 +15,7 @@ package dungeon.structure
 	 */
 	public class Decor extends Entity
 	{
+		// TODO: this needs to be a spritemap of splatters
 		[Embed(source = '/assets/bloodsplatter.png')] private const BLOODSPLATTER:Class;
 		public var _decor:Tilemap;
 		
@@ -27,25 +28,62 @@ package dungeon.structure
 			layer = GC.DECOR_LAYER;
 		}
 		
-		// I wonder if we could make this a listener function instead of having to call it
+		// TODO: I wonder if we could make this a listener function instead of having to call it
 		/**
 		 * 
 		 * @param	splatterPoint splatter coordinate
 		 * @param	crit true = large splatter, false = small splatter
 		 */
-		public function splatter(x:uint, y:uint, crit:Boolean):void {
+		public function splatter(x:uint, y:uint, crit:Boolean, material:uint):void {
 			if (crit) {
-				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, 0);
+				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, material);
 			} else {
-				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, 0);
+				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, material);
+				splatterArea(x, y, 'SMALL', material);
 			}
 			// add "else" when we get real art for these
 		}
 
+		// This is a bigger splat with a potential area of effect. 
+		// Size can come in SMALL, MEDIUM, LARGE
+		// each size will have a 25, 50, 75% chance to splatter all sides, respectively
+		// TODO: random splatter choice from material index
+		/**
+		 * 
+		 * @param	splatterPoint splatter coordinate
+		 * @param	crit true = large splatter, false = small splatter
+		 */
+		public function splatterArea(x:uint, y:uint, area:String, material:uint):void {
+			var chance:Number;
+			switch (area) {
+				case 'SMALL':
+					chance = 0.20;
+					break;
+				case 'MEDIUM':
+					chance = 0.5;
+					break;
+				case 'LARGE':
+					chance = 0.70;
+					break;
+			}
+			// up down left right
+			if (Math.random() < chance) {
+				_decor.setRect(x / GC.GRIDSIZE, (y / GC.GRIDSIZE)-1, 1, 1, material);
+			}
+			if (Math.random() < chance) {
+				_decor.setRect(x / GC.GRIDSIZE, (y / GC.GRIDSIZE)+1, 1, 1, material);
+			}
+			if (Math.random() < chance) {
+				_decor.setRect((x / GC.GRIDSIZE)-1, y / GC.GRIDSIZE, 1, 1, material);
+			}
+			if (Math.random() < chance) {
+				_decor.setRect((x / GC.GRIDSIZE)+1, y / GC.GRIDSIZE, 1, 1, material);
+			}
+		}
 
 		override public function update():void
 		{
-			// listen for hit "event" somehow, then fire splatter
+			// TODO: listen for hit "event" somehow, then fire splatter
 		}
 		
 	}

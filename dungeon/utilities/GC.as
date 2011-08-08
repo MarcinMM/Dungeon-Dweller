@@ -71,16 +71,16 @@ package dungeon.utilities
 		public static const C_ITEM_POTIONS:uint = 4;
 
 		// item slots
-		public static const SLOT_PRIMARY_WEAPON:uint = 1;
-		public static const SLOT_SECONDARY_WEAPON:uint = 2;
-		public static const SLOT_HEAD:uint = 3;
-		public static const SLOT_CHEST:uint = 4;
-		public static const SLOT_LEGS:uint = 5;
-		public static const SLOT_HANDS:uint = 6;
-		public static const SLOT_WAIST:uint = 7;
-		public static const SLOT_FEET:uint = 8;
-		public static const SLOT_SHOULDERS:uint = 9;
-		public static const SLOT_SPECIAL:uint = 10;
+		public static const SLOT_PRIMARY_WEAPON:String = 'PRIMARY_WEAPON';
+		public static const SLOT_SECONDARY_WEAPON:String = 'SECONDARY_WEAPON';
+		public static const SLOT_HEAD:String = 'SLOT_HEAD';
+		public static const SLOT_CHEST:String = 'SLOT_CHEST';
+		public static const SLOT_LEGS:String = 'SLOT_LEGS';
+		public static const SLOT_HANDS:String = 'SLOT_HANDS';
+		public static const SLOT_WAIST:String = 'SLOT_WAIST';
+		public static const SLOT_FEET:String = 'SLOT_FEET';
+		public static const SLOT_SHOULDERS:String = 'SLOT_SHOULDERS';
+		public static const SLOT_SPECIAL:String = 'SLOT_SPECIAL';
 		
 		public static const SLOT_DESCRIPTIONS:Object = 
 		{
@@ -164,6 +164,75 @@ package dungeon.utilities
 		public static const NPC_STATUS_FLEEING:uint = 6;
 		
 		public static const ALIGNMENTS:Array = ['neutral', 'good', 'evil'];
+		
+		// weapons for rendering
+		public static const WEAPON_TILES:Object = 
+		{
+			DART: 1,
+			SHURIKEN: 2,
+			BOOMERANG: 3,
+			WAND1: 4,
+			WAND2: 5,
+			WAND3: 6, 
+			WAND4: 7,
+			BO: 8,
+			BO2: 9, 
+			TRIDENT: 10,
+			DAGGER: 11,
+			MAIN_GAUCHE: 12,
+			STILETTO: 13,
+			MISERICORDE: 14,
+			ROD: 15,
+			KNIFE: 16,
+			KNIFE2: 17, 
+			THROWING_KNIFE: 18,
+			KNIFE3: 19,
+			AXE: 20,
+			TWO_HEADED_AXE: 21,
+			SHORTSWORD: 22,
+			LONGSWORD: 23,
+			RAPIER: 24,
+			GLADIUS: 25,
+			H1SWORD: 26, 
+			SCIMITAR: 27,
+			SHAMSHIR: 28,
+			BROADSWORD: 29,
+			BASTARDSWORD: 30,
+			H2SWORD: 31,
+			CLAYMORE: 32,
+			NODACHI: 33,
+			KATANA: 34,
+			LAZERSWORD: 35,
+			SPEAR: 36,
+			SPEAR2: 37,
+			BARDICHE: 38,
+			SPEAR4: 39, // row 2 stars below
+			FLAMBERGE: 40,
+			MAUL: 41,
+			GLAIVE: 42, 
+			HALBERD: 43,
+			PICKAXE: 44,
+			SICKLE: 45,
+			HOOK1: 46,
+			HOOK2: 47,
+			BATTLEAXE: 48,
+			THROWING_AXE: 49,
+			MACE: 50,
+			MORNINGSTAR: 51,
+			WARHAMMER: 52,
+			CLUB: 53,
+			WHIP: 54,
+			STICK: 55,
+			STICK2: 56, 
+			MUSKET: 57,
+			WHIP2: 58,
+			BOW: 59,
+			LONGBOW: 60,
+			SHORTBOW: 61,
+			COMPOUNDBOW: 62,
+			SLING: 63,
+			CROSSBOW: 64
+		}
 		
 		public function GC() {}
 	}

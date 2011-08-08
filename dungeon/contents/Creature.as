@@ -98,7 +98,7 @@ package dungeon.contents
 			return returnVal;
 		}
 
-		public function getEquippedItem(itemType:uint, itemSlot:uint):resultItem {
+		public function getEquippedItem(itemType:uint, itemSlot:String):resultItem {
 			var returnVal:resultItem = new resultItem(false);
 			for each (var item:* in ITEMS[itemType]) {
 				if (item.EQUIPPED == true && item.slot == itemSlot) {

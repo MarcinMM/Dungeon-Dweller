@@ -36,7 +36,6 @@ package dungeon.utilities
 			}		
 		}
 
-		// this is totally untested
 		private function getTileNPCInfo(x:uint, y:uint):void {
 			var tileX:uint = Math.floor(x/GC.GRIDSIZE);
 			var tileY:uint = Math.floor(y/GC.GRIDSIZE);
@@ -54,7 +53,6 @@ package dungeon.utilities
 			
 		}
 
-
 		override public function update():void
 		{
 			// mouse monitoring
@@ -62,7 +60,7 @@ package dungeon.utilities
 				var mouseX:int = Input.mouseFlashX;
 				var mouseY:int = Input.mouseFlashY;
 				Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + (mouseX/GC.GRIDSIZE) + "|" + (mouseY/GC.GRIDSIZE));
-				this.getTileNeighbors(mouseX, mouseY);
+				//this.getTileNeighbors(mouseX, mouseY);
 				this.getTileNPCInfo(mouseX, mouseY);
 			}
 		}

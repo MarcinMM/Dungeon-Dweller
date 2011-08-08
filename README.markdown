@@ -2,10 +2,12 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 8/2
+# TODO MVP 8/7
 
-* BLOOD SPLATS NOW!
-* Time-based regen NOW!
+* Complete splats with spritemap to allow for other colors/substances.
+* Armor gen, same as weapon gen.
+* Mouseover info on items, as NPCs.
+* Wrap up time-based regen.
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * Vertical dungeon structure (saving/loading levels for going up/down).
@@ -43,6 +45,12 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Def numbers fluctuate with same gear. Also, just plain fluctuating.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/7/2011
+
+* Added bloodsplatters. Added critical hit + potential 4-way splatters. Not quite a 3x3 explosion, but you'll know something drastic happened there. Currently only supports a single tile spatter.
+* Reworked item gen with spritemaps. Needed to change slots to text (it'll be more readable anyway) and added a bunch of weapon sprites and sprite constants. 
+* Added NPC info on mouse-click. 
 
 # UPDATES 8/3
 

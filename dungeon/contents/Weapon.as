@@ -13,8 +13,6 @@ package dungeon.contents
 	 */
 	public class Weapon extends Item 
 	{
-		[Embed(source = '../../assets/weapon.png')] private const WEAPON:Class;
-
 		public const TILE_INDEX:uint = 0;
 
 		// now vars
@@ -30,6 +28,7 @@ package dungeon.contents
 		public var offhandRating:Number = 0;
 		public var crit:Number = 0.3;
 		public var strengthReq:uint = 0;
+		public var gtype:String; // graphic type
 		
 		public function Weapon() 
 		{
@@ -114,7 +113,16 @@ package dungeon.contents
 			DESCRIPTION = materialPrototype.name + " " + weaponPrototype.name;
 			ITEM_TYPE = GC.C_ITEM_WEAPON;
 
-			graphic = new Image(WEAPON);
+			// dynamic spritemap assignation based on item type. one day, maybe on material too.
+			// i.e.: weaponPrototype.name, materialPrototype.name
+			if (GC.WEAPON_TILES[weaponPrototype.type] == undefined) {
+				_assets.add("static", [69], 0, false);
+			} else {
+				_assets.add("static", [GC.WEAPON_TILES[weaponPrototype.type]], 0, false);
+			}
+			//_assets.add("anim", [6, 7, 8, 9, 10, 11], 0, false); // animations!
+			graphic = _assets;	
+			_assets.play("static");
 		}
 		
 	}

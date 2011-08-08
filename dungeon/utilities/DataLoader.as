@@ -42,6 +42,7 @@ package dungeon.utilities
 				weapon.offhandRating = i.offhandRating;
 				weapon.crit = i.crit;
 				weapon.strengthReq = i.strengthReq;
+				weapon.type = i.type;
 
 				weapons.push(weapon);
 			}
