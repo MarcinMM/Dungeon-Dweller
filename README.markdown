@@ -4,7 +4,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 8/7
 
-* Complete splats with spritemap to allow for other colors/substances.
+* Complete splats with spritemap to allow for other colors/substances. Small splats need even smaller %.
 * Armor gen, same as weapon gen.
 * Mouseover info on items, as NPCs.
 * Wrap up time-based regen.
@@ -42,7 +42,8 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # HIGH PRIORITY BUGS
 
-* Def numbers fluctuate with same gear. Also, just plain fluctuating.
+* Bloodspatters stay through level re-gen. Need to be saved with level state.
+* Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
 
