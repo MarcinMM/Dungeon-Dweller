@@ -133,19 +133,19 @@ package dungeon.contents
 						switch(item.ITEM_TYPE) {
 							case GC.C_ITEM_ARMOR:
 								switch(item.slot) {
-									case "LEGS":
+									case "SLOT_LEGS":
 										legSlot = item;
 									break;
-									case "HEAD":
+									case "SLOT_HEAD":
 										headSlot = item;
 									break;
-									case "CHEST":
+									case "SLOT_CHEST":
 										chestSlot = item;
 									break;
-									case "HANDS":
+									case "SLOT_HANDS":
 										handSlot = item;
 									break;
-									case "FEET":
+									case "SLOT_FEET":
 										feetSlot = item;
 									break;
 								}

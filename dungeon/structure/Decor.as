@@ -7,6 +7,7 @@ package dungeon.structure
 	import net.flashpunk.utils.Input;
 	import dungeon.contents.NPC;
 	import dungeon.utilities.GC;
+	import dungeon.utilities.DecorGraphic;
 
 	/**
 	 * Noncollidable clutter entities. Bloodsplatters, plant growth, other FX PC or NPCs make.
@@ -16,12 +17,12 @@ package dungeon.structure
 	public class Decor extends Entity
 	{
 		// TODO: this needs to be a spritemap of splatters
-		[Embed(source = '/assets/bloodsplatter.png')] private const BLOODSPLATTER:Class;
-		public var _decor:Tilemap;
+		public var _decor:DecorGraphic;
 		
 		public function Decor() 
 		{
-			_decor = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+			_decor = new DecorGraphic();
+			//_decor = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			
 			graphic = _decor;
 			
@@ -36,9 +37,9 @@ package dungeon.structure
 		 */
 		public function splatter(x:uint, y:uint, crit:Boolean, material:uint):void {
 			if (crit) {
-				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, material);
+				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, 5);
 			} else {
-				_decor.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, material);
+				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, 5);
 				splatterArea(x, y, 'SMALL', material);
 			}
 			// add "else" when we get real art for these
@@ -57,27 +58,27 @@ package dungeon.structure
 			var chance:Number;
 			switch (area) {
 				case 'SMALL':
-					chance = 0.20;
+					chance = 0.10;
 					break;
 				case 'MEDIUM':
-					chance = 0.5;
+					chance = 0.35;
 					break;
 				case 'LARGE':
-					chance = 0.70;
+					chance = 0.55;
 					break;
 			}
 			// up down left right
 			if (Math.random() < chance) {
-				_decor.setRect(x / GC.GRIDSIZE, (y / GC.GRIDSIZE)-1, 1, 1, material);
+				_decor.addDecor(x / GC.GRIDSIZE, (y / GC.GRIDSIZE) - 1, material, 5);
 			}
 			if (Math.random() < chance) {
-				_decor.setRect(x / GC.GRIDSIZE, (y / GC.GRIDSIZE)+1, 1, 1, material);
+				_decor.addDecor(x / GC.GRIDSIZE, (y / GC.GRIDSIZE) + 1, material, 5); 
 			}
 			if (Math.random() < chance) {
-				_decor.setRect((x / GC.GRIDSIZE)-1, y / GC.GRIDSIZE, 1, 1, material);
+				_decor.addDecor((x / GC.GRIDSIZE) - 1, y / GC.GRIDSIZE, material, 5);
 			}
 			if (Math.random() < chance) {
-				_decor.setRect((x / GC.GRIDSIZE)+1, y / GC.GRIDSIZE, 1, 1, material);
+				_decor.addDecor((x / GC.GRIDSIZE) + 1, y / GC.GRIDSIZE, material, 5);
 			}
 		}
 

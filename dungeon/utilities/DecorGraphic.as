@@ -1,37 +1,82 @@
-class DecorGraphic extends Graphic {
-  public var layerOne:Tilemap;
-  public var layerTwo:Tilemap;
-  public var layerThree:Tilemap;
-  public var layerFour:Tilemap;
+package dungeon.utilities
+{
 
-  public var layerArray:Array = [layerOne, layerTwo, layerThree, layerFour];
+	import net.flashpunk.Graphic;
+	import net.flashpunk.graphics.Tilemap;
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import org.flashdevelop.utils.FlashConnect;
+	import Dungeon;
+	
+	public class DecorGraphic extends Graphic {
 
-  [Embed(source = '/assets/bloodsplatter.png')] private const BLOODSPLATTER:Class;
+		public var layerOne:Tilemap;
+		public var layerTwo:Tilemap;
+		public var layerThree:Tilemap;
+		public var layerFour:Tilemap;
 
-  public var layerIndex:uint = 1;
-  
-  // init all layers in layerArray
-  public function DecorGraphic() {
-    for (var i:int in layerArray) {
-      layerArray[i] = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
-    }
-  }
+		public var layerArray:Array = [];
+		public var mapLocations:Vector.<uint>;
+		
+		public var layerCount:uint = 4;
+		// TODO: make actual spatters tilemap with 10? 20? spatters
+		// TODO: also add green and blue recolors of spatters
+		[Embed(source = '/assets/bloodspatters.png')] private const BLOODSPLATTER:Class;
 
-  // you have to choose material (which is the tile in tilemap) and the option to randomize; randomMaterial indicates maximum offset for random. 0 indicates no offset  
-  public function addDecor(x:uint, y:uint, area:String, material:uint, randomMaterial:uint) {
-    // TODO: randomize material index to generate varying decor components
-    if (randomMaterial != 0) {
-      // TODO: randomized material calculation, offset from material
-    }
-    if (layerIndex < layerArray.length) {
-      layerArray[layerIndex].setRect(x / GC.GRIDSIZE, (y / GC.GRIDSIZE)-1, 1, 1, material);
-      layerIndex++;
-    }
-  }
+		public var layerIndex:uint = 0;
+	  
+		// init all layers in layerArray
+		public function DecorGraphic() {
+			var map:Tilemap;
+			for (var i:uint = 0; i < layerCount; i++ ) {
+				map = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+				layerArray.push(map);
+			}
+			
+			mapLocations = new Vector.<uint>(Dungeon.TILESX * Dungeon.TILESY);
+		}
 
-  override public function render(target:BitmapData, point:Point, camera:Point):void {
-    for (var i:int in layerArray) {
-      layerArray[i].render(target, point, camera);
-    }
-  }
+		// clear all decor on level load
+		public function resetDecor():void {
+			mapLocations = new Vector.<uint>(Dungeon.TILESX * Dungeon.TILESY);
+			for each (var i:Tilemap in layerArray) {
+				i.clearRect(0, 0, Dungeon.TILESX, Dungeon.TILESY);
+			}		
+		}
+		
+		// TODO: we'll need restore and save decor as well
+		/*
+		public function saveDecor() {
+			for each (var i:Tilemap in layerArray) {
+				i.saveToString(",", ":");
+			}
+		}
+		
+		public function loadDecor() {
+			for each (var i:Tilemap in layerArray) {
+				i.loadFromString(str, ",", ":");
+			}
+		}
+		*/
+		
+		// you have to choose material (which is the tile in tilemap) and the option to randomize; randomMaterial indicates maximum offset for random. 0 indicates no offset 
+		public function addDecor(x:uint, y:uint, material:uint, randomMaterial:uint):void {
+			// TODO: randomize material index to generate varying decor components
+			if (randomMaterial != 0) {
+				var offset:uint = Math.round(Math.random() * randomMaterial);
+				// TODO: randomized material calculation, offset from material
+			}
+			var currentLoc:uint = (y * Dungeon.TILESX) + x;
+			if (mapLocations[currentLoc] < layerCount) {
+				layerArray[mapLocations[currentLoc]].setRect(x, y, 1, 1, material + offset);
+				mapLocations[currentLoc]++;
+			}
+		}
+
+		override public function render(target:BitmapData, point:Point, camera:Point):void {
+			for each (var i:Tilemap in layerArray) {
+				i.render(target, point, camera);
+			}
+		}
+	}
 }

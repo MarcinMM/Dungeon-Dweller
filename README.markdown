@@ -4,25 +4,23 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 8/7
 
-* Complete splats with spritemap to allow for other colors/substances. Small splats need even smaller %.
-* Armor gen, same as weapon gen.
-* Mouseover info on items, as NPCs.
+* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well.
+* Armor gen, same as weapon gen. Armor doesn't actually exist yet, as such.
 * Wrap up time-based regen.
-* Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
-* Vertical dungeon structure (saving/loading levels for going up/down).
 * Item use, rest of item creation.
-* Corridor walls for hallways. Pretty big aesthetic plus, I think.
+* Corridor walls for hallways. Pretty big aesthetic plus, I think. Use neighbors from Nodemap.
 * Pathing optimizations.
 * Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
+* Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 * Diagonal movement. Do we really need this?
 
 # TODO FUTURE WISHLIST
 
 *Graphics*
 
-* Item equip graphical overlay.
-* Combat animations.
+* Item equip graphical overlay using MonsterGraphic.
+* Combat animations using MonsterGraphic.
 
 *Tech/AI*
 
@@ -46,6 +44,13 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/8/2011
+
+* Completed splats with minimal tilemap, added critical chance for extra splat.
+* Completed splattermap randomization engine. This same technique should allow for clutter randomization as well (make it a DecorGraphic class and draw on level load).
+* Added MonsterGraphic (untested) for player/NPC overlay purposes. Similar to DecorGraphic but using spritemap entities as single graphics rather than tilemaps.
+* Mouseover info on items, as NPCs.
 
 # UPDATES 8/7/2011
 

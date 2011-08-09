@@ -1,5 +1,6 @@
 package dungeon.utilities 
 {
+	import dungeon.contents.Item;
 	import net.flashpunk.Entity;
 	import dungeon.structure.Node;
 	import dungeon.structure.Nodemap;
@@ -50,18 +51,28 @@ package dungeon.utilities
 					
 				}
 			}
-			
 		}
 
+		private function getTileItemInfo(x:uint, y:uint):void {
+			var tileX:uint = Math.floor(x/GC.GRIDSIZE);
+			var tileY:uint = Math.floor(y/GC.GRIDSIZE);
+			for each (var item:Item in Dungeon.level.ITEMS) {
+				if (Math.floor(item.x / GC.GRIDSIZE) == tileX && Math.floor(item.y / GC.GRIDSIZE) == tileY) {
+					Dungeon.statusScreen.updateCombatText("A " + item.DESCRIPTION + ".");
+				}
+			}			
+		}
+		
 		override public function update():void
 		{
 			// mouse monitoring
 			if (Input.mousePressed) {
 				var mouseX:int = Input.mouseFlashX;
 				var mouseY:int = Input.mouseFlashY;
-				Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + (mouseX/GC.GRIDSIZE) + "|" + (mouseY/GC.GRIDSIZE));
+				//Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + (mouseX/GC.GRIDSIZE) + "|" + (mouseY/GC.GRIDSIZE));
 				//this.getTileNeighbors(mouseX, mouseY);
 				this.getTileNPCInfo(mouseX, mouseY);
+				this.getTileItemInfo(mouseX, mouseY);
 			}
 		}
 		
