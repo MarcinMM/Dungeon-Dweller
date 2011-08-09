@@ -4,12 +4,13 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 8/7
 
-* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well.
-* Armor gen, same as weapon gen. Armor doesn't actually exist yet, as such.
 * Wrap up time-based regen.
+* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well.
+* Armor gen, [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
+* PC design (races, perks), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * Item use, rest of item creation.
-* Corridor walls for hallways. Pretty big aesthetic plus, I think. Use neighbors from Nodemap.
+* Ability to layer transparent random tiles on top (north? y-1 anyway) of impassable tiles to create more convincing layered environments.
 * Pathing optimizations.
 * Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
@@ -19,6 +20,8 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 *Graphics*
 
+* Prebuilts in empty spaces. Detect a contiguous 2x2, 3x3, 4x4 (or other nonsquare) space and populate with appropriate larger prebuilts.
+* Fake non-square rooms by building solid randomized protrusions into room space.
 * Item equip graphical overlay using MonsterGraphic.
 * Combat animations using MonsterGraphic.
 
@@ -35,6 +38,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 *UI*
 
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
+* Better item interaction.
 * Shift + direction => move until interrupted
 * Player/friend swap code needed for tight quarters.
 
