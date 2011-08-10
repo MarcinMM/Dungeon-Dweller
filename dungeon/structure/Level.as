@@ -261,7 +261,7 @@ package dungeon.structure
 			var usedPoints:Array = [];
 			var pickedPoint:Point;
 			
-			for (var j:int = 0; j < 2; j++) {
+			for (var j:int = 0; j < 4; j++) {
 				var newNPC:NPC = new NPC();
 				newNPC.NPCType = MONSTARS.pop();
 				NPCS.push(newNPC);

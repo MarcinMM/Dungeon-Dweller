@@ -33,6 +33,11 @@ package dungeon.contents
 		public function Player() 
 		{
 			super();
+			
+			// TODO: uncomment this to generate player as a MonsterGraphic when graphics are complete
+			//var randCritter:uint = Math.round((Math.random() * 16)) + 20;
+			//_imgOverlay = new MonsterGraphic(randCritter,0,0);
+			
 			graphic = new Image(PLAYER);
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);

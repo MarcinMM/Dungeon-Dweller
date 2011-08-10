@@ -17,7 +17,6 @@ package dungeon.contents
 	 */
 	public class NPC extends Creature
 	{
-		[Embed(source = '../../assets/npc1.png')] private const NPCGraphic:Class;
 		// some defaults and inits
 		private const GRIDSIZE:int = GC.GRIDSIZE;
 		public var STEP:int = 0;
@@ -52,7 +51,8 @@ package dungeon.contents
 		public function NPC() 
 		{
 			super();
-			_imgOverlay = new MonsterGraphic(0,0,0);
+			var randCritter:uint = Math.round((Math.random() * 16)) + 20;
+			_imgOverlay = new MonsterGraphic(randCritter,0,0);
 			graphic = _imgOverlay;
 			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
