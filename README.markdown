@@ -22,7 +22,6 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 * Prebuilts in empty spaces. Detect a contiguous 2x2, 3x3, 4x4 (or other nonsquare) space and populate with appropriate larger prebuilts.
 * Fake non-square rooms by building solid randomized protrusions into room space.
-* Item equip graphical overlay using MonsterGraphic.
 * Combat animations using MonsterGraphic.
 
 *Tech/AI*
@@ -34,6 +33,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
 * Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
 * Line of Sight NPC awareness and detection, with Player's light radius in account
+* Change DecorGraphic from using multiple Tilemaps to a new version of DungeonTilemap that draws multiple tiles, per suggestion [in this post](http://codesquares.com/post/multilayering_terrain_randomization_old_todo_discovery#disqus_thread).
 
 *UI*
 
@@ -48,6 +48,11 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/9/2011
+
+* Item equip graphical overlay using MonsterGraphic. Still need art, but the tech is in!
+* Added real bloodspatter graphic and some constants to manage it.
 
 # UPDATES 8/8/2011
 
