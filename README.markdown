@@ -2,21 +2,26 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 8/7
+# TODO MVP 8/10
 
 * Wrap up time-based regen.
-* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well.
+* Tweak hallway generation to not draw if tile != void. We don't want to be overwriting existing floors. Line 214 of Nodemap. This is already done for DOORS.
+* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well. Tentative plan: create a LevelHolder class that stores level Tilemap, decor DecorGraphic, level collision map, NPCs and Items. Dungeon has a Vector (?) of LevelHolders and can only add/remove them (no updating these during play). We can use this later for saving the game.
 * Armor gen, [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * PC design (races, perks), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
-* Item use, rest of item creation.
 * Ability to layer transparent random tiles on top (north? y-1 anyway) of impassable tiles to create more convincing layered environments.
-* Pathing optimizations.
 * Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 * Diagonal movement. Do we really need this?
 
 # TODO FUTURE WISHLIST
+
+*Content/Features*
+
+* Item use, rest of item creation.
+* Item enhancement (tentatively spec'd in content doc) via loot drops and interactive decor items.
+* Save/load game
 
 *Graphics*
 
@@ -33,6 +38,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
 * Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
 * Line of Sight NPC awareness and detection, with Player's light radius in account
+* Pathing optimizations, per comments in code. Turn indexOf and arrays to 
 * Change DecorGraphic from using multiple Tilemaps to a new version of DungeonTilemap that draws multiple tiles, per suggestion [in this post](http://codesquares.com/post/multilayering_terrain_randomization_old_todo_discovery#disqus_thread).
 
 *UI*
@@ -41,6 +47,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Better item interaction.
 * Shift + direction => move until interrupted
 * Player/friend swap code needed for tight quarters.
+* Massive inventory prettification.
 
 # HIGH PRIORITY BUGS
 
