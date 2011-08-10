@@ -234,6 +234,10 @@ package dungeon.utilities
 			CROSSBOW: 64
 		}
 		
+		// unless we change the size of our tilemap, offset will always be 20
+		public static const SPLAT_OFFSET:uint = 20;
+		public static const SPLAT_BLOOD:uint = 20;
+		
 		public function GC() {}
 	}
 

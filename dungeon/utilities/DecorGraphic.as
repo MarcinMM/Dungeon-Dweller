@@ -5,7 +5,6 @@ package dungeon.utilities
 	import net.flashpunk.graphics.Tilemap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
-	import org.flashdevelop.utils.FlashConnect;
 	import Dungeon;
 	
 	public class DecorGraphic extends Graphic {
@@ -21,7 +20,7 @@ package dungeon.utilities
 		public var layerCount:uint = 4;
 		// TODO: make actual spatters tilemap with 10? 20? spatters
 		// TODO: also add green and blue recolors of spatters
-		[Embed(source = '/assets/bloodspatters.png')] private const BLOODSPLATTER:Class;
+		[Embed(source = '/assets/surface_nonsolids.png')] private const BLOODSPLATTER:Class;
 
 		public var layerIndex:uint = 0;
 	  

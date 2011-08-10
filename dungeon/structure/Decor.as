@@ -37,9 +37,9 @@ package dungeon.structure
 		 */
 		public function splatter(x:uint, y:uint, crit:Boolean, material:uint):void {
 			if (crit) {
-				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, 5);
+				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
 			} else {
-				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, 5);
+				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
 				splatterArea(x, y, 'SMALL', material);
 			}
 			// add "else" when we get real art for these

@@ -4,11 +4,13 @@ package dungeon.contents
 	import dungeon.contents.Creature;
 	import dungeon.structure.Node;
 	import dungeon.structure.Point;
+	import flash.automation.StageCapture;
 	import net.flashpunk.FP;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;
 	import dungeon.utilities.GC;
 	import dungeon.utilities.resultItem;
+	import dungeon.utilities.MonsterGraphic;
 	/**
 	 * ...
 	 * @author MM
@@ -45,10 +47,13 @@ package dungeon.contents
 		private var ACTION_TAKEN:Boolean = false;
 		public var FACTION:String = 'alignment'; 
 
+		public var _imgOverlay:MonsterGraphic;
+		
 		public function NPC() 
 		{
 			super();
-			graphic = new Image(NPCGraphic);
+			_imgOverlay = new MonsterGraphic(0,0,0);
+			graphic = _imgOverlay;
 			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
 			STEP = Dungeon.player.STEP;
@@ -295,7 +300,7 @@ package dungeon.contents
 			// calculations to modify the attack based on player's defense stats
 			// return true if dead for text and player stat update (XP+)
 			STATS[GC.STATUS_HP] -= attackValue;
-			Dungeon.decor.splatter(x, y, false, 0);	
+			Dungeon.decor.splatter(x, y, false, GC.SPLAT_BLOOD);
 			if (STATS[GC.STATUS_HP] <= 0) {
 				// TODO: drop loot/corpse when dead
 				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.
