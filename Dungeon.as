@@ -2,6 +2,7 @@ package
 {
 	import dungeon.structure.Decor;
 	import dungeon.structure.Nodemap;
+	import dungeon.utilities.LevelInfoHolder;
 	import dungeon.utilities.Overlay;
 	import net.flashpunk.graphics.TiledImage;
 	import net.flashpunk.graphics.Tilemap;
@@ -42,6 +43,8 @@ package
 
 		public static var dataloader:DataLoader = new DataLoader();
 		public var cam:Camera;
+		
+		public static var LevelHolder:Vector.<LevelInfoHolder>;
 		
 		public function Dungeon() {
 			initMapSizes();

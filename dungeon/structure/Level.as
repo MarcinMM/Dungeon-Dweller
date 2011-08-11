@@ -1,9 +1,11 @@
 package dungeon.structure
 {
 	import dungeon.contents.Armor;
+	import dungeon.contents.Item;
 	import dungeon.contents.Weapon;
 	import dungeon.contents.Potion;
 	import dungeon.contents.NPC;
+	import dungeon.utilities.LevelInfoHolder;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.graphics.Tilemap;
@@ -116,6 +118,35 @@ package dungeon.structure
 			 */	
 		}
 
+		public function saveLevel():void {
+			var levelHolder:LevelInfoHolder = new LevelInfoHolder();
+			
+			// save dungeonmap
+			levelHolder.structure = _dungeonmap.saveToString();
+			
+			// save grid
+			levelHolder.collisions = _grid.saveToString();
+			
+			// save nodemap
+			
+			// save items
+			for each (var item:Item in ITEMS) {
+				levelHolder.items.push(item);
+			}
+			
+			// save creatures
+			for each (var creature:NPC in NPCS) {
+				levelHolder.creatures.push(creature);
+			}
+			
+			// save decor
+			
+			Dungeon.LevelHolder.push(levelHolder);
+		}
+		
+		public function loadLevel():void {
+			
+		}
 		
 		private function drawLevel():void {
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);

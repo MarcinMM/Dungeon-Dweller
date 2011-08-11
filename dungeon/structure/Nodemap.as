@@ -211,7 +211,7 @@ package dungeon.structure
 			var tileIndex:int;
 			for each (var node:Node in path) {
 				tileIndex = _map.getTile(node.x, node.y);
-				if (Level.DOORSA.indexOf(tileIndex) == -1) {
+				if ((Level.DOORSA.indexOf(tileIndex) == -1) && (tileIndex != GC.FLOOR)) {
 					_map.setRect(node.x, node.y, 1, 1, Level.HALL);
 					node.solid = false;
 				}
