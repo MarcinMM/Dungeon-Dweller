@@ -2,6 +2,7 @@ package dungeon.structure
 {
 	import dungeon.structure.Point;
 	import dungeon.structure.Node;
+	import net.flashpunk.graphics.TiledImage;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.FP;
 	import dungeon.utilities.GC;
@@ -10,7 +11,7 @@ package dungeon.structure
 
 		public var _nodes:Vector.<Node>;
 		private var roomsA:Array;
-		private var _map:Tilemap;
+		private var _map:Tilemap; // just a reference to level map
 		private var _step:uint;
 		
         public function Nodemap(_dungeonmap:Tilemap, _roomsA:Array) {
@@ -28,8 +29,25 @@ package dungeon.structure
 			refreshpathingNodeList();
 			collectNeighbors();
 			
-			// init room solidity
+			// init solidity
 			initSolidity();			
+		}
+				
+		public function load(_dungeonmap:Tilemap):void {
+			// reset nodes
+			_nodes = new Vector.<Node>(Dungeon.TILESX * Dungeon.TILESY, true);
+			
+			// reassign tilemap to current map
+			_map = _dungeonmap;
+
+			// recreate walkable/nonwalkable
+			refreshpathingNodeList();
+			
+			// recreate neighbors
+			collectNeighbors();
+			
+			// set solid/nonsolid based on above
+			initSolidity();
 		}
 		
 		public function refreshpathingNodeList():void {
@@ -190,12 +208,7 @@ package dungeon.structure
 			} 
 			*/
 		}
-		
-		public function setNodeSolidity(coordX:uint, coordY:uint, solidity:Boolean):void {
-			var node:Node = new Node(coordX, coordY, 0);
-			node.solid = solidity;
-		}
-		
+				
 		private function createConnectingHallway(sourceDoor:Point, destDoor:Point):void {
 			//FP.log(sourceDoor.x + "-" + sourceDoor.y + "-" + destDoor.x + "-" + destDoor.y);
 			//trace(sourceDoor.x + "-" + sourceDoor.y + " to " + destDoor.x + "-" + destDoor.y);

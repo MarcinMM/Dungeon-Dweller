@@ -17,7 +17,7 @@ package dungeon.contents
         public const TILE_INDEX:uint = 0;
 
         // now vars
-        public var name:String;
+        public var description:String;
 		public var modifier:Number;
 		public var effect:String;
         public var instant:uint;

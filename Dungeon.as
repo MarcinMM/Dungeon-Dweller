@@ -45,8 +45,11 @@ package
 		public var cam:Camera;
 		
 		public static var LevelHolder:Vector.<LevelInfoHolder>;
+		public static var LevelHolderCounter:uint;
 		
 		public function Dungeon() {
+			LevelHolder = new Vector.<LevelInfoHolder>;
+			LevelHolderCounter = 0;
 			initMapSizes();
 
 			dataloader.setupItems();

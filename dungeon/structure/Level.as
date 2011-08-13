@@ -153,6 +153,11 @@ package dungeon.structure
 			
 			_grid.loadFromString(levelHolder.collisions);
 			mask = _grid;
+
+			layer = GC.LEVEL_LAYER;
+			type = "level";
+			
+			_nodemap.load(_dungeonmap);
 		}
 		
 		private function drawLevel():void {
@@ -355,7 +360,7 @@ package dungeon.structure
 				Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
 				Dungeon.LevelHolderCounter--;
 				// load level from storage and redraw, if below 0
-				if (Dungeon.LevelHolderCounter >= 0 {
+				if (Dungeon.LevelHolderCounter >= 0) {
 					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
 				}
 				else {
