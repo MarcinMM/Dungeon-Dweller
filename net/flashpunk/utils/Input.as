@@ -4,6 +4,8 @@
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	import net.flashpunk.*;
 	
 	/**
@@ -21,6 +23,11 @@
 		 * The last key pressed.
 		 */
 		public static var lastKey:int;
+		
+		/**
+		 * The mouse cursor. Set to null to hide the cursor.
+		 */
+		public static var mouseCursor:String = MouseCursor.AUTO;
 		
 		/**
 		 * If the mouse button is down.
@@ -200,6 +207,16 @@
 			_releaseNum = 0;
 			if (mousePressed) mousePressed = false;
 			if (mouseReleased) mouseReleased = false;
+			if (mouseCursor == null)
+			{
+				Mouse.hide();
+				Mouse.cursor = MouseCursor.AUTO;
+			}
+			else
+			{
+				Mouse.show();
+				Mouse.cursor = mouseCursor;
+			}
 		}
 		
 		/**
@@ -222,17 +239,14 @@
 			
 			// update the keystring
 			if (code == Key.BACKSPACE) keyString = keyString.substring(0, keyString.length - 1);
-			else if ((code > 47 && code < 58) || (code > 64 && code < 91) || code == 32)
+			else if (e.charCode > 31 && e.charCode !== 127)  // 127 is delete
 			{
 				if (keyString.length > KEYSTRING_MAX) keyString = keyString.substring(1);
-				var char:String = String.fromCharCode(code);
-				if (e.shiftKey || Keyboard.capsLock) char = char.toLocaleUpperCase();
-				else char = char.toLocaleLowerCase();
-				keyString += char;
+				keyString += String.fromCharCode(e.charCode);
 			}
 			
 			// update the keystate
-			if (!_key[code])
+			if ((code >= 0 && code <= 255) && !_key[code])
 			{
 				_key[code] = true;
 				_keyNum ++;
@@ -245,7 +259,7 @@
 		{
 			// get the keycode and update the keystate
 			var code:int = e.keyCode;
-			if (_key[code])
+			if ((code >= 0 && code <= 255) && _key[code])
 			{
 				_key[code] = false;
 				_keyNum --;

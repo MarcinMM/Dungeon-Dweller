@@ -56,6 +56,8 @@
 		 */
 		override public function updateBuffer(clearBefore:Boolean = false):void 
 		{
+			if (_width === 0 || _height === 0) return;
+			
 			// get position of the current frame
 			_rect.x = _rect.width * _frame;
 			_rect.y = uint(_rect.x / _width) * _rect.height;
@@ -83,13 +85,13 @@
 							if (_anim._loop)
 							{
 								_index = 0;
-								if (callback != null) callback();
+								if (callback != null) callback(this);
 							}
 							else
 							{
 								_index = _anim._frameCount - 1;
 								complete = true;
-								if (callback != null) callback();
+								if (callback != null) callback(this);
 								break;
 							}
 						}
@@ -108,10 +110,11 @@
 		 * @param	loop		If the animation should loop.
 		 * @return	A new Anim object for the animation.
 		 */
-		public function add(name:String, frames:Array, frameRate:Number = 0, loop:Boolean = true):Anim
+		public function add(name:String, frames:Array, frameRate:Number = 0, loop:Boolean = true, flipped:Boolean = false):Anim
 		{
 			if (_anims[name]) throw new Error("Cannot have multiple animations with the same name");
-			(_anims[name] = new Anim(name, frames, frameRate, loop))._parent = this;
+			(_anims[name] = new Anim(name, frames, frameRate, loop, flipped))._parent = this;
+			++_animCount;
 			return _anims[name];
 		}
 		
@@ -119,9 +122,10 @@
 		 * Plays an animation.
 		 * @param	name		Name of the animation to play.
 		 * @param	reset		If the animation should force-restart if it is already playing.
+		 * @param	frame		Frame of the animation to start from, if restarted.
 		 * @return	Anim object representing the played animation.
 		 */
-		public function play(name:String = "", reset:Boolean = false):Anim
+		public function play(name:String = "", reset:Boolean = false, frame:int = 0):Anim
 		{
 			if (!reset && _anim && _anim._name == name) return _anim;
 			_anim = _anims[name];
@@ -130,13 +134,15 @@
 				_frame = _index = 0;
 				complete = true;
 				updateBuffer();
+				flipped = false;
 				return null;
 			}
 			_index = 0;
 			_timer = 0;
-			_frame = uint(_anim._frames[0]);
+			_frame = uint(_anim._frames[frame % _anim._frameCount]);
 			complete = false;
 			updateBuffer();
+			flipped = _anim.flipped;
 			return _anim;
 		}
 		
@@ -236,6 +242,11 @@
 		 */
 		public function get currentAnim():String { return _anim ? _anim._name : ""; }
 		
+		/**
+		 * The number of animations in the Spritemap.
+		 */
+		public function get animCount():uint { return _animCount; }
+		
 		// Spritemap information.
 		/** @private */ protected var _rect:Rectangle;
 		/** @private */ protected var _width:uint;
@@ -245,6 +256,7 @@
 		/** @private */ private var _frameCount:uint;
 		/** @private */ private var _anims:Object = { };
 		/** @private */ private var _anim:Anim;
+		/** @private */ private var _animCount:uint = 0;
 		/** @private */ private var _index:uint;
 		/** @private */ protected var _frame:uint;
 		/** @private */ private var _timer:Number = 0;

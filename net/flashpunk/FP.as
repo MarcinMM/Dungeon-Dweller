@@ -13,6 +13,7 @@
 	import flash.utils.getTimer;
 	import net.flashpunk.*;
 	import net.flashpunk.debug.Console;
+	import net.flashpunk.tweens.misc.Alarm;
 	import net.flashpunk.tweens.misc.MultiVarTween;
 	
 	/**
@@ -56,6 +57,16 @@
 		public static var elapsed:Number;
 		
 		/**
+		 * Total time elapsed since the world was started.
+		 */
+		public static var worldTime:Number;
+		
+		/**
+		 * Seconds value of flash.utils.getTimer().
+		 */
+		public static var time:Number;
+		
+		/**
 		 * Timescale applied to FP.elapsed (non-fixed framerate only).
 		 */
 		public static var rate:Number = 1;
@@ -79,6 +90,16 @@
 		 * Point used to determine drawing offset in the render loop.
 		 */
 		public static var camera:Point = new Point;
+		
+		/**
+		 * Global Tweener for tweening values across multiple worlds.
+		 */
+		public static var tweener:Tweener = new Tweener;
+		
+		/**
+		 * If the game currently has input focus or not. Note: may not be correct initially.
+		 */
+		public static var focused:Boolean = true;
 		
 		/**
 		 * Half the screen width.
@@ -199,8 +220,8 @@
 		 */
 		public static function colorLerp(fromColor:uint, toColor:uint, t:Number = 1):uint
 		{
-			if (t <= 0) { return fromColor; }
-			if (t >= 1) { return toColor; }
+			if (t <= 0) return fromColor;
+			if (t >= 1) return toColor;
 			var a:uint = fromColor >> 24 & 0xFF,
 				r:uint = fromColor >> 16 & 0xFF,
 				g:uint = fromColor >> 8 & 0xFF,
@@ -268,6 +289,16 @@
 		}
 		
 		/**
+		 * Normalizes an angle to 0 - 360 range.
+		 * @param	angle		Angle to normalize.
+		 */
+		public static function normalizeAngle(angle:Number):Number
+		{
+			angle %= 360;
+			return angle < 0 ? angle + 360 : angle;
+		}
+		
+		/**
 		 * Sets the x/y values of the provided object to a vector of the specified angle and length.
 		 * @param	object		The object whose x/y properties should be set.
 		 * @param	angle		The angle of the vector, in degrees.
@@ -292,6 +323,20 @@
 		{
 			if (relative) angle += FP.angle(anchor.x, anchor.y, object.x, object.y);
 			FP.angleXY(object, angle, FP.distance(anchor.x, anchor.y, object.x, object.y), anchor.x, anchor.y);
+		}
+		
+		/**
+		 * Gets the difference of two angles, wrapped around to the range -180 to 180.
+		 * @param	a		First angle in degrees.
+		 * @param	b		Second angle in degrees.
+		 * @return	Difference in angles, wrapped around to the range -180 to 180.
+		 */
+		public static function angleDiff(a:Number, b:Number):Number
+		{
+			var diff:Number = b - a;
+			while (diff > 180) diff -= 360;
+			while (diff <= -180) diff += 360;
+			return diff;
 		}
 		
 		/**
@@ -537,9 +582,12 @@
 		 */
 		public static function getColorHSV(h:Number, s:Number, v:Number):uint
 		{
+			h = h < 0 ? 0 : (h > 1 ? 1 : h);
+			s = s < 0 ? 0 : (s > 1 ? 1 : s);
+			v = v < 0 ? 0 : (v > 1 ? 1 : v);
 			h = int(h * 360);
-			var hi:int = Math.floor(h / 60) % 6,
-				f:Number = h / 60 - Math.floor(h / 60),
+			var hi:int = int(h / 60) % 6,
+				f:Number = h / 60 - int(h / 60),
 				p:Number = (v * (1 - s)),
 				q:Number = (v * (1 - f * s)),
 				t:Number = (v * (1 - (1 - f) * s));
@@ -683,7 +731,7 @@
 			var type:uint = Tween.ONESHOT,
 				complete:Function = null,
 				ease:Function = null,
-				tweener:Tweener = FP.world;
+				tweener:Tweener = FP.tweener;
 			if (object is Tweener) tweener = object as Tweener;
 			if (options)
 			{
@@ -696,6 +744,24 @@
 			tween.tween(object, values, duration, ease);
 			tweener.addTween(tween);
 			return tween;
+		}
+		
+		/**
+		 * Schedules a callback for the future. Shorthand for creating an Alarm tween, starting it and adding it to a Tweener.
+		 * @param	delay		The duration to wait before calling the callback.
+		 * @param	callback	The function to be called.
+		 * @param	type		The tween type (PERSIST, LOOPING or ONESHOT). Defaults to ONESHOT.
+		 * @param	tweener		The Tweener object to add this Alarm to. Defaults to FP.tweener.
+		 * @return	The added Alarm object.
+		 * 
+		 * Example: FP.alarm(5.0, callbackFunction, Tween.LOOPING); // Calls callbackFunction every 5 seconds
+		 */
+		public static function alarm(delay:Number, callback:Function, type:uint = 2, tweener:Tweener = null):Alarm
+		{
+			if (!tweener) tweener = FP.tweener;
+			var alarm:Alarm = new Alarm(delay, callback, type);
+			tweener.addTween(alarm, true);
+			return alarm;
 		}
 		
 		/**

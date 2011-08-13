@@ -1,5 +1,7 @@
 ﻿package net.flashpunk 
 {
+	import net.flashpunk.tweens.TweenInfo;
+	
 	/**
 	 * Base class for all Tween objects, can be added to any Core-extended classes.
 	 */
@@ -37,12 +39,25 @@
 		 * @param	complete		Optional callback for when the Tween completes.
 		 * @param	ease			Optional easer function to apply to the Tweened value.
 		 */
-		public function Tween(duration:Number, type:uint = 0, complete:Function = null, ease:Function = null) 
+		public function Tween(duration:Number, type:uint = 0, complete:Function = null, ease:Function = null)
 		{
 			_target = duration;
 			_type = type;
 			this.complete = complete;
 			_ease = ease;
+		}
+		
+		/**
+		 * Updates the Tween, and calls finish() if required, so a tween can be
+		 * updated without being added to a Tweener.
+		 */
+		public function updateTween():void
+		{
+			if (active)
+			{
+				update();
+				if (_finish) finish();
+			}
 		}
 		
 		/**
@@ -74,6 +89,15 @@
 			active = true;
 		}
 		
+		/**
+		 * Immediately stops the Tween and removes it from its Tweener without calling the complete callback.
+		 */
+		public function cancel():void
+		{
+			active = false;
+			if (_parent) _parent.removeTween(this);
+		}
+		
 		/** @private Called when the Tween completes. */
 		internal function finish():void
 		{
@@ -92,7 +116,7 @@
 				case 2:
 					_time = _target;
 					active = false;
-					_parent.removeTween(this);
+					if (_parent) _parent.removeTween(this);
 					break;
 			}
 			_finish = false;
@@ -110,6 +134,75 @@
 		 */
 		public function get scale():Number { return _t; }
 		
+		/**
+		 * The target time of the Tween.
+		 */
+		public function get target():Number { return _target; }
+		public function set target(value:Number):void { _target = value; }
+		
+		/**
+		 * Tween type, one of Tween.PERSIST, Tween.LOOPING, or Tween.ONESHOT.
+		 */
+		public function get type():uint { return _type; }
+		public function set type(value:uint):void { _type = value; }
+		
+		/**
+		 * Tweens the properties of an object.
+		 * @param	object		Object to tween.
+		 * @param	duration	Duration of the tween.
+		 * @param	values		Properties to tween and their target values (eg. {x:100, y:200} ).
+		 * @param	complete	Optional completion callback function.
+		 * @param	ease		Optional easer function.
+		 */
+		public static function to(object:Object, duration:Number, values:Object, complete:Function = null, ease:Function = null):void
+		{
+			var t:TweenInfo = TweenInfo.create(object, duration, values, complete, ease),
+				i:int = _tweens.length;
+			while (i --)
+			{
+				if (!_tweens[i])
+				{
+					_tweens[i] = t;
+					return;
+				}
+			}
+			_tweens.push(t);
+		}
+		
+		/**
+		 * Clears any active static tweens called by Tween.to().
+		 */
+		public static function clear():void
+		{
+			for each (var tween:TweenInfo in _tweens) tween.destroy();
+			_tweens.length = 0;
+		}
+		
+		/** @private Updates the static tweens. */ 
+		internal static function update():void
+		{
+			var e:Number, t:Number, i:String, tween:TweenInfo, j:int = _tweens.length, f:Function;
+			while (j --)
+			{
+				tween = _tweens[j];
+				if (tween)
+				{
+					tween.elapsed += FP.elapsed;
+					e = tween.elapsed / tween.duration;
+					if (e >= 1) e = 1;
+					t = tween.ease == null ? e : tween.ease(e);
+					for (i in tween.start) tween.object[i] = tween.start[i] + tween.range[i] * t;
+					if (e == 1)
+					{
+						f = tween.complete;
+						tween.destroy();
+						_tweens[j] = null;
+						if (f != null) f();
+					}
+				}
+			}
+		}
+		
 		// Tween information.
 		/** @private */ private var _type:uint;
 		/** @private */ protected var _ease:Function;
@@ -124,5 +217,8 @@
 		/** @private */ internal var _parent:Tweener;
 		/** @private */ internal var _prev:Tween;
 		/** @private */ internal var _next:Tween;
+		
+		// Static tweening information.
+		/** @private */ private static var _tweens:Vector.<TweenInfo> = new Vector.<TweenInfo>;
 	}
 }

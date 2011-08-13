@@ -11,6 +11,9 @@
 	
 	/**
 	 * Used for drawing text using embedded fonts.
+	 * 
+	 * Note that users of Flex 3 must edit this class to get FlashPunk games to compile.
+	 * The details of this can be found at the bottom of the file net/flashpunk/graphics/Text.as
 	 */
 	public class Text extends Image
 	{
@@ -52,7 +55,14 @@
 			_field.setTextFormat(_form);
 			_field.width = _width = _field.textWidth + 4;
 			_field.height = _height = _field.textHeight + 4;
-			_source.fillRect(_sourceRect, 0);
+			if (_width > _source.width || _height > _source.height)
+			{
+				_source.dispose();
+				_source = new BitmapData(_width, _height, true, 0);
+				_sourceRect = _source.rect;
+				createBuffer();
+			}
+			else _source.fillRect(_sourceRect, 0);
 			_source.draw(_field);
 			super.updateBuffer(clearBefore);
 		}

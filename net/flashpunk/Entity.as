@@ -3,6 +3,7 @@ package net.flashpunk
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getDefinitionByName;
 	import net.flashpunk.masks.*;
@@ -59,13 +60,18 @@ package net.flashpunk
 		public var renderTarget:BitmapData;
 		
 		/**
+		 * General use flags, for finer distinction than a broad type name.
+		 */
+		public var flags:uint = 0;
+		
+		/**
 		 * Constructor. Can be usd to place the Entity and assign a graphic and mask.
 		 * @param	x			X position to place the Entity.
 		 * @param	y			Y position to place the Entity.
 		 * @param	graphic		Graphic to assign to the Entity.
 		 * @param	mask		Mask to assign to the Entity.
 		 */
-		public function Entity(x:Number = 0, y:Number = 0, graphic:Graphic = null, mask:Mask = null) 
+		public function Entity(x:Number = 0, y:Number = 0, graphic:Graphic = null, mask:Mask = null)
 		{
 			this.x = x;
 			this.y = y;
@@ -80,15 +86,29 @@ package net.flashpunk
 		 */
 		public function added():void
 		{
-			
+			for each (var component:Component in _components)
+			{
+				component.addedToWorld();
+			}
+		}
+		
+		/**
+		 * Override this, called when the Entity has been created via World.create().
+		 */
+		public function created():void
+		{
+			resetComponents();
 		}
 		
 		/**
 		 * Override this, called when the Entity is removed from a World.
 		 */
-		public function removed():void
+		public function removed(world:World):void
 		{
-			
+			for each (var component:Component in _components)
+			{
+				component.removedFromWorld(world);
+			}
 		}
 		
 		/**
@@ -96,7 +116,12 @@ package net.flashpunk
 		 */
 		override public function update():void 
 		{
+			if (!_world) return;
 			
+			for each (var component:Component in _components)
+			{
+				if (component.active) component.update();
+			}
 		}
 		
 		/**
@@ -105,6 +130,24 @@ package net.flashpunk
 		 */
 		public function render():void 
 		{
+			if (!_world) return;
+			
+			for each (var component:Component in _components)
+			{
+				if (component.visible)
+				{
+					if (component.relative)
+					{
+						_point.x = x;
+						_point.y = y;
+					}
+					else _point.x = _point.y = 0;
+					_camera.x = FP.camera.x;
+					_camera.y = FP.camera.y;
+					component.render(renderTarget ? renderTarget : FP.buffer, _point, _camera);
+				}
+			}
+			
 			if (_graphic && _graphic.visible)
 			{
 				if (_graphic.relative)
@@ -140,11 +183,11 @@ package net.flashpunk
 			{
 				while (e)
 				{
-					if (x - originX + width > e.x - e.originX
+					if (e.collidable && e !== this
+					&& x - originX + width > e.x - e.originX
 					&& y - originY + height > e.y - e.originY
 					&& x - originX < e.x - e.originX + e.width
-					&& y - originY < e.y - e.originY + e.height
-					&& e.collidable && e !== this)
+					&& y - originY < e.y - e.originY + e.height)
 					{
 						if (!e._mask || e._mask.collide(HITBOX))
 						{
@@ -160,11 +203,11 @@ package net.flashpunk
 			
 			while (e)
 			{
-				if (x - originX + width > e.x - e.originX
+				if (e.collidable && e !== this
+				&& x - originX + width > e.x - e.originX
 				&& y - originY + height > e.y - e.originY
 				&& x - originX < e.x - e.originX + e.width
-				&& y - originY < e.y - e.originY + e.height
-				&& e.collidable && e !== this)
+				&& y - originY < e.y - e.originY + e.height)
 				{
 					if (_mask.collide(e._mask ? e._mask : e.HITBOX))
 					{
@@ -208,11 +251,11 @@ package net.flashpunk
 			_x = this.x; _y = this.y;
 			this.x = x; this.y = y;
 			
-			if (x - originX + width > e.x - e.originX
+			if (collidable && e.collidable
+			&& x - originX + width > e.x - e.originX
 			&& y - originY + height > e.y - e.originY
 			&& x - originX < e.x - e.originX + e.width
-			&& y - originY < e.y - e.originY + e.height
-			&& collidable && e.collidable)
+			&& y - originY < e.y - e.originY + e.height)
 			{
 				if (!_mask)
 				{
@@ -321,11 +364,11 @@ package net.flashpunk
 			{
 				while (e)
 				{
-					if (x - originX + width > e.x - e.originX
+					if (e.collidable && e !== this
+					&& x - originX + width > e.x - e.originX
 					&& y - originY + height > e.y - e.originY
 					&& x - originX < e.x - e.originX + e.width
-					&& y - originY < e.y - e.originY + e.height
-					&& e.collidable && e !== this)
+					&& y - originY < e.y - e.originY + e.height)
 					{
 						if (!e._mask || e._mask.collide(HITBOX)) array[n ++] = e;
 					}
@@ -337,11 +380,11 @@ package net.flashpunk
 			
 			while (e)
 			{
-				if (x - originX + width > e.x - e.originX
+				if (e.collidable && e !== this
+				&& x - originX + width > e.x - e.originX
 				&& y - originY + height > e.y - e.originY
 				&& x - originX < e.x - e.originX + e.width
-				&& y - originY < e.y - e.originY + e.height
-				&& e.collidable && e !== this)
+				&& y - originY < e.y - e.originY + e.height)
 				{
 					if (_mask.collide(e._mask ? e._mask : e.HITBOX)) array[n ++] = e;
 				}
@@ -428,7 +471,7 @@ package net.flashpunk
 		public function set layer(value:int):void
 		{
 			if (_layer == value) return;
-			if (!_added)
+			if (!_world)
 			{
 				_layer = value;
 				return;
@@ -445,7 +488,7 @@ package net.flashpunk
 		public function set type(value:String):void
 		{
 			if (_type == value) return;
-			if (!_added)
+			if (!_world)
 			{
 				_type = value;
 				return;
@@ -488,8 +531,9 @@ package net.flashpunk
 			if (graphic is Graphiclist) (graphic as Graphiclist).add(g);
 			else
 			{
-				var list:Graphiclist = new Graphiclist;
+				var list:Graphiclist = new Graphiclist();
 				if (graphic) list.add(graphic);
+				list.add(g);
 				graphic = list;
 			}
 			return g;
@@ -603,12 +647,13 @@ package net.flashpunk
 		 * @param	solidType	An optional collision type to stop flush against upon collision.
 		 * @param	sweep		If sweeping should be used (prevents fast-moving objects from going through solidType).
 		 */
-		public function moveBy(x:Number, y:Number, solidType:String = null, sweep:Boolean = false):void
+		public function moveBy(x:Number, y:Number, solidType:String = null, sweep:Boolean = false):Boolean
 		{
 			_moveX += x;
 			_moveY += y;
 			x = Math.round(_moveX);
 			y = Math.round(_moveY);
+			if (x === 0 && y === 0) return false;
 			_moveX -= x;
 			_moveY -= y;
 			if (solidType)
@@ -623,14 +668,11 @@ package net.flashpunk
 						{
 							if ((e = collide(solidType, this.x + sign, this.y)))
 							{
-								moveCollideX(e);
-								break;
+								if (moveCollideX(e)) break;
+								else this.x += sign;
 							}
-							else
-							{
-								this.x += sign;
-								x -= sign;
-							}
+							else this.x += sign;
+							x -= sign;
 						}
 					}
 					else this.x += x;
@@ -644,14 +686,11 @@ package net.flashpunk
 						{
 							if ((e = collide(solidType, this.x, this.y + sign)))
 							{
-								moveCollideY(e);
-								break;
+								if (moveCollideY(e)) break;
+								else this.y += sign;
 							}
-							else
-							{
-								this.y += sign;
-								y -= sign;
-							}
+							else this.y += sign;
+							y -= sign;
 						}
 					}
 					else this.y += y;
@@ -662,6 +701,7 @@ package net.flashpunk
 				this.x += x;
 				this.y += y;
 			}
+			return true;
 		}
 		
 		/**
@@ -696,18 +736,18 @@ package net.flashpunk
 		 * When you collide with an Entity on the x-axis with moveTo() or moveBy().
 		 * @param	e		The Entity you collided with.
 		 */
-		public function moveCollideX(e:Entity):void
+		public function moveCollideX(e:Entity):Boolean
 		{
-			
+			return true;
 		}
 		
 		/**
 		 * When you collide with an Entity on the y-axis with moveTo() or moveBy().
 		 * @param	e		The Entity you collided with.
 		 */
-		public function moveCollideY(e:Entity):void
+		public function moveCollideY(e:Entity):Boolean
 		{
-			
+			return true;
 		}
 		
 		/**
@@ -734,11 +774,139 @@ package net.flashpunk
 			if (y - originY + height > bottom - padding) y = bottom - height + originY - padding;
 		}
 		
+		/**
+		 * The Entity's instance name. Use this to uniquely identify single
+		 * game Entities, which can then be looked-up with World.getInstance().
+		 */
+		public function get name():String { return _name; }
+		public function set name(value:String):void
+		{
+			if (_name !== value)
+			{
+				if (_name && _world) _world.unregisterName(this);
+				_name = value;
+				if (_name && _world) _world.registerName(this);
+			}
+		}
+		
+		/**
+		 * Add a component to the entity.
+		 * @param	name		Name for the component. This will replace any existing component with the same name.
+		 * @param	component		Component to add.
+		 * @return	The component that was added.
+		 */
+		public function addComponent(name:String, component:Component):Component
+		{
+			if (!_components) _components = new Dictionary();
+			removeComponent(name);
+			_components[name] = component;
+			if (component)
+			{
+				component.entity = this;
+				component.added();
+			}
+			return component;
+		}
+		
+		/**
+		 * Get a component by name.
+		 * @param	name		Name of the component.
+		 * @return	The component, or null if the entity doesn't have a component by that name.
+		 */
+		public function getComponent(name:String):Component
+		{
+			return _components ? _components[name] : null;
+		}
+		
+		/**
+		 * Check whether an entity has a component by name.
+		 * @param	name		Name of the component to check for.
+		 */
+		public function hasComponent(name:String):Boolean
+		{
+			return _components ? _components.hasOwnProperty(name) : false;
+		}
+		
+		/**
+		 * Remove a component by name.
+		 * @param	name		Name of the component.
+		 * @return	The component that was removed, or null if the entity didn't have a component by that name.
+		 */
+		public function removeComponent(name:String):Component
+		{
+			var component:Component = _components[name];
+			if (component)
+			{
+				component.removed(this);
+				component.entity = null;
+				delete _components[name];
+			}
+			return component;
+		}
+		
+		/**
+		 * Call reset() on all the Entity's components.
+		 */
+		public function resetComponents():void
+		{
+			for each (var component:Component in _components)
+			{
+				component.reset();
+			}
+		}
+		
+		/**
+		 * Add the given flags to this entity's flags.
+		 */
+		public function addFlags(flags:uint):void
+		{
+			this.flags |= flags;
+		}
+		
+		/**
+		 * Remove the given flags from this entity's flags.
+		 */
+		public function removeFlags(flags:uint):void
+		{
+			this.flags &= ~flags;
+		}
+		
+		/**
+		 * Return true if all the given flags are set.
+		 */
+		public function hasFlags(flags:uint):Boolean
+		{
+			return (this.flags & flags) === flags;
+		}
+		
+		/**
+		 * Return true if any of the given flags are set.
+		 */
+		public function hasAnyFlags(flags:uint):Boolean
+		{
+			return (this.flags & flags) !== 0;
+		}
+		
+		/**
+		 * Get the class of this entity.
+		 */
+		public function getClass():Class { return _class; }
+		
+		/**
+		 * Next entity of the same type.
+		 */
+		public function get typeNext():Entity { return _typeNext; }
+		
+		/**
+		 * Next entity in the update list.
+		 */
+		public function get updateNext():Entity { return _updateNext; }
+		
 		// Entity information.
 		/** @private */ internal var _class:Class;
 		/** @private */ internal var _world:World;
-		/** @private */ internal var _added:Boolean;
 		/** @private */ internal var _type:String = "";
+		/** @private */ internal var _name:String = "";
 		/** @private */ internal var _layer:int;
 		/** @private */ internal var _updatePrev:Entity;
 		/** @private */ internal var _updateNext:Entity;
@@ -760,5 +928,8 @@ package net.flashpunk
 		/** @private */ internal var _graphic:Graphic;
 		/** @private */ private var _point:Point = FP.point;
 		/** @private */ private var _camera:Point = FP.point2;
+		
+		// Component information.
+		/** @private */ protected var _components:Dictionary;
 	}
 }

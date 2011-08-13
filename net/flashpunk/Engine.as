@@ -47,7 +47,7 @@
 		 * @param	frameRate		The game framerate, in frames per second.
 		 * @param	fixed			If a fixed-framerate should be used.
 		 */
-		public function Engine(width:uint, height:uint, frameRate:Number = 60, fixed:Boolean = false) 
+		public function Engine(width:uint, height:uint, frameRate:Number = 60, fixed:Boolean = false)
 		{
 			// global game properties
 			FP.width = width;
@@ -60,6 +60,7 @@
 			FP.screen = new Screen;
 			FP.bounds = new Rectangle(0, 0, width, height);
 			FP._world = new World;
+			Draw.resetTarget();
 			
 			// miscellanious startup stuff
 			if (FP.randomSeed == 0) FP.randomizeSeed();
@@ -83,8 +84,10 @@
 		 */
 		public function update():void
 		{
+			if (FP.tweener.active && FP.tweener._tween) FP.tweener.updateTweens();
 			if (FP._world.active)
 			{
+				Tween.update();
 				if (FP._world._tween) FP._world.updateTweens();
 				FP._world.update();
 			}
@@ -117,6 +120,22 @@
 		}
 		
 		/**
+		 * Override this; called when game gains focus.
+		 */
+		public function focusGained():void
+		{
+			
+		}
+		
+		/**
+		 * Override this; called when game loses focus.
+		 */
+		public function focusLost():void
+		{
+			
+		}
+		
+		/**
 		 * Sets the game's stage properties. Override this to set them differently.
 		 */
 		public function setStageProperties():void
@@ -133,6 +152,10 @@
 		{
 			// remove event listener
 			removeEventListener(Event.ADDED_TO_STAGE, onStage);
+			
+			// add focus change listeners
+			stage.addEventListener(Event.ACTIVATE, onActivate);
+			stage.addEventListener(Event.DEACTIVATE, onDeactivate);
 			
 			// set stage properties
 			FP.stage = stage;
@@ -173,6 +196,7 @@
 			_time = _gameTime = getTimer();
 			FP._flashTime = _time - _flashTime;
 			_updateTime = _time;
+			FP.time = _time / 1000;
 			FP.elapsed = (_time - _last) / 1000;
 			if (FP.elapsed > maxElapsed) FP.elapsed = maxElapsed;
 			FP.elapsed *= FP.rate;
@@ -182,7 +206,11 @@
 			if (FP._console) FP._console.update();
 			
 			// update loop
-			if (!paused) update();
+			if (!paused)
+			{
+				FP.worldTime += FP.elapsed;
+				update();
+			}
 			
 			// update input
 			Input.update();
@@ -263,9 +291,24 @@
 			FP._world = FP._goto;
 			FP._goto = null;
 			FP.camera = FP._world.camera;
+			FP.worldTime = 0;
 			FP._world.updateLists();
 			FP._world.begin();
 			FP._world.updateLists();
+		}
+		
+		private function onActivate(e:Event):void
+		{
+			FP.focused = true;
+			focusGained();
+			FP.world.focusGained();
+		}
+		
+		private function onDeactivate(e:Event):void
+		{
+			FP.focused = false;
+			focusLost();
+			FP.world.focusLost();
 		}
 		
 		// Timing information.
@@ -273,8 +316,8 @@
 		/** @private */ private var _time:Number;
 		/** @private */ private var _last:Number;
 		/** @private */ private var _timer:Timer;
-		/** @private */ private var	_rate:Number;
-		/** @private */ private var	_skip:Number;
+		/** @private */ private var _rate:Number;
+		/** @private */ private var _skip:Number;
 		/** @private */ private var _prev:Number;
 		
 		// Debug timing information.

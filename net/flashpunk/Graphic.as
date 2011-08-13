@@ -2,8 +2,7 @@
 {
 	import flash.display.BitmapData;
 	import flash.geom.Point;
-	import dungeon.utilities.GC;
-
+	
 	/**
 	 * Base class for all graphical types that can be drawn by Entity.
 	 */

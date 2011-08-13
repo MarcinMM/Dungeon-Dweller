@@ -18,7 +18,7 @@
 		 * @param	complete	Optional completion callback.
 		 * @param	type		Tween type.
 		 */
-		public function AngleTween(complete:Function = null, type:uint = 0) 
+		public function AngleTween(complete:Function = null, type:uint = 0)
 		{
 			super(0, type, complete);
 		}

@@ -13,12 +13,13 @@
 		 * @param	frameRate	Animation speed.
 		 * @param	loop		If the animation should loop.
 		 */
-		public function Anim(name:String, frames:Array, frameRate:Number = 0, loop:Boolean = true) 
+		public function Anim(name:String, frames:Array, frameRate:Number = 0, loop:Boolean = true, flipped:Boolean = false) 
 		{
 			_name = name;
 			_frames = frames;
 			_frameRate = frameRate;
 			_loop = loop;
+			_flipped = flipped;
 			_frameCount = frames.length;
 		}
 		
@@ -56,11 +57,17 @@
 		 */
 		public function get loop():Boolean { return _loop; }
 		
+		/**
+		 * If the animation is flipped.
+		 */
+		public function get flipped():Boolean { return _flipped; }
+		
 		/** @private */ internal var _parent:Spritemap;
 		/** @private */ internal var _name:String;
 		/** @private */ internal var _frames:Array;
 		/** @private */ internal var _frameRate:Number;
 		/** @private */ internal var _frameCount:uint;
 		/** @private */ internal var _loop:Boolean;
+		/** @private */ internal var _flipped:Boolean;
 	}
 }

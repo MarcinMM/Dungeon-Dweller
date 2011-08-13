@@ -20,8 +20,8 @@
 		public function Screen() 
 		{
 			// create screen buffers
-			_bitmap[0] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
-			_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			_bitmap[0] = new Bitmap(new BitmapData(FP.width, FP.height, true, 0), PixelSnapping.NEVER);
+			_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, true, 0), PixelSnapping.NEVER);
 			FP.engine.addChild(_sprite);
 			_sprite.addChild(_bitmap[0]).visible = true;
 			_sprite.addChild(_bitmap[1]).visible = false;
@@ -46,7 +46,8 @@
 		public function refresh():void
 		{
 			// refreshes the screen
-			FP.buffer.fillRect(FP.bounds, _color);
+			var color:uint = (uint(_alpha * 0xFF) << 24) | (_color) & 0xFFFFFF;
+			FP.buffer.fillRect(FP.bounds, color);
 		}
 		
 		/**
@@ -78,6 +79,12 @@
 		 */
 		public function get color():uint { return _color; }
 		public function set color(value:uint):void { _color = 0xFF000000 | value; }
+		
+		/**
+		 * Refresh alpha of the screen.
+		 */
+		public function get alpha():Number { return _alpha; }
+		public function set alpha(value:Number):void { _alpha = FP.clamp(value, 0, 1); }
 		
 		/**
 		 * X offset of the screen.
@@ -218,6 +225,7 @@
 		/** @private */ private var _scaleY:Number = 1;
 		/** @private */ private var _scale:Number = 1;
 		/** @private */ private var _angle:Number = 0;
-		/** @private */ private var _color:uint = 0x202020;
+		/** @private */ private var _color:uint = 0xFF202020;
+		/** @private */ private var _alpha:Number = 1.0;
 	}
 }
