@@ -182,7 +182,7 @@ package dungeon.contents
 			STATS[GC.STATUS_PER] = STATS[GC.STATUS_CHA] / 20 + (0.01 * (STATS[GC.STATUS_STR] + STATS[GC.STATUS_WIS] - 20));
 			STATS[GC.STATUS_SPPOWER] = Math.floor(STATS[GC.STATUS_INT]/10); // straight dmg multiplier for spells, plus items; items should have % boosts, maybe lesser and greater spellpower being 5 and 10% boosts each?
 			STATS[GC.STATUS_SPLEVEL] = STATS[GC.STATUS_LEVEL]; // TODO plus items. should this be alterable?
-			STATS[GC.STATUS_HPMAX] = STATS[GC.STATUS_HPMAX]; // TODO + items and FX, * level multiplier 
+			// STATS[GC.STATUS_HPMAX] = STATS[GC.STATUS_HPMAX]; // TODO + items and FX, * level multiplier 
 			if (init) {
 				STATS[GC.STATUS_HP] = STATS[GC.STATUS_CON]; // plus items
 				STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items

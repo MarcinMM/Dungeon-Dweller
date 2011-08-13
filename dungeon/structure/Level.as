@@ -38,7 +38,9 @@ package dungeon.structure
 		private const _roomsBigMax:int = 2;
 		private const _roomLimitMax:int = 10;
 		private const _roomLimitNormal:int = 6;
-		Input.define("DownLevel", Key.L);
+		Input.define("DownLevel", Key.PAGE_DOWN);
+		Input.define("UpLevel", Key.PAGE_UP);
+		Input.define("L", Key.L);
 
 		public var _roomsA:Array = [];
 		private var _rooms:int = 0;
@@ -118,7 +120,7 @@ package dungeon.structure
 			 */	
 		}
 
-		public function saveLevel():void {
+		public function saveLevel():LevelInfoHolder {
 			var levelHolder:LevelInfoHolder = new LevelInfoHolder();
 			
 			// save dungeonmap
@@ -129,26 +131,34 @@ package dungeon.structure
 			
 			// save nodemap
 			
-			// save items
-			for each (var item:Item in ITEMS) {
-				levelHolder.items.push(item);
-			}
+			// save items; these need to be copy methods
+			//for each (var item:Item in ITEMS) {
+			//	levelHolder.items.push(item);
+			//}
 			
-			// save creatures
-			for each (var creature:NPC in NPCS) {
-				levelHolder.creatures.push(creature);
-			}
+			// save creatures; these need to be copy methods
+			//for each (var creature:NPC in NPCS) {
+			//	levelHolder.creatures.push(creature);
+			//}
 			
 			// save decor
 			
-			Dungeon.LevelHolder.push(levelHolder);
+			return levelHolder;
 		}
 		
-		public function loadLevel():void {
+		public function loadLevel(levelHolder:LevelInfoHolder):void {
 			
+			_dungeonmap.loadFromString(levelHolder.structure);
+			graphic = _dungeonmap;
+			
+			_grid.loadFromString(levelHolder.collisions);
+			mask = _grid;
 		}
 		
 		private function drawLevel():void {
+			_roomsA = [];
+			_rooms = 0;
+
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, DEBUG); 
 			graphic = _dungeonmap;
@@ -322,10 +332,38 @@ package dungeon.structure
 				_nodemap.update();
 				_step = Dungeon.player.STEP;
 			}
+			// the following functions need "am I on correct stair tile" detection
+			var tempCounter:uint = Dungeon.LevelHolderCounter;
+			var tempLevelHolder:Vector.<LevelInfoHolder> = Dungeon.LevelHolder;
+			
 			if (Input.pressed("DownLevel")) {
+				if (Dungeon.LevelHolder.length <= Dungeon.LevelHolderCounter) {
+					Dungeon.LevelHolder.push(saveLevel());
+				} else {
+					Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
+				}
+				Dungeon.LevelHolderCounter++;
+				// only if no downward level exists in dungeon array of levelholders
+				if (Dungeon.LevelHolder.length <= Dungeon.LevelHolderCounter) {
+					drawLevel();
+				} else {
+					// otherwise load lower level from storage and redraw
+					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
+				}
+			}
+			if (Input.pressed("UpLevel")) {
+				Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
+				Dungeon.LevelHolderCounter--;
+				// load level from storage and redraw, if below 0
+				if (Dungeon.LevelHolderCounter >= 0 {
+					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
+				}
+				else {
+					// at some point, add a "do you wish to leave the dungeon?" msg for game over
+				}
+			}
+			if (Input.pressed("L")) {
 				// TODO: this needs a level saving and clearing routine
-				_roomsA = [];
-				_rooms = 0;
 				drawLevel();
 			}
 		}
