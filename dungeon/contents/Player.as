@@ -194,16 +194,27 @@ package dungeon.contents
 				invLettersAss.push(newLetter);
 				itemAr[0].invLetter = newLetter;
 				// now add item to local items
-				ITEMS[itemAr[0].ITEM_TYPE].push(itemAr[0]);
+				if (itemAr[0] is Weapon) {
+					itemAr[0] = itemAr[0] as Weapon;
+					var newInventoryWeapon:Weapon = itemAr[0].copy();
+					ITEMS[itemAr[0].ITEM_TYPE].push(newInventoryWeapon);
+				} else if (itemAr[0] is Armor) {
+					itemAr[0] = itemAr[0] as Armor;
+					var newInventoryArmor:Armor = itemAr[0].copy();
+					ITEMS[itemAr[0].ITEM_TYPE].push(newInventoryArmor);
+				}
 				INVENTORY_SIZE++;
 
 				// now remove it from level array
 				Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemAr[0]), 1);
+
+				// and remove from world
+				FP.world.remove(itemAr[0]);
 				
 				// entities can't be "removed" - they have to be relocated off screen instead
 				// calculate a position 10/10 tiles (not pixels) off the current resolution
-				itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
-				itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+				//itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
+				//itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
 				
 				// now update inventory object
 				Dungeon.statusScreen.updateInventory();	

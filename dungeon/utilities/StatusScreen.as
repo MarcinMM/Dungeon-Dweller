@@ -34,6 +34,7 @@ package dungeon.utilities
 		public var penDisplay:DisplayText;
 		public var sppowerDisplay:DisplayText;
 		public var splevelDisplay:DisplayText;
+		public var dglevelDisplay:DisplayText;
 		
 		// combat text/stuff
 		public var textDisplay1:DisplayText;
@@ -88,6 +89,7 @@ package dungeon.utilities
 			penDisplay = new DisplayText( "PEN: ", 240, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			sppowerDisplay = new DisplayText( "SPR: ", 300, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			splevelDisplay = new DisplayText( "SPL: ", 360, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			dglevelDisplay = new DisplayText( "DGLVL: ", 420, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
 			
 			// status combat text + debug text while in alpha/beta/LOLZ
 			textDisplay1 = new DisplayText( "", 10, (GC.VIEW_HEIGHT - 160), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
@@ -142,6 +144,7 @@ package dungeon.utilities
 			displayTexts.push(penDisplay);
 			displayTexts.push(sppowerDisplay);
 			displayTexts.push(splevelDisplay);
+			displayTexts.push(dglevelDisplay);
 			
 			displayTexts.push(textDisplay1);
 			displayTexts.push(textDisplay2);
@@ -256,6 +259,10 @@ package dungeon.utilities
 			penDisplay.displayText.text = "PEN: " + _stats[GC.STATUS_PEN].toFixed(2);
 			sppowerDisplay.displayText.text = "SPP: " + _stats[GC.STATUS_SPPOWER];
 			splevelDisplay.displayText.text = "SPL: " + _stats[GC.STATUS_SPLEVEL];
+		}
+		
+		public function depthUpdate():void {
+			dglevelDisplay.displayText.text = "DGLVL: " + Dungeon.LevelHolderCounter;			
 		}
 		
 		public function get visible():Boolean

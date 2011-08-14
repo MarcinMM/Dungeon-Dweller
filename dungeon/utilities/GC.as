@@ -151,6 +151,7 @@ package dungeon.utilities
 		public static const STATUS_PEN:uint = 14; // armor + bit of str
 		public static const STATUS_SPPOWER:uint = 15; // int
 		public static const STATUS_SPLEVEL:uint = 16; // locked to level
+		public static const STATUS_DGLEVEL:uint = 17; // dungeon level
 		
 		public static const KEYS:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		

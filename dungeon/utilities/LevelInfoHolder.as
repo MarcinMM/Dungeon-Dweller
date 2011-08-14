@@ -14,6 +14,11 @@ package dungeon.utilities
 		public var decor:String;
 		public var items:Array;
 		public var creatures:Array;
+
+		public function LevelInfoHolder() {
+			items = new Array();
+			creatures = new Array();
+		}
+
 	}
-	
 }

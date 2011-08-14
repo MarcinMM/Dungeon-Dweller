@@ -65,7 +65,29 @@ package dungeon.contents
 			
 			graphic = new Image(ARMOR);
 		}
-		
+
+		public function copy():Armor {
+			var newArmor:Armor = new Armor();
+			
+			newArmor.graphic = graphic;
+			newArmor.x = x;
+			newArmor.y = y;
+			newArmor.DESCRIPTION = DESCRIPTION;
+			newArmor.TRUE_DESCRIPTION = TRUE_DESCRIPTION;
+			newArmor.ITEM_TYPE = ITEM_TYPE;
+			newArmor.ITEM_LEVEL = ITEM_LEVEL;
+			newArmor.rating = rating;
+			newArmor.UNIQID = UNIQID;
+			newArmor.slot = slot;
+			
+			newArmor.defense = defense;
+			newArmor.attack = TILE_INDEX;
+			newArmor.crit = crit;
+			newArmor.strengthReq = strengthReq;
+			newArmor.armorMaterial = armorMaterial;
+			newArmor.armorType = armorType;
+			return newArmor;
+		}
 	}
 
 }

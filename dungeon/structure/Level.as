@@ -132,9 +132,17 @@ package dungeon.structure
 			// save nodemap
 			
 			// save items; these need to be copy methods
-			//for each (var item:Item in ITEMS) {
-			//	levelHolder.items.push(item);
-			//}
+			for each (var item:Item in ITEMS) {
+				if (item is Weapon) {
+					var weaponItem:Weapon =  item as Weapon;
+					var weaponCopy:Weapon = weaponItem.copy();
+					levelHolder.items.push(weaponCopy);
+				} else if (item is Armor) {
+					var armorItem:Armor = item as Armor;
+					var armorCopy:Armor = armorItem.copy();
+					levelHolder.items.push(armorCopy);
+				}
+			}
 			
 			// save creatures; these need to be copy methods
 			//for each (var creature:NPC in NPCS) {
@@ -158,6 +166,20 @@ package dungeon.structure
 			type = "level";
 			
 			_nodemap.load(_dungeonmap);
+			
+			// item load
+			ITEMS = new Array();
+			for each (var item:Item in levelHolder.items) {
+				if (item is Weapon) {
+					var weaponItem:Weapon = item as Weapon;					
+					var weaponCopy:Weapon = weaponItem.copy();
+					ITEMS.push(weaponCopy);
+				} else if (item is Armor) {
+					var armorItem:Armor = item as Armor;
+					var armorCopy:Armor = armorItem.copy();
+					ITEMS.push(armorCopy);
+				}
+			}
 		}
 		
 		private function drawLevel():void {
@@ -186,7 +208,7 @@ package dungeon.structure
 			
 			placePlayer();
 			
-			createAndPlaceNPCs();
+			//createAndPlaceNPCs();
 		}
 		
 		private function drawRooms():void {
@@ -355,6 +377,7 @@ package dungeon.structure
 					// otherwise load lower level from storage and redraw
 					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
 				}
+				Dungeon.statusScreen.depthUpdate();
 			}
 			if (Input.pressed("UpLevel")) {
 				Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
@@ -364,8 +387,10 @@ package dungeon.structure
 					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
 				}
 				else {
+					Dungeon.LevelHolderCounter = 0;
 					// at some point, add a "do you wish to leave the dungeon?" msg for game over
 				}
+				Dungeon.statusScreen.depthUpdate();
 			}
 			if (Input.pressed("L")) {
 				// TODO: this needs a level saving and clearing routine

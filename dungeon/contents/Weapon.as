@@ -125,6 +125,37 @@ package dungeon.contents
 			_assets.play("static");
 		}
 		
+		public function copy():Weapon {
+			var newWeapon:Weapon = new Weapon();
+
+			newWeapon.graphic = graphic;
+			newWeapon.x = x;
+			newWeapon.y = y;
+			newWeapon.DESCRIPTION = DESCRIPTION;
+			newWeapon.TRUE_DESCRIPTION = TRUE_DESCRIPTION;
+			newWeapon.ITEM_TYPE = ITEM_TYPE;
+			newWeapon.ITEM_LEVEL = ITEM_LEVEL;
+			newWeapon.rating = rating;
+			newWeapon.UNIQID = UNIQID;
+			newWeapon.slot = slot;
+			
+			newWeapon.defense = defense;
+			//newWeapon.TILE_INDEX = TILE_INDEX;
+			newWeapon.tileIndex = tileIndex;
+			newWeapon.attack = attack;
+			newWeapon.pen = defense;
+			newWeapon.hands = pen;
+			newWeapon.offhand = offhand;
+			newWeapon.offhandRating = offhandRating;
+			newWeapon.crit = crit;
+			newWeapon.strengthReq = strengthReq;
+			newWeapon.gtype = gtype;
+			newWeapon.crit = defense;
+			newWeapon.weaponMaterial = weaponMaterial;
+			newWeapon.weaponMaterial = weaponMaterial;
+			newWeapon.crit = defense;
+			return newWeapon;
+		}
 	}
 
 }

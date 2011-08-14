@@ -73,11 +73,9 @@ package dungeon.contents
 			
 			// weight and value and level has to draw from item and from level ...
 			
-			// location, currently random within bounds
-			var newX:uint = Math.round(Math.random() * Dungeon.TILESX);
-			var newY:uint = Math.round(Math.random() * Dungeon.TILESY);
-			x = newX * Dungeon.TILE_WIDTH;
-			y = newY * Dungeon.TILE_HEIGHT;
+			// location is set in level gen
+			x = 0;
+			y = 0;
 			
 			setHitbox(Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			
