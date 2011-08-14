@@ -66,9 +66,9 @@ package dungeon.contents
 			graphic = new Image(ARMOR);
 		}
 
-		public function copy():Armor {
+		public function selfCopy():Armor {
 			var newArmor:Armor = new Armor();
-			
+
 			newArmor.graphic = graphic;
 			newArmor.x = x;
 			newArmor.y = y;

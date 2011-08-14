@@ -446,25 +446,41 @@ package dungeon.contents
 						itemOnFloor.EQUIPPED = true;
 						Dungeon.statusScreen.updateCombatText(NPCType + " equips " + itemOnFloor.DESCRIPTION);
 						
-						ITEMS[itemOnFloor.ITEM_TYPE].push(itemOnFloor);
+						if (itemOnFloor is Weapon) {
+							var newInventoryWeapon:Weapon = itemOnFloor.selfCopy();
+							ITEMS[itemOnFloor.ITEM_TYPE].push(newInventoryWeapon);
+						} else if (itemOnFloor is Armor) {
+							var newInventoryArmor:Armor = itemOnFloor.selfCopy();
+							ITEMS[itemOnFloor.ITEM_TYPE].push(newInventoryArmor);
+						}
 
 						// now remove it from level array
 						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemOnFloor), 1);
 						
-						// move offscreen
-						itemOnFloor.x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
-						itemOnFloor.y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
+						// remove item from world
+						FP.world.remove(itemOnFloor);
 						
 						// unequip current (if exists) and drop it
 						if (equippedItem.found) {
 							equippedItem.item.EQUIPPED = false;
 							equippedItem.item.x = x;
 							equippedItem.item.y = y;
-							Dungeon.level.ITEMS.push(equippedItem);
-							ITEMS.splice(ITEMS.indexOf(equippedItem), 1);
+							if (equippedItem.item is Weapon) {
+								var droppedWeapon:Weapon = Weapon(equippedItem.item).selfCopy();
+								Dungeon.level.ITEMS[droppedWeapon.ITEM_TYPE].push(droppedWeapon);
+								FP.world.add(droppedWeapon);
+							} else if (equippedItem.item is Armor) {
+								var droppedArmor:Armor = Armor(equippedItem.item).selfCopy();
+								Dungeon.level.ITEMS[droppedArmor.ITEM_TYPE].push(droppedArmor);
+								FP.world.add(droppedArmor);
+							}
+
+							ITEMS.splice(ITEMS.indexOf(equippedItem.item), 1);
 							Dungeon.statusScreen.updateCombatText(NPCType + " drops " + equippedItem.item.DESCRIPTION);
 						}
-					} 
+					} else {
+						Dungeon.statusScreen.updateCombatText(NPCType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
+					}
 				}
 				updateDerivedStats();
 			}

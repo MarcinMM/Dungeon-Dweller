@@ -125,7 +125,7 @@ package dungeon.contents
 			_assets.play("static");
 		}
 		
-		public function copy():Weapon {
+		public function selfCopy():Weapon {
 			var newWeapon:Weapon = new Weapon();
 
 			newWeapon.graphic = graphic;
@@ -138,8 +138,8 @@ package dungeon.contents
 			newWeapon.rating = rating;
 			newWeapon.UNIQID = UNIQID;
 			newWeapon.slot = slot;
-			
 			newWeapon.defense = defense;
+			
 			//newWeapon.TILE_INDEX = TILE_INDEX;
 			newWeapon.tileIndex = tileIndex;
 			newWeapon.attack = attack;

@@ -176,6 +176,27 @@ package dungeon.contents
 			}
 		}
 		
+		// make a copy
+		// add copy to inventory
+		// subtract original from level ITEM array
+		// remove original from world
+		public function equipItem(item:*):void {
+			if (item is Weapon) {
+				var newInventoryWeapon:Weapon = item.selfCopy();
+				ITEMS[item.ITEM_TYPE].push(newInventoryWeapon);
+			} else if (item is Armor) {
+				var newInventoryArmor:Armor = item.selfCopy();
+				ITEMS[item.ITEM_TYPE].push(newInventoryArmor);
+			}
+			INVENTORY_SIZE++;
+
+			// now remove it from level array
+			Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(item), 1);
+
+			// and remove from world
+			FP.world.remove(item);			
+		}
+		
 		public function postMove():void {
 			// TODO: atm this is item pick-up code dumped in from update, needs a once over
 			if (collide("items", x, y)) {
@@ -195,12 +216,10 @@ package dungeon.contents
 				itemAr[0].invLetter = newLetter;
 				// now add item to local items
 				if (itemAr[0] is Weapon) {
-					itemAr[0] = itemAr[0] as Weapon;
-					var newInventoryWeapon:Weapon = itemAr[0].copy();
+					var newInventoryWeapon:Weapon = itemAr[0].selfCopy();
 					ITEMS[itemAr[0].ITEM_TYPE].push(newInventoryWeapon);
 				} else if (itemAr[0] is Armor) {
-					itemAr[0] = itemAr[0] as Armor;
-					var newInventoryArmor:Armor = itemAr[0].copy();
+					var newInventoryArmor:Armor = itemAr[0].selfCopy();
 					ITEMS[itemAr[0].ITEM_TYPE].push(newInventoryArmor);
 				}
 				INVENTORY_SIZE++;

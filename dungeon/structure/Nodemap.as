@@ -218,7 +218,7 @@ package dungeon.structure
 			var source:Node = getNodeTile(sourceDoor.x, sourceDoor.y);
 			var destNode:Node = getNodeTile(destDoor.x, destDoor.y);
 			path = source.findPath(destNode, 'corridor');
-			trace("path size:" + path.length);
+			//trace("path size:" + path.length);
 			// do not paint over any tile that's a door already
 			// tile for doors
 			var tileIndex:int;

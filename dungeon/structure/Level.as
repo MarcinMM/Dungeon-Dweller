@@ -132,17 +132,23 @@ package dungeon.structure
 			// save nodemap
 			
 			// save items; these need to be copy methods
+			trace("presave: size of items:" + ITEMS.length);
+			trace("presave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			for each (var item:Item in ITEMS) {
 				if (item is Weapon) {
 					var weaponItem:Weapon =  item as Weapon;
-					var weaponCopy:Weapon = weaponItem.copy();
+					var weaponCopy:Weapon = weaponItem.selfCopy();
 					levelHolder.items.push(weaponCopy);
 				} else if (item is Armor) {
 					var armorItem:Armor = item as Armor;
-					var armorCopy:Armor = armorItem.copy();
+					var armorCopy:Armor = armorItem.selfCopy();
 					levelHolder.items.push(armorCopy);
 				}
+				FP.world.remove(item);
+				ITEMS.splice(ITEMS.indexOf(item), 1);				
 			}
+			trace("postsave: size of items:" + ITEMS.length);
+			trace("postsave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			
 			// save creatures; these need to be copy methods
 			//for each (var creature:NPC in NPCS) {
@@ -169,17 +175,24 @@ package dungeon.structure
 			
 			// item load
 			ITEMS = new Array();
+			trace("preload: size of items:" + ITEMS.length);
+			trace("preload: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			for each (var item:Item in levelHolder.items) {
 				if (item is Weapon) {
 					var weaponItem:Weapon = item as Weapon;					
-					var weaponCopy:Weapon = weaponItem.copy();
+					var weaponCopy:Weapon = weaponItem.selfCopy();
 					ITEMS.push(weaponCopy);
+					FP.world.add(weaponCopy);
 				} else if (item is Armor) {
 					var armorItem:Armor = item as Armor;
-					var armorCopy:Armor = armorItem.copy();
+					var armorCopy:Armor = armorItem.selfCopy();
 					ITEMS.push(armorCopy);
+					FP.world.add(armorCopy);
 				}
+				levelHolder.items.splice(levelHolder.items.indexOf(item), 1);
 			}
+			trace("post load: size of items:" + ITEMS.length);
+			trace("post load: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 		}
 		
 		private function drawLevel():void {
@@ -237,7 +250,7 @@ package dungeon.structure
 					_rooms++;
 					// means room was added successfully
 				} else {
-					trace('no room added');
+					//trace('no room added');
 				}
 			}			
 		}
@@ -251,13 +264,15 @@ package dungeon.structure
 			var x:uint = 0;
 			var y:uint = 0;
 			var roomIndex:uint = 0;
-
+			
+			trace("pre draw level: " + ITEMS.length);
 			for each (var item:* in ITEMS) {
 				roomIndex = Math.max(0, (Math.round(Math.random() * _roomsA.length) - 1));
 				x = (_roomsA[roomIndex].x + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].width - 1)))) * GC.GRIDSIZE;
 				y = (_roomsA[roomIndex].y + Math.max(1, Math.round(Math.random() * (_roomsA[roomIndex].height - 1)))) * GC.GRIDSIZE;
 				item.x = x;
 				item.y = y;
+				FP.world.add(item);
 			}
 		}
 		

@@ -104,7 +104,7 @@ package dungeon.structure
 			
 			var neighborList:Vector.<Node>;
 			
-			trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
+			//trace("path from: " + this.x + "-" + this.y + " to " + endNode.x + "-" + endNode.y);
 						
 			var currentNode:Node = this;
 			openList.push(this);

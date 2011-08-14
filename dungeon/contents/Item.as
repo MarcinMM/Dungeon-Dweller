@@ -83,6 +83,22 @@ package dungeon.contents
 			layer = GC.ITEM_LAYER;
 		}
 		
+		/*public function copy():Item {
+			var newItem:Item = new Item();
+			
+			newItem.graphic = graphic;
+			newItem.x = x;
+			newItem.y = y;
+			newItem.DESCRIPTION = DESCRIPTION;
+			newItem.TRUE_DESCRIPTION = TRUE_DESCRIPTION;
+			newItem.ITEM_TYPE = ITEM_TYPE;
+			newItem.ITEM_LEVEL = ITEM_LEVEL;
+			newItem.rating = rating;
+			newItem.UNIQID = UNIQID;
+			newItem.slot = slot;
+			return newItem;
+		}*/
+		
 		// common functions, what could they be?
 		// carried vs. not carried? or player?
 		// equipped vs not equipped? or on player?

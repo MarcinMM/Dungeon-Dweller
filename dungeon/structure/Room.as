@@ -99,7 +99,7 @@ package dungeon.structure
                 // now floor
                 _dungeonmap.setRect(x+1,y+1,width-1,height-1, Level.FLOOR);
                 // now doors
-                trace("room x xRight y ybottom:" + x + "-" + xRight + "-" + y + "-" + yBottom);
+                //trace("room x xRight y ybottom:" + x + "-" + xRight + "-" + y + "-" + yBottom);
                 drawDoors(_dungeonmap);
 
                 // now interactives
@@ -109,7 +109,7 @@ package dungeon.structure
                 
                 _roomsA.push(this);
             } else {
-                trace("room add fail");
+                //trace("room add fail");
             }
             // pushed or not, the room array is returned to handler
             return _roomsA;
