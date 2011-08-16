@@ -45,9 +45,14 @@ package
 		public var cam:Camera;
 		
 		public static var LevelHolder:Vector.<LevelInfoHolder>;
-		public static var LevelHolderCounter:uint;
+		public static var LevelHolderCounter:int;
 		
 		public function Dungeon() {
+
+		}
+		
+		override public function begin():void {
+			super.begin();
 			LevelHolder = new Vector.<LevelInfoHolder>;
 			LevelHolderCounter = 0;
 			initMapSizes();
@@ -68,7 +73,7 @@ package
 			// now add all the items as entities; items were generated in level creation
 			// we will need an UNloader or perhaps REloader as well
 			// but this is the init
-			Dungeon.level.ITEMS.forEach(addItem);
+			// Dungeon.level.ITEMS.forEach(addItem);
 			
 			// ditto for entities
 			Dungeon.level.NPCS.forEach(addNPC);
@@ -82,7 +87,7 @@ package
 			add(overlay);
 			
 			decor = new Decor;
-			add(decor);
+			add(decor);			
 		}
 
 		// this will be where a possible future dataloader will determine level size for customized levels
@@ -106,7 +111,6 @@ package
 			// instead of drawing we're actually adding to world
 			add(npc);
 		}
-
 		
 		override public function update():void {
 			// Camera moves if player reaches cam offset

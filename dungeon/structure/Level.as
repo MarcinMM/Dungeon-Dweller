@@ -278,7 +278,7 @@ package dungeon.structure
 		
 		public function createItems():void {
 			// generate items for the level and handle drawing them as well
-			for (var i:uint = 0; i < 10; i++) {
+			for (var i:uint = 0; i < 3; i++) {
 				var itemGen:uint = Math.round(Math.random() * 3);
 				var callback:Function = ITEM_GEN[itemGen];
 				callback();
@@ -398,6 +398,7 @@ package dungeon.structure
 				Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
 				Dungeon.LevelHolderCounter--;
 				// load level from storage and redraw, if below 0
+				var level:int = Dungeon.LevelHolderCounter;
 				if (Dungeon.LevelHolderCounter >= 0) {
 					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
 				}
