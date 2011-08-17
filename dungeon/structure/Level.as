@@ -134,26 +134,34 @@ package dungeon.structure
 			// save items; these need to be copy methods
 			trace("presave: size of items:" + ITEMS.length);
 			trace("presave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
-			for each (var item:Item in ITEMS) {
-				if (item is Weapon) {
-					var weaponItem:Weapon =  item as Weapon;
-					var weaponCopy:Weapon = weaponItem.selfCopy();
-					levelHolder.items.push(weaponCopy);
-				} else if (item is Armor) {
-					var armorItem:Armor = item as Armor;
-					var armorCopy:Armor = armorItem.selfCopy();
-					levelHolder.items.push(armorCopy);
+			// we're removing items from array while iterating, so we need a loopdeloop
+			while (ITEMS.length > 0) {
+				for each (var item:Item in ITEMS) {
+					if (item is Weapon) {
+						var weaponItem:Weapon =  item as Weapon;
+						var weaponCopy:Weapon = weaponItem.selfCopy();
+						levelHolder.items.push(weaponCopy);
+					} else if (item is Armor) {
+						var armorItem:Armor = item as Armor;
+						var armorCopy:Armor = armorItem.selfCopy();
+						levelHolder.items.push(armorCopy);
+					}
+					FP.world.remove(item);
+					ITEMS.splice(ITEMS.indexOf(item), 1);	
 				}
-				FP.world.remove(item);
-				ITEMS.splice(ITEMS.indexOf(item), 1);				
 			}
 			trace("postsave: size of items:" + ITEMS.length);
 			trace("postsave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			
 			// save creatures; these need to be copy methods
-			//for each (var creature:NPC in NPCS) {
-			//	levelHolder.creatures.push(creature);
-			//}
+			while (NPCS.length > 0) {
+				for each (var npc:NPC in NPCS) {
+					var npcCopy:NPC = npc.selfCopy();
+					levelHolder.creatures.push(npcCopy);
+					FP.world.remove(npc);
+					NPCS.splice(NPCS.indexOf(npc), 1);	
+				}
+			}
 			
 			// save decor
 			
@@ -175,24 +183,38 @@ package dungeon.structure
 			
 			// item load
 			ITEMS = new Array();
+			
 			trace("preload: size of items:" + ITEMS.length);
 			trace("preload: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
-			for each (var item:Item in levelHolder.items) {
-				if (item is Weapon) {
-					var weaponItem:Weapon = item as Weapon;					
-					var weaponCopy:Weapon = weaponItem.selfCopy();
-					ITEMS.push(weaponCopy);
-					FP.world.add(weaponCopy);
-				} else if (item is Armor) {
-					var armorItem:Armor = item as Armor;
-					var armorCopy:Armor = armorItem.selfCopy();
-					ITEMS.push(armorCopy);
-					FP.world.add(armorCopy);
+			// we're removing items from array while iterating, so we need a loopdeloop
+			while (levelHolder.items.length > 0) {
+				for each (var item:Item in levelHolder.items) {
+					if (item is Weapon) {
+						var weaponItem:Weapon = item as Weapon;					
+						var weaponCopy:Weapon = weaponItem.selfCopy();
+						ITEMS.push(weaponCopy);
+						FP.world.add(weaponCopy);
+					} else if (item is Armor) {
+						var armorItem:Armor = item as Armor;
+						var armorCopy:Armor = armorItem.selfCopy();
+						ITEMS.push(armorCopy);
+						FP.world.add(armorCopy);
+					}
+					levelHolder.items.splice(levelHolder.items.indexOf(item), 1);
 				}
-				levelHolder.items.splice(levelHolder.items.indexOf(item), 1);
 			}
-			trace("post load: size of items:" + ITEMS.length);
-			trace("post load: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
+			
+			// now creatures
+			// save creatures; these need to be copy methods
+			while (levelHolder.creatures.length > 0) {
+				for each (var npc:NPC in levelHolder.creatures) {
+					var npcCopy:NPC = npc.selfCopy();
+					NPCS.push(npcCopy);
+					FP.world.remove(npc);
+					levelHolder.creatures.splice(levelHolder.creatures.indexOf(npc), 1);	
+				}
+			}			
+			
 		}
 		
 		private function drawLevel():void {
@@ -278,7 +300,7 @@ package dungeon.structure
 		
 		public function createItems():void {
 			// generate items for the level and handle drawing them as well
-			for (var i:uint = 0; i < 3; i++) {
+			for (var i:uint = 0; i < 2; i++) {
 				var itemGen:uint = Math.round(Math.random() * 3);
 				var callback:Function = ITEM_GEN[itemGen];
 				callback();
@@ -395,11 +417,11 @@ package dungeon.structure
 				Dungeon.statusScreen.depthUpdate();
 			}
 			if (Input.pressed("UpLevel")) {
-				Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
-				Dungeon.LevelHolderCounter--;
-				// load level from storage and redraw, if below 0
-				var level:int = Dungeon.LevelHolderCounter;
-				if (Dungeon.LevelHolderCounter >= 0) {
+				if (Dungeon.LevelHolderCounter > 0) {
+					Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
+					Dungeon.LevelHolderCounter--;
+					// load level from storage and redraw, if below 0
+					var level:int = Dungeon.LevelHolderCounter;
 					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
 				}
 				else {

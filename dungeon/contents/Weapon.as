@@ -152,8 +152,6 @@ package dungeon.contents
 			newWeapon.gtype = gtype;
 			newWeapon.crit = defense;
 			newWeapon.weaponMaterial = weaponMaterial;
-			newWeapon.weaponMaterial = weaponMaterial;
-			newWeapon.crit = defense;
 			return newWeapon;
 		}
 	}

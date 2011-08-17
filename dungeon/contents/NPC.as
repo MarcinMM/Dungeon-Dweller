@@ -487,6 +487,24 @@ package dungeon.contents
 			ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 		}
 		
+		public function selfCopy():NPC {
+			var newNPC:NPC = new NPC();
+
+			newNPC.graphic = graphic;
+			newNPC.x = x;
+			newNPC.y = y;
+			newNPC.ALIGNMENT = ALIGNMENT;
+			newNPC.FACTION = FACTION;
+			newNPC.NPCLevel = NPCLevel;
+			newNPC.NPCType = NPCType;
+			
+			// now copy STATS and ITEMS arrays
+			// actually stats are initialized on NPC init; precise numbers aren't that important
+			// so only copy ITEMS array
+			
+			return newNPC;
+		}		
+		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {
 				ACTION_TAKEN = false;
