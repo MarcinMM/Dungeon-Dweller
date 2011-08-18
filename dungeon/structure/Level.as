@@ -131,9 +131,6 @@ package dungeon.structure
 			
 			// save nodemap
 			
-			// save items; these need to be copy methods
-			trace("presave: size of items:" + ITEMS.length);
-			trace("presave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			// world remove first, clear array second
 			for each (var item:Item in ITEMS) {
 				if (item is Weapon) {
@@ -147,19 +144,13 @@ package dungeon.structure
 				}
 				FP.world.remove(item);
 			}
-			trace("postsave: size of items:" + ITEMS.length);
-			trace("postsave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			ITEMS = new Array();
-			trace("postsave: size of items:" + ITEMS.length);
 			
 			// save creatures; these need to be copy methods
-			while (NPCS.length > 0) {
-				for each (var npc:NPC in NPCS) {
-					var npcCopy:NPC = npc.selfCopy();
-					levelHolder.creatures.push(npcCopy);
-					FP.world.remove(npc);
-					NPCS.splice(NPCS.indexOf(npc), 1);	
-				}
+			for each (var npc:NPC in NPCS) {
+				var npcCopy:NPC = npc.selfCopy();
+				levelHolder.creatures.push(npcCopy);
+				FP.world.remove(npc);
 			}
 			NPCS = new Array();
 			
@@ -184,8 +175,6 @@ package dungeon.structure
 			// item load
 			ITEMS = new Array();
 			
-			trace("preload: size of items:" + ITEMS.length);
-			trace("preload: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
 			// world-remove first, array removal second
 			for each (var item:Item in levelHolder.items) {
 				if (item is Weapon) {
@@ -202,14 +191,10 @@ package dungeon.structure
 			}
 			levelHolder.items = new Array();
 			// now creatures
-			// save creatures; these need to be copy methods
-			while (levelHolder.creatures.length > 0) {
-				for each (var npc:NPC in levelHolder.creatures) {
-					var npcCopy:NPC = npc.selfCopy();
-					NPCS.push(npcCopy);
-					FP.world.remove(npc);
-					levelHolder.creatures.splice(levelHolder.creatures.indexOf(npc), 1);
-				}
+			for each (var npc:NPC in levelHolder.creatures) {
+				var npcCopy:NPC = npc.selfCopy();
+				NPCS.push(npcCopy);
+				FP.world.add(npcCopy);
 			}
 			levelHolder.creatures = new Array();
 		}
