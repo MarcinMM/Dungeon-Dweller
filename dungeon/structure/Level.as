@@ -134,24 +134,23 @@ package dungeon.structure
 			// save items; these need to be copy methods
 			trace("presave: size of items:" + ITEMS.length);
 			trace("presave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
-			// we're removing items from array while iterating, so we need a loopdeloop
-			while (ITEMS.length > 0) {
-				for each (var item:Item in ITEMS) {
-					if (item is Weapon) {
-						var weaponItem:Weapon =  item as Weapon;
-						var weaponCopy:Weapon = weaponItem.selfCopy();
-						levelHolder.items.push(weaponCopy);
-					} else if (item is Armor) {
-						var armorItem:Armor = item as Armor;
-						var armorCopy:Armor = armorItem.selfCopy();
-						levelHolder.items.push(armorCopy);
-					}
-					FP.world.remove(item);
-					ITEMS.splice(ITEMS.indexOf(item), 1);	
+			// world remove first, clear array second
+			for each (var item:Item in ITEMS) {
+				if (item is Weapon) {
+					var weaponItem:Weapon =  item as Weapon;
+					var weaponCopy:Weapon = weaponItem.selfCopy();
+					levelHolder.items.push(weaponCopy);
+				} else if (item is Armor) {
+					var armorItem:Armor = item as Armor;
+					var armorCopy:Armor = armorItem.selfCopy();
+					levelHolder.items.push(armorCopy);
 				}
+				FP.world.remove(item);
 			}
 			trace("postsave: size of items:" + ITEMS.length);
 			trace("postsave: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
+			ITEMS = new Array();
+			trace("postsave: size of items:" + ITEMS.length);
 			
 			// save creatures; these need to be copy methods
 			while (NPCS.length > 0) {
@@ -162,6 +161,7 @@ package dungeon.structure
 					NPCS.splice(NPCS.indexOf(npc), 1);	
 				}
 			}
+			NPCS = new Array();
 			
 			// save decor
 			
@@ -186,24 +186,21 @@ package dungeon.structure
 			
 			trace("preload: size of items:" + ITEMS.length);
 			trace("preload: holder length: " + levelHolder.items.length + "|holder index" + Dungeon.LevelHolderCounter);
-			// we're removing items from array while iterating, so we need a loopdeloop
-			while (levelHolder.items.length > 0) {
-				for each (var item:Item in levelHolder.items) {
-					if (item is Weapon) {
-						var weaponItem:Weapon = item as Weapon;					
-						var weaponCopy:Weapon = weaponItem.selfCopy();
-						ITEMS.push(weaponCopy);
-						FP.world.add(weaponCopy);
-					} else if (item is Armor) {
-						var armorItem:Armor = item as Armor;
-						var armorCopy:Armor = armorItem.selfCopy();
-						ITEMS.push(armorCopy);
-						FP.world.add(armorCopy);
-					}
-					levelHolder.items.splice(levelHolder.items.indexOf(item), 1);
+			// world-remove first, array removal second
+			for each (var item:Item in levelHolder.items) {
+				if (item is Weapon) {
+					var weaponItem:Weapon = item as Weapon;					
+					var weaponCopy:Weapon = weaponItem.selfCopy();
+					ITEMS.push(weaponCopy);
+					FP.world.add(weaponCopy);
+				} else if (item is Armor) {
+					var armorItem:Armor = item as Armor;
+					var armorCopy:Armor = armorItem.selfCopy();
+					ITEMS.push(armorCopy);
+					FP.world.add(armorCopy);
 				}
 			}
-			
+			levelHolder.items = new Array();
 			// now creatures
 			// save creatures; these need to be copy methods
 			while (levelHolder.creatures.length > 0) {
@@ -211,10 +208,10 @@ package dungeon.structure
 					var npcCopy:NPC = npc.selfCopy();
 					NPCS.push(npcCopy);
 					FP.world.remove(npc);
-					levelHolder.creatures.splice(levelHolder.creatures.indexOf(npc), 1);	
+					levelHolder.creatures.splice(levelHolder.creatures.indexOf(npc), 1);
 				}
-			}			
-			
+			}
+			levelHolder.creatures = new Array();
 		}
 		
 		private function drawLevel():void {
@@ -243,7 +240,7 @@ package dungeon.structure
 			
 			placePlayer();
 			
-			//createAndPlaceNPCs();
+			createAndPlaceNPCs();
 		}
 		
 		private function drawRooms():void {

@@ -25,6 +25,7 @@ package dungeon.contents
 		// What is this thing? And what type of descriptors do we need? Let's start simple.
 		public var NPCType:String;
 		public var NPCLevel:uint;
+		public var UNIQUE:Boolean = false;
 			
 		// pathing status
 		private var POSITION:Point;
@@ -499,11 +500,29 @@ package dungeon.contents
 			newNPC.NPCType = NPCType;
 			
 			// now copy STATS and ITEMS arrays
-			// actually stats are initialized on NPC init; precise numbers aren't that important
+			// actually stats are initialized on NPC init + type; precise numbers aren't that important for generic NPCS
+			// we might have a subroutine for dealing with uniques, like so:
+			// if (NPCUnique) { processUnique(); }
 			// so only copy ITEMS array
 			
+			var copiedItems:Array = new Array();
+			for each (var itemCategory:Array in ITEMS) {
+				for each (var item:Item in itemCategory) {
+					if (item is Weapon) {
+						var weaponItem:Weapon = item as Weapon;					
+						var weaponCopy:Weapon = weaponItem.selfCopy();
+						copiedItems.push(weaponCopy);
+					} else if (item is Armor) {
+						var armorItem:Armor = item as Armor;
+						var armorCopy:Armor = armorItem.selfCopy();
+						copiedItems.push(armorCopy);
+					}
+				}
+			}
+			newNPC.ITEMS = copiedItems;
+			
 			return newNPC;
-		}		
+		}	
 		
 		override public function update():void {
 			if (Dungeon.player.STEP != STEP) {

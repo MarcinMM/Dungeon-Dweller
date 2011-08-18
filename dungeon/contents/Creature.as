@@ -39,7 +39,7 @@ package dungeon.contents
 		public var POTIONS:Array = new Array();
 		public var JEWELRY:Array = new Array();
 		// this must correspond to the constants 0,1,2,3,4 so we can assign items properly
-		public var ITEMS:Array = [ARMOR, WEAPONS, SCROLLS, POTIONS, JEWELRY];
+		public var ITEMS:Array = [ARMOR, WEAPONS];
 
 		// Stat Array
 		public var STATS:Array = new Array();		
