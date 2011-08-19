@@ -367,7 +367,9 @@ package dungeon.structure
 				}
 				npc.x = x;
 				npc.y = y;
-			}			
+				FP.world.add(npc);
+			}
+			
 		}
 		
 		override public function update():void {
@@ -411,10 +413,6 @@ package dungeon.structure
 					// at some point, add a "do you wish to leave the dungeon?" msg for game over
 				}
 				Dungeon.statusScreen.depthUpdate();
-			}
-			if (Input.pressed("L")) {
-				// TODO: this needs a level saving and clearing routine
-				drawLevel();
 			}
 		}
 	}

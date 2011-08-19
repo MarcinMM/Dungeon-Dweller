@@ -505,17 +505,19 @@ package dungeon.contents
 			// if (NPCUnique) { processUnique(); }
 			// so only copy ITEMS array
 			
-			var copiedItems:Array = new Array();
+			var copiedArmor:Array = new Array();
+			var copiedWeapons:Array = new Array();
+			var copiedItems:Array = [copiedArmor, copiedWeapons];
 			for each (var itemCategory:Array in ITEMS) {
 				for each (var item:Item in itemCategory) {
 					if (item is Weapon) {
 						var weaponItem:Weapon = item as Weapon;					
 						var weaponCopy:Weapon = weaponItem.selfCopy();
-						copiedItems.push(weaponCopy);
+						copiedItems[weaponCopy.ITEM_TYPE].push(weaponCopy);
 					} else if (item is Armor) {
 						var armorItem:Armor = item as Armor;
 						var armorCopy:Armor = armorItem.selfCopy();
-						copiedItems.push(armorCopy);
+						copiedItems[armorCopy.ITEM_TYPE].push(armorCopy);
 					}
 				}
 			}

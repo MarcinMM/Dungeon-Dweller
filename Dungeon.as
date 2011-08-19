@@ -76,7 +76,7 @@ package
 			// Dungeon.level.ITEMS.forEach(addItem);
 			
 			// ditto for entities
-			Dungeon.level.NPCS.forEach(addNPC);
+			//Dungeon.level.NPCS.forEach(addNPC);
 			
 			// status screen creation
 			add(statusScreen.background);

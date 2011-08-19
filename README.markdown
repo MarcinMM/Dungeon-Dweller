@@ -2,17 +2,13 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 8/10
+# TODO MVP 8/18
 
 * Wrap up time-based regen.
-* Pre-load/save tweaks to Level to make loading/saving possible. DrawLevel really needs to hold all of the level gen stuff, from floor to hallways to creatures to items.
-* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well. Tentative plan: create a LevelHolder class that stores level Tilemap, decor DecorGraphic, level collision map, NPCs and Items. Dungeon has a Vector (?) of LevelHolders and can only add/remove them (no updating these during play). We can use this later for saving the game.
 * Armor gen, [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * PC design (races, perks), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * Ability to layer transparent random tiles on top (north? y-1 anyway) of impassable tiles to create more convincing layered environments.
-* Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
-* Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 * Diagonal movement. Do we really need this?
 
 # TODO FUTURE WISHLIST
@@ -40,6 +36,8 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Line of Sight NPC awareness and detection, with Player's light radius in account
 * Pathing optimizations, per comments in code. Turn indexOf and arrays to 
 * Change DecorGraphic from using multiple Tilemaps to a new version of DungeonTilemap that draws multiple tiles, per suggestion [in this post](http://codesquares.com/post/multilayering_terrain_randomization_old_todo_discovery#disqus_thread).
+* Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
+* Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
 
 *UI*
 
@@ -55,6 +53,11 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/18/2011
+
+* Pre-load/save tweaks to Level to make loading/saving possible. DrawLevel really needs to hold all of the level gen stuff, from floor to hallways to creatures to items.
+* Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well. Tentative plan: create a LevelHolder class that stores level Tilemap, decor DecorGraphic, level collision map, NPCs and Items. Dungeon has a Vector (?) of LevelHolders and can only add/remove them (no updating these during play). We can use this later for saving the game.
 
 # UPDATES 8/10/2011
 
