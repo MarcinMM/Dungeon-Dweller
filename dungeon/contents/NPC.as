@@ -302,7 +302,7 @@ package dungeon.contents
 			// calculations to modify the attack based on player's defense stats
 			// return true if dead for text and player stat update (XP+)
 			STATS[GC.STATUS_HP] -= attackValue;
-			Dungeon.decor.splatter(x, y, false, GC.SPLAT_BLOOD);
+			Dungeon.level.decor.splatter(x, y, false, GC.SPLAT_BLOOD);
 			if (STATS[GC.STATUS_HP] <= 0) {
 				// TODO: drop loot/corpse when dead
 				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.

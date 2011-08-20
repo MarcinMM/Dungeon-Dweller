@@ -50,7 +50,7 @@ package dungeon.structure
 
 		// Level game data
 		public var dungeonDepth:uint = 1;
-		public static var decor:Decor;
+		public var decor:Decor;
 
 		// frequency array for levels; will probably need to be dynamic
 		// this rudimentary distribution array should work for now
@@ -232,7 +232,7 @@ package dungeon.structure
 			createAndPlaceNPCs();
 			
 			decor = new Decor;
-			add(decor);
+			FP.world.add(decor);
 		}
 		
 		private function drawRooms():void {
