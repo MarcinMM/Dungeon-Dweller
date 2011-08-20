@@ -21,6 +21,7 @@ package dungeon.structure
 	import dungeon.structure.Node;
 	import dungeon.structure.Nodemap;
 	import dungeon.utilities.GC;
+	import dungeon.utilities.Overlay;
 
 	/**
 	 * ...
@@ -49,6 +50,7 @@ package dungeon.structure
 
 		// Level game data
 		public var dungeonDepth:uint = 1;
+		public static var decor:Decor;
 
 		// frequency array for levels; will probably need to be dynamic
 		// this rudimentary distribution array should work for now
@@ -156,6 +158,8 @@ package dungeon.structure
 			
 			// save decor
 			
+			//levelHolder.decor
+			
 			return levelHolder;
 		}
 		
@@ -226,6 +230,9 @@ package dungeon.structure
 			placePlayer();
 			
 			createAndPlaceNPCs();
+			
+			decor = new Decor;
+			add(decor);
 		}
 		
 		private function drawRooms():void {

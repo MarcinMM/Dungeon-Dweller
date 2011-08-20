@@ -223,6 +223,7 @@ package dungeon.contents
 			STATS[GC.STATUS_ATT] = 3;
 			STATS[GC.STATUS_DEF] = 3;
 			STATS[GC.STATUS_HP] = 15;
+			STATS[GC.STATUS_HPMAX] = 15;
 		}
 		
 		public function processCombat():void {
@@ -548,7 +549,7 @@ package dungeon.contents
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 				checkItem();
 				
-				//processCombat();
+				processCombat();
 				pathedMovementStep();
 	
 				// currently the below means creature will seek nearest non-aligned NPC
@@ -587,6 +588,9 @@ package dungeon.contents
 					idleMovement();
 				}
 
+				// now that I think of it, some creatures won't regen
+				processRegen();
+				
 				// finally sync NPC with player
 				STEP = Dungeon.player.STEP;
 			}

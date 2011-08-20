@@ -34,7 +34,7 @@ package dungeon.utilities
 			
 			mapLocations = new Vector.<uint>(Dungeon.TILESX * Dungeon.TILESY);
 		}
-
+		
 		// clear all decor on level load
 		public function resetDecor():void {
 			mapLocations = new Vector.<uint>(Dungeon.TILESX * Dungeon.TILESY);

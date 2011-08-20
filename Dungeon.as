@@ -27,8 +27,6 @@ package
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
-		public static var overlay:Overlay;
-		public static var decor:Decor;
 
 		// these are redefined here for use in future map generation
 		// it is possible that the dungeon will contain varied-size levels
@@ -46,6 +44,9 @@ package
 		
 		public static var LevelHolder:Vector.<LevelInfoHolder>;
 		public static var LevelHolderCounter:int;
+		
+		// this is for detecting mouse clicks and positions, and taking actions on it
+		public static var overlay:Overlay;
 		
 		public function Dungeon() {
 
@@ -69,14 +70,6 @@ package
 			// set up cam
 			cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);
 			cam.adjustToPlayer(MAP_HEIGHT, MAP_WIDTH, player);
-
-			// now add all the items as entities; items were generated in level creation
-			// we will need an UNloader or perhaps REloader as well
-			// but this is the init
-			// Dungeon.level.ITEMS.forEach(addItem);
-			
-			// ditto for entities
-			//Dungeon.level.NPCS.forEach(addNPC);
 			
 			// status screen creation
 			add(statusScreen.background);
@@ -85,9 +78,6 @@ package
 
 			overlay = new Overlay;
 			add(overlay);
-			
-			decor = new Decor;
-			add(decor);			
 		}
 
 		// this will be where a possible future dataloader will determine level size for customized levels

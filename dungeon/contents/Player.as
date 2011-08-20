@@ -83,7 +83,7 @@ package dungeon.contents
 					STATS[GC.STATUS_WIS] = 10;
 					STATS[GC.STATUS_CHA] = 10;
 					STATS[GC.STATUS_CON] = 14;
-					STATS[GC.STATUS_HEALRATE] = 15;
+					STATS[GC.STATUS_HEALRATE] = 2;
 					STATS[GC.STATUS_HEALSTEP] = 0;
 					break;
 				case "shaman":
@@ -93,7 +93,7 @@ package dungeon.contents
 					STATS[GC.STATUS_WIS] = 13;
 					STATS[GC.STATUS_CHA] = 12;
 					STATS[GC.STATUS_CON] = 10;
-					STATS[GC.STATUS_HEALRATE] = 15;
+					STATS[GC.STATUS_HEALRATE] = 2;
 					STATS[GC.STATUS_HEALSTEP] = 0;
 					break;
 				case "scout":
@@ -103,7 +103,7 @@ package dungeon.contents
 					STATS[GC.STATUS_WIS] = 11;
 					STATS[GC.STATUS_CHA] = 11;
 					STATS[GC.STATUS_CON] = 12;
-					STATS[GC.STATUS_HEALRATE] = 15;
+					STATS[GC.STATUS_HEALRATE] = 2;
 					STATS[GC.STATUS_HEALSTEP] = 0;
 					break;
 			}
@@ -336,6 +336,7 @@ package dungeon.contents
 			if (STEP != syncStep) {
 				// process regeneration
 				processRegen();
+				Dungeon.statusScreen.statUpdate(STATS);	
 				// process any cumulative equipment/enchantment effects
 				syncStep = STEP;
 			}

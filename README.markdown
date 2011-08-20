@@ -4,7 +4,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 8/18
 
-* Wrap up time-based regen.
+* Oops, forgot decor for level persistence. Also I might have to add MonsterGraphic copy to creatures - not sure how it's working now but I suspect it's because of memory location pointer weirdness (and non cleanup by AS3/Flex).
 * Armor gen, [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * PC design (races, perks), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
@@ -56,6 +56,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # UPDATES 8/18/2011
 
+* Wrap up time-based regen.
 * Pre-load/save tweaks to Level to make loading/saving possible. DrawLevel really needs to hold all of the level gen stuff, from floor to hallways to creatures to items.
 * Vertical dungeon structure (saving/loading levels for going up/down). Save/load decor as well. Tentative plan: create a LevelHolder class that stores level Tilemap, decor DecorGraphic, level collision map, NPCs and Items. Dungeon has a Vector (?) of LevelHolders and can only add/remove them (no updating these during play). We can use this later for saving the game.
 
