@@ -30,7 +30,7 @@ package dungeon.contents
 		public var strengthReq:uint = 0;
 		public var gtype:String; // graphic type
 		
-		public function Weapon() 
+		public function Weapon(setGraphic:Boolean = true) 
 		{
 			slot = GC.SLOT_PRIMARY_WEAPON; // default slot for weapons
 			var randWeapon:uint = Math.round(Math.random() * (Dungeon.dataloader.weapons.length - 1));
@@ -104,6 +104,8 @@ package dungeon.contents
 			strengthReq = weaponPrototype.strengthReq;
 			rating = (attack * pen) + (attack * crit * pen) + defense; // absolute weapon rating used for creatures to determine relative weapon quality
 			
+			gtype = weaponPrototype.type;
+			
 			super();
 			
 			// set which tile this weapon is, based on type probably
@@ -115,20 +117,21 @@ package dungeon.contents
 
 			// dynamic spritemap assignation based on item type. one day, maybe on material too.
 			// i.e.: weaponPrototype.name, materialPrototype.name
-			if (GC.WEAPON_TILES[weaponPrototype.type] == undefined) {
-				_assets.add("static", [69], 0, false);
-			} else {
-				_assets.add("static", [GC.WEAPON_TILES[weaponPrototype.type]], 0, false);
+			if (setGraphic) {
+				if (GC.WEAPON_TILES[weaponPrototype.type] == undefined) {
+					_assets.add("static", [69], 0, false);
+				} else {
+					_assets.add("static", [GC.WEAPON_TILES[weaponPrototype.type]], 0, false);
+				}
+				//_assets.add("anim", [6, 7, 8, 9, 10, 11], 0, false); // animations!
+				graphic = _assets;	
+				_assets.play("static");
 			}
-			//_assets.add("anim", [6, 7, 8, 9, 10, 11], 0, false); // animations!
-			graphic = _assets;	
-			_assets.play("static");
 		}
 		
 		public function selfCopy():Weapon {
-			var newWeapon:Weapon = new Weapon();
+			var newWeapon:Weapon = new Weapon(false);
 
-			newWeapon.graphic = graphic;
 			newWeapon.x = x;
 			newWeapon.y = y;
 			newWeapon.DESCRIPTION = DESCRIPTION;
@@ -152,6 +155,10 @@ package dungeon.contents
 			newWeapon.gtype = gtype;
 			newWeapon.crit = defense;
 			newWeapon.weaponMaterial = weaponMaterial;
+			
+			newWeapon._assets.add("static", [GC.WEAPON_TILES[newWeapon.gtype]], 0, false);
+			newWeapon.graphic = newWeapon._assets;
+			newWeapon._assets.play("static");
 			return newWeapon;
 		}
 	}

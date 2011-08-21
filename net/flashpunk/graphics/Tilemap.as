@@ -269,7 +269,7 @@
 				cols = col.length;
 				for (x = 0; x < cols; x ++)
 				{
-					if (col[x] == '') continue;
+					if (col[x] == '' || col[x] == 0) continue;
 					setTile(x, y, uint(col[x]));
 				}
 			}

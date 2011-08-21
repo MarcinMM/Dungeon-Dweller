@@ -9,54 +9,50 @@ package dungeon.utilities
 	
 	public class DecorGraphic extends Graphic {
 
-		public var layerOne:Tilemap;
-		public var layerTwo:Tilemap;
-		public var layerThree:Tilemap;
-		public var layerFour:Tilemap;
-
 		public var layerArray:Array = [];
 		public var mapLocations:Vector.<uint>;
 		
 		public var layerCount:uint = 4;
-		// TODO: make actual spatters tilemap with 10? 20? spatters
 		// TODO: also add green and blue recolors of spatters
 		[Embed(source = '/assets/surface_nonsolids.png')] private const BLOODSPLATTER:Class;
 
 		public var layerIndex:uint = 0;
 	  
 		// init all layers in layerArray
-		public function DecorGraphic() {
-			var map:Tilemap;
-			for (var i:uint = 0; i < layerCount; i++ ) {
-				map = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
-				layerArray.push(map);
+		public function DecorGraphic(makeNew:Boolean = true) {
+			if (makeNew) {
+				for (var i:uint = 0; i < layerCount; i++ ) {
+					var map:Tilemap = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+					var test:String = map.saveToString();
+					layerArray.push(map);
+				}
 			}
 			
 			mapLocations = new Vector.<uint>(Dungeon.TILESX * Dungeon.TILESY);
 		}
 		
 		// clear all decor on level load
-		public function resetDecor():void {
+		public function resetDecorGraphic():void {
 			mapLocations = new Vector.<uint>(Dungeon.TILESX * Dungeon.TILESY);
 			for each (var i:Tilemap in layerArray) {
 				i.clearRect(0, 0, Dungeon.TILESX, Dungeon.TILESY);
-			}		
-		}
-		
-		// TODO: we'll need restore and save decor as well
-		/*
-		public function saveDecor() {
-			for each (var i:Tilemap in layerArray) {
-				i.saveToString(",", ":");
 			}
 		}
 		
-		public function loadDecor() {
+		public function selfCopy():DecorGraphic {
+			var copy:DecorGraphic = new DecorGraphic(false);
 			for each (var i:Tilemap in layerArray) {
-				i.loadFromString(str, ",", ":");
+				var map:Tilemap = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+				var savedMap:String = i.saveToString();
+				map.loadFromString(savedMap);
+				copy.layerArray.push(map);
 			}
+			for (var j:uint = 0; j < mapLocations.length; j++) {
+				copy.mapLocations[j] = mapLocations[j];
+			}
+			
+			return copy;
 		}
-		*/
 		
 		// you have to choose material (which is the tile in tilemap) and the option to randomize; randomMaterial indicates maximum offset for random. 0 indicates no offset 
 		public function addDecor(x:uint, y:uint, material:uint, randomMaterial:uint):void {

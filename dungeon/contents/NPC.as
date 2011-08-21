@@ -52,9 +52,11 @@ package dungeon.contents
 		public function NPC() 
 		{
 			super();
+			// TODO: this is random, but needs to be driven by creature type
 			var randCritter:uint = Math.round((Math.random() * 16)) + 20;
 			_imgOverlay = new MonsterGraphic(randCritter,0,0);
 			graphic = _imgOverlay;
+			
 			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
 			STEP = Dungeon.player.STEP;
@@ -492,7 +494,7 @@ package dungeon.contents
 		public function selfCopy():NPC {
 			var newNPC:NPC = new NPC();
 
-			newNPC.graphic = graphic;
+			newNPC.graphic = graphic; // TODO: placeholder until NPCs are designed
 			newNPC.x = x;
 			newNPC.y = y;
 			newNPC.ALIGNMENT = ALIGNMENT;
@@ -524,6 +526,10 @@ package dungeon.contents
 			}
 			newNPC.ITEMS = copiedItems;
 			
+			// TODO: once NPC types exist, this is a simple call to recreate graphic
+			//var _imgOverlay:MonsterGraphic = new MonsterGraphic(randCritter,0,0);
+			//newNPC.graphic = _imgOverlay;
+
 			return newNPC;
 		}	
 		

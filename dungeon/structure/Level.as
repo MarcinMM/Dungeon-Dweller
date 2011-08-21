@@ -145,6 +145,7 @@ package dungeon.structure
 					levelHolder.items.push(armorCopy);
 				}
 				FP.world.remove(item);
+				item = null;
 			}
 			ITEMS = new Array();
 			
@@ -153,12 +154,14 @@ package dungeon.structure
 				var npcCopy:NPC = npc.selfCopy();
 				levelHolder.creatures.push(npcCopy);
 				FP.world.remove(npc);
+				// npc = null; TODO: to be added once NPCs create graphics based on type; currently, graphic is saved by reference
 			}
 			NPCS = new Array();
 			
 			// save decor
-			
-			//levelHolder.decor
+			levelHolder.decor = decor.selfCopy();
+			decor.resetDecor();
+			FP.world.remove(decor);
 			
 			return levelHolder;
 		}
@@ -192,6 +195,7 @@ package dungeon.structure
 					ITEMS.push(armorCopy);
 					FP.world.add(armorCopy);
 				}
+				item = null; // destructor?
 			}
 			levelHolder.items = new Array();
 			// now creatures
@@ -199,8 +203,14 @@ package dungeon.structure
 				var npcCopy:NPC = npc.selfCopy();
 				NPCS.push(npcCopy);
 				FP.world.add(npcCopy);
+				// npc = null; TODO: to be added once NPCs create graphics based on type; currently, graphic is saved by reference
 			}
 			levelHolder.creatures = new Array();
+			
+			// load decor
+			decor = levelHolder.decor.selfCopy();
+			FP.world.add(decor);
+			levelHolder.decor = new Decor();
 		}
 		
 		private function drawLevel():void {
@@ -231,7 +241,7 @@ package dungeon.structure
 			
 			createAndPlaceNPCs();
 			
-			decor = new Decor;
+			decor = new Decor();
 			FP.world.add(decor);
 		}
 		

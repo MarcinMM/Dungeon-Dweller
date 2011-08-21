@@ -22,11 +22,21 @@ package dungeon.structure
 		public function Decor() 
 		{
 			_decor = new DecorGraphic();
-			//_decor = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 			
 			graphic = _decor;
 			
 			layer = GC.DECOR_LAYER;
+		}
+		
+		public function resetDecor():void {
+			_decor.resetDecorGraphic();
+		}
+		
+		public function selfCopy():Decor {
+			var copy:Decor = new Decor();
+			copy._decor = _decor.selfCopy();
+			copy.graphic = copy._decor;
+			return copy;
 		}
 		
 		// TODO: I wonder if we could make this a listener function instead of having to call it
