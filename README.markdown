@@ -2,12 +2,14 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 8/18
+# TODO MVP 8/21
 
-* Oops, forgot decor for level persistence. Also I might have to add MonsterGraphic copy to creatures - not sure how it's working now but I suspect it's because of memory location pointer weirdness (and non cleanup by AS3/Flex).
+* Implement some signals for combat processing so that I can get away from calling everything that has to be done whenever something happens (i.e. you or a monster gets hit).
 * Armor gen, [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
-* PC design (races, perks), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
+* Ranged combat.
+* Basic PC design (races, perks, graphic assignment), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
+* Basic NPC design. Types, level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
 * Ability to layer transparent random tiles on top (north? y-1 anyway) of impassable tiles to create more convincing layered environments.
 * Diagonal movement. Do we really need this?
 
@@ -17,6 +19,8 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 * Item use, rest of item creation.
 * Item enhancement (tentatively spec'd in content doc) via loot drops and interactive decor items.
+* Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
+* Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
 * Save/load game
 
 *Graphics*
@@ -27,14 +31,12 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 *Tech/AI*
 
-* NPC design. Stats, XP, communication (combat msgs about what creatures are doing, maybe random barks like Dredmor), combats.
+* Advanced NPC design. Communication (combat msgs about what creatures are doing, maybe random barks like Dredmor), more special abilities.
 * NPC interaction (i.e. being able to recruit creatures or give them tasks such as "guard" or "follow").
 * Item balance. Still finding silver stuff on lvl 1. 
 * Item modifiers to go with item balance.
-* Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
-* Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
 * Line of Sight NPC awareness and detection, with Player's light radius in account
-* Pathing optimizations, per comments in code. Turn indexOf and arrays to 
+* Pathing optimizations, per comments in code. Turn indexOf and arrays to objects, then check key presence.
 * Change DecorGraphic from using multiple Tilemaps to a new version of DungeonTilemap that draws multiple tiles, per suggestion [in this post](http://codesquares.com/post/multilayering_terrain_randomization_old_todo_discovery#disqus_thread).
 * Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
@@ -49,10 +51,14 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # HIGH PRIORITY BUGS
 
-* Bloodspatters stay through level re-gen. Need to be saved with level state.
+* Inventory letters on items gone?
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/21/2011
+
+* Completed level persistence with decor and proper copying of NPCs and Items (not just assigning reference addresses). Proper creature graphic copy will have to wait until we have proper creatures.
 
 # UPDATES 8/18/2011
 
