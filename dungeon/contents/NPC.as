@@ -308,9 +308,9 @@ package dungeon.contents
 			if (STATS[GC.STATUS_HP] <= 0) {
 				// TODO: drop loot/corpse when dead
 				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.
-				for each (var currentNPC:NPC in Dungeon.level.NPCS) {
-					if (currentNPC == this) {
-						Dungeon.level.NPCS.splice(Dungeon.level.NPCS.indexOf(currentNPC),1);
+				for (var index in Dungeon.level.NPCS) {
+					if (Dungeon.level.NPCS[index] == this) {
+						Dungeon.level.NPCS.splice(Dungeon.level.NPCS[index],1);
 					}
 				}
 				FP.world.remove(this);
