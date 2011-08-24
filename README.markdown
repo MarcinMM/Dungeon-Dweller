@@ -4,20 +4,23 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 8/21
 
-* Implement some signals for combat processing so that I can get away from calling everything that has to be done whenever something happens (i.e. you or a monster gets hit).
-* Armor gen, [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
+* Change movement code to actually move entities rather than displace them location to location. 
+* Implement some signals for events that affect entire level. Combat should generate noise, splatters, for example. Combat itself still needs regular back-forth stuff with lots of variables passed, so not best use for broadcasting.
+* Armor gen, basic [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
-* Ranged combat.
-* Basic PC design (races, perks, graphic assignment), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
-* Basic NPC design. Types, level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
+* Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR.
+* Basic PC design, start with 1 race (orc) (races, perks, graphic assignment), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
+* Basic NPC design, start with 6 or so. Types, level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
 * Ability to layer transparent random tiles on top (north? y-1 anyway) of impassable tiles to create more convincing layered environments.
-* Diagonal movement. Do we really need this?
 
 # TODO FUTURE WISHLIST
 
 *Content/Features*
 
-* Item use, rest of item creation.
+* Item use, rest of item creation (food! pots!).
+* More PC design (remainder of classes: werewolf, skeleton, dwarf, demon).
+* Hunger mechanic.
+* Advanced NPC design. Communication (combat msgs about what creatures are doing, maybe random barks like Dredmor), more special abilities.
 * Item enhancement (tentatively spec'd in content doc) via loot drops and interactive decor items.
 * Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
 * Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
@@ -31,7 +34,6 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 *Tech/AI*
 
-* Advanced NPC design. Communication (combat msgs about what creatures are doing, maybe random barks like Dredmor), more special abilities.
 * NPC interaction (i.e. being able to recruit creatures or give them tasks such as "guard" or "follow").
 * Item balance. Still finding silver stuff on lvl 1. 
 * Item modifiers to go with item balance.
@@ -40,6 +42,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Change DecorGraphic from using multiple Tilemaps to a new version of DungeonTilemap that draws multiple tiles, per suggestion [in this post](http://codesquares.com/post/multilayering_terrain_randomization_old_todo_discovery#disqus_thread).
 * Consolidate usage of x/y vs tileX/tileY. I really need automagic setters and getters on any entity with a location so I can fully work in tiles rather than absolute X/Y.
 * Consolidate tile mess - right now we have solids arrays, walls objects, corner objects; need some unified way of managing this for pathfinding. I think I need 3 arrays: WALKABLE, SOLID, CORRIDOR. There's just too much overlap between corridor carving and walkables.
+* Diagonal movement. Do we really need this?
 
 *UI*
 
