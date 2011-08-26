@@ -29,7 +29,7 @@ package dungeon.structure
 	 */
 	public class Level extends Entity
 	{
-		[Embed(source = '../../assets/tilemap.png')] private const TILEMAP:Class;
+		[Embed(source = '../../assets/tilemaps.png')] private const TILEMAP:Class;
 		public var _dungeonmap:Tilemap;
 		public var _nodemap:Nodemap;
 		public var _grid:Grid;
@@ -73,22 +73,22 @@ package dungeon.structure
 			14: generateUnique */
 		}
 		
-        public static const FLOOR:int = 7;
-		public static const HALL:int = 3;
-        public static const NWALL:int = 8;
-        public static const SWALL:int = 10;
-        public static const WWALL:int = 11;
-        public static const EWALL:int = 9;
+        public static const FLOOR:int = GC.FLOOR;
+		public static const HALL:int = GC.HALL;
+        public static const NWALL:int = GC.TOPWALL;
+        public static const SWALL:int = GC.BOTTOMWALL;
+        public static const WWALL:int = GC.LEFTWALL;
+        public static const EWALL:int = GC.RIGHTWALL;
 		// top right bottom left
-		public static const DEBUG:int = 2;
+		public static const DEBUG:int = GC.DEBUG;
 
-		public static const WALLS:Object = {left:11, right:9, top:8, bottom:10};
-		public static const DOORS:Object = {left:15, right:13, top:12, bottom:14};
-		public static const CORNERS:Object = {TL:19, TR:16, BL:18, BR:17};
+		public static const WALLS:Object = {left:GC.LEFTWALL, right:GC.RIGHTWALL, top:GC.TOPWALL, bottom:GC.BOTTOMWALL};
+		public static const DOORS:Object = {left:GC.LEFTDOOR, right:GC.RIGHTDOOR, top:GC.TOPDOOR, bottom:GC.BOTTOMDOOR};
+		public static const CORNERS:Object = {TL:GC.TOPLEFTCORNER, TR:GC.TOPRIGHTCORNER, BL:GC.BOTTOMLEFTCORNER, BR:GC.BOTTOMRIGHTCORNER};
 		
 		// nonsolids
-		public static const NONSOLIDS:Array = [7,3,12,13,14,15]; // doors and floor
-		public static const DOORSA:Array = [12,13,14,15];
+		public static const NONSOLIDS:Array = [GC.BOTTOMDOOR,GC.TOPDOOR,GC.LEFTDOOR,GC.BOTTOMDOOR, GC.FLOOR]; // doors and floor
+		public static const DOORSA:Array = [GC.BOTTOMDOOR,GC.TOPDOOR,GC.LEFTDOOR,GC.BOTTOMDOOR];
 		
 		public static const DEBUGR:int = 5;
 		public static const DEBUGG:int = 6;

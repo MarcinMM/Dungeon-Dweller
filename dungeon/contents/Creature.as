@@ -6,6 +6,7 @@ package dungeon.contents
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.tweens.motion.LinearMotion;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import dungeon.utilities.*;
@@ -49,10 +50,19 @@ package dungeon.contents
 		public var ACTIONS:uint;
 		public var ACTION_COUNTER:uint;
 		
+		// motion FX
+		private var _motionTween:LinearMotion;
+		
 		// very basic constructor here ... 
 		public function Creature() {
 			var uniqidSeed:Number = Math.random() * 10000000000;
-			UNIQID = uint (uniqidSeed);			
+			UNIQID = uint (uniqidSeed);	
+			
+			_motionTween = new LinearMotion(onMotionComplete);
+			addTween(_motionTween);
+		}
+		
+		public function onMotionComplete():void {
 		}
 		
 		// regen health if appropriate timestep and health < max
@@ -109,6 +119,30 @@ package dungeon.contents
 			return returnVal;
 		}
 
+		public function move(newX:Number, newY:Number):void {
+			if (!_motionTween.active) {
+				_motionTween.setMotion(x, y, newX, newY, 0.1);
+			}
+			//x = _motionTween.x;
+			//y = _motionTween.y;
+			/*
+			var offsetX:Number = newX - x;
+			var offsetY:Number = newY - y;
+			
+			if (offsetX < 0) {
+				
+			}
+			
+			if (offsetY != 0) {
+				
+			}
+			
+			while (x != newX && y != newY) {
+				x += 1
+			}
+			*/
+		}
+		
 		// TODO: armor doesn't seem to be working for PLAYER
 		// stats are a combination of intrinsics, equipped items and special effects (potion with temporary boosts, being on fire, wet, hungry, etc)
 		// the first two are relatively easy to calculate, the last will require iterating through a stack of "effects" currently on creature
@@ -188,6 +222,14 @@ package dungeon.contents
 				STATS[GC.STATUS_MANA] = STATS[GC.STATUS_WIS] * 10; // plus items
 				STATS[GC.STATUS_HPMAX] = STATS[GC.STATUS_CON]; // + items and FX
 			}
-		}		
+		}	
+		
+		override public function update():void {
+			if (_motionTween.active) {
+				x = _motionTween.x;
+				y = _motionTween.y;
+			}			
+		}
+		
 	}
 }

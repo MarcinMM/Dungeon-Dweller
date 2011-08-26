@@ -146,34 +146,37 @@ package dungeon.contents
 		
 		public function processMove():void {
 			MOVE_DIR = 0;
+			var newX:Number = x;
+			var newY:Number = y;
 			if (Input.pressed(GC.DIR_LEFT_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_LEFT;
 				if (COLLISION[GC.DIR_LEFT] == GC.COLLISION_NONE) {
-					x -= GRIDSIZE;
+					newX -= GRIDSIZE;
 					STEP++;
 				}
 			}
 			if (Input.pressed(GC.DIR_RIGHT_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_RIGHT;
 				if (COLLISION[GC.DIR_RIGHT] == GC.COLLISION_NONE) {
-					x += GRIDSIZE;
+					newX += GRIDSIZE;
 					STEP++;
 				}
 			}
 			if (Input.pressed(GC.DIR_UP_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_UP;
 				if (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) {
-					y -= GRIDSIZE;
+					newY -= GRIDSIZE;
 					STEP++;
 				}
 			}
 			if (Input.pressed(GC.DIR_DOWN_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_DOWN;
 				if (COLLISION[GC.DIR_DOWN] == GC.COLLISION_NONE) {
-					y += GRIDSIZE;
+					newY += GRIDSIZE;
 					STEP++;
 				}
 			}
+			move(newX, newY);
 		}
 		
 		// make a copy
@@ -287,6 +290,7 @@ package dungeon.contents
 		
 		override public function update():void
 		{
+			super.update();
 			COLLISION_TYPE = [];
 			COLLISION = [0, 0, 0, 0, 0];
 			var directionInput:Boolean = false;

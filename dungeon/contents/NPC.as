@@ -11,6 +11,7 @@ package dungeon.contents
 	import dungeon.utilities.GC;
 	import dungeon.utilities.resultItem;
 	import dungeon.utilities.MonsterGraphic;
+	import net.flashpunk.Signal;
 	/**
 	 * ...
 	 * @author MM
@@ -46,6 +47,8 @@ package dungeon.contents
 		// default is alignment
 		private var ACTION_TAKEN:Boolean = false;
 		public var FACTION:String = 'alignment'; 
+		public var hitSignal:Signal;
+		public var counterSignal:Signal;
 
 		public var _imgOverlay:MonsterGraphic;
 		
@@ -79,6 +82,15 @@ package dungeon.contents
 			ALIGNMENT = GC.ALIGNMENTS[Math.round(Math.random() * (GC.ALIGNMENTS.length - 1))];
 		}
 		
+		private function initListeners():void {
+			this.counterSignal.add(function(uniqid:uint):void {
+				// do something when it's this creature being hit
+				if (UNIQID == uniqid) {
+					trace("nooooo splosions!");
+				}
+			});	
+		}
+		
 		// when no path request is being made, i.e. equivalent of idle animation
 		// TODO: use array constants here instead of the clumsy string assign
 		public function idleMovement():void {
@@ -100,24 +112,28 @@ package dungeon.contents
 			// select random index then perform movement
 			var rndMove:uint = Math.round(Math.random() * (impactsAllowed.length - 1));
 			var rndMoveString:String = impactsAllowed[rndMove];
+			var newX:Number = x;
+			var newY:Number = y;
+
 			switch (rndMoveString) {
 				case "up":
-				y -= GRIDSIZE;
+				newY = y - GRIDSIZE;
 				STEP++;
 				break;
 				case "down":
-				y += GRIDSIZE;
+				newY = y + GRIDSIZE;
 				STEP++;
 				break;
 				case "left":
-				x -= GRIDSIZE;
+				newX = x - GRIDSIZE;
 				STEP++;
 				break;
 				case "right":
-				x += GRIDSIZE;
+				newX = x + GRIDSIZE;
 				STEP++;
 				break;
 			}
+			this.move(newX, newY);
 		}
 		
 		// this can be used to achieve goals such as pickup item or attack another entity, or seek escape route
@@ -168,8 +184,9 @@ package dungeon.contents
 					if (diffX > 1 || diffY > 1) {
 						trace("blah teleport alert");
 					} else {
-						x = newLoc.x * GC.GRIDSIZE;
-						y = newLoc.y * GC.GRIDSIZE;
+						this.move(newLoc.x * GC.GRIDSIZE, newLoc.y * GC.GRIDSIZE);
+						//x = newLoc.x * GC.GRIDSIZE;
+						//y = newLoc.y * GC.GRIDSIZE;
 						ACTION_TAKEN = true;
 					}
 					return true;
@@ -316,6 +333,7 @@ package dungeon.contents
 				FP.world.remove(this);
 				return true;
 			} else {
+				//hitSignal.dispatch(this.UNIQID);
 				return false;
 			}
 		}
@@ -534,6 +552,7 @@ package dungeon.contents
 		}	
 		
 		override public function update():void {
+			super.update();
 			if (Dungeon.player.STEP != STEP) {
 				ACTION_TAKEN = false;
 				// Prototype basic NPC loop
