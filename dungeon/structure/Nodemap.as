@@ -73,7 +73,7 @@ package dungeon.structure
 		// iterate through map and set not solid where FLOOR, DOORS
 		private function initSolidity():void {
 			for each(var node:Node in _nodes) {
-				if (Level.NONSOLIDS.indexOf(_map.getTile(node.x, node.y)) != -1) {
+				if (GC.NONSOLIDS.indexOf(_map.getTile(node.x, node.y)) != -1) {
 					node.solid = false;
 				}
 			}
@@ -224,8 +224,8 @@ package dungeon.structure
 			var tileIndex:int;
 			for each (var node:Node in path) {
 				tileIndex = _map.getTile(node.x, node.y);
-				if ((Level.DOORSA.indexOf(tileIndex) == -1) && (tileIndex != GC.FLOOR)) {
-					_map.setRect(node.x, node.y, 1, 1, Level.HALL);
+				if ((GC.DOORSA.indexOf(tileIndex) == -1) && (tileIndex != GC.FLOOR)) {
+					_map.setRect(node.x, node.y, 1, 1, GC.HALL);
 					node.solid = false;
 				}
 			}
@@ -250,9 +250,9 @@ package dungeon.structure
 		public function update():void {
 			// synchronize updates with player turn
 			// report on player tile solidity
-			if (_step != Dungeon.player.STEP) {
+			if (_step != Dungeon.STEP.playerStep) {
 				var node:Node = getNode(Dungeon.player.x, Dungeon.player.y);
-				_step = Dungeon.player.STEP;
+				_step = Dungeon.STEP.playerStep;
 			}
 		}
 

@@ -4,6 +4,7 @@ package
 	import dungeon.structure.Nodemap;
 	import dungeon.utilities.LevelInfoHolder;
 	import dungeon.utilities.Overlay;
+	import dungeon.utilities.Step;
 	import net.flashpunk.graphics.TiledImage;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.World;
@@ -13,6 +14,7 @@ package
 	import dungeon.utilities.Camera;
 	import dungeon.contents.Player;
 	import dungeon.structure.Level;
+	import dungeon.utilities.Step;
 	
 	/**
 	 * ...
@@ -23,6 +25,9 @@ package
 		public static var player:Player;
 		// TODO: var dungeon:Dungeon = FP.world as Dungeon; - this should get us the instance of the world in any context (?)
 		// TODO: then we can refer to the player var without it being static (alternatively try var dungeon:Dungeon = world as Dungeon;)
+
+		// world STEP
+		public static var STEP:Step;
 		
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
@@ -54,6 +59,9 @@ package
 		
 		override public function begin():void {
 			super.begin();
+			
+			STEP = new Step();
+			
 			LevelHolder = new Vector.<LevelInfoHolder>;
 			LevelHolderCounter = 0;
 			initMapSizes();
@@ -78,6 +86,8 @@ package
 
 			overlay = new Overlay;
 			add(overlay);
+			
+			STEP.setInitialNPCLength(level.NPCS.length);
 		}
 
 		// this will be where a possible future dataloader will determine level size for customized levels

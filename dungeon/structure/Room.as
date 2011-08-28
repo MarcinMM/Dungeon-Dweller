@@ -7,6 +7,7 @@ package dungeon.structure
     import dungeon.structure.Point;
     import dungeon.structure.Door;
     import dungeon.structure.Wall;
+    import dungeon.utilities.GC;
 
     public class Room
     {
@@ -87,17 +88,17 @@ package dungeon.structure
                 newWall = new Wall(new Point(xRight,y), new Point(xRight,yBottom),'right');
                 walls.push(newWall);                
                 // top, bottom, left, then right, the room itself
-                _dungeonmap.setRect(x, y, width+1, 1, Level.NWALL);
-                _dungeonmap.setRect(x, yBottom, width+1, 1, Level.SWALL);
-                _dungeonmap.setRect(x, y, 1, height+1, Level.WWALL);
-                _dungeonmap.setRect(xRight, y, 1, height+1, Level.EWALL);
+                _dungeonmap.setRect(x, y, width+1, 1, GC.TOPWALL);
+                _dungeonmap.setRect(x, yBottom, width+1, 1, GC.BOTTOMWALL);
+                _dungeonmap.setRect(x, y, 1, height+1, GC.LEFTWALL);
+                _dungeonmap.setRect(xRight, y, 1, height+1, GC.RIGHTWALL);
                 // now corners
-                _dungeonmap.setRect(x, y, 1, 1, Level.CORNERS['TL']);
-                _dungeonmap.setRect(xRight, y, 1, 1, Level.CORNERS['TR']);
-                _dungeonmap.setRect(x, yBottom, 1, 1, Level.CORNERS['BL']);
-                _dungeonmap.setRect(xRight, yBottom, 1, 1, Level.CORNERS['BR']);
+                _dungeonmap.setRect(x, y, 1, 1, GC.TOPLEFTCORNER);
+                _dungeonmap.setRect(xRight, y, 1, 1, GC.TOPRIGHTCORNER);
+                _dungeonmap.setRect(x, yBottom, 1, 1, GC.BOTTOMLEFTCORNER);
+                _dungeonmap.setRect(xRight, yBottom, 1, 1, GC.BOTTOMRIGHTCORNER);
                 // now floor
-                _dungeonmap.setRect(x+1,y+1,width-1,height-1, Level.FLOOR);
+                _dungeonmap.setRect(x+1,y+1,width-1,height-1, GC.FLOOR);
                 // now doors
                 //trace("room x xRight y ybottom:" + x + "-" + xRight + "-" + y + "-" + yBottom);
                 drawDoors(_dungeonmap);
@@ -147,22 +148,22 @@ package dungeon.structure
                         // first find a point on the wall
                         point = _wall.findRandomPoint();
                         // draw the door only if it's a wall tile and door max hasn't been reached
-                        if ((_dungeonmap.getTile(point.x, point.y) != Level.FLOOR) && (doorCount <= _maxDoorsPerRoom)) {
+                        if ((_dungeonmap.getTile(point.x, point.y) != GC.FLOOR) && (doorCount <= _maxDoorsPerRoom)) {
                             // check if random point isn't next to an existing door
                             if (_wall.position == 'top' || _wall.position == 'bottom') {
-                                if ((_dungeonmap.getTile(point.x + 1, point.y) == Level.DOORS['top']) ||
-                                   (_dungeonmap.getTile(point.x - 1, point.y) == Level.DOORS['bottom']) ||
-                                   (_dungeonmap.getTile(point.x + 1, point.y) == Level.DOORS['bottom']) ||
-                                   (_dungeonmap.getTile(point.x - 1, point.y) == Level.DOORS['top']))
+                                if ((_dungeonmap.getTile(point.x + 1, point.y) == GC.TOPDOOR) ||
+                                   (_dungeonmap.getTile(point.x - 1, point.y) == GC.BOTTOMDOOR) ||
+                                   (_dungeonmap.getTile(point.x + 1, point.y) == GC.BOTTOMDOOR) ||
+                                   (_dungeonmap.getTile(point.x - 1, point.y) == GC.TOPDOOR))
                                 {
                                     doorSuccess = false;
                                 }
                             }
                             if (_wall.position == 'left' || _wall.position == 'right') {
-                                if ((_dungeonmap.getTile(point.x, point.y + 1) == Level.DOORS['left']) ||
-                                   (_dungeonmap.getTile(point.x, point.y - 1) == Level.DOORS['right']) ||
-                                   (_dungeonmap.getTile(point.x, point.y + 1) == Level.DOORS['right']) ||
-                                   (_dungeonmap.getTile(point.x, point.y - 1) == Level.DOORS['left']))
+                                if ((_dungeonmap.getTile(point.x, point.y + 1) == GC.LEFTDOOR) ||
+                                   (_dungeonmap.getTile(point.x, point.y - 1) == GC.RIGHTDOOR) ||
+                                   (_dungeonmap.getTile(point.x, point.y + 1) == GC.RIGHTDOOR) ||
+                                   (_dungeonmap.getTile(point.x, point.y - 1) == GC.LEFTDOOR))
                                 {
                                     doorSuccess = false;
                                 }
@@ -171,7 +172,7 @@ package dungeon.structure
                                 door = new Door(point,_wall.position);
                                 // add door to room.wall property
                                 doors.push(door);
-                                _dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOORS[_wall.position]);
+                                _dungeonmap.setRect(point.x, point.y, 1, 1, GC.DOORS[_wall.position]);
                                 doorCount++;
                             }
                         }
@@ -193,7 +194,7 @@ package dungeon.structure
 						
 						// add door to room.wall property
 						doors.push(door);
-						_dungeonmap.setRect(point.x, point.y, 1, 1, Level.DOORS[_wall.position]);
+						_dungeonmap.setRect(point.x, point.y, 1, 1, GC.DOORS[_wall.position]);
 						doorCount++;
                     }
 					doorIndex++;

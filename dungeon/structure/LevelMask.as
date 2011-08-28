@@ -21,7 +21,7 @@ package dungeon.structure
 		
 		public function LevelMask() 
 		{
-			_levelmask = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.GRIDSIZE, Dungeon.GRIDSIZE);
+			_levelmask = new Tilemap(TILEMAP, GC.MAP_WIDTH, GC.MAP_HEIGHT, GC.GRIDSIZE, GC.GRIDSIZE);
 			//_levelmask.setRect(0,0,GC.MAP_WIDTH/GC.GRIDSIZE,GC.MAP_HEIGHT/GC.GRIDSIZE,1); // black overlay
 			graphic = _levelmask;
 			layer = GC.FOGOFWAR_LAYER;

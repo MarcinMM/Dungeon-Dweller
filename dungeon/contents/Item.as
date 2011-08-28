@@ -105,8 +105,8 @@ package dungeon.contents
 		override public function update():void
 		{
 			// synchronize with global step
-			if (_step != Dungeon.player.STEP) {
-				_step = Dungeon.player.STEP;
+			if (_step != Dungeon.STEP.playerStep) {
+				_step = Dungeon.STEP.playerStep;
 				if (collide("player", x, y)) {
 					FP.log("collision with player");
 					//var s:Player = collide("player", x, y) as Player;

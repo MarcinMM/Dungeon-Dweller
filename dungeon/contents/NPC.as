@@ -62,7 +62,7 @@ package dungeon.contents
 			
 			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
-			STEP = Dungeon.player.STEP;
+			STEP = Dungeon.STEP.globalStep;
 			POSITION = new Point(x, y);
 			
 			// now, what shall this critter be?
@@ -299,6 +299,7 @@ package dungeon.contents
 						trace(hitAr[0].NPCType + " is hit.");
 					}
 					ACTION_TAKEN = true;
+					Dungeon.STEP.npcSteps++;					
 				} else {
 					// same alignment spliced the collision out of the hit Array
 					trace(NPCType + " checks its swing! 'sup buddy?");	
@@ -313,6 +314,7 @@ package dungeon.contents
 				// if (threatList check here) {
 				Dungeon.player.processHit(STATS[GC.STATUS_ATT]);
 				ACTION_TAKEN = true;
+				Dungeon.STEP.npcSteps++;				
 				// end threat list check
 			}
 		}
@@ -325,9 +327,10 @@ package dungeon.contents
 			if (STATS[GC.STATUS_HP] <= 0) {
 				// TODO: drop loot/corpse when dead
 				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.
-				for (var index in Dungeon.level.NPCS) {
+				for (var index:String in Dungeon.level.NPCS) {
+					var npcAr:Array = Dungeon.level.NPCS;
 					if (Dungeon.level.NPCS[index] == this) {
-						Dungeon.level.NPCS.splice(Dungeon.level.NPCS[index],1);
+						Dungeon.level.NPCS.splice(index,1);
 					}
 				}
 				FP.world.remove(this);
@@ -500,6 +503,8 @@ package dungeon.contents
 							ITEMS.splice(ITEMS.indexOf(equippedItem.item), 1);
 							Dungeon.statusScreen.updateCombatText(NPCType + " drops " + equippedItem.item.DESCRIPTION);
 						}
+						ACTION_TAKEN = true;
+						Dungeon.STEP.npcSteps++;						
 					} else {
 						Dungeon.statusScreen.updateCombatText(NPCType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
 					}
@@ -553,7 +558,7 @@ package dungeon.contents
 		
 		override public function update():void {
 			super.update();
-			if (Dungeon.player.STEP != STEP) {
+			if (Dungeon.STEP.globalStep != STEP) {
 				ACTION_TAKEN = false;
 				// Prototype basic NPC loop
 				// 1. Check if an action is already being performed
@@ -617,7 +622,7 @@ package dungeon.contents
 				processRegen();
 				
 				// finally sync NPC with player
-				STEP = Dungeon.player.STEP;
+				STEP = Dungeon.STEP.globalStep;
 			}
 		}
 	}

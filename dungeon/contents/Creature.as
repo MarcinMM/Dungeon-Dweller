@@ -63,6 +63,14 @@ package dungeon.contents
 		}
 		
 		public function onMotionComplete():void {
+			x = _motionTween.x;
+			y = _motionTween.y;	
+			if (this is Player) {
+				// completion of player movement advances the world
+				Dungeon.STEP.globalStep++;
+			} else if (this is NPC) {
+				Dungeon.STEP.npcSteps++;
+			}
 		}
 		
 		// regen health if appropriate timestep and health < max
@@ -121,26 +129,8 @@ package dungeon.contents
 
 		public function move(newX:Number, newY:Number):void {
 			if (!_motionTween.active) {
-				_motionTween.setMotion(x, y, newX, newY, 0.1);
+				_motionTween.setMotion(x, y, newX, newY, 0.07);
 			}
-			//x = _motionTween.x;
-			//y = _motionTween.y;
-			/*
-			var offsetX:Number = newX - x;
-			var offsetY:Number = newY - y;
-			
-			if (offsetX < 0) {
-				
-			}
-			
-			if (offsetY != 0) {
-				
-			}
-			
-			while (x != newX && y != newY) {
-				x += 1
-			}
-			*/
 		}
 		
 		// TODO: armor doesn't seem to be working for PLAYER

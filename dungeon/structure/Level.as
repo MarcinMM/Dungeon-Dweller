@@ -73,27 +73,6 @@ package dungeon.structure
 			14: generateUnique */
 		}
 		
-        public static const FLOOR:int = GC.FLOOR;
-		public static const HALL:int = GC.HALL;
-        public static const NWALL:int = GC.TOPWALL;
-        public static const SWALL:int = GC.BOTTOMWALL;
-        public static const WWALL:int = GC.LEFTWALL;
-        public static const EWALL:int = GC.RIGHTWALL;
-		// top right bottom left
-		public static const DEBUG:int = GC.DEBUG;
-
-		public static const WALLS:Object = {left:GC.LEFTWALL, right:GC.RIGHTWALL, top:GC.TOPWALL, bottom:GC.BOTTOMWALL};
-		public static const DOORS:Object = {left:GC.LEFTDOOR, right:GC.RIGHTDOOR, top:GC.TOPDOOR, bottom:GC.BOTTOMDOOR};
-		public static const CORNERS:Object = {TL:GC.TOPLEFTCORNER, TR:GC.TOPRIGHTCORNER, BL:GC.BOTTOMLEFTCORNER, BR:GC.BOTTOMRIGHTCORNER};
-		
-		// nonsolids
-		public static const NONSOLIDS:Array = [GC.BOTTOMDOOR,GC.TOPDOOR,GC.LEFTDOOR,GC.BOTTOMDOOR, GC.FLOOR]; // doors and floor
-		public static const DOORSA:Array = [GC.BOTTOMDOOR,GC.TOPDOOR,GC.LEFTDOOR,GC.BOTTOMDOOR];
-		
-		public static const DEBUGR:int = 5;
-		public static const DEBUGG:int = 6;
-
-		
 		public var _step:int = 0;
 		
 		// temporary monster generation
@@ -218,7 +197,7 @@ package dungeon.structure
 			_rooms = 0;
 
 			_dungeonmap = new Tilemap(TILEMAP, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
-			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, DEBUG); 
+			_dungeonmap.setRect(0,0,Dungeon.TILESX, Dungeon.TILESY, GC.DEBUG); 
 			graphic = _dungeonmap;
 			layer = GC.LEVEL_LAYER;
 			
@@ -392,10 +371,10 @@ package dungeon.structure
 		override public function update():void {
 			// synchronize updates with player turn
 			// handle things like open doors, triggered traps, dried up fountains, etc.
-			if (_step != Dungeon.player.STEP) {
+			if (_step != Dungeon.STEP.playerStep) {
 				//FP.watch(_roomsA.length);
 				_nodemap.update();
-				_step = Dungeon.player.STEP;
+				_step = Dungeon.STEP.playerStep;
 			}
 			// the following functions need "am I on correct stair tile" detection
 			var tempCounter:uint = Dungeon.LevelHolderCounter;

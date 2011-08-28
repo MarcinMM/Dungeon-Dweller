@@ -1,6 +1,7 @@
 package dungeon.structure
 {
 	import dungeon.structure.Point;
+	import dungeon.utilities.GC;
 	
     public class Utils {
 		public static function findDistance(pointA:Point, pointB:Point):Number {
@@ -16,15 +17,15 @@ package dungeon.structure
 			// TODO: this needs cleanup, but I'm confused by it. It should work for index simply being THE VOID, but it doesn't
 			switch(type) {
 				case "corridor":
-					if ((index == Level.NWALL) ||
-						(index == Level.EWALL) ||
-						(index == Level.SWALL) ||
-						(index == Level.WWALL) ||
-						//(index == Level.FLOOR) ||
-						(index == Level.CORNERS['TL']) ||
-						(index == Level.CORNERS['TR']) ||
-						(index == Level.CORNERS['BL']) ||
-						(index == Level.CORNERS['BR']))
+					if ((index == GC.TOPWALL) ||
+						(index == GC.LEFTWALL) ||
+						(index == GC.BOTTOMWALL) ||
+						(index == GC.RIGHTWALL) ||
+						//(index == GC.FLOOR) ||
+						(index == GC.BOTTOMLEFTCORNER) ||
+						(index == GC.BOTTOMRIGHTCORNER) ||
+						(index == GC.TOPLEFTCORNER) ||
+						(index == GC.TOPRIGHTCORNER))
 					{
 						return false;
 					} else {
@@ -32,15 +33,15 @@ package dungeon.structure
 					}
 					break;
 				case "creature":
-					if (index == Level.HALL) {
+					if (index == GC.HALL) {
 						//trace('blibli');
 					}
-					if ((index == Level.FLOOR) ||
-						(index == Level.HALL) ||
-						(index == Level.DOORS['left']) ||
-						(index == Level.DOORS['right']) ||
-						(index == Level.DOORS['top']) ||
-						(index == Level.DOORS['bottom'])
+					if ((index == GC.FLOOR) ||
+						(index == GC.HALL) ||
+						(index == GC.BOTTOMDOOR) ||
+						(index == GC.TOPDOOR) ||
+						(index == GC.LEFTDOOR) ||
+						(index == GC.RIGHTDOOR)
 						) 
 					{
 						return true;

@@ -19,7 +19,6 @@ package dungeon.contents
 	public class Player extends Creature
 	{
 		[Embed(source = '../../assets/player.png')] private const PLAYER:Class;
-		public var STEP:int = 0;
 		private var syncStep:int = 0;
 		public var LIGHT_RADIUS:int = 1;
 		public var GRIDSIZE:int = GC.GRIDSIZE;
@@ -152,37 +151,39 @@ package dungeon.contents
 				MOVE_DIR = GC.DIR_LEFT;
 				if (COLLISION[GC.DIR_LEFT] == GC.COLLISION_NONE) {
 					newX -= GRIDSIZE;
-					STEP++;
 				}
 			}
 			if (Input.pressed(GC.DIR_RIGHT_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_RIGHT;
 				if (COLLISION[GC.DIR_RIGHT] == GC.COLLISION_NONE) {
 					newX += GRIDSIZE;
-					STEP++;
 				}
 			}
 			if (Input.pressed(GC.DIR_UP_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_UP;
 				if (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) {
 					newY -= GRIDSIZE;
-					STEP++;
 				}
 			}
 			if (Input.pressed(GC.DIR_DOWN_TEXT) && !INVENTORY_OPEN) {
 				MOVE_DIR = GC.DIR_DOWN;
 				if (COLLISION[GC.DIR_DOWN] == GC.COLLISION_NONE) {
 					newY += GRIDSIZE;
-					STEP++;
 				}
 			}
-			move(newX, newY);
+			// moving takes an amount of time, reset NPC move counter
+			if (x != newX || y != newY) {
+				Dungeon.STEP.playerStep++;
+				move(newX, newY);
+				Dungeon.STEP.reset();
+			}
 		}
 		
 		// make a copy
 		// add copy to inventory
 		// subtract original from level ITEM array
 		// remove original from world
+		// TODO: make this take a turn, and remember to reset npc move counter
 		public function equipItem(item:*):void {
 			if (item is Weapon) {
 				var newInventoryWeapon:Weapon = item.selfCopy();
@@ -232,12 +233,7 @@ package dungeon.contents
 
 				// and remove from world
 				FP.world.remove(itemAr[0]);
-				
-				// entities can't be "removed" - they have to be relocated off screen instead
-				// calculate a position 10/10 tiles (not pixels) off the current resolution
-				//itemAr[0].x = (Dungeon.TILESX + 10) * Dungeon.TILE_WIDTH;
-				//itemAr[0].y = (Dungeon.TILESY + 10) * Dungeon.TILE_HEIGHT;
-				
+
 				// now update inventory object
 				Dungeon.statusScreen.updateInventory();	
 			}			
@@ -250,10 +246,12 @@ package dungeon.contents
 				collideInto("npc", x + (GC.DIR_MOD_X[MOVE_DIR] * GRIDSIZE), y + (GC.DIR_MOD_Y[MOVE_DIR] * GRIDSIZE), npcAr); // this should get us the collided entity based on our move dir
 				if (npcAr[0].processHit(STATS[GC.STATUS_ATT])) {
 					Dungeon.statusScreen.updateCombatText("Bonk! You hit the " + npcAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage and kill it!");
-					STEP++;
+					Dungeon.STEP.playerStep++;
+					Dungeon.STEP.globalStep++;
 				} else {
 					Dungeon.statusScreen.updateCombatText("Bonk! You hit the " + npcAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
-					STEP++;
+					Dungeon.STEP.playerStep++;
+					Dungeon.STEP.globalStep++;
 				}
 			}
 		}
@@ -291,58 +289,65 @@ package dungeon.contents
 		override public function update():void
 		{
 			super.update();
-			COLLISION_TYPE = [];
-			COLLISION = [0, 0, 0, 0, 0];
-			var directionInput:Boolean = false;
-			var direction:int; // need to setup some GC directional constants for this
-			var wallCollision:int = 0;
-			var npcCollision:int = 0;
+
+			if (Dungeon.STEP.isReady()) {
 			
-			// Set inventory flag as it overrides movement; also open status screen
-			if (Input.pressed("I")) {
-				if (Dungeon.statusScreen.visible == false) {
-					Dungeon.statusScreen.visible = true;
-					INVENTORY_OPEN = true;
-				} else {
-					Dungeon.statusScreen.visible = false;					
-					INVENTORY_OPEN = false;
-				}
-			}
-			
-			if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !INVENTORY_OPEN) {
-				directionInput = true;
-				direction = Input.lastKey;
-			}
-			
-			if (Input.pressed(GC.NOOP)) {
-				STEP++;
-			}
-			
-			if (directionInput) {
-				COLLISION = [0, 0, 0, 0, 0];
 				COLLISION_TYPE = [];
+				COLLISION = [0, 0, 0, 0, 0];
+				var directionInput:Boolean = false;
+				var direction:int; // need to setup some GC directional constants for this
+				var wallCollision:int = 0;
+				var npcCollision:int = 0;
+				
+				// Set inventory flag as it overrides movement; also open status screen
+				if (Input.pressed("I")) {
+					if (Dungeon.statusScreen.visible == false) {
+						Dungeon.statusScreen.visible = true;
+						INVENTORY_OPEN = true;
+					} else {
+						Dungeon.statusScreen.visible = false;					
+						INVENTORY_OPEN = false;
+					}
+				}
+				
+				if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !INVENTORY_OPEN) {
+					directionInput = true;
+					direction = Input.lastKey;
+				}
+				
+				if (Input.pressed(GC.NOOP)) {
+					// no operation advances the player and the world
+					Dungeon.STEP.playerStep++;
+					Dungeon.STEP.globalStep++;
+					Dungeon.STEP.reset();
+				}
+				
+				if (directionInput) {
+					COLLISION = [0, 0, 0, 0, 0];
+					COLLISION_TYPE = [];
 
-				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
-				checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
+					checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
+					checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
 
-				processMove();
-				postMove();
-				processNPCCollision();
-				postNPCCollision();
+					processMove();
+					postMove();
+					processNPCCollision();
+					postNPCCollision();
 
-			} else if (!directionInput && !INVENTORY_OPEN) {
-				// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
-			} else if (INVENTORY_OPEN) {
-				inventoryFunctions();
-			}
-			
-			// process for things that only happen once per step
-			if (STEP != syncStep) {
-				// process regeneration
-				processRegen();
-				Dungeon.statusScreen.statUpdate(STATS);	
-				// process any cumulative equipment/enchantment effects
-				syncStep = STEP;
+				} else if (!directionInput && !INVENTORY_OPEN) {
+					// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
+				} else if (INVENTORY_OPEN) {
+					inventoryFunctions();
+				}
+				
+				// process for things that only happen once per step
+				if (Dungeon.STEP.playerStep != syncStep) {
+					// process regeneration
+					processRegen();
+					Dungeon.statusScreen.statUpdate(STATS);	
+					// process any cumulative equipment/enchantment effects
+					syncStep = Dungeon.STEP.playerStep;
+				}
 			}
 		}
 		

@@ -2,9 +2,8 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 8/21
+# TODO MVP 8/27
 
-* Change movement code to actually move entities rather than displace them location to location. 
 * Implement some signals for events that affect entire level. Combat should generate noise, splatters, for example. Combat itself still needs regular back-forth stuff with lots of variables passed, so not best use for broadcasting.
 * Armor gen, basic [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
@@ -29,6 +28,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 *Graphics*
 
 * Prebuilts in empty spaces. Detect a contiguous 2x2, 3x3, 4x4 (or other nonsquare) space and populate with appropriate larger prebuilts.
+* Multiple types of tiles support. TODO outlined in GC.
 * Fake non-square rooms by building solid randomized protrusions into room space.
 * Combat animations using MonsterGraphic.
 
@@ -54,10 +54,16 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # HIGH PRIORITY BUGS
 
-* Inventory letters on items gone?
+* Creatures now clip through each other, I think due to the motion Tween.
+* Inventory letters on items gone? Unable to equip.
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 8/27/2011
+
+* Change movement code to actually move entities rather than displace them location to location. 
+* Removed Level tile constants moved to GC.
 
 # UPDATES 8/21/2011
 

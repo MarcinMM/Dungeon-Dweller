@@ -31,6 +31,12 @@ package dungeon.utilities
 		public static const VIEW_HEIGHT:uint = 800;
 		
 		// Tilemap tile location constants
+		/* TODO: change these to objects with types as keys, ex.:
+		 * const FLOOR:Object = { forest: 40, stone: 240, brick: 440, marble: 640 }
+		 * We'll need a global for location type at Dungeon level that will get updated from another object such as:
+		 * const LOCATION_THRESHOLDS:Object { 4: forest, 8: cave, 12: brick, 16: marble } which does a level comparison and applies 
+		 * appropriate location string to the tile objects
+		*/
         public static const FLOOR:uint = 40;
 		public static const HALL:uint = 41;
         public static const NWALL:uint = 60;
@@ -59,6 +65,14 @@ package dungeon.utilities
 		public static const DEBUG:uint = 20;
 		public static const DEBUGRED:uint = 5;
 		public static const DEBUGGREEN:uint = 6;		
+
+		public static const WALLS:Object = {left:GC.LEFTWALL, right:GC.RIGHTWALL, top:GC.TOPWALL, bottom:GC.BOTTOMWALL};
+		public static const DOORS:Object = {left:GC.LEFTDOOR, right:GC.RIGHTDOOR, top:GC.TOPDOOR, bottom:GC.BOTTOMDOOR};
+		public static const CORNERS:Object = {TL:GC.TOPLEFTCORNER, TR:GC.TOPRIGHTCORNER, BL:GC.BOTTOMLEFTCORNER, BR:GC.BOTTOMRIGHTCORNER};
+		
+		// nonsolids
+		public static const NONSOLIDS:Array = [GC.BOTTOMDOOR,GC.TOPDOOR,GC.LEFTDOOR,GC.BOTTOMDOOR, GC.FLOOR, GC.HALL]; // doors and floor
+		public static const DOORSA:Array = [GC.BOTTOMDOOR,GC.TOPDOOR,GC.LEFTDOOR,GC.BOTTOMDOOR];
 		
 		// Status Screen constants
 		public static const STATUS_SCREEN_DEFAULT_FONT_SIZE:int = 12;
