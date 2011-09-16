@@ -4,7 +4,7 @@ package dungeon.contents
 	import dungeon.contents.Creature;
 	import dungeon.structure.Node;
 	import dungeon.structure.Point;
-	import flash.automation.StageCapture;
+//	import flash.automation.StageCapture;
 	import net.flashpunk.FP;
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Image;

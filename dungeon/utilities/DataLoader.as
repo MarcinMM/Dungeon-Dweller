@@ -11,10 +11,14 @@ package dungeon.utilities
 	{
 	
 		[Embed(source = "../../assets/scripts/item_data.xml", mimeType = "application/octet-stream")] private var itemData:Class;
+		[Embed(source = "../../assets/scripts/npc_data.xml", mimeType = "application/octet-stream")] private var npcData:Class;
+		[Embed(source = "../../assets/scripts/pc_data.xml", mimeType = "application/octet-stream")] private var pcData:Class;
 		
 		public var weapons:Array = new Array();
 		public var materials:Array = new Array();
 		public var potions:Array = new Array();
+		public var npcs:Array = new Array();
+		public var pcs:Array = new Array();
 		
 		public function DataLoader() 
 		{
@@ -25,10 +29,15 @@ package dungeon.utilities
 		{
 			var itemDataByteArray:ByteArray = new itemData;
 			var itemDataXML:XML = new XML(itemDataByteArray.readUTFBytes(itemDataByteArray.length));
+			var npcDataXML:XML = new  XML(itemDataByteArray.readUTFBytes(npcDataByteArray.length));
+			var pcDataXML:XML = new  XML(itemDataByteArray.readUTFBytes(pcDataByteArray.length));
+
 			var i:XML;
 			var items:Array = new Array();
 			var armors:Array = new Array();
 			var potions:Array = new Array();
+			var npcs:Array = new Array();
+			var pcs:Array = new Array();
 
 			for each (i in itemDataXML.items.weapons.weapon)
 			{
@@ -80,6 +89,14 @@ package dungeon.utilities
 
 				potions.push(potion);
 			}
+			
+			for each (i in npcDataXML.npcs.npc)
+			{
+				var npcPrototype:NPCPrototype = new NPCPrototype();
+				// TBD - NPC and PC prototypes
+			}
+			
+			
 			
 			items.push(weapons);
 			items.push(materials);
