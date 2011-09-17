@@ -4,7 +4,6 @@ package dungeon.contents
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.*;
     import dungeon.utilities.GC;
-	import dungeon.utilities.PotionPrototype;
 
     /**
      * ...
@@ -53,18 +52,18 @@ package dungeon.contents
         {
             var randPotion:uint = Math.round(Math.random() * (Dungeon.dataloader.potions.length - 1));
             var randFX:String = potionFX[Math.round(Math.random() * potionFX.length)];
-            var potionPrototype:PotionPrototype = Dungeon.dataloader.potions[randPotion];
+            var potionXML:XML = Dungeon.dataloader.potions[randPotion];
 
             var randColor:String;
             
-            instant = potionPrototype.instant;
-            lasting = potionPrototype.lasting;
-            duration = potionPrototype.duration;
+            instant = potionXML.instant;
+            lasting = potionXML.lasting;
+            duration = potionXML.duration;
             fumeDuration = Math.round(duration / 5);
-            value = potionPrototype.value;
+            value = potionXML.value;
 
-            if (potionPrototype.defaultColor != "FALSE") {
-                randColor = potionPrototype.defaultColor;
+            if (potionXML.defaultColor != "FALSE") {
+                randColor = potionXML.defaultColor;
             } else {
                 randColor = potionColors[Math.round(Math.random() * potionColors.length)];
             }

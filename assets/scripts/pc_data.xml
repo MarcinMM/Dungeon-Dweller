@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-
+<pcs>
+	<pc name="Orc">
+		<str>12</str>
+		<agi>8</agi>
+		<con>12</con>
+		<int>8</int>
+		<wis>8</wis>
+		<cha>8</cha>
+		<canWear>1</canWear>
+		<canWield>1</canWield>
+		<armorMax>Plate</armorMax>
+		<weaponFamilies>ALL</weaponFamilies>
+		<upperAppearanceThreshold>0</upperAppearanceThreshold>
+		<upperAppearanceIncrement>0</upperAppearanceIncrement>
+		<lowerAppearanceThreshold>0</lowerAppearanceThreshold>
+		<lowerAppearanceIncrement>0</lowerAppearanceIncrement>
+		<rarityModifier>0</rarityModifier>
+		<special>0</special>
+		<specialChance>0</specialChance>
+		<specialModifier>0</specialModifier>
+	</pc>
+</pcs>
 </data>
