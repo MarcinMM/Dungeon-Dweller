@@ -24,8 +24,9 @@ package dungeon.contents
 		public var SIGHT_RANGE:int = 1;
 		
 		// What is this thing? And what type of descriptors do we need? Let's start simple.
-		public var NPCType:String;
-		public var NPCLevel:uint;
+		public var npcXML:XML;
+		public var npcType:String;
+		public var npcLevel:uint;
 		public var UNIQUE:Boolean = false;
 			
 		// pathing status
@@ -73,8 +74,8 @@ package dungeon.contents
 			
 			// and what kind of stats does it have?
 			// TODO: This needs to use the common stats
-			setNPCStats(NPCType, NPCLevel);
-			setNPCDerivedStats(NPCType, NPCLevel);
+			setNPCStats(npcXML, npcLevel);
+			updateDerivedStats(true);
 			
 			layer = GC.NPC_LAYER;
 			
@@ -162,7 +163,7 @@ package dungeon.contents
 				// and we need to ensure there's no collision happening
 				var collisionTargets:Array = new Array("player", "npc");
 				if (collideTypes(collisionTargets, newLoc.x * GC.GRIDSIZE, newLoc.y * GC.GRIDSIZE) != null) {
-					trace(NPCType + " blocked!" );
+					trace(npcType + " blocked!" );
 					// if blocked, we can either reset path entirely or wait a turn, then try again - if 2 failures, clear and seek new obj.
 					if (BLOCKCOUNT >= 2) {
 						PATH = [];
@@ -217,34 +218,29 @@ package dungeon.contents
 			return false;
 		}
 		
-		// TODO: Monster Library
-		// This needs to pull from some library of monsters, just like items do. 
+		// TODO: implememnt XML searching as shown at: http://www.senocular.com/flash/tutorials/as3withflashcs3/?page=4#e4x
+		// This needs to take into effect level restrictions and thresholds.
 		public function determineNPCType():void {
-			NPCLevel = 1;
+			var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));
+			npcXML = Dungeon.dataloader.npcs[randNPC];
+			npcLevel = 1;
 		}
 		
 		// we might need this to be available for the player, when morphed
-		public function setNPCStats(npcType:String, npcLevel:uint):void {
+		public function setNPCStats(npcXML:XML, npcLevel:uint):void {
 			// TODO: use Creature level class
-			STATS[GC.STATUS_STR] = 10;
-			STATS[GC.STATUS_AGI] = 10;
-			STATS[GC.STATUS_INT] = 10;
-			STATS[GC.STATUS_WIS] = 10;
-			STATS[GC.STATUS_CHA] = 10;
-			STATS[GC.STATUS_CON] = 14;
+			npcType = npcXML.@name;
+			npcLevel = 1;
+			STATS[GC.STATUS_STR] = npcXML.str;
+			STATS[GC.STATUS_AGI] = npcXML.agi;
+			STATS[GC.STATUS_INT] = npcXML.int;
+			STATS[GC.STATUS_WIS] = npcXML.wis;
+			STATS[GC.STATUS_CHA] = npcXML.cha;
+			STATS[GC.STATUS_CON] = npcXML.con;
 			STATS[GC.STATUS_HEALRATE] = 15;
 			STATS[GC.STATUS_HEALSTEP] = 0;
 		}
-		
-		
-		public function setNPCDerivedStats(npcType:String, npcLevel:uint):void {
-			// TODO: use Creature level class
-			STATS[GC.STATUS_ATT] = 3;
-			STATS[GC.STATUS_DEF] = 3;
-			STATS[GC.STATUS_HP] = 15;
-			STATS[GC.STATUS_HPMAX] = 15;
-		}
-		
+	
 		public function processCombat():void {
 			// TODO: detect if foes are in adjacent tile based on collision
 			// then pick one either randomly or based on previous picks
@@ -288,21 +284,21 @@ package dungeon.contents
 				if (hitAr.length > 0) {
 					// processHit returns true on opponent death, record status as disengaged for new pathfinding
 					if (hitAr[0].processHit(STATS[GC.STATUS_ATT])) {
-						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
 						Dungeon.statusScreen.updateCombatText(hitAr[0].NPCType + " dies.");
 						trace(hitAr[0].NPCType + " is hit, dies.");
 						ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
-						trace(NPCType + " idle after kill.");
+						trace(npcType + " idle after kill.");
 					} else {
-						Dungeon.statusScreen.updateCombatText(NPCType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
-						trace(NPCType + "," + ALIGNMENT + " hits " + hitAr[0].NPCType + "," + hitAr[0].ALIGNMENT + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						trace(npcType + "," + ALIGNMENT + " hits " + hitAr[0].NPCType + "," + hitAr[0].ALIGNMENT + " for " + STATS[GC.STATUS_ATT] + " damage!");
 						trace(hitAr[0].NPCType + " is hit.");
 					}
 					ACTION_TAKEN = true;
 					Dungeon.STEP.npcSteps++;					
 				} else {
 					// same alignment spliced the collision out of the hit Array
-					trace(NPCType + " checks its swing! 'sup buddy?");	
+					trace(npcType + " checks its swing! 'sup buddy?");	
 				}
 			}
 			// TODO: Player needs to be included in threat list
@@ -360,7 +356,7 @@ package dungeon.contents
 						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
 					) 
 				{
-					trace(NPCType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingCreatureDistance);
+					trace(npcType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingCreatureDistance);
 					interestingCreatureDistance = measuredDistance;
 					interestingCreature = currentNPC;
 				}
@@ -375,12 +371,12 @@ package dungeon.contents
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 					PATH_PURPOSE = 'ENEMY';	
 					PATH_TARGET_ID = interestingCreature.UNIQID;
-					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
-						+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
+					trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
+						+ interestingCreature.npcType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
 						+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));
 				} else {
-					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
-					+ interestingCreature.NPCType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
+					trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
+					+ interestingCreature.npcType + " at " + interestingCreature.x / GRIDSIZE + "," + interestingCreature.y / GRIDSIZE 
 					+ "| dist: " + Math.round(interestingCreatureDistance / GRIDSIZE));							
 				}
 			}
@@ -399,7 +395,7 @@ package dungeon.contents
 					if (PATH.length < 60) {
 						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 						PATH_PURPOSE = 'PLAYER';
-						trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking player " 
+						trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking player " 
 							+ " at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE); 
 					} else {
 						// nothing, we're not using this path
@@ -426,7 +422,7 @@ package dungeon.contents
 						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
 					) 
 				{
-					trace(NPCType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingItemDistance);
+					trace(npcType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingItemDistance);
 					interestingItemDistance = measuredDistance;
 					interestingItem = currentItem;
 				}
@@ -440,11 +436,11 @@ package dungeon.contents
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 					PATH_PURPOSE = 'ITEM';
 					PATH_TARGET_ID = interestingItem.UNIQID;
-					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
+					trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking " 
 						+ interestingItem.ITEM_TYPE + " at " + interestingItem.x / GRIDSIZE + "," + interestingItem.y / GRIDSIZE 
 						+ "| dist: " + Math.round(interestingItemDistance / GRIDSIZE));
 				} else {
-					trace(NPCType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
+					trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is blocked on seeking " 
 					+ interestingItem.ITEM_TYPE + " at " + interestingItem.x / GRIDSIZE + "," + interestingItem.y / GRIDSIZE 
 					+ "| dist: " + Math.round(interestingItemDistance / GRIDSIZE));							
 				}
@@ -469,7 +465,7 @@ package dungeon.contents
 					if ((equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) || !equippedItem.found) {
 						// found item is better than carried/equipped, pick up and mark as equipped
 						itemOnFloor.EQUIPPED = true;
-						Dungeon.statusScreen.updateCombatText(NPCType + " equips " + itemOnFloor.DESCRIPTION);
+						Dungeon.statusScreen.updateCombatText(npcType + " equips " + itemOnFloor.DESCRIPTION);
 						
 						if (itemOnFloor is Weapon) {
 							var newInventoryWeapon:Weapon = itemOnFloor.selfCopy();
@@ -501,12 +497,12 @@ package dungeon.contents
 							}
 
 							ITEMS.splice(ITEMS.indexOf(equippedItem.item), 1);
-							Dungeon.statusScreen.updateCombatText(NPCType + " drops " + equippedItem.item.DESCRIPTION);
+							Dungeon.statusScreen.updateCombatText(npcType + " drops " + equippedItem.item.DESCRIPTION);
 						}
 						ACTION_TAKEN = true;
 						Dungeon.STEP.npcSteps++;						
 					} else {
-						Dungeon.statusScreen.updateCombatText(NPCType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
+						Dungeon.statusScreen.updateCombatText(npcType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
 					}
 				}
 				updateDerivedStats();
@@ -522,8 +518,8 @@ package dungeon.contents
 			newNPC.y = y;
 			newNPC.ALIGNMENT = ALIGNMENT;
 			newNPC.FACTION = FACTION;
-			newNPC.NPCLevel = NPCLevel;
-			newNPC.NPCType = NPCType;
+			newNPC.npcLevel = npcLevel;
+			newNPC.npcType = npcType;
 			
 			// now copy STATS and ITEMS arrays
 			// actually stats are initialized on NPC init + type; precise numbers aren't that important for generic NPCS
@@ -600,21 +596,21 @@ package dungeon.contents
 					// we might have something to do with comparative levels too?
 					// or, we can setup a few native "hate" rules that override other concerns
 					findNPC();
-					if (ACTION_TAKEN) trace(NPCType + " taking action on other NPC");
+					if (ACTION_TAKEN) trace(npcType + " taking action on other NPC");
 
 					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
 						findPlayer();
-						if (ACTION_TAKEN) trace(NPCType + " taking action on Player");						
+						if (ACTION_TAKEN) trace(npcType + " taking action on Player");						
 					}
 
 					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
 						findItem();
-						if (ACTION_TAKEN) trace(NPCType + " taking action on Item");
+						if (ACTION_TAKEN) trace(npcType + " taking action on Item");
 					}
 				}
 				
 				if (!ACTION_TAKEN) {
-					trace(NPCType + " idling.");
+					trace(npcType + " idling.");
 					idleMovement();
 				}
 

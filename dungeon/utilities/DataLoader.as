@@ -36,11 +36,7 @@ package dungeon.utilities
 
 			var i:XML;
 			// Switching over to using XML objects in arrays, but still maintaing arrays for readability and random access
-			var items:Array = new Array();
-			var armors:Array = new Array();
-			var potions:Array = new Array();
-			var npcs:Array = new Array();
-			var pcs:Array = new Array();
+			//var items:Array = new Array();
 
 			for each (i in itemDataXML.items.weapons.weapon)
 			{
@@ -67,9 +63,9 @@ package dungeon.utilities
 				pcs.push(i);
 			}
 			
-			items.push(weapons);
-			items.push(materials);
-			items.push(potions);
+			//items.push(weapons);
+			//items.push(materials);
+			//items.push(potions);
 		}
 	}
 }

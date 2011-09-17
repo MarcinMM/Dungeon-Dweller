@@ -133,6 +133,16 @@ package dungeon.contents
 			}
 		}
 		
+		/**
+		 * TODO: // make stat update work on level increase
+		 * this will act on creature level and type and determine what kind of 
+		 * level
+		 * 
+		 */
+		public function updateIntrinsicStats():void
+		{
+		}
+		
 		// TODO: armor doesn't seem to be working for PLAYER
 		// stats are a combination of intrinsics, equipped items and special effects (potion with temporary boosts, being on fire, wet, hungry, etc)
 		// the first two are relatively easy to calculate, the last will require iterating through a stack of "effects" currently on creature

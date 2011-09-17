@@ -74,10 +74,7 @@ package dungeon.structure
 		}
 		
 		public var _step:int = 0;
-		
-		// temporary monster generation
-		public static var MONSTARS:Array = ["paladin","rogue","warrior","monk","mage","fighter","sorcerer","wizard","shapeshifter","teleporter","ranger","vampire","archer"];
-		
+				
 		public function Level() 
 		{
 			FP.console.enable();
@@ -346,7 +343,6 @@ package dungeon.structure
 			
 			for (var j:int = 0; j < 4; j++) {
 				var newNPC:NPC = new NPC();
-				newNPC.NPCType = MONSTARS.pop();
 				NPCS.push(newNPC);
 			}
 			

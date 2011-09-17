@@ -48,6 +48,7 @@ package dungeon.contents
 			var upperThreshold:int = 0;
 			
 			// could this be done any other way than a foreach?
+			// TODO: implememnt XML searching as shown at: http://www.senocular.com/flash/tutorials/as3withflashcs3/?page=4#e4x
 			for (var i:uint = 1; i < Dungeon.dataloader.materials.length; i++) {
 				materialXML = Dungeon.dataloader.materials[i];
 				

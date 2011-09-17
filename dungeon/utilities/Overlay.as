@@ -44,9 +44,9 @@ package dungeon.utilities
 				if (Math.floor(critter.x / GC.GRIDSIZE) == tileX && Math.floor(critter.y / GC.GRIDSIZE) == tileY) {
 					var equipment:resultItem = critter.getEquippedItem(GC.C_ITEM_WEAPON, GC.SLOT_PRIMARY_WEAPON);
 					if (equipment.found) {
-						Dungeon.statusScreen.updateCombatText(critter.NPCType + "[" + critter.STATS[GC.STATUS_HP] + "/" + critter.STATS[GC.STATUS_HPMAX] + "], wielding a " + equipment.item.DESCRIPTION);
+						Dungeon.statusScreen.updateCombatText(critter.npcType + "[" + critter.STATS[GC.STATUS_HP] + "/" + critter.STATS[GC.STATUS_HPMAX] + "], wielding a " + equipment.item.DESCRIPTION);
 					} else {
-						Dungeon.statusScreen.updateCombatText(critter.NPCType + "[" + critter.STATS[GC.STATUS_HP] + "/" + critter.STATS[GC.STATUS_HPMAX] + "]. It is unarmed.");
+						Dungeon.statusScreen.updateCombatText(critter.npcType + "[" + critter.STATS[GC.STATUS_HP] + "/" + critter.STATS[GC.STATUS_HPMAX] + "]. It is unarmed.");
 					}
 					
 				}
