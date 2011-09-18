@@ -63,7 +63,7 @@ package dungeon.contents
 			POSITION = new Point(x, y);
 			
 			// now, what shall this critter be?
-			determineNPCType();
+			determinenpcType();
 			_imgOverlay = new MonsterGraphic(npcXML.graphic,0,0);
 			graphic = _imgOverlay;
 			
@@ -71,7 +71,6 @@ package dungeon.contents
 			// determineNPCEquipment();
 			
 			// and what kind of stats does it have?
-			// TODO: This needs to use the common stats
 			setNPCStats(npcXML, npcLevel);
 			updateDerivedStats(true);
 			
@@ -218,7 +217,7 @@ package dungeon.contents
 		
 		// TODO: implememnt XML searching as shown at: http://www.senocular.com/flash/tutorials/as3withflashcs3/?page=4#e4x
 		// This needs to take into effect level restrictions and thresholds.
-		public function determineNPCType():void {
+		public function determinenpcType():void {
 			var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));
 			npcXML = Dungeon.dataloader.npcs[randNPC];
 			npcLevel = 1;
@@ -282,15 +281,15 @@ package dungeon.contents
 				if (hitAr.length > 0) {
 					// processHit returns true on opponent death, record status as disengaged for new pathfinding
 					if (hitAr[0].processHit(STATS[GC.STATUS_ATT])) {
-						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
-						Dungeon.statusScreen.updateCombatText(hitAr[0].NPCType + " dies.");
-						trace(hitAr[0].NPCType + " is hit, dies.");
+						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].npcType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						Dungeon.statusScreen.updateCombatText(hitAr[0].npcType + " dies.");
+						trace(hitAr[0].npcType + " is hit, dies.");
 						ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 						trace(npcType + " idle after kill.");
 					} else {
-						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].NPCType + " for " + STATS[GC.STATUS_ATT] + " damage!");
-						trace(npcType + "," + ALIGNMENT + " hits " + hitAr[0].NPCType + "," + hitAr[0].ALIGNMENT + " for " + STATS[GC.STATUS_ATT] + " damage!");
-						trace(hitAr[0].NPCType + " is hit.");
+ 						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].npcType + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						trace(npcType + "," + ALIGNMENT + " hits " + hitAr[0].npcType + "," + hitAr[0].ALIGNMENT + " for " + STATS[GC.STATUS_ATT] + " damage!");
+						trace(hitAr[0].npcType + " is hit.");
 					}
 					ACTION_TAKEN = true;
 					Dungeon.STEP.npcSteps++;					
@@ -417,7 +416,11 @@ package dungeon.contents
 						(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
 						(measuredDistance < (10 * GRIDSIZE)) && 
 						(measuredDistance < interestingItemDistance) &&
-						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+						ENGAGE_STATUS == GC.NPC_STATUS_IDLE && // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+						(
+							(currentItem is Weapon && npcXML.canWield) || // check if creature can even use the item
+							(currentItem is Armor && npcXML.canWear)
+						)
 					) 
 				{
 					trace(npcType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingItemDistance);
@@ -445,7 +448,6 @@ package dungeon.contents
 			}			
 		}
 		
-		// TODO: this needs more work, but should remove item from floor and give it to NPC inventory
 		public function checkItem():void {
 			if (collide("items", x, y)) {
 				var itemAr:Array = [];
@@ -459,48 +461,51 @@ package dungeon.contents
 				// 5. They should only be carrying one extra item, whatever is found first.
 
 				for each (var itemOnFloor:* in itemAr) {
-					var equippedItem:resultItem = getEquippedItemByItem(itemOnFloor);
-					if ((equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) || !equippedItem.found) {
-						// found item is better than carried/equipped, pick up and mark as equipped
-						itemOnFloor.EQUIPPED = true;
-						Dungeon.statusScreen.updateCombatText(npcType + " equips " + itemOnFloor.DESCRIPTION);
-						
-						if (itemOnFloor is Weapon) {
-							var newInventoryWeapon:Weapon = itemOnFloor.selfCopy();
-							ITEMS[itemOnFloor.ITEM_TYPE].push(newInventoryWeapon);
-						} else if (itemOnFloor is Armor) {
-							var newInventoryArmor:Armor = itemOnFloor.selfCopy();
-							ITEMS[itemOnFloor.ITEM_TYPE].push(newInventoryArmor);
-						}
-
-						// now remove it from level array
-						Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemOnFloor), 1);
-						
-						// remove item from world
-						FP.world.remove(itemOnFloor);
-						
-						// unequip current (if exists) and drop it
-						if (equippedItem.found) {
-							equippedItem.item.EQUIPPED = false;
-							equippedItem.item.x = x;
-							equippedItem.item.y = y;
-							if (equippedItem.item is Weapon) {
-								var droppedWeapon:Weapon = Weapon(equippedItem.item).selfCopy();
-								Dungeon.level.ITEMS[droppedWeapon.ITEM_TYPE].push(droppedWeapon);
-								FP.world.add(droppedWeapon);
-							} else if (equippedItem.item is Armor) {
-								var droppedArmor:Armor = Armor(equippedItem.item).selfCopy();
-								Dungeon.level.ITEMS[droppedArmor.ITEM_TYPE].push(droppedArmor);
-								FP.world.add(droppedArmor);
+					// check if creature can even use this item
+					if ((itemOnFloor is Weapon && npcXML.canWield) || (itemOnFloor is Armor && npcXML.canWear)) {
+						var equippedItem:resultItem = getEquippedItemByItem(itemOnFloor);
+						if ((equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) || !equippedItem.found) {
+							// found item is better than carried/equipped, pick up and mark as equipped
+							itemOnFloor.EQUIPPED = true;
+							Dungeon.statusScreen.updateCombatText(npcType + " equips " + itemOnFloor.DESCRIPTION);
+							
+							if (itemOnFloor is Weapon) {
+								var newInventoryWeapon:Weapon = itemOnFloor.selfCopy();
+								ITEMS[itemOnFloor.ITEM_TYPE].push(newInventoryWeapon);
+							} else if (itemOnFloor is Armor) {
+								var newInventoryArmor:Armor = itemOnFloor.selfCopy();
+								ITEMS[itemOnFloor.ITEM_TYPE].push(newInventoryArmor);
 							}
 
-							ITEMS.splice(ITEMS.indexOf(equippedItem.item), 1);
-							Dungeon.statusScreen.updateCombatText(npcType + " drops " + equippedItem.item.DESCRIPTION);
+							// now remove it from level array
+							Dungeon.level.ITEMS.splice(Dungeon.level.ITEMS.indexOf(itemOnFloor), 1);
+							
+							// remove item from world
+							FP.world.remove(itemOnFloor);
+							
+							// unequip current (if exists) and drop it
+							if (equippedItem.found) {
+								equippedItem.item.EQUIPPED = false;
+								equippedItem.item.x = x;
+								equippedItem.item.y = y;
+								if (equippedItem.item is Weapon) {
+									var droppedWeapon:Weapon = Weapon(equippedItem.item).selfCopy();
+									Dungeon.level.ITEMS[droppedWeapon.ITEM_TYPE].push(droppedWeapon);
+									FP.world.add(droppedWeapon);
+								} else if (equippedItem.item is Armor) {
+									var droppedArmor:Armor = Armor(equippedItem.item).selfCopy();
+									Dungeon.level.ITEMS[droppedArmor.ITEM_TYPE].push(droppedArmor);
+									FP.world.add(droppedArmor);
+								}
+
+								ITEMS.splice(ITEMS.indexOf(equippedItem.item), 1);
+								Dungeon.statusScreen.updateCombatText(npcType + " drops " + equippedItem.item.DESCRIPTION);
+							}
+							ACTION_TAKEN = true;
+							Dungeon.STEP.npcSteps++;						
+						} else {
+							Dungeon.statusScreen.updateCombatText(npcType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
 						}
-						ACTION_TAKEN = true;
-						Dungeon.STEP.npcSteps++;						
-					} else {
-						Dungeon.statusScreen.updateCombatText(npcType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
 					}
 				}
 				updateDerivedStats();
@@ -571,7 +576,9 @@ package dungeon.contents
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_PLAYER_TEXT, GC.COLLISION_PLAYER);
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
-				checkItem();
+				if (npcXML.canWield || npcXML.canWear) {
+					checkItem();
+				}
 				
 				processCombat();
 				pathedMovementStep();
@@ -601,7 +608,7 @@ package dungeon.contents
 						if (ACTION_TAKEN) trace(npcType + " taking action on Player");						
 					}
 
-					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
+					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride && (npcXML.canWear || npcXML.canWield)) {
 						findItem();
 						if (ACTION_TAKEN) trace(npcType + " taking action on Item");
 					}
