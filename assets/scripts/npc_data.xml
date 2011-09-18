@@ -12,14 +12,15 @@
 		<canWield>0</canWield>
 		<armorMax>NONE</armorMax>
 		<weaponFamilies>NONE</weaponFamilies>
-		<upperAppearanceThreshold>0</upperAppearanceThreshold>
-		<upperAppearanceIncrement>0</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>5</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>10</lowerAppearanceIncrement>
-		<rarityModifier>0</rarityModifier>
+		<startsToAppearAt>0</startsToAppearAt>
+		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<endsAppearingAt>5</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<rarityModifier>1</rarityModifier>
 		<special>0</special>
-		<specialChance>0.1</specialChance>
+		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
+		<graphic>7</graphic>
 	</npc>
 	<npc name="Giant Bat">
 		<str>3</str>
@@ -32,14 +33,15 @@
 		<canWield>0</canWield>
 		<armorMax>NONE</armorMax>
 		<weaponFamilies>NONE</weaponFamilies>
-		<upperAppearanceThreshold>0</upperAppearanceThreshold>
-		<upperAppearanceIncrement>0</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>5</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>10</lowerAppearanceIncrement>
-		<rarityModifier>0</rarityModifier>
+		<startsToAppearAt>0</startsToAppearAt>
+		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<endsAppearingAt>5</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<rarityModifier>1</rarityModifier>
 		<special>0</special>
-		<specialChance>0.1</specialChance>
+		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
+		<graphic>2</graphic>
 	</npc>
 	<npc name="Wild Dog">
 		<str>3</str>
@@ -52,14 +54,15 @@
 		<canWield>0</canWield>
 		<armorMax>NONE</armorMax>
 		<weaponFamilies>NONE</weaponFamilies>
-		<upperAppearanceThreshold>0</upperAppearanceThreshold>
-		<upperAppearanceIncrement>0</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>5</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>10</lowerAppearanceIncrement>
+		<startsToAppearAt>0</startsToAppearAt>
+		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<endsAppearingAt>5</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<rarityModifier>0</rarityModifier>
 		<special>0</special>
-		<specialChance>0.1</specialChance>
+		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
+		<graphic>0</graphic>
 	</npc>
 	<npc name="Goblin">
 		<str>6</str>
@@ -72,14 +75,15 @@
 		<canWield>1</canWield>
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
-		<upperAppearanceThreshold>0</upperAppearanceThreshold>
-		<upperAppearanceIncrement>0</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>10</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>10</lowerAppearanceIncrement>
-		<rarityModifier>0</rarityModifier>
+		<startsToAppearAt>0</startsToAppearAt>
+		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<endsAppearingAt>10</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<rarityModifier>1</rarityModifier>
 		<special>0</special>
-		<specialChance>0.1</specialChance>
+		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
+		<graphic>3</graphic>
 	</npc>
 	<npc name="Imp">
 		<str>2</str>
@@ -92,14 +96,15 @@
 		<canWield>0</canWield>
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
-		<upperAppearanceThreshold>0</upperAppearanceThreshold>
-		<upperAppearanceIncrement>0</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>7</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>15</lowerAppearanceIncrement>
+		<startsToAppearAt>4</startsToAppearAt>
+		<startAppearanceIncrement>15</startAppearanceIncrement>
+		<endsAppearingAt>10</endsAppearingAt>
+		<endAppearanceIncrement>15</endAppearanceIncrement>
 		<rarityModifier>0.9</rarityModifier>
 		<special>CAST</special>
 		<specialChance>0.25</specialChance>
 		<specialModifier>FIREBALL</specialModifier>
+		<graphic>5</graphic>
 	</npc>
 	<npc name="Wolf">
 		<str>6</str>
@@ -112,14 +117,15 @@
 		<canWield>1</canWield>
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
-		<upperAppearanceThreshold>4</upperAppearanceThreshold>
-		<upperAppearanceIncrement>10</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>8</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>10</lowerAppearanceIncrement>
-		<rarityModifier>0</rarityModifier>
+		<startsToAppearAt>4</startsToAppearAt>
+		<startAppearanceIncrement>10</startAppearanceIncrement>
+		<endsAppearingAt>8</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<rarityModifier>1</rarityModifier>
 		<special>SUMMON</special>
 		<specialChance>0.1</specialChance>
 		<specialModifier>WOLF</specialModifier>
+		<graphic>1</graphic>
 	</npc>
 	<npc name="Winged Serpent">
 		<str>6</str>
@@ -132,14 +138,15 @@
 		<canWield>1</canWield>
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
-		<upperAppearanceThreshold>6</upperAppearanceThreshold>
-		<upperAppearanceIncrement>10</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>9</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>15</lowerAppearanceIncrement>
-		<rarityModifier></rarityModifier>
+		<startsToAppearAt>6</startsToAppearAt>
+		<startAppearanceIncrement>10</startAppearanceIncrement>
+		<endsAppearingAt>12</endsAppearingAt>
+		<endAppearanceIncrement>15</endAppearanceIncrement>
+		<rarityModifier>0.9</rarityModifier>
 		<special>CAST</special>
 		<specialChance>0.1</specialChance>
 		<specialModifier>POISON_BREATH</specialModifier>
+		<graphic>6</graphic>
 	</npc>
 	<npc name="Goblin Squad Grunt">
 		<str>6</str>
@@ -152,14 +159,15 @@
 		<canWield>1</canWield>
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
-		<upperAppearanceThreshold>7</upperAppearanceThreshold>
-		<upperAppearanceIncrement>15</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>13</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>15</lowerAppearanceIncrement>
-		<rarityModifier></rarityModifier>
+		<startsToAppearAt>7</startsToAppearAt>
+		<startAppearanceIncrement>15</startAppearanceIncrement>
+		<endsAppearingAt>13</endsAppearingAt>
+		<endAppearanceIncrement>15</endAppearanceIncrement>
+		<rarityModifier>1</rarityModifier>
 		<special>SQUAD</special>
 		<specialChance>1</specialChance>
 		<specialModifier>3</specialModifier>
+		<graphic>4</graphic>
 	</npc>
 </npcs>
 </data>

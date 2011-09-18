@@ -10,7 +10,7 @@ package dungeon.utilities {
 		public var creatureSprite:Spritemap;
 		public var armorSprite:Spritemap;
 		public var weaponSprite:Spritemap;
-		[Embed(source = '/assets/item_overlay_test.png')] private const ITEM_OVERLAYS:Class;
+		[Embed(source = '/assets/npcs.png')] private const ITEM_OVERLAYS:Class;
   
 		// commenting out armor and weapon until we get proper sized sprites for them
 		

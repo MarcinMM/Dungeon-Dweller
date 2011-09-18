@@ -56,10 +56,6 @@ package dungeon.contents
 		public function NPC() 
 		{
 			super();
-			// TODO: this is random, but needs to be driven by creature type
-			var randCritter:uint = Math.round((Math.random() * 16)) + 20;
-			_imgOverlay = new MonsterGraphic(randCritter,0,0);
-			graphic = _imgOverlay;
 			
 			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
@@ -68,6 +64,8 @@ package dungeon.contents
 			
 			// now, what shall this critter be?
 			determineNPCType();
+			_imgOverlay = new MonsterGraphic(npcXML.graphic,0,0);
+			graphic = _imgOverlay;
 			
 			// TODO: what shall it wear/wield?
 			// determineNPCEquipment();
