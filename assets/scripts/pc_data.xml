@@ -20,6 +20,7 @@
 		<special>0</special>
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
+		<preferredStats>STR,CON</preferredStats>
 	</pc>
 </pcs>
 </data>

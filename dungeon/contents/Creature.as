@@ -134,13 +134,37 @@ package dungeon.contents
 		}
 		
 		/**
-		 * TODO: // make stat update work on level increase
-		 * this will act on creature level and type and determine what kind of 
-		 * level
+		 * TODO: // check if amount of current XP matches the level scale
+			 * if not, increase the level and process stats accordingly
 		 * 
 		 */
-		public function updateIntrinsicStats():void
+		public function updateIntrinsicStats(player:Boolean=false):void
 		{
+			// TODO: calculate level scale somehow. canned from XML? Algorithm?
+			var expectedLevel:uint = STATS[GC.STATUS_XP] / 10; 
+			var defaultIncreaseChance:uint = 25;
+			if (STATS[GC.STATUS_LEVEL] < expectedLevel)
+			{
+				STATS[GC.STATUS_LEVEL]++;
+				if (player) {
+					Dungeon.statusScreen.updateCombatText("Welcome to level " + expectedLevel + "!");
+				}
+				// TODO: implement preferred stats
+				if ((Math.random() * 100) < defaultIncreaseChance)
+					STATS[GC.STATUS_STR] += 1;
+				if ((Math.random() * 100) < defaultIncreaseChance)
+					STATS[GC.STATUS_AGI] += 1;
+				if ((Math.random() * 100) < defaultIncreaseChance)
+					STATS[GC.STATUS_CON] += 1;
+				if ((Math.random() * 100) < defaultIncreaseChance)
+					STATS[GC.STATUS_WIS] += 1;
+				if ((Math.random() * 100) < defaultIncreaseChance)
+					STATS[GC.STATUS_INT] += 1;
+				if ((Math.random() * 100) < defaultIncreaseChance)
+					STATS[GC.STATUS_CHA] += 1;
+
+				updateDerivedStats();
+			}
 		}
 		
 		// TODO: armor doesn't seem to be working for PLAYER

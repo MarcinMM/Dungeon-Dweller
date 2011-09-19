@@ -21,6 +21,7 @@
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>7</graphic>
+		<xpgranted>5</xpgranted>
 	</npc>
 	<npc name="Giant Bat">
 		<str>3</str>
@@ -42,6 +43,7 @@
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>2</graphic>
+		<xpgranted>5</xpgranted>
 	</npc>
 	<npc name="Wild Dog">
 		<str>3</str>
@@ -63,6 +65,7 @@
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>0</graphic>
+		<xpgranted>5</xpgranted>
 	</npc>
 	<npc name="Goblin">
 		<str>6</str>
@@ -84,6 +87,7 @@
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>3</graphic>
+		<xpgranted>10</xpgranted>
 	</npc>
 	<npc name="Imp">
 		<str>2</str>
@@ -105,6 +109,7 @@
 		<specialChance>0.25</specialChance>
 		<specialModifier>FIREBALL</specialModifier>
 		<graphic>5</graphic>
+		<xpgranted>15</xpgranted>
 	</npc>
 	<npc name="Wolf">
 		<str>6</str>
@@ -126,6 +131,7 @@
 		<specialChance>0.1</specialChance>
 		<specialModifier>WOLF</specialModifier>
 		<graphic>1</graphic>
+		<xpgranted>15</xpgranted>
 	</npc>
 	<npc name="Winged Serpent">
 		<str>6</str>
@@ -147,6 +153,7 @@
 		<specialChance>0.1</specialChance>
 		<specialModifier>POISON_BREATH</specialModifier>
 		<graphic>6</graphic>
+		<xpgranted>15</xpgranted>
 	</npc>
 	<npc name="Goblin Squad Grunt">
 		<str>6</str>
@@ -168,6 +175,7 @@
 		<specialChance>1</specialChance>
 		<specialModifier>3</specialModifier>
 		<graphic>4</graphic>
+		<xpgranted>10</xpgranted>
 	</npc>
 </npcs>
 </data>

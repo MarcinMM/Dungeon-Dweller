@@ -246,6 +246,7 @@ package dungeon.contents
 				collideInto("npc", x + (GC.DIR_MOD_X[MOVE_DIR] * GRIDSIZE), y + (GC.DIR_MOD_Y[MOVE_DIR] * GRIDSIZE), npcAr); // this should get us the collided entity based on our move dir
 				if (npcAr[0].processHit(STATS[GC.STATUS_ATT])) {
 					Dungeon.statusScreen.updateCombatText("Bonk! You hit the " + npcAr[0].npcType + " for " + STATS[GC.STATUS_ATT] + " damage and kill it!");
+					STATS[GC.STATUS_XP] += npcAr[0].xpGranted;
 					Dungeon.STEP.playerStep++;
 					Dungeon.STEP.globalStep++;
 				} else {
