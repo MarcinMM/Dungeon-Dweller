@@ -20,7 +20,9 @@
 		<special>0</special>
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
+		<graphic>8</graphic>
 		<preferredStats>STR,CON</preferredStats>
+		<xpGranted></xpGranted>
 	</pc>
 </pcs>
 </data>

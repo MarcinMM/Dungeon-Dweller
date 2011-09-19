@@ -24,7 +24,6 @@ package dungeon.contents
 		public var SIGHT_RANGE:int = 1;
 		
 		// What is this thing? And what type of descriptors do we need? Let's start simple.
-		public var npcXML:XML;
 		public var npcType:String;
 		public var npcLevel:uint;
 		public var UNIQUE:Boolean = false;
@@ -64,15 +63,16 @@ package dungeon.contents
 			POSITION = new Point(x, y);
 			
 			// now, what shall this critter be?
-			determinenpcType();
-			_imgOverlay = new MonsterGraphic(npcXML.graphic,0,0);
+			determineCreatureType();
+			npcLevel = 1;
+			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;
 			
 			// TODO: what shall it wear/wield?
 			// determineNPCEquipment();
 			
 			// and what kind of stats does it have?
-			setNPCStats(npcXML, npcLevel);
+			setNPCStats(creatureXML, npcLevel);
 			updateDerivedStats(true);
 			
 			layer = GC.NPC_LAYER;
@@ -215,15 +215,7 @@ package dungeon.contents
 		public function checkSwarmInRoom():Boolean {
 			return false;
 		}
-		
-		// TODO: implememnt XML searching as shown at: http://www.senocular.com/flash/tutorials/as3withflashcs3/?page=4#e4x
-		// This needs to take into effect level restrictions and thresholds.
-		public function determinenpcType():void {
-			var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));
-			npcXML = Dungeon.dataloader.npcs[randNPC];
-			npcLevel = 1;
-		}
-		
+				
 		// we might need this to be available for the player, when morphed
 		public function setNPCStats(npcXML:XML, npcLevel:uint):void {
 			// TODO: use Creature level class
@@ -421,8 +413,8 @@ package dungeon.contents
 						(measuredDistance < interestingItemDistance) &&
 						ENGAGE_STATUS == GC.NPC_STATUS_IDLE && // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
 						(
-							(currentItem is Weapon && npcXML.canWield) || // check if creature can even use the item
-							(currentItem is Armor && npcXML.canWear)
+							(currentItem is Weapon && creatureXML.canWield) || // check if creature can even use the item
+							(currentItem is Armor && creatureXML.canWear)
 						)
 					) 
 				{
@@ -465,7 +457,7 @@ package dungeon.contents
 
 				for each (var itemOnFloor:* in itemAr) {
 					// check if creature can even use this item
-					if ((itemOnFloor is Weapon && npcXML.canWield) || (itemOnFloor is Armor && npcXML.canWear)) {
+					if ((itemOnFloor is Weapon && creatureXML.canWield) || (itemOnFloor is Armor && creatureXML.canWear)) {
 						var equippedItem:resultItem = getEquippedItemByItem(itemOnFloor);
 						if ((equippedItem.found && equippedItem.item.rating < itemOnFloor.rating) || !equippedItem.found) {
 							// found item is better than carried/equipped, pick up and mark as equipped
@@ -579,7 +571,7 @@ package dungeon.contents
 				checkCollision(GC.LAYER_NPC_TEXT,GC.COLLISION_NPC);
 				checkCollision(GC.LAYER_PLAYER_TEXT, GC.COLLISION_PLAYER);
 				//checkCollision(GC.LAYER_LEVEL_TEXT, GC.COLLISION_WALL);
-				if (npcXML.canWield || npcXML.canWear) {
+				if (creatureXML.canWield || creatureXML.canWear) {
 					checkItem();
 				}
 				
@@ -611,7 +603,7 @@ package dungeon.contents
 						if (ACTION_TAKEN) trace(npcType + " taking action on Player");						
 					}
 
-					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride && (npcXML.canWear || npcXML.canWield)) {
+					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride && (creatureXML.canWear || creatureXML.canWield)) {
 						findItem();
 						if (ACTION_TAKEN) trace(npcType + " taking action on Item");
 					}

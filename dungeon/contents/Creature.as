@@ -3,6 +3,7 @@ package dungeon.contents
 	import dungeon.contents.Armor;
 	import dungeon.contents.Item;
 	import dungeon.contents.Weapon;
+	import flash.utils.Dictionary;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -22,6 +23,7 @@ package dungeon.contents
 		
 		// unique ID, used for path targets? and who knows what else
 		public var UNIQID:uint = 0;
+		public var creatureXML:XML;
 
 		// Collision stats
 		// Both collision array and type need to be arrays so that collisions can stack.
@@ -44,6 +46,7 @@ package dungeon.contents
 
 		// Stat Array
 		public var STATS:Array = new Array();		
+		public var PREFERRED_STATS:Array = new Array();
 		public var ALIGNMENT:String = 'neutral'; // hardcoding for now
 		
 		// # of Actions a creature can take per turn  and their counter
@@ -61,6 +64,18 @@ package dungeon.contents
 			_motionTween = new LinearMotion(onMotionComplete);
 			addTween(_motionTween);
 		}
+		
+		// TODO: implememnt XML searching as shown at: http://www.senocular.com/flash/tutorials/as3withflashcs3/?page=4#e4x
+		// This needs to take into effect level restrictions and thresholds.
+		public function determineCreatureType(player:Boolean = false):void {
+			if (player) {
+				// TODO: implement for player as well
+				// creatureXML = Dungeon.dataloader.pcs[];
+			} else {
+				var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));
+				creatureXML = Dungeon.dataloader.npcs[randNPC];
+			}
+		}		
 		
 		public function onMotionComplete():void {
 			x = _motionTween.x;
@@ -141,11 +156,36 @@ package dungeon.contents
 		public function updateIntrinsicStats(player:Boolean=false):void
 		{
 			// TODO: calculate level scale somehow. canned from XML? Algorithm?
-			var expectedLevel:uint = STATS[GC.STATUS_XP] / 10; 
-			var defaultIncreaseChance:uint = 25;
+			var expectedLevel:uint = 1;
+			var levelOne:uint = 20;
+			var calculatedXP:uint = levelOne;
+
+			while (calculatedXP < STATS[GC.STATUS_XP]) {
+				calculatedXP = calculatedXP * 2;
+				expectedLevel += 1;
+			}
+			
+			
+			
+				
 			if (STATS[GC.STATUS_LEVEL] < expectedLevel)
 			{
+				var preferredStats:Array = creatureXML.preferredStats.split(",");
+				var defaultIncreaseChance:uint = 25;
+				var chances:Dictionary = new Dictionary();
+				chances[GC.STATUS_STR] = defaultIncreaseChance;
+				chances[GC.STATUS_AGI] = defaultIncreaseChance;
+				chances[GC.STATUS_CON] = defaultIncreaseChance;
+				chances[GC.STATUS_INT] = defaultIncreaseChance;
+				chances[GC.STATUS_WIS] = defaultIncreaseChance;
+				chances[GC.STATUS_CHA] = defaultIncreaseChance;
+				for each (var stat:String in preferredStats) {
+					chances[stat] = 2;
+				}
+				
+				// Ding!
 				STATS[GC.STATUS_LEVEL]++;
+
 				if (player) {
 					Dungeon.statusScreen.updateCombatText("Welcome to level " + expectedLevel + "!");
 				}
