@@ -189,18 +189,18 @@ package dungeon.contents
 				if (player) {
 					Dungeon.statusScreen.updateCombatText("Welcome to level " + expectedLevel + "!");
 				}
-				// TODO: implement preferred stats
-				if ((Math.random() * 100) < defaultIncreaseChance)
+				// TODO: check if an "attributes" array in GC that will collect these would be useful
+				if ((Math.random() * 100) < chances[GC.STATUS_STR])
 					STATS[GC.STATUS_STR] += 1;
-				if ((Math.random() * 100) < defaultIncreaseChance)
+				if ((Math.random() * 100) < chances[GC.STATUS_AGI])
 					STATS[GC.STATUS_AGI] += 1;
-				if ((Math.random() * 100) < defaultIncreaseChance)
+				if ((Math.random() * 100) < chances[GC.STATUS_CON])
 					STATS[GC.STATUS_CON] += 1;
-				if ((Math.random() * 100) < defaultIncreaseChance)
+				if ((Math.random() * 100) < chances[GC.STATUS_WIS])
 					STATS[GC.STATUS_WIS] += 1;
-				if ((Math.random() * 100) < defaultIncreaseChance)
+				if ((Math.random() * 100) < chances[GC.STATUS_INT])
 					STATS[GC.STATUS_INT] += 1;
-				if ((Math.random() * 100) < defaultIncreaseChance)
+				if ((Math.random() * 100) < chances[GC.STATUS_CHA])
 					STATS[GC.STATUS_CHA] += 1;
 
 				updateDerivedStats();
