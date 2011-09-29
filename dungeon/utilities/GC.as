@@ -155,6 +155,8 @@ package dungeon.utilities
 		public static const STATUS_HEALRATE:uint = 17;
 		public static const STATUS_HEALSTEP:uint = 18;
 		public static const STATUS_HPMAX:uint = 19;
+		
+		public static const STATUS_ATTRIBUTES:Array = [STATUS_STR, STATUS_AGI, STATUS_INT, STATUS_WIS, STATUS_CHA, STATUS_CON];
 
 		// derived constants for arrays
 		public static const STATUS_ATT:uint = 10; // mostly strength + bit of agi + item stat attack

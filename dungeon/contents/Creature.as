@@ -149,9 +149,7 @@ package dungeon.contents
 		}
 		
 		/**
-		 * TODO: // check if amount of current XP matches the level scale
-			 * if not, increase the level and process stats accordingly
-		 * 
+		 * TODO: // test all this :D
 		 */
 		public function updateIntrinsicStats(player:Boolean=false):void
 		{
@@ -164,9 +162,6 @@ package dungeon.contents
 				calculatedXP = calculatedXP * 2;
 				expectedLevel += 1;
 			}
-			
-			
-			
 				
 			if (STATS[GC.STATUS_LEVEL] < expectedLevel)
 			{
@@ -190,18 +185,10 @@ package dungeon.contents
 					Dungeon.statusScreen.updateCombatText("Welcome to level " + expectedLevel + "!");
 				}
 				// TODO: check if an "attributes" array in GC that will collect these would be useful
-				if ((Math.random() * 100) < chances[GC.STATUS_STR])
-					STATS[GC.STATUS_STR] += 1;
-				if ((Math.random() * 100) < chances[GC.STATUS_AGI])
-					STATS[GC.STATUS_AGI] += 1;
-				if ((Math.random() * 100) < chances[GC.STATUS_CON])
-					STATS[GC.STATUS_CON] += 1;
-				if ((Math.random() * 100) < chances[GC.STATUS_WIS])
-					STATS[GC.STATUS_WIS] += 1;
-				if ((Math.random() * 100) < chances[GC.STATUS_INT])
-					STATS[GC.STATUS_INT] += 1;
-				if ((Math.random() * 100) < chances[GC.STATUS_CHA])
-					STATS[GC.STATUS_CHA] += 1;
+				for each (var att:String in GC.STATUS_ATTRIBUTES) {
+					if ((Math.random() * 100) < chances[att])
+						STATS[att] += 1;
+				}
 
 				updateDerivedStats();
 			}
