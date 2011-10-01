@@ -88,12 +88,13 @@ package dungeon.utilities
 		public static const SLOT_PRIMARY_WEAPON:String = 'PRIMARY_WEAPON';
 		public static const SLOT_SECONDARY_WEAPON:String = 'SECONDARY_WEAPON';
 		public static const SLOT_HEAD:String = 'SLOT_HEAD';
-		public static const SLOT_CHEST:String = 'SLOT_CHEST';
-		public static const SLOT_LEGS:String = 'SLOT_LEGS';
-		public static const SLOT_HANDS:String = 'SLOT_HANDS';
-		public static const SLOT_WAIST:String = 'SLOT_WAIST';
-		public static const SLOT_FEET:String = 'SLOT_FEET';
-		public static const SLOT_SHOULDERS:String = 'SLOT_SHOULDERS';
+		public static const SLOT_BODY:String = 'SLOT_BODY';
+		public static const SLOT_CHEST:String = 'SLOT_CHEST'; // deprecated
+		public static const SLOT_LEGS:String = 'SLOT_LEGS'; // deprecated
+		public static const SLOT_HANDS:String = 'SLOT_HANDS'; // deprecated
+		public static const SLOT_WAIST:String = 'SLOT_WAIST'; // deprecated
+		public static const SLOT_FEET:String = 'SLOT_FEET'; // deprecated
+		public static const SLOT_SHOULDERS:String = 'SLOT_SHOULDERS'; // deprecated
 		public static const SLOT_SPECIAL:String = 'SLOT_SPECIAL';
 		
 		public static const SLOT_DESCRIPTIONS:Object = 

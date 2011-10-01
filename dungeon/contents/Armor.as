@@ -12,11 +12,7 @@ package dungeon.contents
 
 		// armor class and type (leather, chain, plate, other)
 		public var CLASS:uint;
-		public const MATERIALS:Array = ["Cloth", "Leather", "Bone", "Iron", "Copper", "Steel"];
-		public const TYPE:Array = ["Leather", "Studded Leather", "Chain", "Scale", "Banded", "Splint", "Plate"];
-		public const SLOTS:Array = [GC.SLOT_SHOULDERS, GC.SLOT_HEAD, GC.SLOT_CHEST, GC.SLOT_HANDS, GC.SLOT_LEGS, GC.SLOT_FEET, GC.SLOT_WAIST];
-		// not sure how to determine if a "special" is selected
-		public const SPECIALS:Array = ["Cloak", "Shield"];
+		public const SLOTS:Array = [GC.SLOT_HEAD, GC.SLOT_BODY, GC.SLOT_SPECIAL];
 		
 		public const TILE_INDEX:uint = 0;
 		
@@ -31,6 +27,8 @@ package dungeon.contents
 		
 		public function Armor() 
 		{
+			
+
 			var randSlot:uint = Math.round(Math.random() * (SLOTS.length-1));
 			var randMat:uint = Math.round(Math.random() * (MATERIALS.length-1));
 			var randType:uint = Math.round(Math.random() * (TYPE.length-1));

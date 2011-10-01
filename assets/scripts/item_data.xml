@@ -412,7 +412,7 @@
 		</weapon>
 	</weapons>
 	<armors>
-		<armor name="Leather Vest">
+		<armor name="Padded Tunic">
 			<material>Cloth</material>
 			<slot>HEAD</slot>
 			<defense>2</defense>
@@ -420,7 +420,15 @@
 			<crit>0</crit>
 			<strengthReq>0</strengthReq>
 		</armor>
-		<armor name="Chain Vest">
+		<armor name="Leather Jacket">
+			<material>Cloth</material>
+			<slot>HEAD</slot>
+			<defense>2</defense>
+			<attack>0</attack>
+			<crit>0</crit>
+			<strengthReq>0</strengthReq>
+		</armor>
+		<armor name="Brigandine">
 			<material>Iron</material>
 			<slot>CHEST</slot>
 			<defense>4</defense>
@@ -428,7 +436,39 @@
 			<crit>2</crit>
 			<strengthReq>10</strengthReq>
 		</armor>
-		<armor name="Scale Greaves">
+		<armor name="Chain Mail">
+			<material>Steel</material>
+			<slot>LEGS</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+		</armor>
+		<armor name="Scale Mail">
+			<material>Steel</material>
+			<slot>LEGS</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+		</armor>
+		<armor name="Plate Mail">
+			<material>Steel</material>
+			<slot>LEGS</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+		</armor>
+		<armor name="Robe">
+			<material>Steel</material>
+			<slot>LEGS</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+		</armor>
+		<armor name="Bucket">
 			<material>Steel</material>
 			<slot>LEGS</slot>
 			<defense>6</defense>
