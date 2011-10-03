@@ -59,8 +59,8 @@ package dungeon.utilities
 		//  Corners
 		public static const TOPLEFTCORNER:uint = 140;
 		public static const TOPRIGHTCORNER:uint = 160;
-		public static const BOTTOMLEFTCORNER:uint = 140;
-		public static const BOTTOMRIGHTCORNER:uint = 160;
+		public static const BOTTOMLEFTCORNER:uint = 180;
+		public static const BOTTOMRIGHTCORNER:uint = 200;
 				
 		public static const DEBUG:uint = 20;
 		public static const DEBUGRED:uint = 5;
