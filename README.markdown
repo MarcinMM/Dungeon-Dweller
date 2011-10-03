@@ -2,12 +2,16 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 10/2
+# TODO MVP 10/3
 
-* Basic NPC design, start with 6 or so. Types, level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
-* Basic PC design, start with 1 race (orc) (races, perks, graphic assignment), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
+* NPC level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
+* PC Special Ability (currently dmg res for Ork)
 * Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR.
+* While I'm at it, use Signals for splatters and stub out other potential FX (noise, dmg FX) and [take a look at combat per this post](http://codesquares.com/post/persistence_complete_now_proper_combats).
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
+* Stairs
+* Grand Foozier on lvl 10; also lvl 10 implementation
+* Game Start, GAme End screens
 
 # TODO FUTURE WISHLIST
 
