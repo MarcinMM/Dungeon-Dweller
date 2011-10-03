@@ -252,9 +252,23 @@ package dungeon.utilities
 			CROSSBOW: 64
 		}
 		
-		// unless we change the size of our tilemap, offset will always be 20
-		public static const SPLAT_OFFSET:uint = 20;
-		public static const SPLAT_BLOOD:uint = 20;
+		// armor for rendering
+		public static const ARMOR_TILES:Object = 
+		{
+			JACKET: 30,
+			ARMOR_JACKET: 25, 
+			CHAIN_MAIL: 23,
+			SCALE_MAIL: 22,
+			PLATE_MAIL: 16,
+			ROBE: 35,
+			HAT: 55,
+			SKULLCAP: 53,
+			HELMET: 59
+		}
+		
+		// offset will always be GRIDSIZE by default
+		public static const SPLAT_OFFSET:uint = GRIDSIZE;
+		public static const SPLAT_BLOOD:uint = GRIDSIZE;
 		
 		public function GC() {}
 	}

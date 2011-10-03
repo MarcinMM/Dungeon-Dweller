@@ -25,45 +25,39 @@ package dungeon.contents
 		public var crit:Number = 0;
 		public var strengthReq:uint = 0;
 		
-		public function Armor() 
+		public function Armor(setGraphic:Boolean = true) 
 		{
+			var randArmor:uint = Math.round(Math.random() * (Dungeon.dataloader.armors.length - 1));
+			var armorXML:XML = Dungeon.dataloader.armors[randArmor];
 			
-
-			var randSlot:uint = Math.round(Math.random() * (SLOTS.length-1));
-			var randMat:uint = Math.round(Math.random() * (MATERIALS.length-1));
-			var randType:uint = Math.round(Math.random() * (TYPE.length-1));
-			var randSpecial:uint = Math.round(Math.random() * (SPECIALS.length-1));
-
-			slot = SLOTS[randSlot];
+			// TODO: code for evolved weapon generation here
+			// addArmorEnhancement(true);
 			
-			// armor post processing to remove silliness
-			// if it's cloth or leather it shouldn't have a type
-			// cloaks and shields are special types to be more fleshed out later
-			if (slot == GC.SLOT_SPECIAL) {
-				slot = SPECIALS[randSpecial];
-				armorMaterial = "";
-				armorType = "";
-			} else {
-				armorMaterial = MATERIALS[randMat] + " ";
-				if ((armorMaterial == "Cloth ") || (armorMaterial == "Leather ") || (armorMaterial == "Bone ")) {
-					armorType = "";
-				} else {
-					armorType = TYPE[randType] + " ";
-				}
-			}
-						
 			super();
 
 			// set which tile this weapon is, based on type probably
 			// this will be used for overlaying the player character to show equipment
 			// at the moment defaulting to 0
 			tileIndex = TILE_INDEX;
-			DESCRIPTION = armorMaterial + " " + armorType + " " + GC.SLOT_DESCRIPTIONS[slot];
+			DESCRIPTION = armorXML.@name;
 			ITEM_TYPE = GC.C_ITEM_ARMOR;
 			
-			graphic = new Image(ARMOR);
+			if (setGraphic) {
+				if (GC.ARMOR_TILES[armorXML.type] == undefined) {
+					_armors.add("static", [69], 0, false);
+				} else {
+					_armors.add("static", [GC.ARMOR_TILES[armorXML.type]], 0, false);
+				}
+				//_assets.add("anim", [6, 7, 8, 9, 10, 11], 0, false); // animations!
+				graphic = _armors;	
+				_armors.play("static");
+			}
 		}
 
+		// stub for enhancements
+		// the function call will also be used for adding armor enhancements during play
+		public function addArmorEnhancement(init:Boolean=false, type:String=''):void {}
+		
 		public function selfCopy():Armor {
 			var newArmor:Armor = new Armor();
 
@@ -77,6 +71,7 @@ package dungeon.contents
 			newArmor.rating = rating;
 			newArmor.UNIQID = UNIQID;
 			newArmor.slot = slot;
+			newArmor.invLetter = invLetter;
 			
 			newArmor.defense = defense;
 			newArmor.attack = TILE_INDEX;

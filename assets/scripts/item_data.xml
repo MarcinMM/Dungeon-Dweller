@@ -414,67 +414,93 @@
 	<armors>
 		<armor name="Padded Tunic">
 			<material>Cloth</material>
-			<slot>HEAD</slot>
+			<slot>BODY</slot>
 			<defense>2</defense>
 			<attack>0</attack>
 			<crit>0</crit>
 			<strengthReq>0</strengthReq>
+			<type>JACKET</type>
 		</armor>
 		<armor name="Leather Jacket">
 			<material>Cloth</material>
-			<slot>HEAD</slot>
+			<slot>BODY</slot>
 			<defense>2</defense>
 			<attack>0</attack>
 			<crit>0</crit>
 			<strengthReq>0</strengthReq>
+			<type>JACKET</type>
 		</armor>
 		<armor name="Brigandine">
 			<material>Iron</material>
-			<slot>CHEST</slot>
+			<slot>BODY</slot>
 			<defense>4</defense>
 			<attack>0</attack>
 			<crit>2</crit>
 			<strengthReq>10</strengthReq>
+			<type>ARMOR_JACKET</type>
 		</armor>
 		<armor name="Chain Mail">
 			<material>Steel</material>
-			<slot>LEGS</slot>
+			<slot>BODY</slot>
 			<defense>6</defense>
 			<attack>-2</attack>
 			<crit>4</crit>
 			<strengthReq>11</strengthReq>
+			<type>CHAIN_MAIL</type>
 		</armor>
 		<armor name="Scale Mail">
 			<material>Steel</material>
-			<slot>LEGS</slot>
+			<slot>BODY</slot>
 			<defense>6</defense>
 			<attack>-2</attack>
 			<crit>4</crit>
 			<strengthReq>11</strengthReq>
+			<type>SCALE_MAIL</type>
 		</armor>
 		<armor name="Plate Mail">
 			<material>Steel</material>
-			<slot>LEGS</slot>
+			<slot>BODY</slot>
 			<defense>6</defense>
 			<attack>-2</attack>
 			<crit>4</crit>
 			<strengthReq>11</strengthReq>
+			<type>PLATE_MAIL</type>
 		</armor>
 		<armor name="Robe">
 			<material>Steel</material>
-			<slot>LEGS</slot>
+			<slot>BODY</slot>
 			<defense>6</defense>
 			<attack>-2</attack>
 			<crit>4</crit>
 			<strengthReq>11</strengthReq>
+			<type>ROBE</type>
 		</armor>
 		<armor name="Bucket">
 			<material>Steel</material>
-			<slot>LEGS</slot>
+			<slot>HEAD</slot>
 			<defense>6</defense>
 			<attack>-2</attack>
 			<crit>4</crit>
 			<strengthReq>11</strengthReq>
+			<type>SKULLCAP</type>
+		</armor>
+		<armor name="Leather Hat">
+			<material>Steel</material>
+			<slot>HEAD</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+			<type>HAT</type>
+		</armor>
+		<armor name="Helmet">
+			<material>Iron</material>
+			<slot>HEAD</slot>
+			<defense>6</defense>
+			<attack>-2</attack>
+			<crit>4</crit>
+			<strengthReq>11</strengthReq>
+			<type>HELMET</type>
 		</armor>
 	</armors>
 	<materials>

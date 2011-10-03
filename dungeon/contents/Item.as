@@ -49,8 +49,10 @@ package dungeon.contents
 		// we need an item quota perhaps based on dungeon level depth
 		
 		// graphics
-		[Embed(source = '../../assets/weapons_and_armor.png')] private const ASSETS:Class;
-		public var _assets:Spritemap = new Spritemap(ASSETS, 32, 32);
+		[Embed(source = '../../assets/weapon_tiles.png')] private const WEAPON_TILES:Class;
+		[Embed(source = '../../assets/armor_tiles.png')] private const ARMOR_TILES:Class;
+		public var _weapons:Spritemap = new Spritemap(WEAPON_TILES, 32, 32);
+		public var _armors:Spritemap = new Spritemap(ARMOR_TILES, 32, 32);
 
 		public function Item() 
 		{

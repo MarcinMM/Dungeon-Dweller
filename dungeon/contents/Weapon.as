@@ -117,13 +117,13 @@ package dungeon.contents
 			// i.e.: weaponXML.name, materialXML.name
 			if (setGraphic) {
 				if (GC.WEAPON_TILES[weaponXML.type] == undefined) {
-					_assets.add("static", [69], 0, false);
+					_weapons.add("static", [69], 0, false);
 				} else {
-					_assets.add("static", [GC.WEAPON_TILES[weaponXML.type]], 0, false);
+					_weapons.add("static", [GC.WEAPON_TILES[weaponXML.type]], 0, false);
 				}
 				//_assets.add("anim", [6, 7, 8, 9, 10, 11], 0, false); // animations!
-				graphic = _assets;	
-				_assets.play("static");
+				graphic = _weapons;	
+				_weapons.play("static");
 			}
 		}
 		
@@ -140,6 +140,7 @@ package dungeon.contents
 			newWeapon.UNIQID = UNIQID;
 			newWeapon.slot = slot;
 			newWeapon.defense = defense;
+			newWeapon.invLetter = invLetter;
 			
 			//newWeapon.TILE_INDEX = TILE_INDEX;
 			newWeapon.tileIndex = tileIndex;
@@ -154,9 +155,9 @@ package dungeon.contents
 			newWeapon.crit = defense;
 			newWeapon.weaponMaterial = weaponMaterial;
 			
-			newWeapon._assets.add("static", [GC.WEAPON_TILES[newWeapon.gtype]], 0, false);
-			newWeapon.graphic = newWeapon._assets;
-			newWeapon._assets.play("static");
+			newWeapon._weapons.add("static", [GC.WEAPON_TILES[newWeapon.gtype]], 0, false);
+			newWeapon.graphic = newWeapon._weapons;
+			newWeapon._weapons.play("static");
 			return newWeapon;
 		}
 	}

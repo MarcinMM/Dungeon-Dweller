@@ -15,6 +15,7 @@ package dungeon.utilities
 		[Embed(source = "../../assets/scripts/pc_data.xml", mimeType = "application/octet-stream")] private var pcData:Class;
 
 		public var weapons:Array = new Array();
+		public var armors:Array = new Array();
 		public var materials:Array = new Array();
 		public var potions:Array = new Array();
 		public var npcs:Array = new Array();
@@ -43,6 +44,11 @@ package dungeon.utilities
 				weapons.push(i);
 			}
 
+			for each (i in itemDataXML.items.armors.armor)
+			{
+				armors.push(i);
+			}
+
 			for each (i in itemDataXML.items.materials.material)
 			{
 				materials.push(i);
@@ -62,10 +68,6 @@ package dungeon.utilities
 			{
 				pcs.push(i);
 			}
-			
-			//items.push(weapons);
-			//items.push(materials);
-			//items.push(potions);
 		}
 	}
 }
