@@ -10,13 +10,13 @@ package dungeon.structure
 	import dungeon.utilities.DecorGraphic;
 
 	/**
-	 * Noncollidable clutter entities. Bloodsplatters, plant growth, other FX PC or NPCs make.
+	 * Noncollidable clutter entities. Bloodadds, plant growth, other FX PC or NPCs make.
 	 * Scratches on walls? scorching? spilling other liquids? I dunno, but it's exciting to think about!
 	 * @author ...
 	 */
 	public class Decor extends Entity
 	{
-		// TODO: this needs to be a spritemap of splatters
+		// TODO: this needs to be a spritemap of adds
 		public var _decor:DecorGraphic;
 		
 		public function Decor() 
@@ -40,31 +40,32 @@ package dungeon.structure
 		}
 		
 		// TODO: I wonder if we could make this a listener function instead of having to call it
+		// TODO: figure out how I can turn tiles solid on a one-off basis here somehow
 		/**
 		 * 
-		 * @param	splatterPoint splatter coordinate
-		 * @param	crit true = large splatter, false = small splatter
+		 * @param	addPoint add coordinate
+		 * @param	crit true = large add, false = small add
 		 */
-		public function splatter(x:uint, y:uint, crit:Boolean, material:uint):void {
+		public function add(x:uint, y:uint, material:uint, crit:Boolean, solidity:Boolean):void {
 			if (crit) {
 				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
 			} else {
 				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
-				splatterArea(x, y, 'SMALL', material);
+				addArea(x, y, 'SMALL', material);
 			}
 			// add "else" when we get real art for these
 		}
 
 		// This is a bigger splat with a potential area of effect. 
 		// Size can come in SMALL, MEDIUM, LARGE
-		// each size will have a 25, 50, 75% chance to splatter all sides, respectively
-		// TODO: random splatter choice from material index
+		// each size will have a 25, 50, 75% chance to add all sides, respectively
+		// TODO: random add choice from material index
 		/**
 		 * 
-		 * @param	splatterPoint splatter coordinate
-		 * @param	crit true = large splatter, false = small splatter
+		 * @param	addPoint add coordinate
+		 * @param	crit true = large add, false = small add
 		 */
-		public function splatterArea(x:uint, y:uint, area:String, material:uint):void {
+		public function addArea(x:uint, y:uint, area:String, material:uint):void {
 			var chance:Number;
 			switch (area) {
 				case 'SMALL':
@@ -94,7 +95,7 @@ package dungeon.structure
 
 		override public function update():void
 		{
-			// TODO: listen for hit "event" somehow, then fire splatter
+			// TODO: listen for hit "event" somehow, then fire add
 		}
 		
 	}

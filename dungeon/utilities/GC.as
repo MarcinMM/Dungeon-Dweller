@@ -269,6 +269,23 @@ package dungeon.utilities
 		// offset will always be GRIDSIZE by default
 		public static const SPLAT_OFFSET:uint = GRIDSIZE;
 		public static const SPLAT_BLOOD:uint = GRIDSIZE;
+
+		// DECOR
+		public static const DECOR_STATUE:String = 'STATUE';
+		public static const DECOR_STAIRS_UP:String = 'STAIRS_UP';
+		public static const DECOR_STAIRS_DOWN:String = 'STAIRS_DOWN';
+		public static const DECOR_THRONE:String = 'THRONE';
+		public static const DECOR_TABLE:String = 'TABLE';
+
+		// DECOR SOLIDS
+		public static const DECOR_SOLIDS:Object = 
+		{
+			STATUE: true,
+			STAIRS_UP: false,
+			STAIRS_DOWN: false,
+			THRONE: false,
+			TABLE: true
+		}
 		
 		public function GC() {}
 	}

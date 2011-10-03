@@ -252,11 +252,7 @@ package dungeon.structure
 			}			
 		}
 
-		// this will not only draw items but extra clutter
-		// probably monsters
-		// stairs
-		// add interesting room features
-		// etc
+		// this is the non-NPC (pick-uppable) Entity adding code	
 		public function placeItems():void {
 			var x:uint = 0;
 			var y:uint = 0;
@@ -272,6 +268,7 @@ package dungeon.structure
 				FP.world.add(item);
 			}
 		}
+
 		
 		public function createItems():void {
 			// generate items for the level and handle drawing them as well
@@ -284,6 +281,27 @@ package dungeon.structure
 			//ITEMS.forEach(drawItem);
 		}
 		
+		// and this one is for decor, i.e. non-pickuppable items; stairs, chairs, tables, fountains
+		// there may be other actions on them though, and some may be solid (statues)
+		public function placeDecor():void {
+			// hardcode 5 items of decor, plus 2 stairs
+			var decorToAdd:Array;
+			for (i:uint = 0; i < 5; i++)
+			{
+				decorIndex = Math.round(Math.random() * GC.DECOR_SIZE); 
+				decorToAdd.push(decorIndex);
+			}
+			decorToAdd.push(GC.DECOR_STAIRS_DOWN);
+			decorToAdd.push(GC.DECOR_STAIRS_UP);
+				
+			// now iterate through desired decor items and assign them to random rooms on level
+			var roomIndex:uint = 0;
+			for each (decorIndex:uint in decorToAdd) {
+				roomIndex = Math.round(Math.random() * _roomsA.length();
+				_roomsA[roomIndex].addDecor(decorIndex);
+			}
+		}
+
 		// handlers for generating new items and pushing them to the level item collection
 		private function generateWeapon():void {
 			var weapon:Weapon = new Weapon();

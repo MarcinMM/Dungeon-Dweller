@@ -28,6 +28,15 @@ package dungeon.structure
         public var doors:Array = [];
         
         // TODO: room decor/clutter
+        public function addDecor(decorIndex:uint) {
+            var xOfsset:int = Math.round(Math.random() * width);
+            var yOffset:int = Math.round(Math.random() * height);
+            if (GC.SOLID_DECOR[decorIndex] == true) {
+                Dungeon.level.decor.add(x, y, DECOR_TYPE, false, true);
+            } else {
+                Dungeon.level.decor.add(x, y, DECOR_TYPE, false, false);
+            }
+        }
         
         // TODO: room traps and widgets
         
