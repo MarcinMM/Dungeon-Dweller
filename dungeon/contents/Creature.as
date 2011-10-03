@@ -69,7 +69,7 @@ package dungeon.contents
 		// This needs to take into effect level restrictions and thresholds.
 		public function determineCreatureType(player:Boolean = false):void {
 			if (player) {
-				// TODO: implement for player as well; currently hardcoded to 1
+				// TODO: implement for player as well; currently hardcoded to 0
 				creatureXML = Dungeon.dataloader.pcs[0];
 			} else {
 				var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));

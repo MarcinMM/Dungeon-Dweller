@@ -18,7 +18,6 @@ package dungeon.contents
 	 */
 	public class Player extends Creature
 	{
-		[Embed(source = '../../assets/npcs.png')] private const WEAPON_TILES:Class;
 		public var _imgOverlay:MonsterGraphic;
 		private var syncStep:int = 0;
 
@@ -35,7 +34,7 @@ package dungeon.contents
 		{
 			super();
 			
-			determineCreatureType();
+			determineCreatureType(true);
 			
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;
