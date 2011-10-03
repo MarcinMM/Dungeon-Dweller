@@ -18,8 +18,10 @@ package dungeon.contents
 	 */
 	public class Player extends Creature
 	{
-		[Embed(source = '../../assets/player.png')] private const PLAYER:Class;
+		[Embed(source = '../../assets/npcs.png')] private const WEAPON_TILES:Class;
+		public var _imgOverlay:MonsterGraphic;
 		private var syncStep:int = 0;
+
 		public var LIGHT_RADIUS:int = 1;
 		public var GRIDSIZE:int = GC.GRIDSIZE;
 					
@@ -33,11 +35,11 @@ package dungeon.contents
 		{
 			super();
 			
-			// TODO: uncomment this to generate player as a MonsterGraphic when graphics are complete
-			//var randCritter:uint = Math.round((Math.random() * 16)) + 20;
-			//_imgOverlay = new MonsterGraphic(randCritter,0,0);
+			determineCreatureType();
 			
-			graphic = new Image(PLAYER);
+			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
+			graphic = _imgOverlay;
+
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
 			Input.define(GC.DIR_UP_TEXT, Key.UP);
@@ -62,7 +64,7 @@ package dungeon.contents
 			layer = GC.PLAYER_LAYER;
 			
 			// Initial player setup
-			setPlayerStats("bruiser");
+			setPlayerStats();
 			updatePlayerStats(true);
 		}
 		
@@ -71,41 +73,17 @@ package dungeon.contents
 			Dungeon.statusScreen.statUpdate(STATS);			
 		}
 		
-		public function setPlayerStats(playerClass:String):void {
+		public function setPlayerStats():void {
 			STATS[GC.STATUS_LEVEL] = 1;
 			STATS[GC.STATUS_XP] = 0;
-			switch(playerClass) {
-				case "bruiser":
-					STATS[GC.STATUS_STR] = 14;
-					STATS[GC.STATUS_AGI] = 10;
-					STATS[GC.STATUS_INT] = 10;
-					STATS[GC.STATUS_WIS] = 10;
-					STATS[GC.STATUS_CHA] = 10;
-					STATS[GC.STATUS_CON] = 14;
-					STATS[GC.STATUS_HEALRATE] = 2;
-					STATS[GC.STATUS_HEALSTEP] = 0;
-					break;
-				case "shaman":
-					STATS[GC.STATUS_STR] = 10;
-					STATS[GC.STATUS_AGI] = 10;
-					STATS[GC.STATUS_INT] = 13;
-					STATS[GC.STATUS_WIS] = 13;
-					STATS[GC.STATUS_CHA] = 12;
-					STATS[GC.STATUS_CON] = 10;
-					STATS[GC.STATUS_HEALRATE] = 2;
-					STATS[GC.STATUS_HEALSTEP] = 0;
-					break;
-				case "scout":
-					STATS[GC.STATUS_STR] = 11;
-					STATS[GC.STATUS_AGI] = 12;
-					STATS[GC.STATUS_INT] = 11;
-					STATS[GC.STATUS_WIS] = 11;
-					STATS[GC.STATUS_CHA] = 11;
-					STATS[GC.STATUS_CON] = 12;
-					STATS[GC.STATUS_HEALRATE] = 2;
-					STATS[GC.STATUS_HEALSTEP] = 0;
-					break;
-			}
+			STATS[GC.STATUS_STR] = creatureXML.str;
+			STATS[GC.STATUS_AGI] = creatureXML.agi;
+			STATS[GC.STATUS_INT] = creatureXML.int;
+			STATS[GC.STATUS_WIS] = creatureXML.wis;
+			STATS[GC.STATUS_CHA] = creatureXML.cha;
+			STATS[GC.STATUS_CON] = creatureXML.con;
+			STATS[GC.STATUS_HEALRATE] = 15;
+			STATS[GC.STATUS_HEALSTEP] = 0;
 		}
 		
 
