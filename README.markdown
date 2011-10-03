@@ -2,11 +2,10 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 9/13
+# TODO MVP 10/2
 
 * Basic NPC design, start with 6 or so. Types, level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
 * Basic PC design, start with 1 race (orc) (races, perks, graphic assignment), [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
-* Armor gen, basic [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR.
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 
@@ -55,10 +54,13 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 # HIGH PRIORITY BUGS
 
 * Creatures now clip through each other, I think due to the motion Tween.
-* Inventory letters on items gone? Unable to equip.
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 10/2
+* Armor gen, basic [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
+* [BUG] Fixed inventory letters; wasn't copying inventory letters on destructive item copy.
 
 # UPDATES 8/27/2011
 
