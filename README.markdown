@@ -62,6 +62,9 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
 
+# UPDATES 10/3
+* Started more comprehensive work on decor layer. It is now Room-based, i.e. the Level will iterate through Rooms, which will internally determine where to put stuff within their bounds.  Added some constants for decor items. Added player position save on ascend/descend based on stairs (I think it's currently broken by not being multiplied by gridsize, another grid vs. absolute coordinates confusion). Also not every level is getting up/down stairs, not sure why.
+
 # UPDATES 10/2
 * Armor gen, basic [per this post.](http://codesquares.com/post/we_havent_blathered_about_design_in_a_while_armor_and_classes)
 * [BUG] Fixed inventory letters; wasn't copying inventory letters on destructive item copy.
