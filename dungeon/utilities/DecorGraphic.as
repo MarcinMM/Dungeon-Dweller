@@ -14,7 +14,7 @@ package dungeon.utilities
 		
 		public var layerCount:uint = 4;
 		// TODO: also add green and blue recolors of spatters
-		[Embed(source = '/assets/surface_nonsolids.png')] private const BLOODSPLATTER:Class;
+		[Embed(source = '/assets/surface_nonsolids.png')] private const DECOR_TILES:Class;
 
 		public var layerIndex:uint = 0;
 	  
@@ -22,7 +22,7 @@ package dungeon.utilities
 		public function DecorGraphic(makeNew:Boolean = true) {
 			if (makeNew) {
 				for (var i:uint = 0; i < layerCount; i++ ) {
-					var map:Tilemap = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+					var map:Tilemap = new Tilemap(DECOR_TILES, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 					var test:String = map.saveToString();
 					layerArray.push(map);
 				}
@@ -42,7 +42,7 @@ package dungeon.utilities
 		public function selfCopy():DecorGraphic {
 			var copy:DecorGraphic = new DecorGraphic(false);
 			for each (var i:Tilemap in layerArray) {
-				var map:Tilemap = new Tilemap(BLOODSPLATTER, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
+				var map:Tilemap = new Tilemap(DECOR_TILES, Dungeon.MAP_WIDTH, Dungeon.MAP_HEIGHT, Dungeon.TILE_WIDTH, Dungeon.TILE_HEIGHT);
 				var savedMap:String = i.saveToString();
 				map.loadFromString(savedMap);
 				copy.layerArray.push(map);
@@ -55,7 +55,7 @@ package dungeon.utilities
 		}
 		
 		// you have to choose material (which is the tile in tilemap) and the option to randomize; randomMaterial indicates maximum offset for random. 0 indicates no offset 
-		public function addDecor(x:uint, y:uint, material:uint, randomMaterial:uint):void {
+		public function addGraphic(x:uint, y:uint, material:uint, randomMaterial:uint):void {
 			// TODO: randomize material index to generate varying decor components
 			if (randomMaterial != 0) {
 				var offset:uint = Math.round(Math.random() * randomMaterial);

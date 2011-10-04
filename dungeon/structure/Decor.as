@@ -46,11 +46,11 @@ package dungeon.structure
 		 * @param	addPoint add coordinate
 		 * @param	crit true = large add, false = small add
 		 */
-		public function add(x:uint, y:uint, material:uint, crit:Boolean, solidity:Boolean):void {
+		public function addDecor(x:uint, y:uint, material:uint, crit:Boolean=false, solidity:Boolean=false):void {
 			if (crit) {
-				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
+				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
 			} else {
-				_decor.addDecor(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
+				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
 				addArea(x, y, 'SMALL', material);
 			}
 			// add "else" when we get real art for these
@@ -80,16 +80,16 @@ package dungeon.structure
 			}
 			// up down left right
 			if (Math.random() < chance) {
-				_decor.addDecor(x / GC.GRIDSIZE, (y / GC.GRIDSIZE) - 1, material, 5);
+				_decor.addGraphic(x / GC.GRIDSIZE, (y / GC.GRIDSIZE) - 1, material, 5);
 			}
 			if (Math.random() < chance) {
-				_decor.addDecor(x / GC.GRIDSIZE, (y / GC.GRIDSIZE) + 1, material, 5); 
+				_decor.addGraphic(x / GC.GRIDSIZE, (y / GC.GRIDSIZE) + 1, material, 5); 
 			}
 			if (Math.random() < chance) {
-				_decor.addDecor((x / GC.GRIDSIZE) - 1, y / GC.GRIDSIZE, material, 5);
+				_decor.addGraphic((x / GC.GRIDSIZE) - 1, y / GC.GRIDSIZE, material, 5);
 			}
 			if (Math.random() < chance) {
-				_decor.addDecor((x / GC.GRIDSIZE) + 1, y / GC.GRIDSIZE, material, 5);
+				_decor.addGraphic((x / GC.GRIDSIZE) + 1, y / GC.GRIDSIZE, material, 5);
 			}
 		}
 

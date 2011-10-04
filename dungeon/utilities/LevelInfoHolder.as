@@ -2,6 +2,7 @@ package dungeon.utilities
 {
 	import dungeon.structure.Decor;
 	import dungeon.structure.Nodemap;
+	import dungeon.structure.Point;
 	
 	/**
 	 * ...
@@ -15,6 +16,8 @@ package dungeon.utilities
 		public var decor:Decor;
 		public var items:Array;
 		public var creatures:Array;
+		public var stairsDown:Point;
+		public var stairsUp:Point;
 
 		public function LevelInfoHolder() {
 			items = new Array();

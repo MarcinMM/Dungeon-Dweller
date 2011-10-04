@@ -26,16 +26,18 @@ package dungeon.structure
         public var walls:Array;
         
         public var doors:Array = [];
-        
+		public var roomOwnedBy:String; // 'player', 'noone', 'faction'        
+
         // TODO: room decor/clutter
-        public function addDecor(decorIndex:uint) {
-            var xOfsset:int = Math.round(Math.random() * width);
+        public function addDecor(decor:Decor, decorIndex:int):Point {
+            var xOffset:int = Math.round(Math.random() * width);
             var yOffset:int = Math.round(Math.random() * height);
-            if (GC.SOLID_DECOR[decorIndex] == true) {
-                Dungeon.level.decor.add(x, y, DECOR_TYPE, false, true);
+            if (GC.DECOR_SOLIDS[decorIndex] == true) {
+                decor.addDecor(((x + xOffset) * GC.GRIDSIZE), ((y + yOffset) * GC.GRIDSIZE), decorIndex);
             } else {
-                Dungeon.level.decor.add(x, y, DECOR_TYPE, false, false);
+                decor.addDecor(((x + xOffset) * GC.GRIDSIZE), ((y + yOffset) * GC.GRIDSIZE), decorIndex);
             }
+			return new Point(x + xOffset, y + yOffset);
         }
         
         // TODO: room traps and widgets
@@ -249,7 +251,24 @@ package dungeon.structure
                 }
             }
             return farthestDoorPoint;
-		}        
-        
+		}
+
+		// stubbing out some utility functions for room editing
+		public function redrawRoomAs(tileset:uint):void {
+			// will utilize current room definition and tileset integer
+			// to redraw the room as a given type
+			// integer will be constant from GC, and will indicate a tileset row start
+			// i.e. forest starts at 0 and goes to 10, dungeon 10 through 20 and so on
+		}
+
+		public function isRoomOwnable(playerPosition:Point):Boolean {
+			// this will check current player position and return whether it's possible to "own" this room or not
+			// if any non-friendly creatures are in it, the answer is no.
+			// if level is un-ownable (special one off levels?) the answer is no.
+			// if room is too small/too big (TBD later), the answer is no.
+			// if room is already a special room (player owned or otherwise), the answer is no.
+			// otherwise, yes.
+			return true;
+		}
     }
 }

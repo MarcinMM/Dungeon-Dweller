@@ -48,6 +48,9 @@ package dungeon.structure
 		public var ITEMS:Array = [];
 		public var NPCS:Array = [];
 
+		public var STAIRS_UP:Point;
+		public var STAIRS_DOWN:Point;
+		
 		// Level game data
 		public var dungeonDepth:uint = 1;
 		public var decor:Decor;
@@ -139,10 +142,14 @@ package dungeon.structure
 			decor.resetDecor();
 			FP.world.remove(decor);
 			
+			// finally stairs; while technically a part of decor, we need them right away for player placement
+			levelHolder.stairsDown = STAIRS_DOWN;
+			levelHolder.stairsUp = STAIRS_UP;
+			
 			return levelHolder;
 		}
 		
-		public function loadLevel(levelHolder:LevelInfoHolder):void {
+		public function loadLevel(levelHolder:LevelInfoHolder, direction:String):void {
 			
 			_dungeonmap.loadFromString(levelHolder.structure);
 			graphic = _dungeonmap;
@@ -179,13 +186,26 @@ package dungeon.structure
 				var npcCopy:NPC = npc.selfCopy();
 				NPCS.push(npcCopy);
 				FP.world.add(npcCopy);
-				// npc = null; TODO: to be added once NPCs create graphics based on type; currently, graphic is saved by reference
+				npc = null;
 			}
 			levelHolder.creatures = new Array();
 			
 			// load decor
 			decor = levelHolder.decor.selfCopy();
 			FP.world.add(decor);
+			
+			STAIRS_DOWN = levelHolder.stairsDown;
+			STAIRS_DOWN = levelHolder.stairsUp;
+			
+			// now put player on the appropriate stairs
+			if (direction == "UP") {
+				Dungeon.player.x = STAIRS_DOWN.x;
+				Dungeon.player.y = STAIRS_DOWN.y;
+			} else {
+				Dungeon.player.x = STAIRS_UP.x;
+				Dungeon.player.y = STAIRS_UP.y;
+			}
+			
 			levelHolder.decor = new Decor();
 		}
 		
@@ -202,6 +222,9 @@ package dungeon.structure
 			mask = _grid;
 			type = "level";
 			
+			decor = new Decor();
+			FP.world.add(decor);
+
 			drawRooms();
 			_nodemap = new Nodemap(_dungeonmap, _roomsA);
 			
@@ -217,8 +240,8 @@ package dungeon.structure
 			
 			createAndPlaceNPCs();
 			
-			decor = new Decor();
-			FP.world.add(decor);
+			
+			placeDecor(decor);
 		}
 		
 		private function drawRooms():void {
@@ -283,22 +306,31 @@ package dungeon.structure
 		
 		// and this one is for decor, i.e. non-pickuppable items; stairs, chairs, tables, fountains
 		// there may be other actions on them though, and some may be solid (statues)
-		public function placeDecor():void {
+		public function placeDecor(decor:Decor):void {
 			// hardcode 5 items of decor, plus 2 stairs
-			var decorToAdd:Array;
-			for (i:uint = 0; i < 5; i++)
+			var decorToAdd:Array = new Array();
+			var decorIndex:uint = 0;
+			
+			for (var i:uint = 0; i < 3; i++)
 			{
 				decorIndex = Math.round(Math.random() * GC.DECOR_SIZE); 
-				decorToAdd.push(decorIndex);
+				decorToAdd.push(GC.DECOR_OFFSET + decorIndex);
 			}
 			decorToAdd.push(GC.DECOR_STAIRS_DOWN);
 			decorToAdd.push(GC.DECOR_STAIRS_UP);
 				
 			// now iterate through desired decor items and assign them to random rooms on level
 			var roomIndex:uint = 0;
-			for each (decorIndex:uint in decorToAdd) {
-				roomIndex = Math.round(Math.random() * _roomsA.length();
-				_roomsA[roomIndex].addDecor(decorIndex);
+			var decorLocation:Point;
+			for each (decorIndex in decorToAdd) {
+				roomIndex = Math.round(Math.random() * (_roomsA.length - 1));
+				decorLocation = _roomsA[roomIndex].addDecor(decor, decorIndex);
+				if (decorIndex == GC.DECOR_STAIRS_DOWN) {
+					STAIRS_DOWN = decorLocation;
+				}
+				if (decorIndex == GC.DECOR_STAIRS_UP) {
+					STAIRS_UP = decorLocation;
+				}
 			}
 		}
 
@@ -406,7 +438,7 @@ package dungeon.structure
 					drawLevel();
 				} else {
 					// otherwise load lower level from storage and redraw
-					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
+					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter], "DOWN");
 				}
 				Dungeon.statusScreen.depthUpdate();
 			}
@@ -416,7 +448,7 @@ package dungeon.structure
 					Dungeon.LevelHolderCounter--;
 					// load level from storage and redraw, if below 0
 					var level:int = Dungeon.LevelHolderCounter;
-					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter]);
+					loadLevel(Dungeon.LevelHolder[Dungeon.LevelHolderCounter], "UP");
 				}
 				else {
 					Dungeon.LevelHolderCounter = 0;

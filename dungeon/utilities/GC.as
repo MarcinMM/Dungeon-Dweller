@@ -37,32 +37,28 @@ package dungeon.utilities
 		 * const LOCATION_THRESHOLDS:Object { 4: forest, 8: cave, 12: brick, 16: marble } which does a level comparison and applies 
 		 * appropriate location string to the tile objects
 		*/
-        public static const FLOOR:uint = 40;
-		public static const HALL:uint = 41;
-        public static const NWALL:uint = 60;
-        public static const SWALL:uint = 80;
-        public static const WWALL:uint = 100;
-        public static const EWALL:uint = 120;
+        public static const FLOOR:uint = 20;
+		public static const HALL:uint = 21;
 
 		// Walls
-		public static const TOPWALL:uint = 60;
-		public static const BOTTOMWALL:uint = 80;
-		public static const LEFTWALL:uint = 100;
-		public static const RIGHTWALL:uint = 120;
+		public static const TOPWALL:uint = 40;
+		public static const BOTTOMWALL:uint = 60;
+		public static const LEFTWALL:uint = 80;
+		public static const RIGHTWALL:uint = 100;
 
 		// Doors
-		public static const LEFTDOOR:uint = 180;
-		public static const RIGHTDOOR:uint = 180;
-		public static const TOPDOOR:uint = 180;
-		public static const BOTTOMDOOR:uint = 180;
+		public static const LEFTDOOR:uint = 200;
+		public static const RIGHTDOOR:uint = 200;
+		public static const TOPDOOR:uint = 200;
+		public static const BOTTOMDOOR:uint = 200;
 
 		//  Corners
-		public static const TOPLEFTCORNER:uint = 140;
-		public static const TOPRIGHTCORNER:uint = 160;
-		public static const BOTTOMLEFTCORNER:uint = 180;
-		public static const BOTTOMRIGHTCORNER:uint = 200;
+		public static const TOPLEFTCORNER:uint = 120;
+		public static const TOPRIGHTCORNER:uint = 140;
+		public static const BOTTOMLEFTCORNER:uint = 160;
+		public static const BOTTOMRIGHTCORNER:uint = 180;
 				
-		public static const DEBUG:uint = 20;
+		public static const DEBUG:uint = 1;
 		public static const DEBUGRED:uint = 5;
 		public static const DEBUGGREEN:uint = 6;		
 
@@ -266,25 +262,30 @@ package dungeon.utilities
 			HELMET: 59
 		}
 		
-		// offset will always be GRIDSIZE by default
-		public static const SPLAT_OFFSET:uint = GRIDSIZE;
-		public static const SPLAT_BLOOD:uint = GRIDSIZE;
+		// these are the row where splats start and how many variants we have (determined in surface_nonsolids.png)
+		public static const SPLAT_OFFSET:uint = 20;
+		public static const SPLAT_BLOOD:uint = 20;
 
 		// DECOR
-		public static const DECOR_STATUE:String = 'STATUE';
-		public static const DECOR_STAIRS_UP:String = 'STAIRS_UP';
-		public static const DECOR_STAIRS_DOWN:String = 'STAIRS_DOWN';
-		public static const DECOR_THRONE:String = 'THRONE';
-		public static const DECOR_TABLE:String = 'TABLE';
+		public static const DECOR_OFFSET:uint = 80;
+		public static const DECOR_SIZE:uint = 3; // current decor is only 3 items (fountain, altar, sink); more to come
+		public static const DECOR_STAIRS_UP:uint = 85;
+		public static const DECOR_STAIRS_DOWN:uint = 84;
+		public static const DECOR_ALTAR:uint = 80;
+		public static const DECOR_SINK:uint = 82;
+		public static const DECOR_FOUNTAIN:uint = 83;
+		// public static const DECOR_STATUE:uint = 86;
 
 		// DECOR SOLIDS
 		public static const DECOR_SOLIDS:Object = 
 		{
-			STATUE: true,
-			STAIRS_UP: false,
-			STAIRS_DOWN: false,
-			THRONE: false,
-			TABLE: true
+			DECOR_ALTAR: true,
+			DECOR_STAIRS_UP: false,
+			DECOR_STAIRS_DOWN: false,
+			DECOR_THRONE: false,
+			DECOR_TABLE: true,
+			DECOR_SINK: false,
+			DECOR_FOUNTAIN: true
 		}
 		
 		public function GC() {}
