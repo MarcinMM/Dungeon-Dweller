@@ -307,6 +307,13 @@ package dungeon.structure
 		// and this one is for decor, i.e. non-pickuppable items; stairs, chairs, tables, fountains
 		// there may be other actions on them though, and some may be solid (statues)
 		public function placeDecor(decor:Decor):void {
+
+// need to rewrite this as
+// 1. decorReturnAr = decor.generateDecor();
+// 2. STAIRS_DOWN = decorReturnAr.STAIRS_DOWN;
+// 3. STAIRS_UP = decorReturnAr.STAIRS_UP;
+// rest of work should happen in Decor class
+
 			// hardcode 5 items of decor, plus 2 stairs
 			var decorToAdd:Array = new Array();
 			var decorIndex:uint = 0;

@@ -12,6 +12,7 @@ package dungeon.structure
 		public var _nodes:Vector.<Node>;
 		private var roomsA:Array;
 		private var _map:Tilemap; // just a reference to level map
+		private var _solidityMap:Tilemap; // TODO: rewrite solidity to not use 
 		private var _step:uint;
 		
         public function Nodemap(_dungeonmap:Tilemap, _roomsA:Array) {
@@ -32,7 +33,7 @@ package dungeon.structure
 			// init solidity
 			initSolidity();			
 		}
-				
+		
 		public function load(_dungeonmap:Tilemap):void {
 			// reset nodes
 			_nodes = new Vector.<Node>(Dungeon.TILESX * Dungeon.TILESY, true);
@@ -50,6 +51,18 @@ package dungeon.structure
 			initSolidity();
 		}
 		
+		// use this to reload nodemap when solidity changes (digging, building, solid combat FX (icicles, boulders, etc.))
+		public function reload():void {
+			// recreate walkable/nonwalkable
+			refreshpathingNodeList();
+			
+			// recreate neighbors
+			collectNeighbors();
+			
+			// set solid/nonsolid based on above
+			initSolidity();			
+		}
+
 		public function refreshpathingNodeList():void {
 			var node:Node;
 			for (var row:uint = 0; row < Dungeon.TILESY; row++) {
@@ -71,11 +84,14 @@ package dungeon.structure
 		}
 		
 		// iterate through map and set not solid where FLOOR, DOORS
+		// TODO: still seems like this could be done faster; anything with indexOf (especially in a foreach) needs to go
 		private function initSolidity():void {
 			for each(var node:Node in _nodes) {
 				if (GC.NONSOLIDS.indexOf(_map.getTile(node.x, node.y)) != -1) {
 					node.solid = false;
 				}
+				// override for dynamic nodes (nodes set solid by ingame events)
+				node.solid = node.solidOverride;
 			}
 		}
 		

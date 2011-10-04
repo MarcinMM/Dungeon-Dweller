@@ -50,6 +50,8 @@ package
 		public static var LevelHolder:Vector.<LevelInfoHolder>;
 		public static var LevelHolderCounter:int;
 		
+		public var onCombat:Signal = new Signal;
+
 		// this is for detecting mouse clicks and positions, and taking actions on it
 		public static var overlay:Overlay;
 		

@@ -20,6 +20,7 @@ package dungeon.structure
 		public var _id:uint;
 		public var tileIndex:int = -1;
 		public var solid:Boolean;
+		public var solidOverride:Boolean = false;
         
         public function Node(initX:int, initY:int, initTileIndex:int) {
 			super(initX, initY);

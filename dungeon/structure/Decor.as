@@ -26,6 +26,26 @@ package dungeon.structure
 			graphic = _decor;
 			
 			layer = GC.DECOR_LAYER;
+
+			// TODO: stub for combat signal listener to add visual FX
+			Dungeon.onCombat.add(function(location:Point, combatType:String):void {
+			    // dispatch visual events based on type of deformation happening
+			    switch(combatType) {
+			    	case 'PHYSICAL':
+			    		// blood spatters
+			    		addDecor(location.x, location.y, material);
+			    		break;
+			    	case 'ICE':
+			    		// impassable icicles form
+			    		break;
+			    	case 'FIRE':
+			    		// fire breaks out (does damage)
+			    		break;
+			    	case 'DIG':
+			    		// holes in terrain
+			    		break;
+			    }
+			});
 		}
 		
 		public function resetDecor():void {
@@ -39,13 +59,7 @@ package dungeon.structure
 			return copy;
 		}
 		
-		// TODO: I wonder if we could make this a listener function instead of having to call it
-		// TODO: figure out how I can turn tiles solid on a one-off basis here somehow
-		/**
-		 * 
-		 * @param	addPoint add coordinate
-		 * @param	crit true = large add, false = small add
-		 */
+		// TODO: the one-off solidity seems like it might not work; I have a feeling it'll get overriden somehow (so watch this space and Nodemap's initSolidity)
 		public function addDecor(x:uint, y:uint, material:uint, crit:Boolean=false, solidity:Boolean=false):void {
 			if (crit) {
 				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
@@ -53,18 +67,22 @@ package dungeon.structure
 				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
 				addArea(x, y, 'SMALL', material);
 			}
+			// this needs to be deferred so that it's only calculated after all the solidity updates are done
+			// how to do this?
+			if (solidity) {
+				// this only sets a solid tile in a give location; the graphic is still within decor
+				Dungeon.level._grid.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, true);
+				var node:Node = Dungeon.level._nodemap.getNode(x, y);
+				node.SolidOverride = true;
+				Dungeon.level._nodemap.reload();
+			}
 			// add "else" when we get real art for these
 		}
 
 		// This is a bigger splat with a potential area of effect. 
 		// Size can come in SMALL, MEDIUM, LARGE
-		// each size will have a 25, 50, 75% chance to add all sides, respectively
+		// each size will have a 10, 35, 55% chance to add all sides, respectively
 		// TODO: random add choice from material index
-		/**
-		 * 
-		 * @param	addPoint add coordinate
-		 * @param	crit true = large add, false = small add
-		 */
 		public function addArea(x:uint, y:uint, area:String, material:uint):void {
 			var chance:Number;
 			switch (area) {
