@@ -23,6 +23,7 @@
 		<graphic>8</graphic>
 		<preferredStats>STR,CON</preferredStats>
 		<xpGranted></xpGranted>
+		<bloodType>40</bloodType>
 	</pc>
 </pcs>
 </data>

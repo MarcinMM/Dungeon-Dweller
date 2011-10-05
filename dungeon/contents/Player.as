@@ -238,8 +238,7 @@ package dungeon.contents
 			// calculations to modify the attack based on player's defense stats
 			STATS[GC.STATUS_HP] -= attackValue;
 			Dungeon.statusScreen.updateCombatText("Bonk! You get hit for " + attackValue + " damage!");
-			Dungeon.onCombat.dispatch(x,y, 'PHYSICAL');
-			Dungeon.level.decor.addDecor(x, y, GC.SPLAT_BLOOD); // TODO: replace this with the previous line (signal implementation)
+			Dungeon.onCombat.dispatch(x, y, 'PHYSICAL', creatureXML.bloodType);
 			if (STATS[GC.STATUS_HP] <= 0) {
 				Dungeon.statusScreen.updateCombatText("You die ... more? Y/N/A/Q (not implemented HAR!)");
 			}

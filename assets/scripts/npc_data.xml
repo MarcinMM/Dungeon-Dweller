@@ -23,6 +23,7 @@
 		<graphic>7</graphic>
 		<preferredStats>0</preferredStats>
 		<xpgranted>5</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Giant Bat">
 		<str>3</str>
@@ -46,6 +47,7 @@
 		<graphic>2</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Wild Dog">
 		<str>3</str>
@@ -69,6 +71,7 @@
 		<graphic>0</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Goblin">
 		<str>6</str>
@@ -92,6 +95,7 @@
 		<graphic>3</graphic>
 		<preferredStats>STR</preferredStats>
 		<xpgranted>10</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Imp">
 		<str>2</str>
@@ -115,6 +119,7 @@
 		<graphic>5</graphic>
 		<preferredStats>INT</preferredStats>
 		<xpgranted>15</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Wolf">
 		<str>6</str>
@@ -138,6 +143,7 @@
 		<graphic>1</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Winged Serpent">
 		<str>6</str>
@@ -161,6 +167,7 @@
 		<graphic>6</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 	<npc name="Goblin Squad Grunt">
 		<str>6</str>
@@ -184,6 +191,7 @@
 		<graphic>4</graphic>
 		<preferredStats>STR</preferredStats>
 		<xpgranted>10</xpgranted>
+		<bloodType>20</bloodType>
 	</npc>
 </npcs>
 </data>

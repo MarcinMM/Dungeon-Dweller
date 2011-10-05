@@ -91,7 +91,9 @@ package dungeon.structure
 					node.solid = false;
 				}
 				// override for dynamic nodes (nodes set solid by ingame events)
-				node.solid = node.solidOverride;
+				if (node.solidOverride) {
+					node.solid = node.solidOverride;
+				}
 			}
 		}
 		

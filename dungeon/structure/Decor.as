@@ -28,12 +28,13 @@ package dungeon.structure
 			layer = GC.DECOR_LAYER;
 
 			// TODO: stub for combat signal listener to add visual FX
-			Dungeon.onCombat.add(function(location:Point, combatType:String):void {
+			// TODO: consider a third var for splatter type, maybe each creature should have a splatter type? blood/chlorophyll/dust for undeads/elemental chunks from elementals?
+			Dungeon.onCombat.add(function(x:int, y:int, combatType:String, dmgType:int):void {
 			    // dispatch visual events based on type of deformation happening
 			    switch(combatType) {
 			    	case 'PHYSICAL':
 			    		// blood spatters
-			    		addDecor(location.x, location.y, material);
+			    		addDecor(x, y, dmgType);
 			    		break;
 			    	case 'ICE':
 			    		// impassable icicles form
@@ -73,7 +74,7 @@ package dungeon.structure
 				// this only sets a solid tile in a give location; the graphic is still within decor
 				Dungeon.level._grid.setRect(x / GC.GRIDSIZE, y / GC.GRIDSIZE, 1, 1, true);
 				var node:Node = Dungeon.level._nodemap.getNode(x, y);
-				node.SolidOverride = true;
+				node.solidOverride = true;
 				Dungeon.level._nodemap.reload();
 			}
 			// add "else" when we get real art for these

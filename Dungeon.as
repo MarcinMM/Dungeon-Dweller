@@ -15,6 +15,7 @@ package
 	import dungeon.contents.Player;
 	import dungeon.structure.Level;
 	import dungeon.utilities.Step;
+	import net.flashpunk.Signal;
 	
 	/**
 	 * ...
@@ -50,7 +51,7 @@ package
 		public static var LevelHolder:Vector.<LevelInfoHolder>;
 		public static var LevelHolderCounter:int;
 		
-		public var onCombat:Signal = new Signal;
+		public static var onCombat:Signal = new Signal;
 
 		// this is for detecting mouse clicks and positions, and taking actions on it
 		public static var overlay:Overlay;
