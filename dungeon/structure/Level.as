@@ -199,11 +199,11 @@ package dungeon.structure
 			
 			// now put player on the appropriate stairs
 			if (direction == "UP") {
-				Dungeon.player.x = STAIRS_DOWN.x;
-				Dungeon.player.y = STAIRS_DOWN.y;
+				Dungeon.player.x = STAIRS_DOWN.x * GC.GRIDSIZE;
+				Dungeon.player.y = STAIRS_DOWN.y * GC.GRIDSIZE;
 			} else {
-				Dungeon.player.x = STAIRS_UP.x;
-				Dungeon.player.y = STAIRS_UP.y;
+				Dungeon.player.x = STAIRS_UP.x * GC.GRIDSIZE;
+				Dungeon.player.y = STAIRS_UP.y * GC.GRIDSIZE;
 			}
 			
 			levelHolder.decor = new Decor();

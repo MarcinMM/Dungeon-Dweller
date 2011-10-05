@@ -4,16 +4,21 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 10/3
 
-* NPC level occurrence, creature level implementation (stat improvement on XP gain), stat variation, a few special abilities.
+* NPC level occurrence, stat variation, a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
 * PC Special Ability (currently dmg res for Ork)
 * Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR.
-* While I'm at it, use Signals for splatters and stub out other potential FX (noise, dmg FX) and [take a look at combat per this post](http://codesquares.com/post/persistence_complete_now_proper_combats).
-* NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
-* Stairs
+* Stairs Fix
 * Grand Foozier on lvl 10; also lvl 10 implementation
 * Game Start, GAme End screens
 
 # TODO FUTURE WISHLIST
+
+*Top Priority Alpha Todos*
+
+In other words things that aren't necessary for MVP, but really really need addressing.
+
+* NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
+* [take a look at combat per this post](http://codesquares.com/post/persistence_complete_now_proper_combats).
 
 *Content/Features*
 
@@ -58,9 +63,15 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 # HIGH PRIORITY BUGS
 
 * Creatures now clip through each other, I think due to the motion Tween.
-* Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now.
+* Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now. (is this still true?)
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 10/4
+* Added a Signal to combat events; splatters are now signal driven. This start can be expanded to other actions.
+* Made splatters use a creature bloodtype for the heck of it. Undead can have dust, orcs green blood, ice elementals can explode into unpassable crystal shards etc.
+* Added a solidity toggle to add/remove terrain at whim (untested).
+* Added stairs, but buggy right now.
 
 # UPDATES 10/3
 * Started more comprehensive work on decor layer. It is now Room-based, i.e. the Level will iterate through Rooms, which will internally determine where to put stuff within their bounds.  Added some constants for decor items. Added player position save on ascend/descend based on stairs (I think it's currently broken by not being multiplied by gridsize, another grid vs. absolute coordinates confusion). Also not every level is getting up/down stairs, not sure why.
