@@ -4,10 +4,10 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 # TODO MVP 10/3
 
+* Stats fix.
 * NPC level occurrence, stat variation, a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
 * PC Special Ability (currently dmg res for Ork)
 * Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR.
-* Stairs Fix
 * Grand Foozier on lvl 10; also lvl 10 implementation
 * Game Start, GAme End screens
 
@@ -68,6 +68,7 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Slowdown on pathing.
 
 # UPDATES 10/4
+* Stairs Fix
 * Added a Signal to combat events; splatters are now signal driven. This start can be expanded to other actions.
 * Made splatters use a creature bloodtype for the heck of it. Undead can have dust, orcs green blood, ice elementals can explode into unpassable crystal shards etc.
 * Added a solidity toggle to add/remove terrain at whim (untested).

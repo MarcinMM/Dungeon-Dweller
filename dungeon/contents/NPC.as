@@ -222,16 +222,37 @@ package dungeon.contents
 			npcType = npcXML.@name;
 			npcLevel = 1;
 			xpGranted = npcXML.xpgranted;
-			STATS[GC.STATUS_STR] = npcXML.str;
-			STATS[GC.STATUS_AGI] = npcXML.agi;
-			STATS[GC.STATUS_INT] = npcXML.int;
-			STATS[GC.STATUS_WIS] = npcXML.wis;
-			STATS[GC.STATUS_CHA] = npcXML.cha;
-			STATS[GC.STATUS_CON] = npcXML.con;
+			STATS[GC.STATUS_STR] = uint(npcXML.str);
+			STATS[GC.STATUS_AGI] = uint(npcXML.agi);
+			STATS[GC.STATUS_INT] = uint(npcXML.int);
+			STATS[GC.STATUS_WIS] = uint(npcXML.wis);
+			STATS[GC.STATUS_CHA] = uint(npcXML.cha);
+			STATS[GC.STATUS_CON] = uint(npcXML.con);
 			STATS[GC.STATUS_HEALRATE] = 15;
 			STATS[GC.STATUS_HEALSTEP] = 0;
 		}
 	
+		public function processRangedCombat():void {
+			var shortestDistance:Number = 1000;
+			var nearestNPC:NPC;
+			for each (var creature:NPC in Dungeon.level.NPCS) {
+				if (distanceToPoint(creature.x, creature.y) < shortestDistance) {
+					nearestNPC = creature;
+				}
+			}
+			Dungeon.statusScreen.updateCombatText(npcType + " thinks " + creature.npcType + " is closest.");
+			
+			moveTo(creature.x, creature.y, "npc");
+		}
+		
+		override public function moveCollideX(e:Entity):Boolean {
+			return true;
+		}
+
+		override public function moveCollideY(e:Entity):Boolean {
+			return true;
+		}
+
 		public function processCombat():void {
 			// TODO: detect if foes are in adjacent tile based on collision
 			// then pick one either randomly or based on previous picks
@@ -575,6 +596,7 @@ package dungeon.contents
 					checkItem();
 				}
 				
+				processRangedCombat();
 				processCombat();
 				pathedMovementStep();
 	

@@ -75,12 +75,12 @@ package dungeon.contents
 		public function setPlayerStats():void {
 			STATS[GC.STATUS_LEVEL] = 1;
 			STATS[GC.STATUS_XP] = 0;
-			STATS[GC.STATUS_STR] = creatureXML.str;
-			STATS[GC.STATUS_AGI] = creatureXML.agi;
-			STATS[GC.STATUS_INT] = creatureXML.int;
-			STATS[GC.STATUS_WIS] = creatureXML.wis;
-			STATS[GC.STATUS_CHA] = creatureXML.cha;
-			STATS[GC.STATUS_CON] = creatureXML.con;
+			STATS[GC.STATUS_STR] = uint (creatureXML.str);
+			STATS[GC.STATUS_AGI] = uint (creatureXML.agi);
+			STATS[GC.STATUS_INT] = uint (creatureXML.int);
+			STATS[GC.STATUS_WIS] = uint (creatureXML.wis);
+			STATS[GC.STATUS_CHA] = uint (creatureXML.cha);
+			STATS[GC.STATUS_CON] = uint (creatureXML.con);
 			STATS[GC.STATUS_HEALRATE] = 15;
 			STATS[GC.STATUS_HEALSTEP] = 0;
 		}

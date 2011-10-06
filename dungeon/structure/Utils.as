@@ -4,6 +4,23 @@ package dungeon.structure
 	import dungeon.utilities.GC;
 	
     public class Utils {
+		
+		// finds nearest object from collection of items/creatures/decors, returns index of array
+		// only tricky bit is that pointA is given as a grid coord, collection x and y are real coords
+		public static function findNearest(pointA:Point, collection:Array):uint {
+			var shortestDistance:Number = 10000;
+			var newDistance:Number = 0;
+			var shortestIndex:int = -1;
+			for (var i:int; i < collection.length; i++) {
+				newDistance = Math.sqrt(Math.pow((pointA.x - (collection[i].x * GC.GRIDSIZE)), 2) + Math.pow((pointA.y - (collection[i].y * GC.GRIDSIZE)), 2));
+				if (newDistance < shortestDistance) {
+					shortestDistance = newDistance;
+					shortestIndex = i;
+				}
+			}
+			return shortestIndex;
+		}
+		
 		public static function findDistance(pointA:Point, pointB:Point):Number {
 			return Math.sqrt(Math.pow((pointB.x - pointA.x),2) + Math.pow((pointB.y - pointA.y),2));
 		}

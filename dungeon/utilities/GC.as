@@ -139,32 +139,32 @@ package dungeon.utilities
 		public static const LAYER_PLAYER_TEXT:String = "player";
 		
 		// Stat constants for arrays
-		public static const STATUS_LEVEL:uint = 0;
-		public static const STATUS_XP:uint = 1;
-		public static const STATUS_HP:uint = 2; // CON + bit of STR + bit of AGI
+		public static const STATUS_LEVEL:String = 'LEVEL';
+		public static const STATUS_XP:String = 'XP';
+		public static const STATUS_HP:String = 'HP'; // CON + bit of STR + bit of AGI
 		public static const STATUS_STR:String = 'STR'; // attack modifier, small defense modifier, small persuasion
 		public static const STATUS_AGI:String = 'AGI'; // small attack and big defense modifier
 		public static const STATUS_INT:String = 'INT'; // spell attack and allowed spell memorization
 		public static const STATUS_WIS:String = 'WIS'; // mana pool and spell defense and small persuasion
 		public static const STATUS_CHA:String = 'CHA'; // persuasion success chance modifier
 		public static const STATUS_CON:String = 'CON'; // HP
-		public static const STATUS_MANA:uint = 9;
-		public static const STATUS_HEALRATE:uint = 17;
-		public static const STATUS_HEALSTEP:uint = 18;
-		public static const STATUS_HPMAX:uint = 19;
+		public static const STATUS_MANA:String = 'MANA';
+		public static const STATUS_HEALRATE:String = 'HEALRATE';
+		public static const STATUS_HEALSTEP:String = 'HEALSTEP';
+		public static const STATUS_HPMAX:String = 'HPMAX';
 		
 		public static const STATUS_ATTRIBUTES:Array = [STATUS_STR, STATUS_AGI, STATUS_INT, STATUS_WIS, STATUS_CHA, STATUS_CON];
 
 		// derived constants for arrays
-		public static const STATUS_ATT:uint = 10; // mostly strength + bit of agi + item stat attack
-		public static const STATUS_ATT_MIN:uint = 17; // minimum attack value for RNG
-		public static const STATUS_DEF:uint = 11; // mostly agi + bit of str + item stat
-		public static const STATUS_CRITDEF:uint = 12; // bit of agi + armor, not sure how this works yet
-		public static const STATUS_PER:uint = 13; // persuasion, cha + bit of str + bit of wis
-		public static const STATUS_PEN:uint = 14; // armor + bit of str
-		public static const STATUS_SPPOWER:uint = 15; // int
-		public static const STATUS_SPLEVEL:uint = 16; // locked to level
-		public static const STATUS_DGLEVEL:uint = 17; // dungeon level
+		public static const STATUS_ATT:String = 'ATT'; // mostly strength + bit of agi + item stat attack
+		public static const STATUS_ATT_MIN:String = 'ATT_MIN'; // minimum attack value for RNG
+		public static const STATUS_DEF:String = 'DEF'; // mostly agi + bit of str + item stat
+		public static const STATUS_CRITDEF:String = 'CRITDEF'; // bit of agi + armor, not sure how this works yet
+		public static const STATUS_PER:String = 'PER'; // persuasion, cha + bit of str + bit of wis
+		public static const STATUS_PEN:String = 'PEN'; // armor + bit of str
+		public static const STATUS_SPPOWER:String = 'SPPOWER'; // int
+		public static const STATUS_SPLEVEL:String = 'SPLEVEL'; // locked to level
+		public static const STATUS_DGLEVEL:String = 'DGLEVEL'; // dungeon level
 		
 		public static const KEYS:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		
