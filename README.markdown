@@ -7,7 +7,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 * Stats fix. Looks like has to do with XML types not being ints.
 * NPC level occurrence, stat variation, a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
 * PC Special Ability (currently dmg res for Ork)
-* Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR. This needs some primitive form of line tracing (putting in Util).
+* Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR. This needs some primitive form of line tracing (putting in Util). May use this for LoS lighting?
 * Grand Foozier on lvl 10; also lvl 10 implementation
 * Game Start, GAme End screens
 
