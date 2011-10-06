@@ -34,7 +34,7 @@ package dungeon.structure
 			    switch(combatType) {
 			    	case 'PHYSICAL':
 			    		// blood spatters
-			    		addDecor(x, y, dmgType);
+			    		addDecor(x, y, dmgType, GC.SPLAT_OFFSET);
 			    		break;
 			    	case 'ICE':
 			    		// impassable icicles form
@@ -61,11 +61,11 @@ package dungeon.structure
 		}
 		
 		// TODO: the one-off solidity seems like it might not work; I have a feeling it'll get overriden somehow (so watch this space and Nodemap's initSolidity)
-		public function addDecor(x:uint, y:uint, material:uint, crit:Boolean=false, solidity:Boolean=false):void {
-			if (crit) {
-				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
+		public function addDecor(x:uint, y:uint, material:uint, offset:uint, crit:Boolean=false, solidity:Boolean=false):void {
+			if (!crit) {
+				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, offset);
 			} else {
-				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, GC.SPLAT_OFFSET);
+				_decor.addGraphic(x / GC.GRIDSIZE, y / GC.GRIDSIZE, material, offset);
 				addArea(x, y, 'SMALL', material);
 			}
 			// this needs to be deferred so that it's only calculated after all the solidity updates are done

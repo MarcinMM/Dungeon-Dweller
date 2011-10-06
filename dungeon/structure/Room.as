@@ -30,18 +30,24 @@ package dungeon.structure
 
         // TODO: room decor/clutter
         public function addDecor(decor:Decor, decorIndex:int):Point {
-            var xOffset:int = Math.round(Math.random() * width);
-            var yOffset:int = Math.round(Math.random() * height);
+			var newRandomPoint:Point = findRandomPoint();
             if (GC.DECOR_SOLIDS[decorIndex] == true) {
-                decor.addDecor(((x + xOffset) * GC.GRIDSIZE), ((y + yOffset) * GC.GRIDSIZE), decorIndex);
+                decor.addDecor(newRandomPoint.x * GC.GRIDSIZE, newRandomPoint.y * GC.GRIDSIZE, decorIndex, 0, false, true);
             } else {
-                decor.addDecor(((x + xOffset) * GC.GRIDSIZE), ((y + yOffset) * GC.GRIDSIZE), decorIndex);
+                decor.addDecor(newRandomPoint.x * GC.GRIDSIZE, newRandomPoint.y * GC.GRIDSIZE, decorIndex, 0);
             }
-			return new Point(x + xOffset, y + yOffset);
+			return newRandomPoint;
         }
         
         // TODO: room traps and widgets
         
+		public function findRandomPoint():Point {
+			// offset is interior width of room (total width - 2 walls) + 1 from starting point (starting wall offset)
+			var px:uint = Math.round(Math.random() * (width - 2)) + 1 + x;
+			var py:uint = Math.round(Math.random() * (height - 2)) + 1 + y;
+			return new Point(px, py);
+		}
+		
         public function Room(initX:int, initY:int, initHeight:int, initWidth:int) {
             // room coordinates are actually tile/grid coordinates, not actual x and y
             // might want to standardise real x and y vs. grid x and y

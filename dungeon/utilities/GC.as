@@ -268,12 +268,12 @@ package dungeon.utilities
 
 		// DECOR
 		public static const DECOR_OFFSET:uint = 80;
-		public static const DECOR_SIZE:uint = 3; // current decor is only 3 items (fountain, altar, sink); more to come
-		public static const DECOR_STAIRS_UP:uint = 85;
-		public static const DECOR_STAIRS_DOWN:uint = 84;
+		public static const DECOR_SIZE:uint = 2; // current decor is only 3 items (fountain, altar, sink); more to come
+		public static const DECOR_STAIRS_UP:uint = 84;
+		public static const DECOR_STAIRS_DOWN:uint = 83;
 		public static const DECOR_ALTAR:uint = 80;
-		public static const DECOR_SINK:uint = 82;
-		public static const DECOR_FOUNTAIN:uint = 83;
+		public static const DECOR_SINK:uint = 81;
+		public static const DECOR_FOUNTAIN:uint = 82;
 		// public static const DECOR_STATUE:uint = 86;
 
 		// DECOR SOLIDS

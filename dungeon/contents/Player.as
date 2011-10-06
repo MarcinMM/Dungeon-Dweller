@@ -87,7 +87,7 @@ package dungeon.contents
 		
 
 		// Just a helper function for setting and updating stat visuals
-		public function setPlayerStartingPosition(setX:int, setY:int):void {
+		public function setPlayerPosition(setX:int, setY:int):void {
 			x = setX * GRIDSIZE;
 			y = setY * GRIDSIZE;
 		}

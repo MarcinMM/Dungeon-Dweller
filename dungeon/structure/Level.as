@@ -195,15 +195,13 @@ package dungeon.structure
 			FP.world.add(decor);
 			
 			STAIRS_DOWN = levelHolder.stairsDown;
-			STAIRS_DOWN = levelHolder.stairsUp;
+			STAIRS_UP = levelHolder.stairsUp;
 			
 			// now put player on the appropriate stairs
 			if (direction == "UP") {
-				Dungeon.player.x = STAIRS_DOWN.x * GC.GRIDSIZE;
-				Dungeon.player.y = STAIRS_DOWN.y * GC.GRIDSIZE;
+				Dungeon.player.setPlayerPosition(STAIRS_DOWN.x, STAIRS_DOWN.y);
 			} else {
-				Dungeon.player.x = STAIRS_UP.x * GC.GRIDSIZE;
-				Dungeon.player.y = STAIRS_UP.y * GC.GRIDSIZE;
+				Dungeon.player.setPlayerPosition(STAIRS_UP.x, STAIRS_UP.y);
 			}
 			
 			levelHolder.decor = new Decor();
@@ -236,12 +234,11 @@ package dungeon.structure
 			
 			placeItems();
 			
-			placePlayer();
-			
 			createAndPlaceNPCs();
 			
-			
 			placeDecor(decor);
+
+			Dungeon.player.setPlayerPosition(STAIRS_UP.x, STAIRS_UP.y);
 		}
 		
 		private function drawRooms():void {
@@ -363,23 +360,6 @@ package dungeon.structure
 			for each (var node:Node in _nodemap._nodes) {
 				_grid.setRect(node.x, node.y, 1, 1, node.solid);
 			}
-		}
-
-		// find a random, non-trapped, non-monstered, non-stair position in 1st room
-		private function placePlayer():void {
-			var startingX:uint = 0;
-			var startingY:uint = 0;
-			var i:uint = 0;
-			
-			while ((_nodemap._nodes[(startingY * Dungeon.TILESX) + startingX].solid) && (i < 10)) {
-				startingX = (Math.round(Math.random() * _roomsA[0].width)) + _roomsA[0].x;
-				startingY = (Math.round(Math.random() * _roomsA[0].height)) + _roomsA[0].y;
-				//trace("plr plc:" + startingX + "-" + startingY);
-				i++;
-			}
-			// TODO: now we have a non-wall (pillar, statue) location in room, check for
-			// other obstructions
-			Dungeon.player.setPlayerStartingPosition(startingX, startingY);
 		}
 
 		private function createAndPlaceNPCs():void {
