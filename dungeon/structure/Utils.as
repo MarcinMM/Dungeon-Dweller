@@ -5,12 +5,14 @@ package dungeon.structure
 	
     public class Utils {
 		
-		// this needs to draw the line between two points, then check every 15 pixels (or so) for new tile, then add tile to nodelist
+		// this needs to draw the line between two points, then check every 30 pixels for new tile, then add tile to nodelist
 		// when done, iterate over nodelist and check collisions on each
 		// if no collisions except for final, the path is clear
 		// we can also use this for raytraced lighting at some point
-		public static function traceLine(x, y, x1, y1):Boolean {
-			var nodeList:Array = new Array();
+		// so it needs to return two things, a true/false parameter and the path
+		public static function traceLine(x, y, x1, y1, lightPath=false):Object {
+			var nodeList:Array = new Array
+			var successFlag:Boolean = true;
 			
 			// let's always trace from left to right
 			// don't forget 0 slope and undefined slope
@@ -27,22 +29,65 @@ package dungeon.structure
 				// rename x1 and y1 to x and y so we can just do one loop in the next step
 				x = x1;
 				y = y1;
-			}
-			
-			var tileAtThisLocation:Point;
-			if (currentY > y) {
-				while ((currentX < x) && (currentY > y)) {
-					currentX += 15 * slope;
-					currentY += 15 / slope;
-					tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));
-				}
 			} else {
-				while ((currentX < x && currentY < y)) {
-					
+				// x1 = x, vertical line
+			}
+
+			// thanks to the renaming above, x and y are now destination - currentX and currentY are origin			
+
+			// now we need to check which dimension changes faster, and iterate over that
+			// the reason being that whatever changes faster will determine how often the tile changes
+			// and that in turn is to avoid using JOMMETRY
+			// faster change == bigger change in coordinate
+
+			var tileAtThisLocation:Point;
+			var tileAtPreviousLocation:Point = new Point(currentX / GC.GRIDSIZE, currentY / GC.GRIDSIZE);
+
+			// need to handle case
+
+			if (y - currentY) > (x - currentX) {
+				// y dimension changes faster, iterate through Y
+				// since we are always moving from left to right, we just need to check for X dimension reaching target
+				while (x < currentX) {
+					currentY += 30;
+					currentX += 30 / slope;
+					tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));	
+					if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
+						// we've reached a new tile
+						// 0. push into nodeList for potential future lighting use
+						// 1. check collision
+						// 2. continue if nothing, set flag if failed successFlag = false;
+						// 3. tileAtPreviousLocation = tileAtThisLocation;
+					}
+					// else push on to the next coordinate
+				}
+
+			} else {
+				// x dimension changes faster, iterate through X
+				while (x < currentX) {
+					currentX += 30;
+					currentY += 30 * slope;
+					tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));										
+					if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
+						// we've reached a new tile
+						// 0. push into nodeList for potential future lighting use
+						// 1. check collision
+						// 2. continue if nothing, exit if collided (i.e. set false flag)
+						// 3. tileAtPreviousLocation = tileAtThisLocation;
+					}
+					// else continue to iterate
 				}
 			}
+
+			// still need to cover vertical use case where slope is undefined
 			
-			return false;
+			var returnThings:Object = 
+			{
+				"success": successFlag,
+				"path": nodeList
+			};
+
+			return true;
 		}
 		
 		// finds nearest object from collection of items/creatures/decors, returns index of array
