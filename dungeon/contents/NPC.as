@@ -12,6 +12,7 @@ package dungeon.contents
 	import dungeon.utilities.resultItem;
 	import dungeon.utilities.MonsterGraphic;
 	import net.flashpunk.Signal;
+	import dungeon.structure.Utils;
 	/**
 	 * ...
 	 * @author MM
@@ -242,17 +243,13 @@ package dungeon.contents
 			}
 			Dungeon.statusScreen.updateCombatText(npcType + " thinks " + creature.npcType + " is closest.");
 			
-			moveTo(creature.x, creature.y, "npc");
+			var freeToFire:Boolean = Utils.traceLine(x, y, creature.x, creature.y);
+			
+			if (freeToFire) {
+				Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + creature.npcType + ".");
+			}
 		}
 		
-		override public function moveCollideX(e:Entity):Boolean {
-			return true;
-		}
-
-		override public function moveCollideY(e:Entity):Boolean {
-			return true;
-		}
-
 		public function processCombat():void {
 			// TODO: detect if foes are in adjacent tile based on collision
 			// then pick one either randomly or based on previous picks
