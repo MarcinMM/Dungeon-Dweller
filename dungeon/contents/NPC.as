@@ -243,9 +243,9 @@ package dungeon.contents
 			}
 			Dungeon.statusScreen.updateCombatText(npcType + " thinks " + creature.npcType + " is closest.");
 			
-			var freeToFire:Boolean = Utils.traceLine(x, y, creature.x, creature.y);
+			var freeToFire:Object = Utils.traceLine(x, y, creature.x, creature.y);
 			
-			if (freeToFire) {
+			if (freeToFire.success) {
 				Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + creature.npcType + ".");
 			}
 		}

@@ -13,24 +13,39 @@ package dungeon.structure
 		public static function traceLine(x, y, x1, y1, lightPath=false):Object {
 			var nodeList:Array = new Array
 			var successFlag:Boolean = true;
+			var slope:Number = 0;
+			var currentX:int = 0;
+			var currentY:int = 0;
 			
 			// let's always trace from left to right
 			// don't forget 0 slope and undefined slope
 			if (x > x1) {
-				var currentX:int = x1;
-				var currentY:int = y1;
-				var slope:Number = (y1 - y) / (x1 - x);	
+				currentX = x1;
+				currentY = y1;
+				slope = (y1 - y) / (x1 - x);	
 				nodeList.push(new Point(x1, y1));
 			} else if (x1 > x) {
-				var currentX:int = x;
-				var currentY:int = y;
-				var slope:Number = (y - y1) / (x - x1);
+				currentX = x;
+				currentY = y;
+				slope = (y - y1) / (x - x1);
 				nodeList.push(new Point(x, y));
 				// rename x1 and y1 to x and y so we can just do one loop in the next step
 				x = x1;
 				y = y1;
 			} else {
 				// x1 = x, vertical line
+				var slope = 0;
+				if (y1 > y) {
+					// y1 is destination
+					currentX = x;
+					currentY = y;
+					x = x1;
+					y = y1;
+				} else {
+					// y is destination
+					currentX = x1;
+					currentY = y1;
+				}
 			}
 
 			// thanks to the renaming above, x and y are now destination - currentX and currentY are origin			
@@ -42,15 +57,11 @@ package dungeon.structure
 
 			var tileAtThisLocation:Point;
 			var tileAtPreviousLocation:Point = new Point(currentX / GC.GRIDSIZE, currentY / GC.GRIDSIZE);
-
-			// need to handle case
-
-			if (y - currentY) > (x - currentX) {
-				// y dimension changes faster, iterate through Y
-				// since we are always moving from left to right, we just need to check for X dimension reaching target
-				while (x < currentX) {
+			
+			// this relies on the trace direction always being up
+			if (slope == 0) {
+				while (currentY < y) {
 					currentY += 30;
-					currentX += 30 / slope;
 					tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));	
 					if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
 						// we've reached a new tile
@@ -61,24 +72,42 @@ package dungeon.structure
 					}
 					// else push on to the next coordinate
 				}
-
-			} else {
-				// x dimension changes faster, iterate through X
-				while (x < currentX) {
-					currentX += 30;
-					currentY += 30 * slope;
-					tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));										
-					if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
-						// we've reached a new tile
-						// 0. push into nodeList for potential future lighting use
-						// 1. check collision
-						// 2. continue if nothing, exit if collided (i.e. set false flag)
-						// 3. tileAtPreviousLocation = tileAtThisLocation;
+			}
+			else {
+				if (Math.abs(y - currentY) > Math.abs(x - currentX)) {
+					// y dimension changes faster, iterate through Y
+					// since we are always moving from left to right, we just need to check for X dimension reaching target
+					while (x < currentX) {
+						currentY += 30;
+						currentX += (int) 30 / slope;
+						tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));	
+						if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
+							// we've reached a new tile
+							// 0. push into nodeList for potential future lighting use
+							// 1. check collision
+							// 2. continue if nothing, set flag if failed successFlag = false;
+							// 3. tileAtPreviousLocation = tileAtThisLocation;
+						}
+						// else push on to the next coordinate
 					}
-					// else continue to iterate
+
+				} else {
+					// x dimension changes faster, iterate through X
+					while (x < currentX) {
+						currentX += 30;
+						currentY += 30 * slope;
+						tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));										
+						if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
+							// we've reached a new tile
+							// 0. push into nodeList for potential future lighting use
+							// 1. check collision
+							// 2. continue if nothing, exit if collided (i.e. set false flag)
+							// 3. tileAtPreviousLocation = tileAtThisLocation;
+						}
+						// else continue to iterate
+					}
 				}
 			}
-
 			// still need to cover vertical use case where slope is undefined
 			
 			var returnThings:Object = 
@@ -87,7 +116,7 @@ package dungeon.structure
 				"path": nodeList
 			};
 
-			return true;
+			return returnThings;
 		}
 		
 		// finds nearest object from collection of items/creatures/decors, returns index of array
