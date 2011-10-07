@@ -21,6 +21,13 @@ package dungeon.structure
 			}
 			return foundFlag;
 		}
+		
+		public function equals(otherPoint:Point):Boolean {
+			if ((otherPoint.x == x) && (otherPoint.y == y)) {
+				return true;
+			}
+			return false;
+		}
     }
 	
 	

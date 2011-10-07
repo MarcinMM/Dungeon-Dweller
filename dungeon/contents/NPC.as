@@ -82,15 +82,6 @@ package dungeon.contents
 			ALIGNMENT = GC.ALIGNMENTS[Math.round(Math.random() * (GC.ALIGNMENTS.length - 1))];
 		}
 		
-		private function initListeners():void {
-			this.counterSignal.add(function(uniqid:uint):void {
-				// do something when it's this creature being hit
-				if (UNIQID == uniqid) {
-					trace("nooooo splosions!");
-				}
-			});	
-		}
-		
 		// when no path request is being made, i.e. equivalent of idle animation
 		// TODO: use array constants here instead of the clumsy string assign
 		public function idleMovement():void {
@@ -237,7 +228,10 @@ package dungeon.contents
 			var shortestDistance:Number = 1000;
 			var nearestNPC:NPC;
 			for each (var creature:NPC in Dungeon.level.NPCS) {
-				if (distanceToPoint(creature.x, creature.y) < shortestDistance) {
+				if (
+					(creature.x != x && creature.y != y) && 
+					(distanceToPoint(creature.x, creature.y) < shortestDistance)) 
+				{
 					nearestNPC = creature;
 				}
 			}
