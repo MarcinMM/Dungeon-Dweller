@@ -79,7 +79,7 @@ package dungeon.structure
 				if (Math.abs(y - currentY) > Math.abs(x - currentX)) {
 					// y dimension changes faster, iterate through Y
 					// since we are always moving from left to right, we just need to check for X dimension reaching target
-					while (x < currentX) {
+					while (x > currentX) {
 						currentY += 30;
 						currentX += int (30 / slope);
 						tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));	
@@ -97,7 +97,7 @@ package dungeon.structure
 
 				} else {
 					// x dimension changes faster, iterate through X
-					while (x < currentX) {
+					while (x > currentX) {
 						currentX += 30;
 						currentY += 30 * slope;
 						tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));										
@@ -118,7 +118,7 @@ package dungeon.structure
 			
 			// loop through node list for debug
 			for each (var point:Point in nodeList) {
-				Dungeon.level._dungeonmap.setRect((point.x / GC.GRIDSIZE), (point.y / GC.GRIDSIZE), 1, 1, 24);
+				Dungeon.level._dungeonmap.setRect(point.x, point.y, 1, 1, GC.DEBUGGREEN);
 			}
 			
 			var returnThings:Object = 

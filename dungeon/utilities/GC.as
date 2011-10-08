@@ -60,7 +60,7 @@ package dungeon.utilities
 				
 		public static const DEBUG:uint = 1;
 		public static const DEBUGRED:uint = 5;
-		public static const DEBUGGREEN:uint = 6;		
+		public static const DEBUGGREEN:uint = 200;		
 
 		public static const WALLS:Object = {left:GC.LEFTWALL, right:GC.RIGHTWALL, top:GC.TOPWALL, bottom:GC.BOTTOMWALL};
 		public static const DOORS:Object = {left:GC.LEFTDOOR, right:GC.RIGHTDOOR, top:GC.TOPDOOR, bottom:GC.BOTTOMDOOR};
