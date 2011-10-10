@@ -412,8 +412,13 @@ package dungeon.structure
 			// the following functions need "am I on correct stair tile" detection
 			var tempCounter:uint = Dungeon.LevelHolderCounter;
 			var tempLevelHolder:Vector.<LevelInfoHolder> = Dungeon.LevelHolder;
-			
 			if (Input.pressed("DownLevel")) {
+				// blibli
+				trace(" ");
+				var playerX:int = Dungeon.player.x;
+				var playerY:int = Dungeon.player.y;
+			}
+			if (Input.pressed("DownLevel") && ((STAIRS_DOWN.x * GC.GRIDSIZE) == Dungeon.player.x) && ((STAIRS_DOWN.y * GC.GRIDSIZE) == Dungeon.player.y)) {
 				if (Dungeon.LevelHolder.length <= Dungeon.LevelHolderCounter) {
 					Dungeon.LevelHolder.push(saveLevel());
 				} else {
@@ -429,7 +434,7 @@ package dungeon.structure
 				}
 				Dungeon.statusScreen.depthUpdate();
 			}
-			if (Input.pressed("UpLevel")) {
+			if (Input.pressed("UpLevel") && ((STAIRS_UP.x * GC.GRIDSIZE) == Dungeon.player.x) && ((STAIRS_UP.y * GC.GRIDSIZE) == Dungeon.player.y)) {
 				if (Dungeon.LevelHolderCounter > 0) {
 					Dungeon.LevelHolder[Dungeon.LevelHolderCounter] = saveLevel();
 					Dungeon.LevelHolderCounter--;

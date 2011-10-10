@@ -226,13 +226,16 @@ package dungeon.contents
 	
 		public function processRangedCombat():void {
 			var shortestDistance:Number = 1000;
+			var currentDistance:Number = 0;
 			var nearestNPC:NPC;
 			for each (var creature:NPC in Dungeon.level.NPCS) {
+				currentDistance = distanceToPoint(creature.x, creature.y);
 				if (
 					(creature.x != x && creature.y != y) && 
-					(distanceToPoint(creature.x, creature.y) < shortestDistance)) 
+					(currentDistance < shortestDistance)) 
 				{
 					nearestNPC = creature;
+					shortestDistance = currentDistance;
 				}
 			}
 			Dungeon.statusScreen.updateCombatText(npcType + " thinks " + nearestNPC.npcType + " is closest.");
@@ -240,7 +243,7 @@ package dungeon.contents
 			var freeToFire:Object = Utils.traceLine(x, y, nearestNPC.x, nearestNPC.y);
 			
 			if (freeToFire.success) {
-				Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
+				//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
 			}
 		}
 		
