@@ -149,7 +149,9 @@ package dungeon.contents
 		}
 		
 		/**
-		 * TODO: // test all this :D
+		 * TODO: test all this :D
+		 * TODO: consider moving to Player class, since creatures will not have leveling; we could then throw out all the player checks
+		 * TODO: maybe consider changing creatureXML to be playerXML and npcXML, too. they're starting to diverge more and more
 		 */
 		public function updateIntrinsicStats(player:Boolean=false):void
 		{

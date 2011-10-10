@@ -291,7 +291,6 @@ package dungeon.contents
 						Dungeon.statusScreen.updateCombatText(hitAr[0].npcType + " dies.");
 						trace(hitAr[0].npcType + " is hit, dies.");
 						ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
-						STATS[GC.STATUS_XP] += hitAr[0].xpGranted;
 						trace(npcType + " idle after kill.");
 					} else {
  						Dungeon.statusScreen.updateCombatText(npcType + " hits " + hitAr[0].npcType + " for " + STATS[GC.STATUS_ATT] + " damage!");
