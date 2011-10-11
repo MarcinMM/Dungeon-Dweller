@@ -67,13 +67,17 @@ package dungeon.contents
 		
 		// TODO: implememnt XML searching as shown at: http://www.senocular.com/flash/tutorials/as3withflashcs3/?page=4#e4x
 		// This needs to take into effect level restrictions and thresholds.
-		public function determineCreatureType(player:Boolean = false):void {
+		public function determineCreatureType(creatureName:String = '', player:Boolean = false):void {
 			if (player) {
 				// TODO: implement for player as well; currently hardcoded to 0
 				creatureXML = Dungeon.dataloader.pcs[0];
 			} else {
-				var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));
-				creatureXML = Dungeon.dataloader.npcs[randNPC];
+				if (creatureName != '') {
+					creatureXML = Dungeon.dataloader.npcDataXML.(@name == creatureName);
+				} else {
+					var randNPC:uint = Math.round(Math.random() * (Dungeon.dataloader.npcs.length - 1));
+					creatureXML = Dungeon.dataloader.npcs[randNPC];					
+				}
 			}
 		}		
 		

@@ -54,7 +54,7 @@ package dungeon.contents
 
 		public var _imgOverlay:MonsterGraphic;
 		
-		public function NPC() 
+		public function NPC(creatureName:String = '') 
 		{
 			super();
 			
@@ -64,7 +64,7 @@ package dungeon.contents
 			POSITION = new Point(x, y);
 			
 			// now, what shall this critter be?
-			determineCreatureType();
+			determineCreatureType(creatureName);
 			npcLevel = 1;
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;

@@ -21,18 +21,50 @@ package dungeon.utilities
 		public var npcs:Array = new Array();
 		public var pcs:Array = new Array();
 		
+		public var npcDataXML:XML;
+		
 		public function DataLoader() 
 		{
 			
 		}
 
-		public function setupItems():void
-		{
+		public function retrieveLevelCreatureList(level:int):Array {
+			var availableCreatures:XML = npcDataXML.npc.(startsToAppearAt <= level && doesNotAppearPast >= level);
+			var creatureChance:Object = new Object;
+			var creatureChances:Array;
+			var chance:Number;
+			var chanceSum:Number = 0;
+			var creaturesRolled:int = Math.round(Math.random() * 10);
+
+			for each (var i:XML in availableCreatures) {
+				var startIncrement:Number = (level - i.startsToAppearAt) * i.startAppearanceIncrement;
+				if (startIncrement > 100) startIncrement = 100;
+				if (level >= i.endsAppearingAt) {
+					var endIncrement:Number = 100 - (Math.abs(i.endsAppearingAt - level) * i.endAppearanceIncrement);
+				} else {
+					endIncrement = 0;
+				}
+				if (endIncrement < 0) endIncrement = 0;
+				
+				chance = (startIncrement - endIncrement) * i.rarityModifier;
+				chanceSum += chance;
+				creatureChance = { creature: i.@name, chance: chance };
+				creatureChances.push(creatureChance);
+			}
+			
+			for each (var j:Object in creatureChances) {
+				j.chance = Math.round((j.chance / chanceSum) * creaturesRolled);
+			}
+			
+			return creatureChances;
+		}
+		
+		public function setupItems():void {
 			var itemDataByteArray:ByteArray = new itemData;
 			var npcDataByteArray:ByteArray = new npcData;
 			var pcDataByteArray:ByteArray = new pcData;
 			var itemDataXML:XML = new XML(itemDataByteArray.readUTFBytes(itemDataByteArray.length));
-			var npcDataXML:XML = new XML(npcDataByteArray.readUTFBytes(npcDataByteArray.length));
+			npcDataXML = new XML(npcDataByteArray.readUTFBytes(npcDataByteArray.length));
 			var pcDataXML:XML = new XML(pcDataByteArray.readUTFBytes(pcDataByteArray.length));
 
 			var i:XML;

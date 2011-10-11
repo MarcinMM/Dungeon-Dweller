@@ -378,8 +378,11 @@ package dungeon.structure
 			var usedPoints:Array = [];
 			var pickedPoint:Point;
 			
-			for (var j:int = 0; j < 4; j++) {
-				var newNPC:NPC = new NPC();
+			// let's grab creatures that fall into this level range
+			var levelCreatures:Array = Dungeon.dataloader.retrieveLevelCreatureList(dungeonDepth);
+			
+			for each (var i:Object in levelCreatures) {
+				var newNPC:NPC = new NPC(i.creature);
 				NPCS.push(newNPC);
 			}
 			
