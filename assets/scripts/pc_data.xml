@@ -8,21 +8,12 @@
 		<int>8</int>
 		<wis>8</wis>
 		<cha>8</cha>
-		<canWear>1</canWear>
-		<canWield>1</canWield>
 		<armorMax>Plate</armorMax>
 		<weaponFamilies>ALL</weaponFamilies>
-		<upperAppearanceThreshold>0</upperAppearanceThreshold>
-		<upperAppearanceIncrement>0</upperAppearanceIncrement>
-		<lowerAppearanceThreshold>0</lowerAppearanceThreshold>
-		<lowerAppearanceIncrement>0</lowerAppearanceIncrement>
-		<rarityModifier>0</rarityModifier>
 		<special>0</special>
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>8</graphic>
-		<preferredStats>STR,CON</preferredStats>
-		<xpGranted></xpGranted>
 		<bloodType>40</bloodType>
 	</pc>
 </pcs>

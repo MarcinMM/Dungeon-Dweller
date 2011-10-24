@@ -34,7 +34,7 @@ package dungeon.contents
 		{
 			super();
 			
-			determineCreatureType(true);
+			determineCreatureType('',true);
 			
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;

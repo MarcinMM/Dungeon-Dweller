@@ -16,6 +16,7 @@
 		<startAppearanceIncrement>0</startAppearanceIncrement>
 		<endsAppearingAt>5</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
 		<special>0</special>
 		<specialChance>0</specialChance>
@@ -40,6 +41,7 @@
 		<startAppearanceIncrement>0</startAppearanceIncrement>
 		<endsAppearingAt>5</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
 		<special>0</special>
 		<specialChance>0</specialChance>
@@ -64,6 +66,7 @@
 		<startAppearanceIncrement>0</startAppearanceIncrement>
 		<endsAppearingAt>5</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0</rarityModifier>
 		<special>0</special>
 		<specialChance>0</specialChance>
@@ -88,6 +91,7 @@
 		<startAppearanceIncrement>0</startAppearanceIncrement>
 		<endsAppearingAt>10</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
 		<special>0</special>
 		<specialChance>0</specialChance>
@@ -112,6 +116,7 @@
 		<startAppearanceIncrement>15</startAppearanceIncrement>
 		<endsAppearingAt>10</endsAppearingAt>
 		<endAppearanceIncrement>15</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0.9</rarityModifier>
 		<special>CAST</special>
 		<specialChance>0.25</specialChance>
@@ -136,6 +141,7 @@
 		<startAppearanceIncrement>10</startAppearanceIncrement>
 		<endsAppearingAt>8</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
 		<special>SUMMON</special>
 		<specialChance>0.1</specialChance>
@@ -160,6 +166,7 @@
 		<startAppearanceIncrement>10</startAppearanceIncrement>
 		<endsAppearingAt>12</endsAppearingAt>
 		<endAppearanceIncrement>15</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0.9</rarityModifier>
 		<special>CAST</special>
 		<specialChance>0.1</specialChance>
@@ -184,6 +191,7 @@
 		<startAppearanceIncrement>15</startAppearanceIncrement>
 		<endsAppearingAt>13</endsAppearingAt>
 		<endAppearanceIncrement>15</endAppearanceIncrement>
+		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
 		<special>SQUAD</special>
 		<specialChance>1</specialChance>
