@@ -48,6 +48,7 @@ package dungeon.utilities
 				
 				chance = (startIncrement - endIncrement) * i.rarityModifier;
 				chanceSum += chance;
+				// TODO: pass creatureXML instead of name to avoid double-loading
 				creatureChance = { creature: i.@name, chance: chance };
 				creatureChances.push(creatureChance);
 			}

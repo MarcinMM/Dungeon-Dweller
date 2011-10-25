@@ -381,6 +381,7 @@ package dungeon.structure
 			// let's grab creatures that fall into this level range
 			var levelCreatures:Array = Dungeon.dataloader.retrieveLevelCreatureList(dungeonDepth);
 			
+			// TODO here - instead of passing the name, just pass in the entire creature object
 			for each (var i:Object in levelCreatures) {
 				var newNPC:NPC = new NPC(i.creature);
 				NPCS.push(newNPC);

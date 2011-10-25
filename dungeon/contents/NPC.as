@@ -54,6 +54,8 @@ package dungeon.contents
 
 		public var _imgOverlay:MonsterGraphic;
 		
+		// small tweak TODO: change creatureName to be creatureXML coming in from Level creature generator
+		// damn I hope I remember what this means!
 		public function NPC(creatureName:String = '') 
 		{
 			super();
