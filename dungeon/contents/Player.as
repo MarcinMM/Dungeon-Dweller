@@ -34,7 +34,9 @@ package dungeon.contents
 		{
 			super();
 			
-			determineCreatureType('',true);
+			// hardcoding creatureXML to first character until we have more
+			// not to mention a character select screen!
+			creatureXML = Dungeon.dataloader.pcs[0];
 			
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;

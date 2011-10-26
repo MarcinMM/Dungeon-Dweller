@@ -5,7 +5,7 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 # TODO MVP 10/3
 
 * Stats fix. Looks like has to do with XML types not being ints.
-* NPC level occurrence, stat variation, a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
+* NPC stat variation, a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
 * PC Special Ability (currently dmg res for Ork)
 * Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR. This needs some primitive form of line tracing (putting in Util). May use this for LoS lighting?
 * Grand Foozier on lvl 10; also lvl 10 implementation
@@ -67,6 +67,10 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now. (is this still true?)
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 10/25
+* Cleaned up NPC generation; passing around creature name and re-reading XML for no apparent reason.
+* Creature generation is now based on level semi-properly; at least the concept works. Now just tweaking the balances remains.
 
 # UPDATES 10/4
 * Stairs Fix

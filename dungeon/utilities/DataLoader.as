@@ -29,14 +29,15 @@ package dungeon.utilities
 		}
 
 		public function retrieveLevelCreatureList(level:int):Array {
-			var availableCreatures:XML = npcDataXML.npc.(startsToAppearAt <= level && doesNotAppearPast >= level);
+			var availableCreatures:XMLList = npcDataXML.npcs.npc.((startsToAppearAt <= level) && (doesNotAppearPast >= level));
 			var creatureChance:Object = new Object;
-			var creatureChances:Array;
+			var creatureChances:Array = new Array();
 			var chance:Number;
 			var chanceSum:Number = 0;
-			var creaturesRolled:int = Math.round(Math.random() * 10);
+			var creaturesRolled:int = Math.round(Math.random() * 5) + 6;
 
 			for each (var i:XML in availableCreatures) {
+				var startsToAppearAt:Number = i.startsToAppearAt;
 				var startIncrement:Number = (level - i.startsToAppearAt) * i.startAppearanceIncrement;
 				if (startIncrement > 100) startIncrement = 100;
 				if (level >= i.endsAppearingAt) {
@@ -49,7 +50,7 @@ package dungeon.utilities
 				chance = (startIncrement - endIncrement) * i.rarityModifier;
 				chanceSum += chance;
 				// TODO: pass creatureXML instead of name to avoid double-loading
-				creatureChance = { creature: i.@name, chance: chance };
+				creatureChance = { creature: i, chance: chance };
 				creatureChances.push(creatureChance);
 			}
 			

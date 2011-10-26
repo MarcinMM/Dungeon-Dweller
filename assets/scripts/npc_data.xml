@@ -13,7 +13,7 @@
 		<armorMax>NONE</armorMax>
 		<weaponFamilies>NONE</weaponFamilies>
 		<startsToAppearAt>0</startsToAppearAt>
-		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
 		<endsAppearingAt>5</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
@@ -38,7 +38,7 @@
 		<armorMax>NONE</armorMax>
 		<weaponFamilies>NONE</weaponFamilies>
 		<startsToAppearAt>0</startsToAppearAt>
-		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
 		<endsAppearingAt>5</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
@@ -63,7 +63,7 @@
 		<armorMax>NONE</armorMax>
 		<weaponFamilies>NONE</weaponFamilies>
 		<startsToAppearAt>0</startsToAppearAt>
-		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
 		<endsAppearingAt>5</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
@@ -88,7 +88,7 @@
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
 		<startsToAppearAt>0</startsToAppearAt>
-		<startAppearanceIncrement>0</startAppearanceIncrement>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
 		<endsAppearingAt>10</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
@@ -113,7 +113,7 @@
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
 		<startsToAppearAt>4</startsToAppearAt>
-		<startAppearanceIncrement>15</startAppearanceIncrement>
+		<startAppearanceIncrement>35</startAppearanceIncrement>
 		<endsAppearingAt>10</endsAppearingAt>
 		<endAppearanceIncrement>15</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
@@ -138,7 +138,7 @@
 		<armorMax>LEATHER</armorMax>
 		<weaponFamilies>H1SWORD,DAGGER</weaponFamilies>
 		<startsToAppearAt>4</startsToAppearAt>
-		<startAppearanceIncrement>10</startAppearanceIncrement>
+		<startAppearanceIncrement>20</startAppearanceIncrement>
 		<endsAppearingAt>8</endsAppearingAt>
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>

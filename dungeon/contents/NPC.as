@@ -56,7 +56,7 @@ package dungeon.contents
 		
 		// small tweak TODO: change creatureName to be creatureXML coming in from Level creature generator
 		// damn I hope I remember what this means!
-		public function NPC(creatureName:String = '') 
+		public function NPC(creatureProperties:XML = null) 
 		{
 			super();
 			
@@ -66,7 +66,8 @@ package dungeon.contents
 			POSITION = new Point(x, y);
 			
 			// now, what shall this critter be?
-			determineCreatureType(creatureName);
+			creatureXML = creatureProperties;
+
 			npcLevel = 1;
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;
