@@ -1,16 +1,32 @@
 package dungeon.structure
 {
 	import net.flashpunk.FP;
+	import dungeon.utilities.GC;
 
     public class Point {
-		public function Point(initX:int, initY:int) {
-			// these refer to grid X and Y,  not real coordinates X and Y on the display
-			x = initX;
-			y = initY;
+		public function Point(initX:int, initY:int, convert:Boolean = false) {
+			if (!convert) {
+				x = initX;
+				y = initY;
+			} else {
+				x = Math.floor(initX / GC.GRIDSIZE);
+				y = Math.floor(initY / GC.GRIDSIZE);
+			}
 		}
 		
+		// it might be an idea to make these private and only have getters and setters. those always feel so wordy though :/
 		public var x:int;
 		public var y:int;
+		
+		public function setPoint(newX:int, newY:int, convert:Boolean = false):void {
+			if (!convert) {
+				x = newX;
+				y = newY;
+			} else {
+				x = Math.floor(newX / GC.GRIDSIZE);
+				y = Math.floor(newY / GC.GRIDSIZE);
+			}
+		}
 		
 		public function foundInArray(pointArray:Array):Boolean {
 			var foundFlag:Boolean = false;

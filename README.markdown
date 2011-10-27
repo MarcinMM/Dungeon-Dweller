@@ -19,14 +19,14 @@ In other words things that aren't necessary for MVP, but really really need addr
 
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * [take a look at combat per this post](http://codesquares.com/post/persistence_complete_now_proper_combats).
-* Seriously look at Point vs x,y confusion. It's a mess. Entities aren't updating their POSITION fields, which would make everything *tons* easier.
+* Seriously look at Point vs x,y confusion. It's a mess. Entities aren't updating their POSITION fields, which might everything *tons* easier.
 
 *Content/Features*
 
 * Item use, rest of item creation (food! pots!).
 * More PC design (remainder of classes: werewolf, skeleton, dwarf, demon).
 * Hunger mechanic.
-* Advanced NPC design. Communication (combat msgs about what creatures are doing, maybe random barks like Dredmor), more special abilities.
+* Advanced NPC design. Communication (combat msgs about what creatures are doing, maybe random barks like Dredmor), more special abilities. Prevention of item use on certain NPCs.
 * Item enhancement (tentatively spec'd in content doc) via loot drops and interactive decor items.
 * Forward impetus design (why go further into dungeon/how to communicate goal of game) - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1219)
 * Lore - details [in this post:](http://froggyfish.net/index.php?page=1&newsid=1218)
@@ -66,13 +66,17 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Creatures now clip through each other, I think due to the motion Tween.
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now. (is this still true?)
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
-* Slowdown on pathing.
+* Slowdown on pathing. Is this still true?
+* Creatures still spawn on each other or player.
+* Creatures don't drop items.
 
-# UPDATES 10/25
+# UPDATES 10/26
 * Added stat variation to creatures.
 * Moved healrate to XML from being hardcoded. That means some creatures will heal faster than others. :D
 * Added a grand foozier poombah macguffin to level 10. Realized I have no way of limiting him from spawning multiple times. Added "unique" to TODO.
 * Stubbed a partially complete "summon NPC" special ability, as well as special ability firing function on NPCs.
+* Fixed NPC generation failure resulting from refactoring how creatureXML gets loaded onto creature.
+* 
 
 # UPDATES 10/25
 * Cleaned up NPC generation; passing around creature name and re-reading XML for no apparent reason.

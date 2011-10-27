@@ -269,7 +269,7 @@ package dungeon.structure
 			// synchronize updates with player turn
 			// report on player tile solidity
 			if (_step != Dungeon.STEP.playerStep) {
-				var node:Node = getNode(Dungeon.player.x, Dungeon.player.y);
+				//var node:Node = getNode(Dungeon.player.x, Dungeon.player.y);
 				_step = Dungeon.STEP.playerStep;
 			}
 		}

@@ -30,7 +30,6 @@ package dungeon.contents
 		public var xpGranted:uint;
 			
 		// pathing status
-		private var POSITION:Point;
 		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
 		private var PATH_TARGET_ID:uint = 0;
@@ -55,7 +54,7 @@ package dungeon.contents
 		
 		// small tweak TODO: change creatureName to be creatureXML coming in from Level creature generator
 		// damn I hope I remember what this means!
-		public function NPC(creatureProperties:XML = null) 
+		public function NPC(creatureProperties:XML) 
 		{
 			super();
 			
@@ -74,7 +73,8 @@ package dungeon.contents
 			// determineNPCEquipment();
 			
 			// and what kind of stats does it have?
-			setNPCStats(creatureXML);
+			setNPCStats();
+
 			updateDerivedStats(true);
 			
 			layer = GC.NPC_LAYER;
@@ -179,6 +179,7 @@ package dungeon.contents
 						this.move(newLoc.x * GC.GRIDSIZE, newLoc.y * GC.GRIDSIZE);
 						//x = newLoc.x * GC.GRIDSIZE;
 						//y = newLoc.y * GC.GRIDSIZE;
+						POSITION.setPoint(x, y, true);
 						ACTION_TAKEN = true;
 					}
 					return true;
@@ -210,17 +211,17 @@ package dungeon.contents
 		}
 				
 		// we might need this to be available for the player, when morphed
-		public function setNPCStats(npcXML:XML):void {
-			npcType = npcXML.@name;
-			xpGranted = npcXML.xpgranted;
+		public function setNPCStats():void {
+			npcType = creatureXML.@name;
+			xpGranted = creatureXML.xpgranted;
 			// introduce 10% variation into these
-			STATS[GC.STATUS_STR] = randomizeStat(uint(npcXML.str));
-			STATS[GC.STATUS_AGI] = randomizeStat(uint(npcXML.agi));
-			STATS[GC.STATUS_INT] = randomizeStat(uint(npcXML.int));
-			STATS[GC.STATUS_WIS] = randomizeStat(uint(npcXML.wis));
-			STATS[GC.STATUS_CHA] = randomizeStat(uint(npcXML.cha));
-			STATS[GC.STATUS_CON] = randomizeStat(uint(npcXML.con));
-			STATS[GC.STATUS_HEALRATE] = uint(npcXML.healrate);
+			STATS[GC.STATUS_STR] = randomizeStat(uint(creatureXML.str));
+			STATS[GC.STATUS_AGI] = randomizeStat(uint(creatureXML.agi));
+			STATS[GC.STATUS_INT] = randomizeStat(uint(creatureXML.int));
+			STATS[GC.STATUS_WIS] = randomizeStat(uint(creatureXML.wis));
+			STATS[GC.STATUS_CHA] = randomizeStat(uint(creatureXML.cha));
+			STATS[GC.STATUS_CON] = randomizeStat(uint(creatureXML.con));
+			STATS[GC.STATUS_HEALRATE] = uint(creatureXML.healrate);
 			STATS[GC.STATUS_HEALSTEP] = 0; 
 		}
 
@@ -236,10 +237,10 @@ package dungeon.contents
 		}
 	
 		public function processSpecial():void {
-			if (Math.random() < Number(npcXML.specialChance) {
-				switch(String(npcXML.special) {
+			if (Math.random() < Number(creatureXML.specialChance)) {
+				switch(String(creatureXML.special)) {
 					case "SUMMON":
-						Dungeon.level.summonNPC(String(npcXML.specialModifier));
+						Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
 						break;
 					case "CAST":
 						break;
@@ -552,11 +553,11 @@ package dungeon.contents
 		}
 		
 		public function selfCopy():NPC {
-			var newNPC:NPC = new NPC();
+			var newNPC:NPC = new NPC(creatureXML);
 
-			newNPC.graphic = graphic; // TODO: placeholder until NPCs are designed
 			newNPC.x = x;
 			newNPC.y = y;
+			newNPC.POSITION = POSITION;
 			newNPC.ALIGNMENT = ALIGNMENT;
 			newNPC.FACTION = FACTION;
 			newNPC.npcType = npcType;
@@ -585,12 +586,43 @@ package dungeon.contents
 			}
 			newNPC.ITEMS = copiedItems;
 			
-			// TODO: once NPC types exist, this is a simple call to recreate graphic
-			//var _imgOverlay:MonsterGraphic = new MonsterGraphic(randCritter,0,0);
-			//newNPC.graphic = _imgOverlay;
-
 			return newNPC;
-		}	
+		}
+		
+		// note the X and Y here are absolute coordinates, let's make it use tiles
+		public function findTileNear(origin:Point):Point {
+			var newLocation:Point = origin;
+			var coordX:uint = origin.x * GC.GRIDSIZE;
+			var coordY:uint = origin.y * GC.GRIDSIZE;
+			
+			var collisionTypes:Array = [ GC.LAYER_LEVEL_TEXT, GC.LAYER_NPC_TEXT, GC.LAYER_PLAYER_TEXT ];
+			
+			// just check the four cardinal directions nearby
+			// TODO: maybe check 2 squares away?
+			if (collideTypes(collisionTypes, coordX + GC.GRIDSIZE, coordY) != null) {
+				newLocation = new Point(coordX + 1, coordY, true);
+			} else if (collideTypes(collisionTypes, coordX - GC.GRIDSIZE, coordY) != null) {
+				newLocation = new Point(coordX - 1, coordY, true);
+			} else if (collideTypes(collisionTypes, coordX, coordY + GC.GRIDSIZE) != null) {
+				newLocation = new Point(coordX, coordY + 1, true);
+			} else if (collideTypes(collisionTypes, coordX, coordY - GC.GRIDSIZE) != null) {
+				newLocation = new Point(coordX, coordY - 1, true);
+			}
+			/*
+			for each (var critter:NPC in NPCS) {
+				if ((critter.POSITION.x == x) && (critter.POSITION.y == y)) {
+					flag = false;
+				}
+			}
+			if (Dungeon.player.x == x && Dungeon.player.y == y) {
+				flag = false;
+			}
+			if (collide(GC.LAYER_LEVEL_TEXT)) {
+				flag = false;
+			}*/
+			
+			return newLocation;
+		}		
 		
 		override public function update():void {
 			super.update();
@@ -618,7 +650,7 @@ package dungeon.contents
 				}
 				
 				processSpecial();
-				processRangedCombat();
+				//processRangedCombat();
 				processCombat();
 				pathedMovementStep();
 	

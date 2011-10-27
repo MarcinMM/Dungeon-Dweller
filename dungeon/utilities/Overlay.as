@@ -37,6 +37,7 @@ package dungeon.utilities
 			}		
 		}
 
+		// this probably needs to live in Level
 		private function getTileNPCInfo(x:uint, y:uint):void {
 			var tileX:uint = Math.floor(x/GC.GRIDSIZE);
 			var tileY:uint = Math.floor(y/GC.GRIDSIZE);
@@ -52,7 +53,8 @@ package dungeon.utilities
 				}
 			}
 		}
-
+		
+		// this also probably needs to live in Level
 		private function getTileItemInfo(x:uint, y:uint):void {
 			var tileX:uint = Math.floor(x/GC.GRIDSIZE);
 			var tileY:uint = Math.floor(y/GC.GRIDSIZE);

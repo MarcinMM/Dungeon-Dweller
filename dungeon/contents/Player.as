@@ -92,6 +92,7 @@ package dungeon.contents
 		public function setPlayerPosition(setX:int, setY:int):void {
 			x = setX * GRIDSIZE;
 			y = setY * GRIDSIZE;
+			POSITION.setPoint(setX, setY);
 		}
 		
 		// now neatly sidesteps the issue of what the item is and just lets you unequip/equip it based on type and slot, anonymously
@@ -154,6 +155,7 @@ package dungeon.contents
 			if (x != newX || y != newY) {
 				Dungeon.STEP.playerStep++;
 				move(newX, newY);
+				POSITION.setPoint(newX, newY, true);
 				Dungeon.STEP.reset();
 			}
 		}

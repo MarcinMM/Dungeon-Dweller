@@ -11,6 +11,7 @@ package dungeon.contents
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import dungeon.utilities.*;
+	import dungeon.structure.Point;
 
 	/**
 	 * ...
@@ -20,7 +21,8 @@ package dungeon.contents
 	{
 		// creature size, used for collision
 		private const GRIDSIZE:int = GC.GRIDSIZE;
-		
+		public var POSITION:Point = new Point(0,0);
+
 		// unique ID, used for path targets? and who knows what else
 		public var UNIQID:uint = 0;
 		public var creatureXML:XML;

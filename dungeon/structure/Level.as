@@ -405,19 +405,23 @@ package dungeon.structure
 		}
 
 		// since summoning adds creature to Level, it makes most sense to put it here. I think.
-		public function summonNPC(npcName:String, origin:Point)
+		public function summonNPC(npcName:String, origin:Point):void
 		{
 			// get creatureXML from npcName
-			var creatureXML:XML = npcDataXML.npcs.npc.(@name == npcName);
+			var creatureXML:XML = Dungeon.dataloader.npcDataXML.npcs.npc.(@name == npcName);
 
 			var newNPC:NPC = new NPC(creatureXML);
 			// find a nearby unoccupied location, might be able to coopt the code from overlay that queries tiles
-			var newLocation:Point;
-
-			newNPC.x = newLocation.x;
-			newNPC.y = newLocation.y;
-			NPCS.push(newNPC);
-			FP.world.add(newNPC);
+			var newLocation:Point = newNPC.findTileNear(origin);
+			if (!newLocation.equals(origin)) {
+				newNPC.x = newLocation.x;
+				newNPC.y = newLocation.y;
+				NPCS.push(newNPC);
+				FP.world.add(newNPC);
+				Dungeon.statusScreen.updateCombatText("The creature summons help!");
+			} else {
+				Dungeon.statusScreen.updateCombatText("It tries to summon help ... but nothing happens.");
+			}
 		}
 		
 		override public function update():void {
