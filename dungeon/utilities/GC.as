@@ -176,6 +176,7 @@ package dungeon.utilities
 		public static const NPC_STATUS_ATTACKING_NPC:uint = 4;
 		public static const NPC_STATUS_ATTACKING_PLAYER:uint = 5;
 		public static const NPC_STATUS_FLEEING:uint = 6;
+		public static const NPC_STATUS_USING_SPECIAL:uint = 7;
 		
 		public static const ALIGNMENTS:Array = ['neutral', 'good', 'evil'];
 		

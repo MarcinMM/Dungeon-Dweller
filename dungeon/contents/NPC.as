@@ -26,7 +26,6 @@ package dungeon.contents
 		
 		// What is this thing? And what type of descriptors do we need? Let's start simple.
 		public var npcType:String;
-		public var npcLevel:uint;
 		public var UNIQUE:Boolean = false;
 		public var xpGranted:uint;
 			
@@ -68,7 +67,6 @@ package dungeon.contents
 			// now, what shall this critter be?
 			creatureXML = creatureProperties;
 
-			npcLevel = 1;
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;
 			
@@ -76,7 +74,7 @@ package dungeon.contents
 			// determineNPCEquipment();
 			
 			// and what kind of stats does it have?
-			setNPCStats(creatureXML, npcLevel);
+			setNPCStats(creatureXML);
 			updateDerivedStats(true);
 			
 			layer = GC.NPC_LAYER;
@@ -212,21 +210,49 @@ package dungeon.contents
 		}
 				
 		// we might need this to be available for the player, when morphed
-		public function setNPCStats(npcXML:XML, npcLevel:uint):void {
-			// TODO: use Creature level class
+		public function setNPCStats(npcXML:XML):void {
 			npcType = npcXML.@name;
-			npcLevel = 1;
 			xpGranted = npcXML.xpgranted;
-			STATS[GC.STATUS_STR] = uint(npcXML.str);
-			STATS[GC.STATUS_AGI] = uint(npcXML.agi);
-			STATS[GC.STATUS_INT] = uint(npcXML.int);
-			STATS[GC.STATUS_WIS] = uint(npcXML.wis);
-			STATS[GC.STATUS_CHA] = uint(npcXML.cha);
-			STATS[GC.STATUS_CON] = uint(npcXML.con);
-			STATS[GC.STATUS_HEALRATE] = 15;
-			STATS[GC.STATUS_HEALSTEP] = 0;
+			// introduce 10% variation into these
+			STATS[GC.STATUS_STR] = randomizeStat(uint(npcXML.str));
+			STATS[GC.STATUS_AGI] = randomizeStat(uint(npcXML.agi));
+			STATS[GC.STATUS_INT] = randomizeStat(uint(npcXML.int));
+			STATS[GC.STATUS_WIS] = randomizeStat(uint(npcXML.wis));
+			STATS[GC.STATUS_CHA] = randomizeStat(uint(npcXML.cha));
+			STATS[GC.STATUS_CON] = randomizeStat(uint(npcXML.con));
+			STATS[GC.STATUS_HEALRATE] = uint(npcXML.healrate);
+			STATS[GC.STATUS_HEALSTEP] = 0; 
+		}
+
+		public function randomizeStat(stat:uint):uint {
+			var upOrDownOrNeither:Number = Math.random();
+			if (upOrDownOrNeither < 0.33) {
+				stat += Math.round(Math.random() * 0.1 * stat);
+			} else if (upOrDownOrNeither < 0.66) {
+				stat -= Math.round(Math.random() * 0.1 * stat);
+			}
+			// or neither
+			return stat;
 		}
 	
+		public function processSpecial():void {
+			if (Math.random() < Number(npcXML.specialChance) {
+				switch(String(npcXML.special) {
+					case "SUMMON":
+						Dungeon.level.summonNPC(String(npcXML.specialModifier));
+						break;
+					case "CAST":
+						break;
+					case "SQUAD":
+						break;
+					case "THROW":
+						break;
+				}
+				ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
+				ACTION_TAKEN = true;
+			}
+		}
+
 		public function processRangedCombat():void {
 			var shortestDistance:Number = 1000;
 			var currentDistance:Number = 0;
@@ -533,7 +559,6 @@ package dungeon.contents
 			newNPC.y = y;
 			newNPC.ALIGNMENT = ALIGNMENT;
 			newNPC.FACTION = FACTION;
-			newNPC.npcLevel = npcLevel;
 			newNPC.npcType = npcType;
 			
 			// now copy STATS and ITEMS arrays
@@ -592,6 +617,7 @@ package dungeon.contents
 					checkItem();
 				}
 				
+				processSpecial();
 				processRangedCombat();
 				processCombat();
 				pathedMovementStep();

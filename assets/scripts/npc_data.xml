@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
 <npcs>
+	<npc name="Grand Foozier">
+		<unique>1</unique>
+		<str>14</str>
+		<agi>16</agi>
+		<con>20</con>
+		<int>20</int>
+		<wis>20</wis>
+		<cha>15</cha>
+		<canWear>1</canWear>
+		<canWield>1</canWield>
+		<armorMax>ALL</armorMax>
+		<weaponFamilies>ALL</weaponFamilies>
+		<startsToAppearAt>10</startsToAppearAt>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
+		<endsAppearingAt>10</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>10</doesNotAppearPast>
+		<rarityModifier>1</rarityModifier>
+		<special>0</special>
+		<specialChance>0</specialChance>
+		<specialModifier>0</specialModifier>
+		<graphic>7</graphic>
+		<preferredStats>0</preferredStats>
+		<xpgranted>1000</xpgranted>
+		<bloodType>20</bloodType>
+		<healrate>1</healrate>
+	</npc>
 	<npc name="Giant Rat">
+		<unique>1</unique>
 		<str>3</str>
 		<agi>2</agi>
 		<con>2</con>
@@ -25,8 +53,10 @@
 		<preferredStats>0</preferredStats>
 		<xpgranted>5</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>15</healrate>
 	</npc>
 	<npc name="Giant Bat">
+		<unique>1</unique>
 		<str>3</str>
 		<agi>5</agi>
 		<con>2</con>
@@ -50,8 +80,10 @@
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>10</healrate>
 	</npc>
 	<npc name="Wild Dog">
+		<unique>1</unique>
 		<str>3</str>
 		<agi>6</agi>
 		<con>3</con>
@@ -75,8 +107,10 @@
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>15</healrate>
 	</npc>
 	<npc name="Goblin">
+		<unique>1</unique>
 		<str>6</str>
 		<agi>5</agi>
 		<con>6</con>
@@ -100,8 +134,10 @@
 		<preferredStats>STR</preferredStats>
 		<xpgranted>10</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>15</healrate>
 	</npc>
 	<npc name="Imp">
+		<unique>1</unique>
 		<str>2</str>
 		<agi>7</agi>
 		<con>2</con>
@@ -125,8 +161,10 @@
 		<preferredStats>INT</preferredStats>
 		<xpgranted>15</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>10</healrate>
 	</npc>
 	<npc name="Wolf">
+		<unique>1</unique>
 		<str>6</str>
 		<agi>6</agi>
 		<con>6</con>
@@ -150,8 +188,10 @@
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>15</healrate>
 	</npc>
 	<npc name="Winged Serpent">
+		<unique>1</unique>
 		<str>6</str>
 		<agi>6</agi>
 		<con>6</con>
@@ -175,8 +215,10 @@
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>15</healrate>
 	</npc>
 	<npc name="Goblin Squad Grunt">
+		<unique>1</unique>
 		<str>6</str>
 		<agi>6</agi>
 		<con>6</con>
@@ -200,6 +242,7 @@
 		<preferredStats>STR</preferredStats>
 		<xpgranted>10</xpgranted>
 		<bloodType>20</bloodType>
+		<healrate>15</healrate>
 	</npc>
 </npcs>
 </data>

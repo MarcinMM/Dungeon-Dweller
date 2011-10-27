@@ -2,13 +2,13 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 10/3
+# TODO MVP 10/26
 
 * Stats fix. Looks like has to do with XML types not being ints.
-* NPC stat variation, a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
+* NPC a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc.)
 * PC Special Ability (currently dmg res for Ork)
 * Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR. This needs some primitive form of line tracing (putting in Util). May use this for LoS lighting?
-* Grand Foozier on lvl 10; also lvl 10 implementation
+* Unique creature implementation for Grand Poombah (and others in future, of course)
 * Game Start, GAme End screens
 
 # TODO FUTURE WISHLIST
@@ -67,6 +67,12 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Def numbers fluctuate with same gear. Also, just plain fluctuating. Or not even working right now. (is this still true?)
 * Combat/action log. Status.update() alone just won't cut it. Needs a toggle key so you can see more of it.
 * Slowdown on pathing.
+
+# UPDATES 10/25
+* Added stat variation to creatures.
+* Moved healrate to XML from being hardcoded. That means some creatures will heal faster than others. :D
+* Added a grand foozier poombah macguffin to level 10. Realized I have no way of limiting him from spawning multiple times. Added "unique" to TODO.
+* Stubbed a partially complete "summon NPC" special ability, as well as special ability firing function on NPCs.
 
 # UPDATES 10/25
 * Cleaned up NPC generation; passing around creature name and re-reading XML for no apparent reason.

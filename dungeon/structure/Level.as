@@ -402,7 +402,22 @@ package dungeon.structure
 				npc.y = y;
 				FP.world.add(npc);
 			}
-			
+		}
+
+		// since summoning adds creature to Level, it makes most sense to put it here. I think.
+		public function summonNPC(npcName:String, origin:Point)
+		{
+			// get creatureXML from npcName
+			var creatureXML:XML = npcDataXML.npcs.npc.(@name == npcName);
+
+			var newNPC:NPC = new NPC(creatureXML);
+			// find a nearby unoccupied location, might be able to coopt the code from overlay that queries tiles
+			var newLocation:Point;
+
+			newNPC.x = newLocation.x;
+			newNPC.y = newLocation.y;
+			NPCS.push(newNPC);
+			FP.world.add(newNPC);
 		}
 		
 		override public function update():void {
