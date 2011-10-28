@@ -58,9 +58,12 @@ package dungeon.structure
 			var tileAtThisLocation:Point;
 			var tileAtPreviousLocation:Point = new Point(currentX / GC.GRIDSIZE, currentY / GC.GRIDSIZE);
 			
+			var whileLimiter:uint = 0;
+			
 			// this relies on the trace direction always being up
 			if (slope == 0) {
-				while (currentY < y) {
+				while ((currentY < y) && (whileLimiter < 1000)) {
+					whileLimiter++; // ************************ DEBUG
 					currentY += 30;
 					tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));	
 					if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
@@ -79,9 +82,14 @@ package dungeon.structure
 				if (Math.abs(y - currentY) > Math.abs(x - currentX)) {
 					// y dimension changes faster, iterate through Y
 					// since we are always moving from left to right, we just need to check for X dimension reaching target
-					while (x > currentX) {
-						currentY += 30;
-						currentX += int (30 / slope);
+					while ((x > currentX) && (whileLimiter < 1000)) {
+						whileLimiter++; // ********************* DEBUG
+						if (slope > 0) {
+							currentY += 30;
+						} else {
+							currentY -= 30;
+						}
+						currentX += Math.abs(int (30 / slope));
 						tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));	
 						if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
 							nodeList.push(tileAtThisLocation);
@@ -97,7 +105,8 @@ package dungeon.structure
 
 				} else {
 					// x dimension changes faster, iterate through X
-					while (x > currentX) {
+					while ((x > currentX) && (whileLimiter < 1000)) {
+						whileLimiter++; // ********************* DEBUG
 						currentX += 30;
 						currentY += 30 * slope;
 						tileAtThisLocation = new Point(Math.floor(currentX / GC.GRIDSIZE), Math.floor(currentY / GC.GRIDSIZE));										

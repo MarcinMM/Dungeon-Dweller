@@ -266,15 +266,17 @@ package dungeon.contents
 				{
 					nearestNPC = creature;
 					shortestDistance = currentDistance;
+					Dungeon.statusScreen.updateCombatText(npcType + " thinks " + nearestNPC.npcType + " is closest.");
+					var freeToFire:Object = Utils.traceLine(x, y, nearestNPC.x, nearestNPC.y);
+					
+					if (freeToFire.success) {
+						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
+					}
+				} else {
+					Dungeon.statusScreen.updateCombatText(npcType + " doesn't see anything in range.");
 				}
 			}
-			Dungeon.statusScreen.updateCombatText(npcType + " thinks " + nearestNPC.npcType + " is closest.");
 			
-			var freeToFire:Object = Utils.traceLine(x, y, nearestNPC.x, nearestNPC.y);
-			
-			if (freeToFire.success) {
-				//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
-			}
 		}
 		
 		public function processCombat():void {
@@ -650,7 +652,7 @@ package dungeon.contents
 				}
 				
 				processSpecial();
-				//processRangedCombat();
+				processRangedCombat();
 				processCombat();
 				pathedMovementStep();
 	
