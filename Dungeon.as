@@ -2,6 +2,7 @@ package
 {
 	import dungeon.structure.Decor;
 	import dungeon.structure.Nodemap;
+	import dungeon.utilities.GameStatusScreen;
 	import dungeon.utilities.LevelInfoHolder;
 	import dungeon.utilities.Overlay;
 	import dungeon.utilities.Step;
@@ -16,6 +17,9 @@ package
 	import dungeon.structure.Level;
 	import dungeon.utilities.Step;
 	import net.flashpunk.Signal;
+	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
+	import net.flashpunk.FP;
 	
 	/**
 	 * ...
@@ -32,6 +36,7 @@ package
 		
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
+		public static var gameStatusScreen:GameStatusScreen; // game start and game over screen
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
 
 		// these are redefined here for use in future map generation
@@ -72,6 +77,7 @@ package
 			dataloader.setupItems();
 
 			statusScreen = new StatusScreen();
+			gameStatusScreen = new GameStatusScreen();
 			
 			player = new Player;
 			Dungeon.level = new Level;
@@ -87,6 +93,11 @@ package
 			addList(statusScreen.displayTexts);
 			addList(statusScreen.inventoryTexts);
 
+			// game start and end screens?
+			add(gameStatusScreen.background);
+			addList(gameStatusScreen.startTexts);
+			addList(gameStatusScreen.endTexts);
+			
 			overlay = new Overlay;
 			add(overlay);
 			

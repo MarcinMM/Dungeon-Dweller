@@ -244,7 +244,7 @@ package dungeon.contents
 			Dungeon.statusScreen.updateCombatText("Bonk! You get hit for " + attackValue + " damage!");
 			Dungeon.onCombat.dispatch(x, y, 'PHYSICAL', creatureXML.bloodType);
 			if (STATS[GC.STATUS_HP] <= 0) {
-				Dungeon.statusScreen.updateCombatText("You die ... more? Y/N/A/Q (not implemented HAR!)");
+				gameEnd();
 			}
 			updatePlayerStats();			
 		}
@@ -266,6 +266,19 @@ package dungeon.contents
 					activateItemAt(GC.KEYS[lastKey]);
 				}
 			}			
+		}
+		
+		public function gameEnd():void
+		{
+			if (Dungeon.gameStatusScreen.visibleEnd && Input.pressed(Key.ANY)) {
+				// check for key input and terminate process ... 
+				//Dungeon.end();
+			} 
+			else if (!Dungeon.gameStatusScreen.visibleEnd)
+			{
+				Dungeon.gameStatusScreen.visibleEnd = true;
+			}
+			//Dungeon.gameEnd();
 		}
 		
 		override public function update():void
