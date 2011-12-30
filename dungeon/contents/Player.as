@@ -46,6 +46,7 @@ package dungeon.contents
 			Input.define(GC.DIR_UP_TEXT, Key.UP);
 			Input.define(GC.DIR_DOWN_TEXT, Key.DOWN);
 			Input.define("I", Key.I);
+			Input.define("G", Key.G);
 			Input.define("a", Key.A);
 			Input.define("b", Key.B);
 			Input.define("c", Key.C);
@@ -270,21 +271,14 @@ package dungeon.contents
 		
 		public function gameEnd():void
 		{
-			if (Dungeon.gameStatusScreen.visibleEnd && Input.pressed(Key.ANY)) {
-				// check for key input and terminate process ... 
-				//Dungeon.end();
-			} 
-			else if (!Dungeon.gameStatusScreen.visibleEnd)
-			{
-				Dungeon.gameStatusScreen.visibleEnd = true;
-			}
-			//Dungeon.gameEnd();
+			Dungeon.gameStatusScreen.visibleEnd = true;
+			Dungeon.gameEnd = true;
 		}
 		
 		override public function update():void
 		{
 			super.update();
-
+			
 			if (Dungeon.STEP.isReady()) {
 			
 				COLLISION_TYPE = [];
@@ -302,6 +296,16 @@ package dungeon.contents
 					} else {
 						Dungeon.statusScreen.visible = false;					
 						INVENTORY_OPEN = false;
+					}
+				}
+				
+				
+				
+				if (Input.pressed("G")) {
+					if (Dungeon.gameStatusScreen.visibleEnd == false) {
+						Dungeon.gameStatusScreen.visibleEnd = true;
+					} else {
+						Dungeon.gameStatusScreen.visibleEnd = false;						
 					}
 				}
 				

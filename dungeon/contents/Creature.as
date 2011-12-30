@@ -134,7 +134,7 @@ package dungeon.contents
 
 		public function move(newX:Number, newY:Number):void {
 			if (!_motionTween.active) {
-				_motionTween.setMotion(x, y, newX, newY, 0.07);
+				_motionTween.setMotion(x, y, newX, newY, 0.03);
 			}
 		}
 		

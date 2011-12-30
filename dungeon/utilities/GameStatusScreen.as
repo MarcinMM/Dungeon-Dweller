@@ -27,12 +27,11 @@ package dungeon.utilities
 		
 		public function GameStatusScreen() 
 		{
-			background = new TextBox(GC.VIEW_WIDTH, 20, Dungeon.TILESX, Dungeon.TILESY); // full width cover
-			background.visible = false;
+			background = new TextBox(0,0, Dungeon.TILESX, Dungeon.TILESY); // full width cover
 			
 			// intro and game end texts
-			gameStartDisplay = new DisplayText( "Welcome to GAEM! You are ORK. (one day you will be more, I hope soon)", 60, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
-			gameEndDisplay = new DisplayText( "You dead. Soon you will see some stats for game end. ", 120, (GC.VIEW_HEIGHT - 80), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			gameStartDisplay = new DisplayText( "Welcome to GAEM! You are ORK. (one day you will be more, I hope soon)\nblah", 10, (GC.VIEW_HEIGHT / 2), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			gameEndDisplay = new DisplayText( "You dead. Soon you will see some stats for game end. \n\nPress any key to restart game.", 40, (GC.VIEW_HEIGHT/2), "default", 34, 0xFF0000, 60);
 
 			// setup for character select, should work like inventory
 			// textDisplay8 = new DisplayText( "", 10, (GC.VIEW_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
@@ -46,7 +45,7 @@ package dungeon.utilities
 			{
 				d.visible = true;
 			}
-			for each (var d:DisplayText in gameStartDisplay)
+			for each (d in gameStartDisplay)
 			{
 				d.visible = true;
 			}

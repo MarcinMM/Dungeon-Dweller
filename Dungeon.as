@@ -27,6 +27,8 @@ package
 	 */
 	public class Dungeon extends World
 	{
+		public static var gameEnd:Boolean = false; // global game over watch, be it victory, death or suspend
+		
 		public static var player:Player;
 		// TODO: var dungeon:Dungeon = FP.world as Dungeon; - this should get us the instance of the world in any context (?)
 		// TODO: then we can refer to the player var without it being static (alternatively try var dungeon:Dungeon = world as Dungeon;)
@@ -79,7 +81,7 @@ package
 			statusScreen = new StatusScreen();
 			gameStatusScreen = new GameStatusScreen();
 			
-			player = new Player;
+			player = new Player; // this will need to pass in parameter from level select
 			Dungeon.level = new Level;
 			add(player);
 			add(level);
@@ -126,7 +128,24 @@ package
 			add(npc);
 		}
 		
+		override public function end():void
+		{
+			// do a bunch of stuff clearing the previous state, then show the start screen again
+			remove(player);
+			remove(level);
+			remove(overlay);
+			removeAll(); // yoiks! hmm shouldn't this wipe out NPcs? and items? verify!
+			
+			begin();
+			gameEnd = false;
+		}
+		
 		override public function update():void {
+			// global game over watch
+			if (gameEnd && Input.pressed(Key.ANY)) {
+				end();
+			}
+			
 			// Camera moves if player reaches cam offset
 			super.update();
 			cam.followPlayer(MAP_HEIGHT, MAP_WIDTH, player);
