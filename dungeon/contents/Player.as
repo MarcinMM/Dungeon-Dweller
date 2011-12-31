@@ -23,7 +23,9 @@ package dungeon.contents
 
 		public var LIGHT_RADIUS:int = 1;
 		public var GRIDSIZE:int = GC.GRIDSIZE;
-					
+		
+		public var START_SCREEN:Boolean = false;
+		public var END_SCREEN:Boolean = false;
 		public var INVENTORY_OPEN:Boolean = false;
 		public var INVENTORY_SIZE:uint = 0;
 		
@@ -128,25 +130,25 @@ package dungeon.contents
 			MOVE_DIR = 0;
 			var newX:Number = x;
 			var newY:Number = y;
-			if (Input.pressed(GC.DIR_LEFT_TEXT) && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_LEFT_TEXT) && !movementDisabled) {
 				MOVE_DIR = GC.DIR_LEFT;
 				if (COLLISION[GC.DIR_LEFT] == GC.COLLISION_NONE) {
 					newX -= GRIDSIZE;
 				}
 			}
-			if (Input.pressed(GC.DIR_RIGHT_TEXT) && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_RIGHT_TEXT) && !movementDisabled) {
 				MOVE_DIR = GC.DIR_RIGHT;
 				if (COLLISION[GC.DIR_RIGHT] == GC.COLLISION_NONE) {
 					newX += GRIDSIZE;
 				}
 			}
-			if (Input.pressed(GC.DIR_UP_TEXT) && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_UP_TEXT) && !movementDisabled) {
 				MOVE_DIR = GC.DIR_UP;
 				if (COLLISION[GC.DIR_UP] == GC.COLLISION_NONE) {
 					newY -= GRIDSIZE;
 				}
 			}
-			if (Input.pressed(GC.DIR_DOWN_TEXT) && !INVENTORY_OPEN) {
+			if (Input.pressed(GC.DIR_DOWN_TEXT) && !movementDisabled) {
 				MOVE_DIR = GC.DIR_DOWN;
 				if (COLLISION[GC.DIR_DOWN] == GC.COLLISION_NONE) {
 					newY += GRIDSIZE;
@@ -274,6 +276,11 @@ package dungeon.contents
 			Dungeon.gameStatusScreen.visibleEnd = true;
 			Dungeon.gameEnd = true;
 		}
+
+		public function get movementDisabled():Boolean
+		{
+			return (INVENTORY_OPEN || START_SCREEN || END_SCREEN);
+		}
 		
 		override public function update():void
 		{
@@ -290,26 +297,10 @@ package dungeon.contents
 				
 				// Set inventory flag as it overrides movement; also open status screen
 				if (Input.pressed("I")) {
-					if (Dungeon.statusScreen.visible == false) {
-						Dungeon.statusScreen.visible = true;
-						INVENTORY_OPEN = true;
-					} else {
-						Dungeon.statusScreen.visible = false;					
-						INVENTORY_OPEN = false;
-					}
+					Dungeon.statusScreen.visible = INVENTORY_OPEN = !Dungeon.statusScreen.visible;
 				}
 				
-				
-				
-				if (Input.pressed("G")) {
-					if (Dungeon.gameStatusScreen.visibleEnd == false) {
-						Dungeon.gameStatusScreen.visibleEnd = true;
-					} else {
-						Dungeon.gameStatusScreen.visibleEnd = false;						
-					}
-				}
-				
-				if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !INVENTORY_OPEN) {
+				if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !movementDisabled) {
 					directionInput = true;
 					direction = Input.lastKey;
 				}
@@ -333,10 +324,14 @@ package dungeon.contents
 					processNPCCollision();
 					postNPCCollision();
 
-				} else if (!directionInput && !INVENTORY_OPEN) {
+				} else if (!directionInput && !movementDisabled) {
 					// TODO: other actions such as zapping quaffing reading digging praying inscribing equipping that don't require collision checks go here
 				} else if (INVENTORY_OPEN) {
 					inventoryFunctions();
+				} else if (START_SCREEN) {
+					// character selection input processing
+				} else if (END_SCREEN) {
+					// er?
 				}
 				
 				// process for things that only happen once per step

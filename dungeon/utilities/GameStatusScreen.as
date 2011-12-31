@@ -27,7 +27,8 @@ package dungeon.utilities
 		
 		public function GameStatusScreen() 
 		{
-			background = new TextBox(0,0, Dungeon.TILESX, Dungeon.TILESY); // full width cover
+			background = new TextBox(0, 0, Dungeon.TILESX, Dungeon.TILESY); // full width cover
+			background.visible = false;
 			
 			// intro and game end texts
 			gameStartDisplay = new DisplayText( "Welcome to GAEM! You are ORK. (one day you will be more, I hope soon)\nblah", 10, (GC.VIEW_HEIGHT / 2), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);

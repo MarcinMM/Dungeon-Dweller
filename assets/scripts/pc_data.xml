@@ -16,5 +16,35 @@
 		<graphic>8</graphic>
 		<bloodType>40</bloodType>
 	</pc>
+	<pc name="Ork">
+		<str>12</str>
+		<agi>8</agi>
+		<con>12</con>
+		<int>8</int>
+		<wis>8</wis>
+		<cha>8</cha>
+		<armorMax>Plate</armorMax>
+		<weaponFamilies>ALL</weaponFamilies>
+		<special>0</special>
+		<specialChance>0</specialChance>
+		<specialModifier>0</specialModifier>
+		<graphic>8</graphic>
+		<bloodType>40</bloodType>
+	</pc>
+	<pc name="Orrc">
+		<str>12</str>
+		<agi>8</agi>
+		<con>12</con>
+		<int>8</int>
+		<wis>8</wis>
+		<cha>8</cha>
+		<armorMax>Plate</armorMax>
+		<weaponFamilies>ALL</weaponFamilies>
+		<special>0</special>
+		<specialChance>0</specialChance>
+		<specialModifier>0</specialModifier>
+		<graphic>8</graphic>
+		<bloodType>40</bloodType>
+	</pc>
 </pcs>
 </data>

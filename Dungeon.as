@@ -69,17 +69,31 @@ package
 		
 		override public function begin():void {
 			super.begin();
-			
+
 			STEP = new Step();
 			
 			LevelHolder = new Vector.<LevelInfoHolder>;
 			LevelHolderCounter = 0;
 			initMapSizes();
 
-			dataloader.setupItems();
-
 			statusScreen = new StatusScreen();
 			gameStatusScreen = new GameStatusScreen();
+
+			// game start and end screens?
+			add(gameStatusScreen.background);
+			addList(gameStatusScreen.startTexts);
+			addList(gameStatusScreen.endTexts);
+
+			// status screen creation
+			add(statusScreen.background);
+			addList(statusScreen.displayTexts);
+			addList(statusScreen.inventoryTexts);
+
+			dataloader.setupItems();
+
+			// so now we should have player data, we can fire off the begin screen
+			// on the other hand, we should only dataload once, so the dataload should happen elsewhere
+			// wonder if there is a pre-begin? :)
 			
 			player = new Player; // this will need to pass in parameter from level select
 			Dungeon.level = new Level;
@@ -89,16 +103,6 @@ package
 			// set up cam
 			cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);
 			cam.adjustToPlayer(MAP_HEIGHT, MAP_WIDTH, player);
-			
-			// status screen creation
-			add(statusScreen.background);
-			addList(statusScreen.displayTexts);
-			addList(statusScreen.inventoryTexts);
-
-			// game start and end screens?
-			add(gameStatusScreen.background);
-			addList(gameStatusScreen.startTexts);
-			addList(gameStatusScreen.endTexts);
 			
 			overlay = new Overlay;
 			add(overlay);
