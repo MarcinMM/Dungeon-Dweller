@@ -1,5 +1,6 @@
 package dungeon.utilities
 {
+	import dungeon.contents.Player;
 	import dungeon.utilities.DisplayText;
 	import dungeon.utilities.TextBox;
 	import flash.utils.IDataInput;
@@ -31,15 +32,16 @@ package dungeon.utilities
 			background.visible = false;
 			
 			// intro and game end texts
-			gameStartDisplay = new DisplayText( "Welcome to GAEM! You are ORK. (one day you will be more, I hope soon)\nblah", 10, (GC.VIEW_HEIGHT / 2), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 60);
+			gameStartDisplay = new DisplayText( "Welcome to GAEM! You are ORK. (one day you will be more, I hope soon)\nblah", 10, (GC.VIEW_HEIGHT / 2), "default", 34, 0xFFFFFF, 60);
+			var creatureAr:Array = new Array(); var i:uint = 1;
+			for each (var pc:XML in Dungeon.dataloader.pcs) {
+				var charItem:String = i + " - " + pc.@name;
+				creatureAr[i] = new DisplayText(charItem, 50, 50, "default", 34, 0xFF0000, 60);
+				characterSelect.push(creatureAr[i]);
+			}
 			gameEndDisplay = new DisplayText( "You dead. Soon you will see some stats for game end. \n\nPress any key to restart game.", 40, (GC.VIEW_HEIGHT/2), "default", 34, 0xFF0000, 60);
 
-			// setup for character select, should work like inventory
-			// textDisplay8 = new DisplayText( "", 10, (GC.VIEW_HEIGHT - 90), "default", GC.STATUS_SCREEN_DEFAULT_FONT_SIZE, 0xFFFFFF, 600);
-			// textDisplaysArray = new Array(textDisplay1, textDisplay2, textDisplay3, textDisplay4, textDisplay5, textDisplay6, textDisplay7, textDisplay8);
-			
 			endTexts.push(gameEndDisplay);
-			
 			startTexts.push(gameStartDisplay);
 			
 			for each (var d:DisplayText in gameEndDisplay)
@@ -50,6 +52,18 @@ package dungeon.utilities
 			{
 				d.visible = true;
 			}
+			for each (d in characterSelect)
+			{
+				d.visible = true;
+			}
+		}
+
+		public function select(letter:String):void {
+			
+		}
+		
+		public function confirm():void {
+			
 		}
 		
 		public function get visibleEnd():Boolean {
@@ -68,6 +82,10 @@ package dungeon.utilities
 		public function set visibleStart(_visible:Boolean):void {
 			gameStartDisplay.visible = _visible;
 			background.visible = _visible;
+			for each (var d:DisplayText in characterSelect)
+			{
+				d.visible = _visible;	
+			}
 		}
 
 	}

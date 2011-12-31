@@ -38,7 +38,13 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Prebuilts in empty spaces. Detect a contiguous 2x2, 3x3, 4x4 (or other nonsquare) space and populate with appropriate larger prebuilts.
 * Multiple types of tiles support. TODO outlined in GC.
 * Fake non-square rooms by building solid randomized protrusions into room space.
-* Combat animations using MonsterGraphic.
+* Combat animations using MonsterGraphic. Other Animations (below).
+** Magic mapping reveal coming out of player's location.
+** Monster aggravate scroll like a sonar pulse.
+** Teleport with a flash of light, not just location shift.
+** All sorts of magic wand/spell effects.
+** Rippling water.
+** Basically, dig into Brogue and see how some of the magic works. It's wonderfully simple but so well executed it's probably worth er, borrowing from.
 
 *Tech/AI*
 

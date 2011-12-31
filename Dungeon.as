@@ -20,7 +20,8 @@ package
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.FP;
-	
+	import net.flashpunk.graphics.Text;	
+
 	/**
 	 * ...
 	 * @author MM
@@ -38,6 +39,12 @@ package
 		
 		public static var level:Level;
 		public static var statusScreen:StatusScreen;
+		// Flex 3 users uncomment the following line (Flex 4+ keep commented)
+		// [Embed(source = 'CaviarDreams.ttf', fontFamily = 'My Font')];
+        //
+        // Flex 3 users comment out (//) the following line, Flex 4+ leave it alone           
+		[Embed(source = 'assets/CaviarDreams.ttf', embedAsCFF = "false", fontFamily = 'Default')] private const MY_FONT:Class;
+
 		public static var gameStatusScreen:GameStatusScreen; // game start and game over screen
 		[Embed(source = 'assets/tilemap.png')] private const TILEMAP:Class;
 
@@ -64,7 +71,7 @@ package
 		public static var overlay:Overlay;
 		
 		public function Dungeon() {
-
+			Text.font = "Default";
 		}
 		
 		override public function begin():void {
@@ -75,6 +82,8 @@ package
 			LevelHolder = new Vector.<LevelInfoHolder>;
 			LevelHolderCounter = 0;
 			initMapSizes();
+
+			dataloader.setupItems();
 
 			statusScreen = new StatusScreen();
 			gameStatusScreen = new GameStatusScreen();
@@ -89,16 +98,19 @@ package
 			addList(statusScreen.displayTexts);
 			addList(statusScreen.inventoryTexts);
 
-			dataloader.setupItems();
 
 			// so now we should have player data, we can fire off the begin screen
 			// on the other hand, we should only dataload once, so the dataload should happen elsewhere
 			// wonder if there is a pre-begin? :)
 			
-			player = new Player; // this will need to pass in parameter from level select
+			player = new Player; // this will need to create a dummy player so something can listen to player input
 			Dungeon.level = new Level;
 			add(player);
 			add(level);
+			
+			// we need player for start screen, as Player is what listens for player's input; 
+			// we will need to recreate player from array after select, regardless
+			Dungeon.gameStatusScreen.visibleStart = true;
 			
 			// set up cam
 			cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);

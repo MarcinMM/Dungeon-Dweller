@@ -166,6 +166,9 @@ package dungeon.utilities
 		public static const STATUS_SPLEVEL:String = 'SPLEVEL'; // locked to level
 		public static const STATUS_DGLEVEL:String = 'DGLEVEL'; // dungeon level
 		
+		// TODO: these correspond to ascii integer values, a sort of primitive charAt() set
+		// they are needed because Input.lastKey only provides the integer value of a character, and we want the character itself
+		// seems like there should be a way to get it? this might be faster over time
 		public static const KEYS:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		
 		// NPC statuses

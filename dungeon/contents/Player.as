@@ -258,8 +258,7 @@ package dungeon.contents
 		public function inventoryFunctions():void {
 			if (Input.pressed(GC.DIR_UP)) {
 				Dungeon.statusScreen.up();
-			}
-			if (Input.pressed(GC.DIR_DOWN)) {
+			} else if (Input.pressed(GC.DIR_DOWN)) {
 				Dungeon.statusScreen.down();
 			} else {
 				// now test all keys for inventory
@@ -269,6 +268,21 @@ package dungeon.contents
 					activateItemAt(GC.KEYS[lastKey]);
 				}
 			}			
+		}
+		
+		// TODO: consolidate the various option traversal subroutines into one
+		// it could take in a target list and pass in an action (up down left right or activate)
+		// Hmm, except here we will only hit a letter to select, and ENTER to confirm. Slightly different.
+		// Maybe we should change inventory to this behavior as well? Will be needed for descriptions anyway.
+		public function characterSelectFunctions():void {
+			if (Input.pressed(Key.ENTER)) {
+				Dungeon.gameStatusScreen.confirm();
+			} else {
+				var lastKey:uint = Input.lastKey;
+				if ((lastKey >= 65) && (lastKey <= 90)) {
+					Dungeon.gameStatusScreen.select(GC.KEYS[lastKey]);
+				}
+			}
 		}
 		
 		public function gameEnd():void
