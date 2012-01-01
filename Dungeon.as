@@ -92,6 +92,7 @@ package
 			add(gameStatusScreen.background);
 			addList(gameStatusScreen.startTexts);
 			addList(gameStatusScreen.endTexts);
+			addList(gameStatusScreen.characterSelect);
 
 			// status screen creation
 			add(statusScreen.background);
@@ -104,13 +105,15 @@ package
 			// wonder if there is a pre-begin? :)
 			
 			player = new Player; // this will need to create a dummy player so something can listen to player input
-			Dungeon.level = new Level;
 			add(player);
-			add(level);
 			
 			// we need player for start screen, as Player is what listens for player's input; 
 			// we will need to recreate player from array after select, regardless
 			Dungeon.gameStatusScreen.visibleStart = true;
+			
+			// create level
+			Dungeon.level = new Level;
+			add(level);
 			
 			// set up cam
 			cam = new Camera(GC.CAMERA_OFFSET, GC.PLAYER_MOVEMENT_SPEED);

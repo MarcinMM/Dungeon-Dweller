@@ -32,16 +32,15 @@ package dungeon.contents
 		public static var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		public var invLettersAss:Array = [];
 		
+		public var currentClassIndex:Number; // this will hold the index in XML of the chosen character class
+		
 		public function Player() 
 		{
 			super();
 			
 			// hardcoding creatureXML to first character until we have more
 			// not to mention a character select screen!
-			creatureXML = Dungeon.dataloader.pcs[0];
-			
-			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
-			graphic = _imgOverlay;
+			initPlayer(0);
 
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
@@ -66,8 +65,12 @@ package dungeon.contents
 			y = 140;
 			type = "player";
 			layer = GC.PLAYER_LAYER;
-			
-			// Initial player setup
+		}
+		
+		public function initPlayer(xmlIndex:Number):void {
+			creatureXML = Dungeon.dataloader.pcs[xmlIndex];
+			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
+			graphic = _imgOverlay;
 			setPlayerStats();
 			updatePlayerStats(true);
 		}
@@ -275,12 +278,13 @@ package dungeon.contents
 		// Hmm, except here we will only hit a letter to select, and ENTER to confirm. Slightly different.
 		// Maybe we should change inventory to this behavior as well? Will be needed for descriptions anyway.
 		public function characterSelectFunctions():void {
-			if (Input.pressed(Key.ENTER)) {
-				Dungeon.gameStatusScreen.confirm();
+			if (Input.pressed(Key.ENTER) && (currentClassIndex != 0)) {
+				Dungeon.gameStatusScreen.confirm(currentClassIndex);
+				initPlayer(currentClassIndex);
 			} else {
 				var lastKey:uint = Input.lastKey;
-				if ((lastKey >= 65) && (lastKey <= 90)) {
-					Dungeon.gameStatusScreen.select(GC.KEYS[lastKey]);
+				if ((lastKey >= 49) && (lastKey <= 57)) { // numbers 1-9
+					currentClassIndex = Dungeon.gameStatusScreen.select(GC.KEYS[lastKey]);
 				}
 			}
 		}
@@ -310,8 +314,13 @@ package dungeon.contents
 				var npcCollision:int = 0;
 				
 				// Set inventory flag as it overrides movement; also open status screen
-				if (Input.pressed("I")) {
+				// have to add additional checks so that inventory isn't openable when in either game start or end screen
+				if (Input.pressed("I") && !START_SCREEN && !END_SCREEN) {
 					Dungeon.statusScreen.visible = INVENTORY_OPEN = !Dungeon.statusScreen.visible;
+				}
+
+				if (Input.pressed("G")) {
+					Dungeon.gameStatusScreen.visibleStart = !Dungeon.gameStatusScreen.visibleStart;
 				}
 				
 				if (( Input.pressed(GC.DIR_LEFT_TEXT) || Input.pressed(GC.DIR_RIGHT_TEXT) || Input.pressed(GC.DIR_UP_TEXT) || Input.pressed(GC.DIR_DOWN_TEXT)) && !movementDisabled) {
@@ -344,6 +353,7 @@ package dungeon.contents
 					inventoryFunctions();
 				} else if (START_SCREEN) {
 					// character selection input processing
+					characterSelectFunctions();
 				} else if (END_SCREEN) {
 					// er?
 				}

@@ -28,7 +28,7 @@
 		<special>0</special>
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
-		<graphic>8</graphic>
+		<graphic>6</graphic>
 		<bloodType>40</bloodType>
 	</pc>
 	<pc name="Orrc">
@@ -43,7 +43,7 @@
 		<special>0</special>
 		<specialChance>0</specialChance>
 		<specialModifier>0</specialModifier>
-		<graphic>8</graphic>
+		<graphic>5</graphic>
 		<bloodType>40</bloodType>
 	</pc>
 </pcs>
