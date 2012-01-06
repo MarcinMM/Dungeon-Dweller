@@ -54,6 +54,9 @@ package dungeon.contents
 		public var _weapons:Spritemap = new Spritemap(WEAPON_TILES, 32, 32);
 		public var _armors:Spritemap = new Spritemap(ARMOR_TILES, 32, 32);
 
+		// motion FX
+		private var _motionTween:LinearMotion;
+
 		public function Item() 
 		{
 			// initialise various bits
@@ -83,8 +86,24 @@ package dungeon.contents
 			
 			type = "items";
 			layer = GC.ITEM_LAYER;
+
+			// motion FX
+			_motionTween = new LinearMotion(onMotionComplete);
+			addTween(_motionTween);
 		}
 		
+		public function onMotionComplete():void {
+			x = _motionTween.x;
+			y = _motionTween.y;	
+		}
+
+		public function move(newX:Number, newY:Number):void {
+			if (!_motionTween.active) {
+				_motionTween.setMotion(x, y, newX, newY, 0.03);
+			}
+		}
+
+
 		/*public function copy():Item {
 			var newItem:Item = new Item();
 			

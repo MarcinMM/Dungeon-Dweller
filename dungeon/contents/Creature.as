@@ -138,6 +138,12 @@ package dungeon.contents
 			}
 		}
 		
+		// we may want callbacks and such, so put this on creature
+		public function throwItem(item:Item, path:Array):void {
+			Dungeon.level.throwItem(item, path);
+			// now we increase STEP?
+		}
+
 		/**
 		 * TODO: test all this :D
 		 * TODO: consider moving to Player class, since creatures will not have leveling; we could then throw out all the player checks

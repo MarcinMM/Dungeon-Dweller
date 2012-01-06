@@ -238,6 +238,16 @@ package dungeon.structure
 			
 			placeDecor(decor);
 
+			// now we need to handle the semi-random stuff
+			// like generating non-random levels
+			// or prebuilds (except that needs to go before drawRooms, or maybe part of it)
+			// randomChance < 10% { executePrebuilt(); } or something
+
+			// and now uniques, like the boss
+			if (dungeonDepth == 10) {
+				createAndPlaceBoss();
+			}
+
 			Dungeon.player.setPlayerPosition(STAIRS_UP.x, STAIRS_UP.y);
 		}
 		
@@ -365,9 +375,6 @@ package dungeon.structure
 		private function createAndPlaceNPCs():void {
 			// TODO:
 			// need a way to determine random number of NPCs
-			// need a way to adjust their level (+/-1 of actual dungeon maybe?)
-			// need a way to draw from pool of possible NPCs, level appropriate
-			// NPCs should have level ranges just like weapons/armor
 			var x:uint = 0;
 			var y:uint = 0;
 			var roomIndex:uint = 0;
@@ -404,6 +411,16 @@ package dungeon.structure
 			}
 		}
 
+		// TODO: just realized we'll need single creature spawning code, for adding critters over time
+		private function createAndPlaceSingleNPC():void {
+			
+		}
+
+		// TODO: we'll need to reuse this based on trigger for immortal bosses
+		private function createAndPlaceBoss():void {
+			
+		}
+
 		// since summoning adds creature to Level, it makes most sense to put it here. I think.
 		public function summonNPC(npcName:String, origin:Point):void
 		{
@@ -414,7 +431,7 @@ package dungeon.structure
 			// find a nearby unoccupied location, might be able to coopt the code from overlay that queries tiles
 			var newLocation:Point = newNPC.findTileNear(origin);
 			if (!newLocation.equals(origin)) {
-				newNPC.x = newLocation.x;
+				newNPC.x = newLocation.x; // now is this tile X or absolute X?
 				newNPC.y = newLocation.y;
 				NPCS.push(newNPC);
 				FP.world.add(newNPC);
@@ -422,6 +439,29 @@ package dungeon.structure
 			} else {
 				Dungeon.statusScreen.updateCombatText("It tries to summon help ... but nothing happens.");
 			}
+		}
+
+		// another adding things to level (and then removing them) utility class
+		// TODO: this is a total nonfunctional pseudocode stub
+		public function throwItem(item:Item=null, path:Array):void {
+			// for now we're just flinging random weapons since we dont' have rocks and such defined
+			// TODO: maybe I should define a rock weapon and use that instead? Let's get an object flying through the air first.
+			if (item == null) {
+				var newItem:Item = new Weapon();
+			} else {
+				var newItem:Item = item;
+			}
+
+			newItem.x = path[0].x; // now is this tile X or absolute X?
+			newItem.y = path[0].y;
+			FP.world.add(newItem);
+			// actually we dont' need traverse path do we? just need start and end, then tween the two
+			// TODO: this bears examining
+			// we'll also need some way to notify the level that STEP is done once item hits
+			for each (point:Point in path) {
+				newItem.moveTo(point);
+			}
+			FP.world.remove(newItem);
 		}
 		
 		override public function update():void {

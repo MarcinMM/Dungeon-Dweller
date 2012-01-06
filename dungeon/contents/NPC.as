@@ -247,6 +247,7 @@ package dungeon.contents
 					case "SQUAD":
 						break;
 					case "THROW":
+						processRangedCombat();
 						break;
 				}
 				ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
@@ -259,6 +260,7 @@ package dungeon.contents
 			var currentDistance:Number = 0;
 			var nearestNPC:NPC;
 			for each (var creature:NPC in Dungeon.level.NPCS) {
+				// TODO: we need an alignment check
 				currentDistance = distanceToPoint(creature.x, creature.y);
 				if (
 					(creature.x != x && creature.y != y) && 
@@ -271,6 +273,9 @@ package dungeon.contents
 					
 					if (freeToFire.success) {
 						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
+						// actually process the throw and damage done
+						// throwItem(); // this will take an itemType at some point?
+						// set ACTION_TAKEN flag
 					}
 				} else {
 					Dungeon.statusScreen.updateCombatText(npcType + " doesn't see anything in range.");
@@ -652,7 +657,7 @@ package dungeon.contents
 				}
 				
 				processSpecial();
-				processRangedCombat();
+				// processRangedCombat(); // this is a special only
 				processCombat();
 				pathedMovementStep();
 	

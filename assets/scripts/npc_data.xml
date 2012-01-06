@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
 <npcs>
-	<npc name="Grand Foozier">
+	<npc name="Warlord">
+		<unique>1</unique>
+		<str>20</str>
+		<agi>16</agi>
+		<con>20</con>
+		<int>14</int>
+		<wis>14</wis>
+		<cha>15</cha>
+		<canWear>1</canWear>
+		<canWield>1</canWield>
+		<armorMax>ALL</armorMax>
+		<weaponFamilies>ALL</weaponFamilies>
+		<startsToAppearAt>10</startsToAppearAt>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
+		<endsAppearingAt>10</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>10</doesNotAppearPast>
+		<rarityModifier>1</rarityModifier>
+		<special>0</special>
+		<specialChance>0</specialChance>
+		<specialModifier>0</specialModifier>
+		<graphic>7</graphic>
+		<preferredStats>0</preferredStats>
+		<xpgranted>1000</xpgranted>
+		<bloodType>20</bloodType>
+		<healrate>1</healrate>
+	</npc>
+	<npc name="Alchemist">
 		<unique>1</unique>
 		<str>14</str>
 		<agi>16</agi>
@@ -19,9 +46,36 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>10</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>0</special>
-		<specialChance>0</specialChance>
+		<special>THROW</special>
+		<specialChance>0.9</specialChance>
 		<specialModifier>0</specialModifier>
+		<graphic>7</graphic>
+		<preferredStats>0</preferredStats>
+		<xpgranted>1000</xpgranted>
+		<bloodType>20</bloodType>
+		<healrate>1</healrate>
+	</npc>
+	<npc name="Archmage">
+		<unique>1</unique>
+		<str>14</str>
+		<agi>16</agi>
+		<con>20</con>
+		<int>20</int>
+		<wis>20</wis>
+		<cha>15</cha>
+		<canWear>1</canWear>
+		<canWield>1</canWield>
+		<armorMax>ALL</armorMax>
+		<weaponFamilies>ALL</weaponFamilies>
+		<startsToAppearAt>10</startsToAppearAt>
+		<startAppearanceIncrement>100</startAppearanceIncrement>
+		<endsAppearingAt>10</endsAppearingAt>
+		<endAppearanceIncrement>10</endAppearanceIncrement>
+		<doesNotAppearPast>10</doesNotAppearPast>
+		<rarityModifier>1</rarityModifier>
+		<special>CAST</special>
+		<specialChance>0.6</specialChance>
+		<specialModifier>DEATH_RAY</specialModifier>
 		<graphic>7</graphic>
 		<preferredStats>0</preferredStats>
 		<xpgranted>1000</xpgranted>
@@ -73,8 +127,8 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>0</special>
-		<specialChance>0</specialChance>
+		<special>DOUBLE_MOVE</special>
+		<specialChance>0.8</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>2</graphic>
 		<preferredStats>AGI</preferredStats>
@@ -83,7 +137,7 @@
 		<healrate>10</healrate>
 	</npc>
 	<npc name="Wild Dog">
-		<unique>1</unique>
+		<unique>0</unique>
 		<str>3</str>
 		<agi>6</agi>
 		<con>3</con>
@@ -100,9 +154,9 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0</rarityModifier>
-		<special>0</special>
-		<specialChance>0</specialChance>
-		<specialModifier>0</specialModifier>
+		<special>SUMMON</special>
+		<specialChance>0.05</specialChance>
+		<specialModifier>Wild Dog</specialModifier>
 		<graphic>0</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
@@ -110,7 +164,7 @@
 		<healrate>15</healrate>
 	</npc>
 	<npc name="Goblin">
-		<unique>1</unique>
+		<unique>0</unique>
 		<str>6</str>
 		<agi>5</agi>
 		<con>6</con>
@@ -127,8 +181,8 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>0</special>
-		<specialChance>0</specialChance>
+		<special>THROW</special>
+		<specialChance>0.5</specialChance>
 		<specialModifier>0</specialModifier>
 		<graphic>3</graphic>
 		<preferredStats>STR</preferredStats>
@@ -137,7 +191,7 @@
 		<healrate>15</healrate>
 	</npc>
 	<npc name="Imp">
-		<unique>1</unique>
+		<unique>0</unique>
 		<str>2</str>
 		<agi>7</agi>
 		<con>2</con>
@@ -164,7 +218,7 @@
 		<healrate>10</healrate>
 	</npc>
 	<npc name="Wolf">
-		<unique>1</unique>
+		<unique>0</unique>
 		<str>6</str>
 		<agi>6</agi>
 		<con>6</con>
@@ -183,7 +237,7 @@
 		<rarityModifier>1</rarityModifier>
 		<special>SUMMON</special>
 		<specialChance>0.1</specialChance>
-		<specialModifier>WOLF</specialModifier>
+		<specialModifier>Wolf</specialModifier>
 		<graphic>1</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
@@ -191,7 +245,7 @@
 		<healrate>15</healrate>
 	</npc>
 	<npc name="Winged Serpent">
-		<unique>1</unique>
+		<unique>0</unique>
 		<str>6</str>
 		<agi>6</agi>
 		<con>6</con>
@@ -218,7 +272,7 @@
 		<healrate>15</healrate>
 	</npc>
 	<npc name="Goblin Squad Grunt">
-		<unique>1</unique>
+		<unique>0</unique>
 		<str>6</str>
 		<agi>6</agi>
 		<con>6</con>
