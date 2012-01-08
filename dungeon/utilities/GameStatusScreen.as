@@ -82,7 +82,7 @@ package dungeon.utilities
 			return 0;
 		}
 		
-		public function confirm(actualCharacterPointer):void {
+		public function confirm(actualCharacterPointer:Number):void {
 			// pass current back to dungeon somehow and load player stats from XML into Player
 			// then close start screen and resume game
 			// do nothing if no class is selected

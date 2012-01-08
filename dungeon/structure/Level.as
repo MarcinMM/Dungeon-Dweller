@@ -443,7 +443,7 @@ package dungeon.structure
 
 		// another adding things to level (and then removing them) utility class
 		// TODO: this is a total nonfunctional pseudocode stub
-		public function throwItem(item:Item=null, path:Array):void {
+		public function throwItem(path:Array, item:Item=null):void {
 			// for now we're just flinging random weapons since we dont' have rocks and such defined
 			// TODO: maybe I should define a rock weapon and use that instead? Let's get an object flying through the air first.
 			if (item == null) {
@@ -458,8 +458,8 @@ package dungeon.structure
 			// actually we dont' need traverse path do we? just need start and end, then tween the two
 			// TODO: this bears examining
 			// we'll also need some way to notify the level that STEP is done once item hits
-			for each (point:Point in path) {
-				newItem.moveTo(point);
+			for each (var point:Point in path) {
+				newItem.moveTo(point.x, point.y);
 			}
 			FP.world.remove(newItem);
 		}

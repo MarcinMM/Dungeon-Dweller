@@ -5,6 +5,8 @@ package dungeon.contents
 	import net.flashpunk.graphics.*;
 	import net.flashpunk.FP;
 	import dungeon.utilities.GC;
+	import net.flashpunk.tweens.motion.LinearMotion;
+
 	/**
 	 * ...
 	 * @author MM

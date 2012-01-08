@@ -240,18 +240,19 @@ package dungeon.contents
 			if (Math.random() < Number(creatureXML.specialChance)) {
 				switch(String(creatureXML.special)) {
 					case "SUMMON":
-						Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
+						//Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
 						break;
 					case "CAST":
 						break;
 					case "SQUAD":
 						break;
 					case "THROW":
-						processRangedCombat();
+						//processRangedCombat();
 						break;
 				}
 				ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
 				ACTION_TAKEN = true;
+				Dungeon.STEP.npcSteps++;
 			}
 		}
 
