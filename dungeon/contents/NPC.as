@@ -243,6 +243,8 @@ package dungeon.contents
 						//Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
 						break;
 					case "CAST":
+						// ranged with a spell "item"; creatures will only have one special cast
+						processRangedCombat(creatureXML.specialModifier);
 						break;
 					case "SQUAD":
 						break;
@@ -256,7 +258,7 @@ package dungeon.contents
 			}
 		}
 
-		public function processRangedCombat():void {
+		public function processRangedCombat(rangedCombatType:String=null):void {
 			var shortestDistance:Number = 1000;
 			var currentDistance:Number = 0;
 			var nearestNPC:NPC;
@@ -275,7 +277,7 @@ package dungeon.contents
 					if (freeToFire.success) {
 						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
 						// actually process the throw and damage done
-						throwItem(freeToFire.path); // this will take an itemType at some point?
+						throwItem(freeToFire.path, rangedCombatType); // this will take an itemType at some point?
 						// set ACTION_TAKEN flag
 					}
 				} else {

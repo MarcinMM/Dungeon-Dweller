@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+<items>
+	<spells>
+		<spell name="Flame Dart">
+			<type>DAMAGE</type>
+			<amount>4</amount>
+			<mana>5</mana>
+			<spreadChance>.2</spreadChance>
+			<criticalChance>0.5</criticalChance>
+			<criticalEffect>LINGER</criticalEffect>
+			<criticalDuration>2</criticalDuration>
+		</spell>
+		<spell name="Lightning Dart">
+			<type>DAMAGE</type>
+			<amount>4</amount>
+			<mana>5</mana>
+			<spreadChance>.15</spreadChance>
+			<criticalChance>0.2</criticalChance>
+			<criticalEffect>PARALYZE</criticalEffect>
+			<criticalDuration>1</criticalDuration>
+		</spell>
+	</spells>
+</items>
+</data>
+</xml>

@@ -139,7 +139,7 @@ package dungeon.contents
 		}
 		
 		// we may want callbacks and such, so put this on creature
-		public function throwItem(path:Array, item:Item=null):void {
+		public function throwItem(path:Array, item:String=null):void {
 			Dungeon.level.throwItem(path, item);
 			// now we increase STEP?
 		}

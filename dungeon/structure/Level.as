@@ -442,9 +442,8 @@ package dungeon.structure
 		}
 
 		// another adding things to level (and then removing them) utility class
-		// TODO: this is a total nonfunctional pseudocode stub
-		public function throwItem(path:Array, item:Item=null):void {
-			// for now we're just flinging random weapons since we dont' have rocks and such defined
+		// "item" is either weapon or spell
+		public function throwItem(path:Array, item:String=null):void {
 			// TODO: maybe I should define a rock weapon and use that instead? Let's get an object flying through the air first.
 			if (item == null) {
 				var newItem:Item = new Weapon();
