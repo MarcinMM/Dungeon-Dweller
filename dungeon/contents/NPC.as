@@ -247,7 +247,7 @@ package dungeon.contents
 					case "SQUAD":
 						break;
 					case "THROW":
-						//processRangedCombat();
+						processRangedCombat();
 						break;
 				}
 				ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
@@ -275,7 +275,7 @@ package dungeon.contents
 					if (freeToFire.success) {
 						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
 						// actually process the throw and damage done
-						// throwItem(); // this will take an itemType at some point?
+						throwItem(freeToFire.path); // this will take an itemType at some point?
 						// set ACTION_TAKEN flag
 					}
 				} else {

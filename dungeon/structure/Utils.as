@@ -11,7 +11,7 @@ package dungeon.structure
 		// we can also use this for raytraced lighting at some point
 		// so it needs to return two things, a true/false parameter and the path
 		public static function traceLine(x:int, y:int, x1:int, y1:int, lightPath:Boolean = false):Object {
-			var nodeList:Array = new Array
+			var nodeList:Array = new Array;
 			var successFlag:Boolean = true;
 			var slope:Number = 0;
 			var currentX:int = 0;
@@ -23,12 +23,12 @@ package dungeon.structure
 				currentX = x1;
 				currentY = y1;
 				slope = (y1 - y) / (x1 - x);	
-				nodeList.push(new Point(x1, y1));
+				nodeList.push(new Point(Math.floor(x1/GC.GRIDSIZE), Math.floor(y1/GC.GRIDSIZE)));
 			} else if (x1 > x) {
 				currentX = x;
 				currentY = y;
 				slope = (y - y1) / (x - x1);
-				nodeList.push(new Point(x, y));
+				nodeList.push(new Point(Math.floor(x/GC.GRIDSIZE), Math.floor(y/GC.GRIDSIZE)));
 				// rename x1 and y1 to x and y so we can just do one loop in the next step
 				x = x1;
 				y = y1;
@@ -127,7 +127,7 @@ package dungeon.structure
 			
 			// loop through node list for debug
 			for each (var point:Point in nodeList) {
-				Dungeon.level._dungeonmap.setRect(point.x, point.y, 1, 1, GC.DEBUGGREEN);
+				//Dungeon.level._dungeonmap.setRect(point.x, point.y, 1, 1, GC.DEBUGGREEN);
 			}
 			
 			var returnThings:Object = 

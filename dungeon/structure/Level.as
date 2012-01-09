@@ -459,7 +459,7 @@ package dungeon.structure
 			// TODO: this bears examining
 			// we'll also need some way to notify the level that STEP is done once item hits
 			for each (var point:Point in path) {
-				newItem.moveTo(point.x, point.y);
+				newItem.moveTo(point.x * GC.GRIDSIZE, point.y * GC.GRIDSIZE);
 			}
 			FP.world.remove(newItem);
 		}
