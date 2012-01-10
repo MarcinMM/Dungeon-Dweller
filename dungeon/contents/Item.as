@@ -101,10 +101,9 @@ package dungeon.contents
 
 		public function move(newX:Number, newY:Number):void {
 			if (!_motionTween.active) {
-				_motionTween.setMotion(x, y, newX, newY, 0.03);
+				_motionTween.setMotion(x, y, newX, newY, 0.5);
 			}
 		}
-
 
 		/*public function copy():Item {
 			var newItem:Item = new Item();
@@ -127,6 +126,11 @@ package dungeon.contents
 		// equipped vs not equipped? or on player?
 		override public function update():void
 		{
+			if (_motionTween.active) {
+				x = _motionTween.x;
+				y = _motionTween.y;
+			}			
+
 			// synchronize with global step
 			if (_step != Dungeon.STEP.playerStep) {
 				_step = Dungeon.STEP.playerStep;

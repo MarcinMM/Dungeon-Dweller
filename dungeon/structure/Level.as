@@ -448,19 +448,19 @@ package dungeon.structure
 			if (item == null) {
 				var newItem:Item = new Weapon();
 			} else {
-				var newItem:Item = item;
+				// load up new item from appropriate location
+				// how will we knwo appropriate location, items vs. spells? Hmm. Looks like we need another flag on this function.
+				var newItem:Item = new Weapon();
 			}
 
-			newItem.x = path[0].x; // now is this tile X or absolute X?
-			newItem.y = path[0].y;
+			newItem.x = path[0].x * GC.GRIDSIZE; // now is this tile X or absolute X?
+			newItem.y = path[0].y * GC.GRIDSIZE;
 			FP.world.add(newItem);
 			// actually we dont' need traverse path do we? just need start and end, then tween the two
 			// TODO: this bears examining
 			// we'll also need some way to notify the level that STEP is done once item hits
-			for each (var point:Point in path) {
-				newItem.moveTo(point.x * GC.GRIDSIZE, point.y * GC.GRIDSIZE);
-			}
-			FP.world.remove(newItem);
+			newItem.move(path[(path.length-1)].x * GC.GRIDSIZE, path[(path.length-1)].y * GC.GRIDSIZE);
+			//FP.world.remove(newItem);
 		}
 		
 		override public function update():void {
