@@ -205,6 +205,9 @@ package dungeon.structure
 			}
 			
 			levelHolder.decor = new Decor();
+			
+			// synchronize NPC global step with NPC size
+			Dungeon.STEP.setInitialNPCLength(NPCS.length);
 		}
 		
 		private function drawLevel():void {
@@ -249,6 +252,9 @@ package dungeon.structure
 			}
 
 			Dungeon.player.setPlayerPosition(STAIRS_UP.x, STAIRS_UP.y);
+			
+			// synchronize global NPC step with # of NPCs on level
+			Dungeon.STEP.setInitialNPCLength(NPCS.length);
 		}
 		
 		private function drawRooms():void {

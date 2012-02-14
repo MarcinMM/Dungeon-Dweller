@@ -17,6 +17,9 @@ package dungeon.structure
 			var currentX:int = 0;
 			var currentY:int = 0;
 			
+			// save startPoint before manipulation happens
+			var startPoint:Point = new Point(Math.floor(x/GC.GRIDSIZE), Math.floor(y/GC.GRIDSIZE));
+			
 			// let's always trace from left to right
 			// don't forget 0 slope and undefined slope
 			if (x > x1) {
@@ -128,6 +131,11 @@ package dungeon.structure
 			// loop through node list for debug
 			for each (var point:Point in nodeList) {
 				//Dungeon.level._dungeonmap.setRect(point.x, point.y, 1, 1, GC.DEBUGGREEN);
+			}
+			
+			if (!nodeList[0].equals(startPoint)) {
+				// list is backwards, inverse array
+				nodeList.reverse();
 			}
 			
 			var returnThings:Object = 

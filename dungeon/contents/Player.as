@@ -32,7 +32,7 @@ package dungeon.contents
 		public static var invLettersUnass:Array = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		public var invLettersAss:Array = [];
 		
-		public var currentClassIndex:Number; // this will hold the index in XML of the chosen character class
+		public var currentClassIndex:Number = -1; // this will hold the index in XML of the chosen character class
 		
 		public function Player() 
 		{
@@ -278,7 +278,7 @@ package dungeon.contents
 		// Hmm, except here we will only hit a letter to select, and ENTER to confirm. Slightly different.
 		// Maybe we should change inventory to this behavior as well? Will be needed for descriptions anyway.
 		public function characterSelectFunctions():void {
-			if (Input.pressed(Key.ENTER) && (currentClassIndex != 0)) {
+			if (Input.pressed(Key.ENTER) && (currentClassIndex >= 0)) {
 				Dungeon.gameStatusScreen.confirm(currentClassIndex);
 				initPlayer(currentClassIndex);
 			} else {

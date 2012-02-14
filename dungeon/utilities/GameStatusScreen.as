@@ -86,7 +86,7 @@ package dungeon.utilities
 			// pass current back to dungeon somehow and load player stats from XML into Player
 			// then close start screen and resume game
 			// do nothing if no class is selected
-			if (actualCharacterPointer != 0) {
+			if (actualCharacterPointer != -1) {
 				visibleStart = false;
 			}
 			
