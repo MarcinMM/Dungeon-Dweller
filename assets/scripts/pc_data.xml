@@ -10,9 +10,7 @@
 		<cha>8</cha>
 		<armorMax>Plate</armorMax>
 		<weaponFamilies>ALL</weaponFamilies>
-		<special>0</special>
-		<specialChance>0</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen,Tough</skills>
 		<graphic>8</graphic>
 		<bloodType>40</bloodType>
 	</pc>
@@ -25,9 +23,7 @@
 		<cha>8</cha>
 		<armorMax>Plate</armorMax>
 		<weaponFamilies>ALL</weaponFamilies>
-		<special>0</special>
-		<specialChance>0</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen,Tough</skills>
 		<graphic>6</graphic>
 		<bloodType>40</bloodType>
 	</pc>
@@ -40,9 +36,7 @@
 		<cha>8</cha>
 		<armorMax>Plate</armorMax>
 		<weaponFamilies>ALL</weaponFamilies>
-		<special>0</special>
-		<specialChance>0</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen,Tough</skills>
 		<graphic>5</graphic>
 		<bloodType>40</bloodType>
 	</pc>

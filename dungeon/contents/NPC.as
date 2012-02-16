@@ -58,13 +58,21 @@ package dungeon.contents
 		{
 			super();
 			
+			// gotta consolidate this somehow
+			// except that a player's init is later than creature init
+			creatureXML = creatureProperties;
+
+			// load up skills into skill array
+			var skills:Array = creatureXML.skills.split(",");
+			for each (var skill:String in skills) {
+				SKILLS.push(skill);
+			}
+			
 			setHitbox(GRIDSIZE, GRIDSIZE);
 			type = "npc";
 			STEP = Dungeon.STEP.globalStep;
 			POSITION = new Point(x, y);
 			
-			// now, what shall this critter be?
-			creatureXML = creatureProperties;
 
 			_imgOverlay = new MonsterGraphic(creatureXML.graphic,0,0);
 			graphic = _imgOverlay;
@@ -234,57 +242,6 @@ package dungeon.contents
 			}
 			// or neither
 			return stat;
-		}
-	
-		public function processSpecial():void {
-			if (Math.random() < Number(creatureXML.specialChance)) {
-				switch(String(creatureXML.special)) {
-					case "SUMMON":
-						//Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
-						break;
-					case "CAST":
-						// ranged with a spell "item"; creatures will only have one special cast
-						processRangedCombat(creatureXML.specialModifier);
-						break;
-					case "SQUAD":
-						break;
-					case "THROW":
-						processRangedCombat();
-						break;
-				}
-				ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
-				ACTION_TAKEN = true;
-				Dungeon.STEP.npcSteps++;
-			}
-		}
-
-		public function processRangedCombat(rangedCombatType:String=null):void {
-			var shortestDistance:Number = 1000;
-			var currentDistance:Number = 0;
-			var nearestNPC:NPC;
-			for each (var creature:NPC in Dungeon.level.NPCS) {
-				// TODO: we need an alignment check
-				currentDistance = distanceToPoint(creature.x, creature.y);
-				if (
-					(creature.x != x && creature.y != y) && 
-					(currentDistance < shortestDistance)) 
-				{
-					nearestNPC = creature;
-					shortestDistance = currentDistance;
-					Dungeon.statusScreen.updateCombatText(npcType + " thinks " + nearestNPC.npcType + " is closest.");
-					var freeToFire:Object = Utils.traceLine(x, y, nearestNPC.x, nearestNPC.y);
-					
-					if (freeToFire.success) {
-						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
-						// actually process the throw and damage done
-						throwItem(freeToFire.path, rangedCombatType); // this will take an itemType at some point?
-						// set ACTION_TAKEN flag
-					}
-				} else {
-					Dungeon.statusScreen.updateCombatText(npcType + " doesn't see anything in range.");
-				}
-			}
-			
 		}
 		
 		public function processCombat():void {
@@ -632,7 +589,16 @@ package dungeon.contents
 			}*/
 			
 			return newLocation;
-		}		
+		}
+		
+		override public function processSkills():void {
+			super.processSkills();
+			// this will need to know somehow that an action has been taken in skills; for now, disable so that 
+			// we can see life again
+			//ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
+			//ACTION_TAKEN = true;
+			//Dungeon.STEP.npcSteps++;
+		}
 		
 		override public function update():void {
 			super.update();
@@ -658,9 +624,15 @@ package dungeon.contents
 				if (creatureXML.canWield || creatureXML.canWear) {
 					checkItem();
 				}
-				
-				processSpecial();
-				// processRangedCombat(); // this is a special only
+
+				// passives and actives pre-combat
+				// gonna have to rename combat to melee I think. even that is not accurate as some specials will be melee
+				// TODO: perhaps combat needs to not deal with the decision making of which creature to hit, but only with the consequences
+				// that would make more sense
+				// processDamage(); processSkills(); - perhaps skills should include even things like melee, since it'll include ranged ... hmm!
+				// shit I need a better TODO. Something with more oomph, like TODOORDIE!
+				processSkills();
+
 				processCombat();
 				pathedMovementStep();
 	
@@ -699,9 +671,6 @@ package dungeon.contents
 					trace(npcType + " idling.");
 					idleMovement();
 				}
-
-				// now that I think of it, some creatures won't regen
-				processRegen();
 				
 				// finally sync NPC with player
 				STEP = Dungeon.STEP.globalStep;

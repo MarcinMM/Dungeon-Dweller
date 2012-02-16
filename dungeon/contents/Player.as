@@ -73,6 +73,12 @@ package dungeon.contents
 			graphic = _imgOverlay;
 			setPlayerStats();
 			updatePlayerStats(true);
+			
+			// load up skills into skill array
+			var skills:Array = creatureXML.skills.split(",");
+			for each (var att:String in skills) {
+				SKILLS.push(att);
+			}
 		}
 		
 		public function updatePlayerStats(init:Boolean=false):void {
@@ -360,8 +366,8 @@ package dungeon.contents
 				
 				// process for things that only happen once per step
 				if (Dungeon.STEP.playerStep != syncStep) {
-					// process regeneration
-					processRegen();
+					// process passive post-move, post-action skills
+					processSkills();
 					Dungeon.statusScreen.statUpdate(STATS);	
 					// process any cumulative equipment/enchantment effects
 					syncStep = Dungeon.STEP.playerStep;

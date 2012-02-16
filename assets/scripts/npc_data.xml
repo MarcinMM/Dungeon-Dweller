@@ -19,9 +19,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>10</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>0</special>
-		<specialChance>0</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen,CastFireball</skills>
 		<graphic>7</graphic>
 		<preferredStats>0</preferredStats>
 		<xpgranted>1000</xpgranted>
@@ -46,9 +44,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>10</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>THROW</special>
-		<specialChance>0.9</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>ThrowPotion,Regen</skills>
 		<graphic>7</graphic>
 		<preferredStats>0</preferredStats>
 		<xpgranted>1000</xpgranted>
@@ -73,9 +69,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>10</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>CAST</special>
-		<specialChance>0.6</specialChance>
-		<specialModifier>DEATH_RAY</specialModifier>
+		<skills>CastFireball,Regen</skills>
 		<graphic>7</graphic>
 		<preferredStats>0</preferredStats>
 		<xpgranted>1000</xpgranted>
@@ -100,9 +94,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>0</special>
-		<specialChance>0</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen</skills>
 		<graphic>7</graphic>
 		<preferredStats>0</preferredStats>
 		<xpgranted>5</xpgranted>
@@ -127,9 +119,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>DOUBLE_MOVE</special>
-		<specialChance>0.8</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen,DoubleMove</skills>
 		<graphic>2</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
@@ -154,9 +144,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0</rarityModifier>
-		<special>SUMMON</special>
-		<specialChance>0.05</specialChance>
-		<specialModifier>Wild Dog</specialModifier>
+		<skills>Regen,SummonSelf</skills>
 		<graphic>0</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
@@ -181,9 +169,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>THROW</special>
-		<specialChance>0.5</specialChance>
-		<specialModifier>0</specialModifier>
+		<skills>Regen,ThrowWeapon</skills>
 		<graphic>3</graphic>
 		<preferredStats>STR</preferredStats>
 		<xpgranted>10</xpgranted>
@@ -208,9 +194,7 @@
 		<endAppearanceIncrement>15</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0.9</rarityModifier>
-		<special>CAST</special>
-		<specialChance>0.25</specialChance>
-		<specialModifier>FIREBALL</specialModifier>
+		<skills>DoubleRegen,CastFireball</skills>
 		<graphic>5</graphic>
 		<preferredStats>INT</preferredStats>
 		<xpgranted>15</xpgranted>
@@ -235,9 +219,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>SUMMON</special>
-		<specialChance>0.1</specialChance>
-		<specialModifier>Wolf</specialModifier>
+		<skills>Regen,SummonSelf</skills>
 		<graphic>1</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
@@ -262,9 +244,7 @@
 		<endAppearanceIncrement>15</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0.9</rarityModifier>
-		<special>CAST</special>
-		<specialChance>0.1</specialChance>
-		<specialModifier>POISON_BREATH</specialModifier>
+		<skills>Regen,CastPoisonBreath</skills>
 		<graphic>6</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>15</xpgranted>
@@ -289,9 +269,7 @@
 		<endAppearanceIncrement>15</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<special>SQUAD</special>
-		<specialChance>1</specialChance>
-		<specialModifier>3</specialModifier>
+		<skills>Regen,Squad</skills>
 		<graphic>4</graphic>
 		<preferredStats>STR</preferredStats>
 		<xpgranted>10</xpgranted>

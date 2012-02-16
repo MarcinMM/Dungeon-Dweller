@@ -12,6 +12,7 @@ package dungeon.contents
 	import net.flashpunk.utils.Key;
 	import dungeon.utilities.*;
 	import dungeon.structure.Point;
+	import dungeon.structure.Utils;
 
 	/**
 	 * ...
@@ -38,6 +39,8 @@ package dungeon.contents
 		public var MOVE_DIR:int = 0;
 		public var COLLISION_STORE:Array = [];
 
+		public var SKILLS:Array = new Array();
+		
 		public var ARMOR:Array = new Array();
 		public var WEAPONS:Array = new Array();
 		public var SCROLLS:Array = new Array();
@@ -143,7 +146,98 @@ package dungeon.contents
 			Dungeon.level.throwItem(path, item);
 			// now we increase STEP?
 		}
-
+		
+		/**
+		 * Original plan: skills iterate through skill array and execute as needed. Everyone starts off with 'regen' skill which calls regen.
+		 * Each skill will have its own function; skills may or may not break off into own class, maybe static? Thing is, skills will interact 
+		 * so closely with Creature, they'll probably need access to creature properties A LOT. Something to think about later; for now, all will be 
+		 * in Creature class itself.
+		 * 
+		 * Now, how did this work again? :/
+		 * 
+		 * Actually, some creatures won't regen. This is actually immediately in our favor - they simply won't have 'regen' in their skill array. I'm brilliant!
+		 */
+		public function processSkills():void {
+			// foreach passive skill
+			// foreach active skill, make a choice (or don't) to act - behavior should however be contained to that action, since it hinges on potentially many 
+			// different factors, which would be a truly heinous IF statement over time
+			// as it is, we'll call ALL the skills, but skip the actives if ACTION_TAKEN was already done
+			// the downside to this is that creatures may not make the optimal choice for their situation, so we'll need some sort of weight added in advance
+			for each (var skill:String in SKILLS) {
+				var skillFn:String = "process" + skill;
+				this[skillFn]();
+			}
+		}
+			
+		public function processSummonSelf():void {
+			//Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
+		}
+		
+		public function processDoubleMove():void {
+			
+		}
+		
+		public function processCastFireball():void {
+			//processRangedCombat(creatureXML.specialModifier);
+		}
+		
+		public function processThrowItem():void {
+			
+		}
+		
+		public function processThrowPotion():void {
+			
+		}
+		
+		public function processThrowWeapon():void {
+			processRangedCombat();
+		}
+		
+		public function processDoubleRegen():void {
+			
+		}
+		
+		// this isn't quite right; passives (or is it reactives?) have to act differently (?)
+		public function processTough():void {
+			
+		}
+		
+		public function processCastPoisonBreath():void {
+			
+		}
+		
+		public function processSquad():void {
+			
+		}
+		
+		public function processRangedCombat(rangedCombatType:String=null):void {
+			var shortestDistance:Number = 1000;
+			var currentDistance:Number = 0;
+			var nearestNPC:NPC;
+			for each (var creature:NPC in Dungeon.level.NPCS) {
+				// TODO: we need an alignment check
+				currentDistance = distanceToPoint(creature.x, creature.y);
+				if (
+					(creature.x != x && creature.y != y) && 
+					(currentDistance < shortestDistance)) 
+				{
+					nearestNPC = creature;
+					shortestDistance = currentDistance;
+					Dungeon.statusScreen.updateCombatText(creatureXML.@name + " thinks " + nearestNPC.npcType + " is closest.");
+					var freeToFire:Object = Utils.traceLine(x, y, nearestNPC.x, nearestNPC.y);
+					
+					if (freeToFire.success) {
+						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
+						// actually process the throw and damage done
+						throwItem(freeToFire.path, rangedCombatType); // this will take an itemType at some point?
+						// set ACTION_TAKEN flag
+					}
+				} else {
+					Dungeon.statusScreen.updateCombatText(creatureXML.@name + " doesn't see anything in range.");
+				}
+			}
+		}
+		
 		/**
 		 * TODO: test all this :D
 		 * TODO: consider moving to Player class, since creatures will not have leveling; we could then throw out all the player checks
@@ -152,6 +246,7 @@ package dungeon.contents
 		public function updateIntrinsicStats(player:Boolean=false):void
 		{
 			// TODO: calculate level scale somehow. canned from XML? Algorithm?
+			// TODO AGAIN: throw out leveling entirely; skill-based advancement only
 			var expectedLevel:uint = 1;
 			var levelOne:uint = 20;
 			var calculatedXP:uint = levelOne;
