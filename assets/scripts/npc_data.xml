@@ -119,7 +119,7 @@
 		<endAppearanceIncrement>10</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>1</rarityModifier>
-		<skills>Regen,DoubleMove</skills>
+		<skills>Regen,MoveAgain</skills>
 		<graphic>2</graphic>
 		<preferredStats>AGI</preferredStats>
 		<xpgranted>5</xpgranted>
@@ -194,7 +194,7 @@
 		<endAppearanceIncrement>15</endAppearanceIncrement>
 		<doesNotAppearPast>15</doesNotAppearPast>
 		<rarityModifier>0.9</rarityModifier>
-		<skills>DoubleRegen,CastFireball</skills>
+		<skills>Regen,Regen,CastFireball</skills>
 		<graphic>5</graphic>
 		<preferredStats>INT</preferredStats>
 		<xpgranted>15</xpgranted>

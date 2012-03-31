@@ -17,6 +17,9 @@ package dungeon.structure
 			var currentX:int = 0;
 			var currentY:int = 0;
 			
+			// this may vary depending on the type of path we're looking for
+			//var collisionTypes:Array = [ GC.LAYER_LEVEL_TEXT, GC.LAYER_NPC_TEXT, GC.LAYER_PLAYER_TEXT ];
+
 			// save startPoint before manipulation happens
 			var startPoint:Point = new Point(Math.floor(x/GC.GRIDSIZE), Math.floor(y/GC.GRIDSIZE));
 			
@@ -73,7 +76,7 @@ package dungeon.structure
 							nodeList.push(tileAtThisLocation);
 							
 							// check collision, for the moment assuming no collision
-							if (false) {
+							if (tileAtThisLocation) {
 								successFlag = false;
 							}
 							tileAtPreviousLocation.x = tileAtThisLocation.x;
@@ -97,8 +100,9 @@ package dungeon.structure
 						if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
 							nodeList.push(tileAtThisLocation);
 							
-							// check collision, faking for the moment for testing
-							if (false) {
+							// check collision, only walls atm
+							var node:Node = Dungeon.level._nodemap.getNodeTile(tileAtThisLocation.x, tileAtThisLocation.y);
+							if (node.solid) {
 								successFlag = false;
 							}
 							tileAtPreviousLocation.x = tileAtThisLocation.x;
@@ -130,7 +134,7 @@ package dungeon.structure
 			
 			// loop through node list for debug
 			for each (var point:Point in nodeList) {
-				//Dungeon.level._dungeonmap.setRect(point.x, point.y, 1, 1, GC.DEBUGGREEN);
+				Dungeon.level._dungeonmap.setRect(point.x, point.y, 1, 1, GC.DEBUGGREEN);
 			}
 			
 			if (!nodeList[0].equals(startPoint)) {

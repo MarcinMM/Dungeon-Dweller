@@ -451,12 +451,11 @@ package dungeon.structure
 		// "item" is either weapon or spell
 		public function throwItem(path:Array, item:String=null):void {
 			// TODO: maybe I should define a rock weapon and use that instead? Let's get an object flying through the air first.
-			if (item == null) {
-				var newItem:Item = new Weapon();
-			} else {
-				// load up new item from appropriate location
+			var newItem:Item = new Weapon();
+			if (item != null) {
+				// TODO: load up new item from appropriate location
 				// how will we knwo appropriate location, items vs. spells? Hmm. Looks like we need another flag on this function.
-				var newItem:Item = new Weapon();
+				// newItem:Item = new Weapon();
 			}
 
 			newItem.x = path[0].x * GC.GRIDSIZE; // now is this tile X or absolute X?

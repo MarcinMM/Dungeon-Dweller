@@ -54,9 +54,10 @@ package dungeon.contents
 		public var PREFERRED_STATS:Array = new Array();
 		public var ALIGNMENT:String = 'neutral'; // hardcoding for now
 		
-		// # of Actions a creature can take per turn  and their counter
-		public var ACTIONS:uint;
-		public var ACTION_COUNTER:uint;
+		// # of Actions a creature can take per turn  and their counter, 1 by default, increased by special abilities and items
+		public var ACTIONS_ALLOWED:uint = 1;
+		public var ACTIONS_TAKEN:uint;
+		public var SINGLE_USE_ACTIONS:Dictionary = new Dictionary();
 		
 		// motion FX
 		private var _motionTween:LinearMotion;
@@ -161,7 +162,7 @@ package dungeon.contents
 			// foreach passive skill
 			// foreach active skill, make a choice (or don't) to act - behavior should however be contained to that action, since it hinges on potentially many 
 			// different factors, which would be a truly heinous IF statement over time
-			// as it is, we'll call ALL the skills, but skip the actives if ACTION_TAKEN was already done
+			// as it is, we'll call ALL the skills, but skip the actives if all available actions taken was already done
 			// the downside to this is that creatures may not make the optimal choice for their situation, so we'll need some sort of weight added in advance
 			for each (var skill:String in SKILLS) {
 				var skillFn:String = "process" + skill;
@@ -170,47 +171,58 @@ package dungeon.contents
 		}
 			
 		public function processSummonSelf():void {
-			//Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
+			if (!amIDone()) {
+				//Dungeon.level.summonNPC(String(creatureXML.specialModifier), POSITION);
+			}
 		}
 		
-		public function processDoubleMove():void {
-			
+		public function processMoveAgain():void {
+			if (SINGLE_USE_ACTIONS['moveAgain'] != true) {
+				ACTIONS_ALLOWED++;
+				SINGLE_USE_ACTIONS['moveAgain'] = true;
+			}
 		}
 		
 		public function processCastFireball():void {
-			//processRangedCombat(creatureXML.specialModifier);
+			if (!amIDone()) {
+				//processRangedCombat(creatureXML.specialModifier);
+			}
 		}
 		
 		public function processThrowItem():void {
-			
+			if (!amIDone()) {
+				//processRangedCombat(creatureXML.specialModifier);
+			}			
 		}
 		
 		public function processThrowPotion():void {
-			
+			if (!amIDone()) {
+				//processRangedCombat(creatureXML.specialModifier);
+			}
 		}
 		
 		public function processThrowWeapon():void {
-			processRangedCombat();
+			if (!amIDone()) {
+				processRangedCombat();
+			}
 		}
-		
-		public function processDoubleRegen():void {
-			
-		}
-		
+
 		// this isn't quite right; passives (or is it reactives?) have to act differently (?)
 		public function processTough():void {
 			
 		}
 		
 		public function processCastPoisonBreath():void {
-			
+			if (!amIDone()) {
+				//processRangedCombat(creatureXML.specialModifier);
+			}
 		}
 		
 		public function processSquad():void {
 			
 		}
 		
-		public function processRangedCombat(rangedCombatType:String=null):void {
+		public function processRangedCombat(rangedCombatType:String = null):void {
 			var shortestDistance:Number = 1000;
 			var currentDistance:Number = 0;
 			var nearestNPC:NPC;
@@ -230,7 +242,9 @@ package dungeon.contents
 						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
 						// actually process the throw and damage done
 						throwItem(freeToFire.path, rangedCombatType); // this will take an itemType at some point?
-						// set ACTION_TAKEN flag
+						ACTIONS_TAKEN++;
+						Dungeon.STEP.npcSteps++;
+						break;
 					}
 				} else {
 					Dungeon.statusScreen.updateCombatText(creatureXML.@name + " doesn't see anything in range.");
@@ -367,6 +381,12 @@ package dungeon.contents
 				STATS[GC.STATUS_HPMAX] = STATS[GC.STATUS_CON]; // + items and FX
 			}
 		}	
+		
+		// convenience handler for being done with this turn
+		public function amIDone():Boolean {
+			if (ACTIONS_TAKEN == ACTIONS_ALLOWED) return true;
+			else return false;
+		}
 		
 		override public function update():void {
 			if (_motionTween.active) {

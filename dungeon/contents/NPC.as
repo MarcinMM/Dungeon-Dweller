@@ -45,7 +45,6 @@ package dungeon.contents
 		// 'self' will attack anything, 'player' will help player, 'race' will attack other races, 'alignment' will attack other alignments
 		// 'pacifist' will attack nothing and just run, 'defensive' will attack only when attacked ... what else?
 		// default is alignment
-		private var ACTION_TAKEN:Boolean = false;
 		public var FACTION:String = 'alignment'; 
 		public var hitSignal:Signal;
 		public var counterSignal:Signal;
@@ -133,28 +132,34 @@ package dungeon.contents
 				STEP++;
 				break;
 			}
+			ACTIONS_TAKEN++;
 			this.move(newX, newY);
 		}
 		
 		// this can be used to achieve goals such as pickup item or attack another entity, or seek escape route
 		// before starting path, we need to obtain actual nodes from nodemap (nodemap stores collision data for entire level)
-		public function initPathedMovement(pointA:Point, pointB:Point):Boolean {
+		public function initPathedMovement(pointA:Point, pointB:Point):void {
 			var source:Node = Dungeon.level._nodemap.getNode(pointA.x, pointA.y);
 			var destNode:Node = Dungeon.level._nodemap.getNode(pointB.x, pointB.y);
 			//var source:Node = new Node(pointA.x, pointA.y, -1);
 			//var destNode:Node = new Node(pointB.x, pointB.y, -1);
 			PATH = source.findPath(destNode, 'creature');
 			trace("Path size: " + PATH.length);
-			// need to take a step now
-			return pathedMovementStep();
 		}
 		
 		// get next point in the path
 		// continue until depleted
-		public function pathedMovementStep():Boolean {
-			if ((PATH.length != 0) && !ACTION_TAKEN) {
-				// TODO: if I use shift() here instead of pop(), this is a cheap teleport implementation ^_^
-				var newLoc:Node = PATH.pop();
+		public function pathedMovementStep(teleport:Boolean = false):Boolean {
+			if (PATH.length != 0) {
+				// TODO (old): if I use shift() here instead of pop(), this is a cheap teleport implementation ^_^
+				// TODO 3/31: now test this!
+				var newLoc:Node;
+				if (teleport) {
+					newLoc = PATH.shift();
+				}
+				else {
+					newLoc = PATH.pop();
+				}
 				// since this is more or less a teleport
 				// except that it should be a teleport to the next tile over (if my path algorithm works correctly)
 				// so nothing *really* broken
@@ -188,7 +193,7 @@ package dungeon.contents
 						//x = newLoc.x * GC.GRIDSIZE;
 						//y = newLoc.y * GC.GRIDSIZE;
 						POSITION.setPoint(x, y, true);
-						ACTION_TAKEN = true;
+						ACTIONS_TAKEN++;
 					}
 					return true;
 				}
@@ -251,7 +256,7 @@ package dungeon.contents
 			// then smack!
 			
 			//FP.log('coll:' + COLLISION_TYPE);
-			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_NPC) != -1) && !ACTION_TAKEN) {
+			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_NPC) != -1) && !amIDone()) {
 				// we have NPC collision
 				// still needs threat list (which should include friendlies, maybe?)
 				ENGAGE_STATUS = GC.NPC_STATUS_ATTACKING_NPC;
@@ -297,7 +302,7 @@ package dungeon.contents
 						trace(npcType + "," + ALIGNMENT + " hits " + hitAr[0].npcType + "," + hitAr[0].ALIGNMENT + " for " + STATS[GC.STATUS_ATT] + " damage!");
 						trace(hitAr[0].npcType + " is hit.");
 					}
-					ACTION_TAKEN = true;
+					ACTIONS_TAKEN++;
 					Dungeon.STEP.npcSteps++;					
 				} else {
 					// same alignment spliced the collision out of the hit Array
@@ -306,13 +311,13 @@ package dungeon.contents
 			}
 			// TODO: Player needs to be included in threat list
 			// right now the player gets 2nd priority after monster hits no matter what just because of where this is
-			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_PLAYER) != -1)  && !ACTION_TAKEN) {
+			if ((COLLISION_TYPE.length > 0) && (COLLISION_TYPE.indexOf(GC.COLLISION_PLAYER) != -1)  && !amIDone()) {
 				ENGAGE_STATUS = GC.NPC_STATUS_ATTACKING_PLAYER;
 				// there is only one player so we don't have to perform any calculations, just call player's hit calc
 				// this is lazy if we ever do multiplayer, but that's just LOLS
 				// if (threatList check here) {
 				Dungeon.player.processHit(STATS[GC.STATUS_ATT]);
-				ACTION_TAKEN = true;
+				ACTIONS_TAKEN++;
 				Dungeon.STEP.npcSteps++;				
 				// end threat list check
 			}
@@ -325,7 +330,7 @@ package dungeon.contents
 			Dungeon.onCombat.dispatch(x, y, 'PHYSICAL', creatureXML.bloodType);
 			if (STATS[GC.STATUS_HP] <= 0) {
 				// TODO: drop loot/corpse when dead
-				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc.
+				// TODO: other effects? some creatures may explode or ooze poison or drip blood etc. event this!
 				for (var index:String in Dungeon.level.NPCS) {
 					var npcAr:Array = Dungeon.level.NPCS;
 					if (Dungeon.level.NPCS[index] == this) {
@@ -356,7 +361,7 @@ package dungeon.contents
 						(measuredDistance < (10 * GRIDSIZE)) && 
 						(measuredDistance < interestingCreatureDistance) &&
 					//	(currentNPC.ALIGNMENT != ALIGNMENT) && // TODO: this needs a faction check here too
-						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+						ENGAGE_STATUS == GC.NPC_STATUS_IDLE // this will need refinment to take into effect threat list
 					) 
 				{
 					trace(npcType + " at " + x/GRIDSIZE + "," + y/GRIDSIZE + " measured: " + measuredDistance + "|interesting:" + interestingCreatureDistance);
@@ -369,7 +374,8 @@ package dungeon.contents
 				// we have a creature closer than threshold (10 tiles away) of a different alignment, and this (not the found, but THIS) creature is idling: calculate path towards target
 				NPCStart = new Point(x, y);
 				NPCDest = new Point(interestingCreature.x, interestingCreature.y);
-				if (initPathedMovement(NPCStart, NPCDest)) {
+				initPathedMovement(NPCStart, NPCDest);
+				if (PATH.length > 0) {
 					trace(PATH.length);
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 					PATH_PURPOSE = 'ENEMY';	
@@ -393,17 +399,16 @@ package dungeon.contents
 			if (true) {
 				NPCStart = new Point(x, y);
 				NPCDest = new Point(Dungeon.player.x, Dungeon.player.y);
-				if (initPathedMovement(NPCStart, NPCDest)) {
+				initPathedMovement(NPCStart, NPCDest);
 					// we don't want to start a path if it's farther than some X (60 for now, why not?)
-					if (PATH.length < 60) {
-						ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
-						PATH_PURPOSE = 'PLAYER';
-						trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking player " 
-							+ " at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE); 
-					} else {
-						// nothing, we're not using this path
-						ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
-					}
+				if (PATH.length > 0 && PATH.length < 60) {
+					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
+					PATH_PURPOSE = 'PLAYER';
+					trace(npcType + " at " + x / GRIDSIZE + "," + y / GRIDSIZE + " is seeking player " 
+						+ " at " + Dungeon.player.x / GRIDSIZE + "," + Dungeon.player.y / GRIDSIZE); 
+				} else {
+					// nothing, we're not using this path
+					ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 				}
 			}
 		}
@@ -422,7 +427,7 @@ package dungeon.contents
 						(measuredDistance != 0) && // ignore self when checking distance - NPCs should never stack
 						(measuredDistance < (10 * GRIDSIZE)) && 
 						(measuredDistance < interestingItemDistance) &&
-						ENGAGE_STATUS == GC.NPC_STATUS_IDLE && // this will need refinment to take into effect threat list; but if creature is already engaged that should show up as ACTION_TAKEN
+						ENGAGE_STATUS == GC.NPC_STATUS_IDLE && // this will need refinment to take into effect threat list;
 						(
 							(currentItem is Weapon && creatureXML.canWield) || // check if creature can even use the item
 							(currentItem is Armor && creatureXML.canWear)
@@ -439,7 +444,8 @@ package dungeon.contents
 				// we have an item closer than threshold (10 tiles away): calculate path towards target
 				NPCStart = new Point(x, y);
 				NPCDest = new Point(interestingItem.x, interestingItem.y);
-				if (initPathedMovement(NPCStart, NPCDest)) {
+				initPathedMovement(NPCStart, NPCDest);
+				if (PATH.length > 0) {
 					ENGAGE_STATUS = GC.NPC_STATUS_SEEKING_OBJECT;
 					PATH_PURPOSE = 'ITEM';
 					PATH_TARGET_ID = interestingItem.UNIQID;
@@ -507,7 +513,7 @@ package dungeon.contents
 								ITEMS.splice(ITEMS.indexOf(equippedItem.item), 1);
 								Dungeon.statusScreen.updateCombatText(npcType + " drops " + equippedItem.item.DESCRIPTION);
 							}
-							ACTION_TAKEN = true;
+							ACTIONS_TAKEN++;
 							Dungeon.STEP.npcSteps++;						
 						} else {
 							Dungeon.statusScreen.updateCombatText(npcType + " looks over the " + itemOnFloor.DESCRIPTION + " and leaves it alone.");
@@ -596,14 +602,14 @@ package dungeon.contents
 			// this will need to know somehow that an action has been taken in skills; for now, disable so that 
 			// we can see life again
 			//ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
-			//ACTION_TAKEN = true;
+			//ACTIONS_TAKEN++;
 			//Dungeon.STEP.npcSteps++;
 		}
 		
 		override public function update():void {
 			super.update();
 			if (Dungeon.STEP.globalStep != STEP) {
-				ACTION_TAKEN = false;
+				ACTIONS_TAKEN = 0;
 				// Prototype basic NPC loop
 				// 1. Check if an action is already being performed
 				// 2. check NPC sight range if an enemy is within
@@ -631,45 +637,55 @@ package dungeon.contents
 				// that would make more sense
 				// processDamage(); processSkills(); - perhaps skills should include even things like melee, since it'll include ranged ... hmm!
 				// shit I need a better TODO. Something with more oomph, like TODOORDIE!
-				processSkills();
-
-				processCombat();
-				pathedMovementStep();
-	
-				// currently the below means creature will seek nearest non-aligned NPC
-				// TODO: run away if low on HP
-				// TODO: seek nearest object vs. seek target vs. run away priorities
-				// TODO: seek player vs. seek NPC
-				// TODO: threat levels, permanent threat levels (history)
-				// TODO: use items
-				// TODO: break through current status if a new interesting event occurs 
-				//		 (i.e. creature is already pathing towards something but a more hated target enters the room, or loud noise is heard? or other?
 				
-				if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
-					// we need a decision tree for seeking items, npcs and player
-					// priorities could be assigned based on equipment level
-					// no equipment -> seek item
-					// then whatever's closer based on alignment?
-
-					// we might have something to do with comparative levels too?
-					// or, we can setup a few native "hate" rules that override other concerns
-					findNPC();
-					if (ACTION_TAKEN) trace(npcType + " taking action on other NPC");
-
-					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
-						findPlayer();
-						if (ACTION_TAKEN) trace(npcType + " taking action on Player");						
+				// a creature can have multiple actions per STEP (turn)
+				while (!amIDone()) {
+					if (ACTIONS_TAKEN < 1) {
+						// since skills can modify amounts of further actions taken, they are only allowed once
+						processSkills();
 					}
 
-					if (!ACTION_TAKEN && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride && (creatureXML.canWear || creatureXML.canWield)) {
-						findItem();
-						if (ACTION_TAKEN) trace(npcType + " taking action on Item");
+					processCombat();
+
+					if (!amIDone()) {
+						pathedMovementStep();
 					}
-				}
-				
-				if (!ACTION_TAKEN) {
-					trace(npcType + " idling.");
-					idleMovement();
+		
+					// currently the below means creature will seek nearest non-aligned NPC
+					// TODO: run away if low on HP
+					// TODO: seek nearest object vs. seek target vs. run away priorities
+					// TODO: seek player vs. seek NPC
+					// TODO: threat levels, permanent threat levels (history)
+					// TODO: use items
+					// TODO: break through current status if a new interesting event occurs 
+					//		 (i.e. creature is already pathing towards something but a more hated target enters the room, or loud noise is heard? or other?
+					
+					if (!amIDone() && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
+						// we need a decision tree for seeking items, npcs and player
+						// priorities could be assigned based on equipment level
+						// no equipment -> seek item
+						// then whatever's closer based on alignment?
+
+						// we might have something to do with comparative levels too?
+						// or, we can setup a few native "hate" rules that override other concerns
+						findNPC();
+						if (amIDone()) trace(npcType + " taking action on other NPC");
+
+						if (!amIDone() && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
+							findPlayer();
+							if (amIDone()) trace(npcType + " taking action on Player");						
+						}
+
+						if (!amIDone() && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride && (creatureXML.canWear || creatureXML.canWield)) {
+							findItem();
+							if (amIDone()) trace(npcType + " taking action on Item");
+						}
+					}
+					
+					if (!amIDone()) {
+						trace(npcType + " idling.");
+						idleMovement();
+					}
 				}
 				
 				// finally sync NPC with player
