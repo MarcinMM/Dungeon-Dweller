@@ -2,7 +2,7 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 12/31
+# TODO MVP 4/1 (but not April Fool's)
 
 * Stats fix. Looks like has to do with XML types not being ints.
 * NPC a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc. special abilities would be really good)
@@ -10,7 +10,6 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 ** Bat has double movement/attack.
 ** Goblin can throw stuff.
 * PC Special Ability (currently dmg res for Ork)
-* Ranged combat. The ability to "throw" stuff, basically. When a ranged weapon equipped, "throwing" uses weapon's ATT value. Non-ranged weapons throw does some random amount of damage based on STR. This needs some primitive form of line tracing (putting in Util). May use this for LoS lighting?
 * Unique creature implementation for Grand Poombah (and others in future, of course)
 
 # TODO FUTURE WISHLIST
@@ -77,6 +76,10 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Slowdown on pathing. Is this still true?
 * Creatures still spawn on each other or player.
 * Creatures don't drop items.
+
+# UPDATES 4/1
+* Ranged combat fixes. Looks pretty good and I'm calling it done - need to move on to the next MVP TODO.
+* Queued, multi-use skills and skill revamp in general.
 
 # UPDATES 12/31
 * Added Game Over screen with option to restart
