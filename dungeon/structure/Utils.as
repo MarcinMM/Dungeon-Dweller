@@ -16,13 +16,15 @@ package dungeon.structure
 			var slope:Number = 0;
 			var currentX:int = 0;
 			var currentY:int = 0;
+			var solidNodeCheck:Node;
 			
 			// this may vary depending on the type of path we're looking for
 			//var collisionTypes:Array = [ GC.LAYER_LEVEL_TEXT, GC.LAYER_NPC_TEXT, GC.LAYER_PLAYER_TEXT ];
 
 			// save startPoint before manipulation happens
 			var startPoint:Point = new Point(Math.floor(x/GC.GRIDSIZE), Math.floor(y/GC.GRIDSIZE));
-			
+			var endPoint:Point = new Point(Math.floor(x1/GC.GRIDSIZE), Math.floor(y1/GC.GRIDSIZE));
+
 			// let's always trace from left to right
 			// don't forget 0 slope and undefined slope
 			if (x > x1) {
@@ -76,7 +78,8 @@ package dungeon.structure
 							nodeList.push(tileAtThisLocation);
 							
 							// check collision, for the moment assuming no collision
-							if (tileAtThisLocation) {
+							var node:Node = Dungeon.level._nodemap.getNodeTile(tileAtThisLocation.x, tileAtThisLocation.y);
+							if (node.solid) {
 								successFlag = false;
 							}
 							tileAtPreviousLocation.x = tileAtThisLocation.x;
@@ -101,8 +104,8 @@ package dungeon.structure
 							nodeList.push(tileAtThisLocation);
 							
 							// check collision, only walls atm
-							var node:Node = Dungeon.level._nodemap.getNodeTile(tileAtThisLocation.x, tileAtThisLocation.y);
-							if (node.solid) {
+							solidNodeCheck = Dungeon.level._nodemap.getNodeTile(tileAtThisLocation.x, tileAtThisLocation.y);
+							if (solidNodeCheck.solid) {
 								successFlag = false;
 							}
 							tileAtPreviousLocation.x = tileAtThisLocation.x;
@@ -120,8 +123,9 @@ package dungeon.structure
 						if (!tileAtThisLocation.equals(tileAtPreviousLocation)) {
 							nodeList.push(tileAtThisLocation);
 							
-							// check collision, fix fakeage
-							if (false) {
+							// check collision
+							solidNodeCheck = Dungeon.level._nodemap.getNodeTile(tileAtThisLocation.x, tileAtThisLocation.y);
+							if (solidNodeCheck.solid) {
 								successFlag = false;
 							}
 							tileAtPreviousLocation.x = tileAtThisLocation.x;
@@ -140,6 +144,11 @@ package dungeon.structure
 			if (!nodeList[0].equals(startPoint)) {
 				// list is backwards, inverse array
 				nodeList.reverse();
+			}
+			
+			// is the final point of the list actually at target location? If not, add it.
+			if (!nodeList[nodeList.length-1].equals(endPoint)) {
+				nodeList.push(endPoint);
 			}
 			
 			var returnThings:Object = 

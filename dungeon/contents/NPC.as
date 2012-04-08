@@ -30,12 +30,12 @@ package dungeon.contents
 		public var xpGranted:uint;
 			
 		// pathing status
-		private var ENGAGE_STATUS:uint = GC.NPC_STATUS_IDLE;
+		public var ENGAGE_STATUS:String = GC.NPC_STATUS_IDLE;
 		private var PATH:Array = new Array();
 		private var PATH_TARGET_ID:uint = 0;
 		
 		// we need some way to decide what to DO once we get to where we were going!
-		private var PATH_PURPOSE:String;
+		public var PATH_PURPOSE:String;
 		public var newActionOverride:Boolean = false; 
 		private var BLOCKCOUNT:uint = 0; // keeps track of how many times pathing's been blocked; when reaches 2, path reset to new
 		// TODO: this gets set true if something drastic occurs

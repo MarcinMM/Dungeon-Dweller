@@ -172,14 +172,14 @@ package dungeon.utilities
 		public static const KEYS:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ":", ";", "<", "=", ">", "?", "@", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 		
 		// NPC statuses
-		public static const NPC_STATUS_IDLE:uint = 0;
-		public static const NPC_STATUS_SEEKING_OBJECT:uint = 1;
-		public static const NPC_STATUS_EQUIPPING_ITEM:uint = 2;
-		public static const NPC_STATUS_USING_ITEM:uint = 3;
-		public static const NPC_STATUS_ATTACKING_NPC:uint = 4;
-		public static const NPC_STATUS_ATTACKING_PLAYER:uint = 5;
-		public static const NPC_STATUS_FLEEING:uint = 6;
-		public static const NPC_STATUS_USING_SPECIAL:uint = 7;
+		public static const NPC_STATUS_IDLE:String = 'idle';
+		public static const NPC_STATUS_SEEKING_OBJECT:String = 'seeking_obj';
+		public static const NPC_STATUS_EQUIPPING_ITEM:String = 'equip_item';
+		public static const NPC_STATUS_USING_ITEM:String = 'use_item';
+		public static const NPC_STATUS_ATTACKING_NPC:String = 'att_npc';
+		public static const NPC_STATUS_ATTACKING_PLAYER:String = 'att_plr';
+		public static const NPC_STATUS_FLEEING:String = 'runaway';
+		public static const NPC_STATUS_USING_SPECIAL:String = 'special';
 		
 		public static const ALIGNMENTS:Array = ['neutral', 'good', 'evil'];
 		

@@ -143,7 +143,7 @@ package dungeon.contents
 		}
 		
 		// we may want callbacks and such, so put this on creature
-		public function throwItem(path:Array, item:String=null):void {
+		public function throwItem(path:Array, item:*):void {
 			Dungeon.level.throwItem(path, item);
 			// now we increase STEP?
 		}
@@ -185,25 +185,28 @@ package dungeon.contents
 		
 		public function processCastFireball():void {
 			if (!amIDone()) {
-				//processRangedCombat(creatureXML.specialModifier);
+				//processRangedCombat(Fireball); // Fireball will need to be a prefetched magic item type
 			}
 		}
 		
 		public function processThrowItem():void {
 			if (!amIDone()) {
-				//processRangedCombat(creatureXML.specialModifier);
+				//processRangedCombat(item); // item will need to be a prefetched physical item type
 			}			
 		}
 		
 		public function processThrowPotion():void {
 			if (!amIDone()) {
-				//processRangedCombat(creatureXML.specialModifier);
+				//processRangedCombat(potion); // potion will need to be a prefetched potion type
 			}
 		}
 		
 		public function processThrowWeapon():void {
 			if (!amIDone()) {
-				processRangedCombat();
+				var thrownWeapon:Weapon = iHaveThrownWeapon();
+				if (thrownWeapon != null) {
+					processRangedCombat(thrownWeapon);
+				}
 			}
 		}
 
@@ -214,7 +217,7 @@ package dungeon.contents
 		
 		public function processCastPoisonBreath():void {
 			if (!amIDone()) {
-				//processRangedCombat(creatureXML.specialModifier);
+				//processRangedCombat(poisonBreath); // poisonBreath will be prefetched magic type
 			}
 		}
 		
@@ -222,7 +225,12 @@ package dungeon.contents
 			
 		}
 		
-		public function processRangedCombat(rangedCombatType:String = null):void {
+		/**
+		 * rangedItemType determines what sort of projectile to throw, 
+		 * since this will be the combats for magic (fireballs etc), firebreathing, etc.
+		 * @param	rangedItemType
+		 */
+		public function processRangedCombat(rangedItemType:Item):void {
 			var shortestDistance:Number = 1000;
 			var currentDistance:Number = 0;
 			var nearestNPC:NPC;
@@ -241,7 +249,7 @@ package dungeon.contents
 					if (freeToFire.success) {
 						//Dungeon.statusScreen.updateCombatText(npcType + " is clear to fire on " + nearestNPC.npcType + ".");
 						// actually process the throw and damage done
-						throwItem(freeToFire.path, rangedCombatType); // this will take an itemType at some point?
+						throwItem(freeToFire.path, rangedItemType); // this will take an itemType at some point?
 						ACTIONS_TAKEN++;
 						Dungeon.STEP.npcSteps++;
 						break;
@@ -386,6 +394,37 @@ package dungeon.contents
 		public function amIDone():Boolean {
 			if (ACTIONS_TAKEN == ACTIONS_ALLOWED) return true;
 			else return false;
+		}
+		
+		/**
+		 * Gets lowest attack value weapon for throwing, if available. otherwise null.
+		 * @return
+		 */
+		public function iHaveThrownWeapon():Weapon {
+			if (WEAPONS.length <= 1) {
+				// do not throw away your last weapon
+				return null;
+			}
+			var returnedWeapon:Weapon;
+			var attack:Number = 9000;
+			for each (var weapon:Weapon in WEAPONS) {
+				// TODO: implement ranged weapons
+				// currently retrieves weapon with lowest attack to throw
+				if (weapon.attack < attack) {
+					returnedWeapon = weapon;
+					attack = weapon.attack;
+				}
+				return returnedWeapon;
+			}
+			return null;
+		}
+		
+		/**
+		 * TODO: get potion by dmg amount, I suppose
+		 * @return
+		 */
+		public function iHaveThrowingPotion():Potion {
+			return null;
 		}
 		
 		override public function update():void {

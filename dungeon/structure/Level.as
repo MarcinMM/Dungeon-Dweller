@@ -449,23 +449,19 @@ package dungeon.structure
 
 		// another adding things to level (and then removing them) utility class
 		// "item" is either weapon or spell
-		public function throwItem(path:Array, item:String=null):void {
-			// TODO: maybe I should define a rock weapon and use that instead? Let's get an object flying through the air first.
-			var newItem:Item = new Weapon();
-			if (item != null) {
-				// TODO: load up new item from appropriate location
-				// how will we knwo appropriate location, items vs. spells? Hmm. Looks like we need another flag on this function.
-				// newItem:Item = new Weapon();
-			}
-
-			newItem.x = path[0].x * GC.GRIDSIZE; // now is this tile X or absolute X?
-			newItem.y = path[0].y * GC.GRIDSIZE;
-			FP.world.add(newItem);
+		public function throwItem(path:Array, item:Item):void {
+			item.x = path[0].x * GC.GRIDSIZE; // now is this tile X or absolute X?
+			item.y = path[0].y * GC.GRIDSIZE;
 			// actually we dont' need traverse path do we? just need start and end, then tween the two
 			// TODO: this bears examining
 			// we'll also need some way to notify the level that STEP is done once item hits
-			newItem.move(path[(path.length-1)].x * GC.GRIDSIZE, path[(path.length-1)].y * GC.GRIDSIZE);
-			//FP.world.remove(newItem);
+			item.move(path[(path.length - 1)].x * GC.GRIDSIZE, path[(path.length - 1)].y * GC.GRIDSIZE);
+			var removalChance:Number = Math.random() * 100;
+			if (removalChance < 90 || !(item is Weapon)) {
+				// I am hardcoding weapon breakage chance (when thrown) at 90%
+				// everything else (non weapons) always breaks
+				FP.world.remove(item);
+			}
 		}
 		
 		override public function update():void {

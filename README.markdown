@@ -2,13 +2,12 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 4/1 (but not April Fool's)
+# TODO MVP 4/7 (but not April Fool's)
 
-* Stats fix. Looks like has to do with XML types not being ints.
-* NPC a few special abilities. (doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc. special abilities would be really good)
+* Stats fix. Looks like has to do with XML types not being ints. (Isn't this fixed?)
+* NPC a few special abilities. 
 ** Dog can summon with a low chance.
 ** Bat has double movement/attack.
-** Goblin can throw stuff.
 * PC Special Ability (currently dmg res for Ork)
 * Unique creature implementation for Grand Poombah (and others in future, of course)
 
@@ -18,6 +17,8 @@ An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a mons
 
 In other words things that aren't necessary for MVP, but really really need addressing.
 
+* Creatures need inventory (weapon mainly for now).
+* Doing away with creature levels, add more creature variants instead, such as goblin, tough goblin, goblin hero, goblin chief, goblin shaman, goblin wizard, etc. special abilities would be really good.
 * NPC goal management (IN PROGRESS - 50% goals, assuming pathing works)
 * [take a look at combat per this post](http://codesquares.com/post/persistence_complete_now_proper_combats).
 * Seriously look at Point vs x,y confusion. It's a mess. Entities aren't updating their POSITION fields, which might everything *tons* easier.
@@ -77,6 +78,12 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Creatures still spawn on each other or player.
 * Creatures don't drop items.
 
+# UPDATES 4/8/2012
+* Many more ranged combat tweaks. Finally started implementing real limits on thrown items; critters will only throw if they HAVE stuff. Weapons started, potions should be relatively easy to add. Still need actual ranged weapons in the game (lulz etc.).
+* Also path stops before adding final node - now adding final node. Also realized I forgot to add solidity checks on other paths - now checking all.
+* Discovered click-to-info was broken due to relative camera implementation; fixed now using FP.camera.x and y. Also added creature status info for debugging.
+* Goblin now throws stuff as he has it. Need to provide him with some starting darts. Actually all critters need starting inventory.
+
 # UPDATES 4/1
 * Ranged combat fixes. Looks pretty good and I'm calling it done - need to move on to the next MVP TODO.
 * Queued, multi-use skills and skill revamp in general.
@@ -93,7 +100,6 @@ In other words things that aren't necessary for MVP, but really really need addr
 * Added a grand foozier poombah macguffin to level 10. Realized I have no way of limiting him from spawning multiple times. Added "unique" to TODO.
 * Stubbed a partially complete "summon NPC" special ability, as well as special ability firing function on NPCs.
 * Fixed NPC generation failure resulting from refactoring how creatureXML gets loaded onto creature.
-* 
 
 # UPDATES 10/25
 * Cleaned up NPC generation; passing around creature name and re-reading XML for no apparent reason.

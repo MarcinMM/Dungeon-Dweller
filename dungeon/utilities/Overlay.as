@@ -8,7 +8,8 @@ package dungeon.utilities
 	import net.flashpunk.utils.Input;
 	import dungeon.contents.NPC;
 	import dungeon.utilities.GC;
-
+	import net.flashpunk.FP;
+	
 	/**
 	 * ...
 	 * @author ...
@@ -49,7 +50,7 @@ package dungeon.utilities
 					} else {
 						Dungeon.statusScreen.updateCombatText(critter.npcType + "[" + critter.STATS[GC.STATUS_HP] + "/" + critter.STATS[GC.STATUS_HPMAX] + "]. It is unarmed.");
 					}
-					
+						Dungeon.statusScreen.updateCombatText(critter.ENGAGE_STATUS + "|" + critter.PATH_PURPOSE);
 				}
 			}
 		}
@@ -67,10 +68,10 @@ package dungeon.utilities
 		
 		override public function update():void
 		{
-			// mouse monitoring
+			// mouse monitoring; since we have non-absolute viewports we have to adjust for camera offset/location.
 			if (Input.mousePressed) {
-				var mouseX:int = Input.mouseFlashX;
-				var mouseY:int = Input.mouseFlashY;
+				var mouseX:int = Input.mouseFlashX + FP.camera.x;
+				var mouseY:int = Input.mouseFlashY + FP.camera.y;
 				//Dungeon.statusScreen.updateCombatText("Mouse clicky at: " + (mouseX/GC.GRIDSIZE) + "|" + (mouseY/GC.GRIDSIZE));
 				//this.getTileNeighbors(mouseX, mouseY);
 				this.getTileNPCInfo(mouseX, mouseY);
