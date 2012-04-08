@@ -2,12 +2,13 @@
 
 An inverted roguelike (you play as the titular dweller of a dungeon, i.e. a monster) written in Flash with copious help from Flashpunk. Should be quite self-sufficient as long as you can compile AS3 already :)
 
-# TODO MVP 4/7 (but not April Fool's)
+# TODO MVP 4/8
 
+* Regen broken for everyone - fix.
 * Stats fix. Looks like has to do with XML types not being ints. (Isn't this fixed?)
 * NPC a few special abilities. 
 ** Dog can summon with a low chance.
-** Bat has double movement/attack.
+** Bat has double movement/attack. Currently bat has half movement despite ability 'moveAgain'. How/why?!
 * PC Special Ability (currently dmg res for Ork)
 * Unique creature implementation for Grand Poombah (and others in future, of course)
 

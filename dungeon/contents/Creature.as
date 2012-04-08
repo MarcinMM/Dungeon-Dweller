@@ -69,6 +69,8 @@ package dungeon.contents
 			
 			_motionTween = new LinearMotion(onMotionComplete);
 			addTween(_motionTween);
+			
+			SINGLE_USE_ACTIONS['moveAgain'] = false;
 		}
 		
 		public function onMotionComplete():void {
@@ -159,14 +161,13 @@ package dungeon.contents
 		 * Actually, some creatures won't regen. This is actually immediately in our favor - they simply won't have 'regen' in their skill array. I'm brilliant!
 		 */
 		public function processSkills():void {
-			// foreach passive skill
-			// foreach active skill, make a choice (or don't) to act - behavior should however be contained to that action, since it hinges on potentially many 
-			// different factors, which would be a truly heinous IF statement over time
-			// as it is, we'll call ALL the skills, but skip the actives if all available actions taken was already done
-			// the downside to this is that creatures may not make the optimal choice for their situation, so we'll need some sort of weight added in advance
+			// TODO: active skills will need a weight to decide what action should be done first; for now, go in the order defined in XML
 			for each (var skill:String in SKILLS) {
-				var skillFn:String = "process" + skill;
-				this[skillFn]();
+				if (SINGLE_USE_ACTIONS[skill] != true) {
+					var skillFn:String = "process" + skill;
+					this[skillFn]();
+					SINGLE_USE_ACTIONS[skill] = true;
+				}
 			}
 		}
 			
@@ -177,10 +178,7 @@ package dungeon.contents
 		}
 		
 		public function processMoveAgain():void {
-			if (SINGLE_USE_ACTIONS['moveAgain'] != true) {
-				ACTIONS_ALLOWED++;
-				SINGLE_USE_ACTIONS['moveAgain'] = true;
-			}
+			ACTIONS_ALLOWED++;
 		}
 		
 		public function processCastFireball():void {
@@ -392,7 +390,7 @@ package dungeon.contents
 		
 		// convenience handler for being done with this turn
 		public function amIDone():Boolean {
-			if (ACTIONS_TAKEN == ACTIONS_ALLOWED) return true;
+			if (ACTIONS_TAKEN >= ACTIONS_ALLOWED) return true;
 			else return false;
 		}
 		

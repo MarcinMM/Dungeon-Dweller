@@ -640,13 +640,12 @@ package dungeon.contents
 				
 				// a creature can have multiple actions per STEP (turn)
 				while (!amIDone()) {
-					if (ACTIONS_TAKEN < 1) {
-						// since skills can modify amounts of further actions taken, they are only allowed once
-						processSkills();
+					processSkills();
+					
+					if (!amIDone()) {
+						processCombat();
 					}
-
-					processCombat();
-
+					
 					if (!amIDone()) {
 						pathedMovementStep();
 					}
