@@ -70,7 +70,11 @@ package dungeon.contents
 			_motionTween = new LinearMotion(onMotionComplete);
 			addTween(_motionTween);
 			
-			SINGLE_USE_ACTIONS['moveAgain'] = false;
+			// specify actions/skills which can only be used once per turn, even if critter can take multiple actions
+			// a bit hacky, but there won't be too many of these
+			// this is counter-intuitive since "false" means it hasn't been used yet
+			// but key presence in array means this is in fact a single_use skill
+			SINGLE_USE_ACTIONS['MoveAgain'] = false;
 		}
 		
 		public function onMotionComplete():void {
@@ -163,11 +167,18 @@ package dungeon.contents
 		public function processSkills():void {
 			// TODO: active skills will need a weight to decide what action should be done first; for now, go in the order defined in XML
 			for each (var skill:String in SKILLS) {
-				if (SINGLE_USE_ACTIONS[skill] != true) {
+				if (SINGLE_USE_ACTIONS[skill] == false) {
+					// means single use action found, but unused
+					// use it and set it to "used", i.e. true
 					var skillFn:String = "process" + skill;
 					this[skillFn]();
 					SINGLE_USE_ACTIONS[skill] = true;
+				} else if (SINGLE_USE_ACTIONS[skill] == undefined) {
+					// means this is NOT a single use action; just use it
+					var skillFn:String = "process" + skill;
+					this[skillFn]();					
 				}
+				// otherwise the key is true; do not process this skill again
 			}
 		}
 			

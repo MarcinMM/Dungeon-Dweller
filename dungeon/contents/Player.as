@@ -38,10 +38,6 @@ package dungeon.contents
 		{
 			super();
 			
-			// hardcoding creatureXML to first character until we have more
-			// not to mention a character select screen!
-			initPlayer(0);
-
 			Input.define(GC.DIR_LEFT_TEXT, Key.LEFT);
 			Input.define(GC.DIR_RIGHT_TEXT, Key.RIGHT);
 			Input.define(GC.DIR_UP_TEXT, Key.UP);

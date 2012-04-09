@@ -185,9 +185,9 @@ package dungeon.contents
 					// also trace this, 'cuz it happens quite a lot
 					var diffX:int = Math.abs(newLoc.x - (x / GC.GRIDSIZE));
 					var diffY:int = Math.abs(newLoc.y - (y / GC.GRIDSIZE));
-					trace('diffx:' + diffX + '|diffY:' + diffY);
-					if (diffX > 1 || diffY > 1) {
+					if (diffX > ACTIONS_ALLOWED || diffY > ACTIONS_ALLOWED) {
 						trace("blah teleport alert");
+						ACTIONS_TAKEN++;
 					} else {
 						this.move(newLoc.x * GC.GRIDSIZE, newLoc.y * GC.GRIDSIZE);
 						//x = newLoc.x * GC.GRIDSIZE;
@@ -522,7 +522,6 @@ package dungeon.contents
 				}
 				updateDerivedStats();
 			}
-			ENGAGE_STATUS = GC.NPC_STATUS_IDLE;
 		}
 		
 		public function selfCopy():NPC {
@@ -599,11 +598,6 @@ package dungeon.contents
 		
 		override public function processSkills():void {
 			super.processSkills();
-			// this will need to know somehow that an action has been taken in skills; for now, disable so that 
-			// we can see life again
-			//ENGAGE_STATUS = GC.NPC_STATUS_USING_SPECIAL;
-			//ACTIONS_TAKEN++;
-			//Dungeon.STEP.npcSteps++;
 		}
 		
 		override public function update():void {
@@ -668,8 +662,7 @@ package dungeon.contents
 						// we might have something to do with comparative levels too?
 						// or, we can setup a few native "hate" rules that override other concerns
 						findNPC();
-						if (amIDone()) trace(npcType + " taking action on other NPC");
-
+						
 						if (!amIDone() && (ENGAGE_STATUS == GC.NPC_STATUS_IDLE) && !newActionOverride) {
 							findPlayer();
 							if (amIDone()) trace(npcType + " taking action on Player");						
@@ -681,9 +674,9 @@ package dungeon.contents
 						}
 					}
 					
-					if (!amIDone()) {
+					if (!amIDone() && ENGAGE_STATUS == GC.NPC_STATUS_IDLE) {
 						trace(npcType + " idling.");
-						idleMovement();
+						//idleMovement();
 					}
 				}
 				
